@@ -22,7 +22,7 @@ export const timeUnitDuration = {
 	second: 60,
 };
 
-export const smiles = [
+export const reactions = [
 	'1f600',
 	'1f606',
 	'1f923',

@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef } from 'react';
 import { Box, Grow, Typography } from '@mui/material';
 import { Backdrop, MenuCard, ReactionsWrapper } from '@/app/chat/[chatId]/styled';
 import getBoundingClientRect from '@popperjs/core/lib/dom-utils/getBoundingClientRect';
-import { smiles } from '@/app/chat/[chatId]/constants';
+import { reactions } from '@/app/chat/[chatId]/constants';
 import { ContextMenuProps } from '@/types';
 
 export const ContextMenu = ({ onAddReaction, closeContextMenu, initMenuParams, menuTop }: ContextMenuProps) => {
@@ -17,7 +17,7 @@ export const ContextMenu = ({ onAddReaction, closeContextMenu, initMenuParams, m
 			<Grow in style={{ transformOrigin: '0 0 0' }}>
 				<MenuCard ref={ref} style={{ transform: `translateY(${menuTop}px)` }}>
 					<ReactionsWrapper>
-						{smiles.map(reaction => (
+						{reactions.map(reaction => (
 							<Box key={reaction} onClick={() => onAddReaction(reaction)}>
 								{String.fromCodePoint(parseInt(reaction, 16))}
 							</Box>
