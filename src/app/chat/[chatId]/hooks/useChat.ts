@@ -1,15 +1,22 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useUser } from '@clerk/nextjs';
 import { createRoom } from '@/utils/createRoom';
 import { sendChangeVisitorStatus } from '@/utils/sendChangeVisitorStatus';
-import { EditMessageClient, Message, UseMessageListProps, VisitorStatus } from '@/types';
 import { deleteChatMessages } from '@/actions/deleteChatMessages';
 import { clearAddClientMessage, addClientMessage } from '@/utils/addClientMessage';
 import { clearUpdateClientMessage, updateClientMessage } from '@/utils/updateClientMessage';
-import { useUser } from '@clerk/nextjs';
-
-export const useMessageList = ({ messages, chatId, interlocutorId, authorImageUrl }: UseMessageListProps) => {
+import { EditMessageClient, Message, UserChat, VisitorStatus } from '@/types';
+export const useChat = (chat: UserChat) => {
 	const { user } = useUser();
 	const userId = user?.id as string;
+	const { messages, members, chatId } = chat;
+	const author = members.find(user => user.userId === userId);
+	const interlocutor = members.find(user => user.userId !== userId);
+	const interlocutorId = interlocutor?.userId || '';
+	const interlocutorName = interlocutor?.username || interlocutor?.email || '';
+	const authorImageUrl = author?.imageUrl;
+	const interlocutorImageUrl = interlocutor?.imageUrl;
+
 	const [messageList, setMessageList] = useState<Message[]>(messages);
 
 	useEffect(() => {
@@ -58,5 +65,5 @@ export const useMessageList = ({ messages, chatId, interlocutorId, authorImageUr
 		[authorImageUrl]
 	);
 
-	return { messageList, addReaction };
+	return { messageList, addReaction, interlocutorName, interlocutorImageUrl, userId, chatId, interlocutorId };
 };

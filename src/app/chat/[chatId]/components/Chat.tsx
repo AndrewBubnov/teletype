@@ -1,5 +1,5 @@
 'use client';
-import { ChangeEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { ChatWrapper, CoverWrapper, SendMessageForm, SendMessageFormWrapper } from '@/app/chat/[chatId]/styled';
 import { StyledInput } from '@/app/chat/styled';
 import { Box, InputAdornment } from '@mui/material';
@@ -10,52 +10,22 @@ import { Emoji } from '@/app/chat/[chatId]/components/Emoji';
 import { EmojiClickData } from 'emoji-picker-react';
 import { ChatProps, MessageType } from '@/types';
 import { SingleMessage } from '@/app/chat/[chatId]/components/SingleMessage';
-import { useMessageList } from '@/app/chat/[chatId]/hooks/useMessageList';
+import { useChat } from '@/app/chat/[chatId]/hooks/useChat';
 import { addReactionToMessage } from '@/actions/addReactionToMessage';
 import { sendEditMessage } from '@/utils/sendEditMessage';
-import { useUser } from '@clerk/nextjs';
 import { ContextMenu } from '@/app/chat/[chatId]/components/ContextMenu';
-import getBoundingClientRect from '@popperjs/core/lib/dom-utils/getBoundingClientRect';
+import { useMenuTransition } from '@/app/chat/[chatId]/hooks/useMenuTransition';
 
 export const Chat = ({ chat }: ChatProps) => {
-	const { user } = useUser();
-	const userId = user?.id as string;
-	const { messages, members, chatId } = chat;
-	const author = members.find(user => user.userId === userId);
-	const interlocutor = members.find(user => user.userId !== userId);
-	const interlocutorId = interlocutor?.userId || '';
-	const interlocutorName = interlocutor?.username || interlocutor?.email || '';
-	const authorImageUrl = author?.imageUrl;
-	const interlocutorImageUrl = interlocutor?.imageUrl;
-
-	const { messageList, addReaction } = useMessageList({ messages, chatId, interlocutorId, authorImageUrl });
+	const { messageList, addReaction, interlocutorName, interlocutorImageUrl, userId, chatId, interlocutorId } =
+		useChat(chat);
 
 	const [messageText, setMessageText] = useState<string>('');
 	const [messageImageUrl, setMessageImageUrl] = useState<string>('');
 	const [menuActiveId, setMenuActiveId] = useState<string>('');
-	const [messageParams, setMessageParams] = useState<DOMRect | null>(null);
-	const [menuTop, setMenuTop] = useState<number>(0);
 	const [messageType, setMessageType] = useState<MessageType>(MessageType.TEXT);
 
-	const initMenuParams = useRef<DOMRect | null>(null);
-	const containerRef = useRef<HTMLDivElement>(null);
-	const containerParams = useRef<DOMRect | null>(null);
-
-	useLayoutEffect(() => {
-		if (!containerRef.current) return;
-		containerParams.current = getBoundingClientRect(containerRef.current) as DOMRect;
-	}, []);
-
-	useEffect(() => {
-		if (!menuActiveId) return;
-		const messageTop = messageParams?.top || 0;
-		const messageHeight = messageParams?.height || 0;
-		const menuHeight = initMenuParams.current?.height || 0;
-		const containerTop = containerParams.current?.top || 0;
-		const containerHeight = containerParams.current?.height || 0;
-		const relativeTop = messageTop - containerTop;
-		setMenuTop(Math.min(Math.max(0, relativeTop - (menuHeight - messageHeight) / 2), containerHeight - menuHeight));
-	}, [menuActiveId]);
+	const { menuTop, setMessageParams, containerRef, initMenuParams } = useMenuTransition(menuActiveId);
 
 	const changeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
 		setMessageText(evt.target.value);

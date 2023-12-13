@@ -131,13 +131,6 @@ export type SingleMessageProps = {
 	onAddReaction(arg: string): void;
 };
 
-export interface UseMessageListProps {
-	messages: Message[];
-	chatId: string;
-	interlocutorId: string;
-	authorImageUrl?: string | null;
-}
-
 export interface AddMessageToChat {
 	chatId: string;
 	authorId: string;
