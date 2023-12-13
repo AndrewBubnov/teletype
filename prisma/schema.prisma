@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  EMOJI
+}
+
+model Message {
+  id                     String      @id @default(uuid()) @map("_id")
+  date                   DateTime    @default(now())
+  authorId               String
+  type                   MessageType
+  chatId                 String
+  text                   String?
+  imageUrl               String?
+  reaction               String?
+  reactionAuthorImageUrl String?
+  chat                   Chat?       @relation(fields: [chatId], references: [chatId])
+}
+
+model Chat {
+  id        String    @id @default(uuid()) @map("_id")
+  chatId    String    @unique
+  memberIds String[]
+  messages  Message[]
+}
+
+model User {
+  id       String   @id @default(uuid()) @map("_id")
+  userId   String   @unique
+  email    String   @unique
+  username String
+  chatIds  String[]
+  imageUrl String?
+}
