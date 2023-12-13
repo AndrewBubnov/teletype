@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Grow, Typography } from '@mui/material';
 import { Backdrop, MenuCard, ReactionsWrapper } from '@/app/chat/[chatId]/styled';
 import getBoundingClientRect from '@popperjs/core/lib/dom-utils/getBoundingClientRect';
 import { smiles } from '@/app/chat/[chatId]/constants';
@@ -14,17 +14,19 @@ export const ContextMenu = ({ onAddReaction, closeContextMenu, initMenuParams, m
 	}, []);
 	return (
 		<Backdrop onClick={closeContextMenu}>
-			<MenuCard ref={ref} style={{ transform: `translateY(${menuTop}px)` }}>
-				<ReactionsWrapper>
-					{smiles.map(reaction => (
-						<Box key={reaction} onClick={() => onAddReaction(reaction)}>
-							{String.fromCodePoint(parseInt(reaction, 16))}
-						</Box>
-					))}
-				</ReactionsWrapper>
-				<Typography>Reply</Typography>
-				<Typography>Delete</Typography>
-			</MenuCard>
+			<Grow in style={{ transformOrigin: '0 0 0' }}>
+				<MenuCard ref={ref} style={{ transform: `translateY(${menuTop}px)` }}>
+					<ReactionsWrapper>
+						{smiles.map(reaction => (
+							<Box key={reaction} onClick={() => onAddReaction(reaction)}>
+								{String.fromCodePoint(parseInt(reaction, 16))}
+							</Box>
+						))}
+					</ReactionsWrapper>
+					<Typography>Reply</Typography>
+					<Typography>Delete</Typography>
+				</MenuCard>
+			</Grow>
 		</Backdrop>
 	);
 };
