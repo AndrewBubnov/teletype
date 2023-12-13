@@ -6,6 +6,7 @@ import { deleteChatMessages } from '@/actions/deleteChatMessages';
 import { clearAddClientMessage, addClientMessage } from '@/utils/addClientMessage';
 import { clearUpdateClientMessage, updateClientMessage } from '@/utils/updateClientMessage';
 import { EditMessageClient, Message, UserChat, VisitorStatus } from '@/types';
+
 export const useChat = (chat: UserChat) => {
 	const { user } = useUser();
 	const userId = user?.id as string;
