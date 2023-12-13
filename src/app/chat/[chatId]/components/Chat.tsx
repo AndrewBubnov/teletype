@@ -1,5 +1,5 @@
 'use client';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, SyntheticEvent, useState } from 'react';
 import { ChatWrapper, CoverWrapper, SendMessageForm, SendMessageFormWrapper } from '@/app/chat/[chatId]/styled';
 import { StyledInput } from '@/app/chat/styled';
 import { Box, InputAdornment } from '@mui/material';
@@ -16,11 +16,13 @@ import { sendEditMessage } from '@/utils/sendEditMessage';
 import { ContextMenu } from '@/app/chat/[chatId]/components/ContextMenu';
 import { useMenuTransition } from '@/app/chat/[chatId]/hooks/useMenuTransition';
 import { deleteSingleMessage } from '@/actions/deleteSingleMessage';
+import { ConfirmDialog } from '@/app/chat/[chatId]/components/ConfirmDialog';
 
 export const Chat = ({ chat }: ChatProps) => {
 	const { messageList, addReaction, interlocutorName, interlocutorImageUrl, userId, chatId, interlocutorId } =
 		useChat(chat);
 
+	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 	const [messageText, setMessageText] = useState<string>('');
 	const [messageImageUrl, setMessageImageUrl] = useState<string>('');
 	const [menuActiveId, setMenuActiveId] = useState<string>('');
@@ -49,10 +51,7 @@ export const Chat = ({ chat }: ChatProps) => {
 
 	const contextMenuToggleHandler = (id: string) => (type: 'open' | 'close', messageParams: DOMRect) => {
 		setMessageParams(messageParams);
-		setMenuActiveId(prevState => {
-			if (type === 'open') return prevState ? '' : id;
-			return '';
-		});
+		setMenuActiveId(type === 'open' ? id : '');
 	};
 
 	const closeMenuHandler = () => setMenuActiveId('');
@@ -74,12 +73,17 @@ export const Chat = ({ chat }: ChatProps) => {
 		sendEditMessage({ messageId: message.id, message: updated, roomId: chatId });
 		setMenuActiveId('');
 	};
+	const cancelDeleteHandler = () => setDialogOpen(false);
+	const deleteMessageHandler = (informBoth: boolean) => async () => {
+		sendEditMessage({ messageId: menuActiveId, message: null, roomId: chatId, authorOnly: !informBoth });
+		if (informBoth) await deleteSingleMessage(menuActiveId, chatId);
+		cancelDeleteHandler();
+		setMenuActiveId('');
+	};
 
-	const onDeleteMessage = async () => {
-		const message = messageList.find(el => el.id === menuActiveId);
-		if (!message) return;
-		sendEditMessage({ messageId: message.id, message: null, roomId: chatId });
-		await deleteSingleMessage(message.id, chatId);
+	const onDeleteMessage = (evt: SyntheticEvent) => {
+		evt.stopPropagation();
+		setDialogOpen(true);
 	};
 
 	return (
@@ -129,6 +133,12 @@ export const Chat = ({ chat }: ChatProps) => {
 					/>
 				</SendMessageForm>
 			</SendMessageFormWrapper>
+			<ConfirmDialog
+				open={dialogOpen}
+				onCancel={cancelDeleteHandler}
+				onConfirm={deleteMessageHandler}
+				interlocutorName={interlocutorName}
+			/>
 		</Box>
 	);
 };

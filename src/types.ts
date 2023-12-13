@@ -1,5 +1,6 @@
-import { HTMLAttributes, MutableRefObject, ReactNode } from 'react';
+import { HTMLAttributes, MutableRefObject, ReactNode, SyntheticEvent } from 'react';
 import { ImageProps } from 'next/image';
+import { ButtonProps } from '@mui/material';
 
 export interface MainProviderProps {
 	children: ReactNode;
@@ -144,7 +145,7 @@ export interface ContextMenuProps {
 	closeContextMenu(): void;
 	initMenuParams: MutableRefObject<DOMRect | null>;
 	menuTop: number;
-	onDeleteMessage(): void;
+	onDeleteMessage(evt: SyntheticEvent): void;
 }
 
 export interface EditMessageClient {
@@ -153,4 +154,9 @@ export interface EditMessageClient {
 }
 export interface EditMessageServer extends EditMessageClient {
 	roomId: string;
+	authorOnly?: boolean;
+}
+
+export interface StyledButtonProps extends ButtonProps {
+	textColor?: string;
 }

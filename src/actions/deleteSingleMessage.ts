@@ -7,7 +7,11 @@ export const deleteSingleMessage = async (messageId: string, chatId: string) => 
 		include: { messages: true },
 	});
 
-	if (!chat) return;
+	const message = await prisma.message.findUnique({
+		where: { id: messageId },
+	});
+
+	if (!chat || !message) return;
 
 	await prisma.message.delete({
 		where: { id: messageId },

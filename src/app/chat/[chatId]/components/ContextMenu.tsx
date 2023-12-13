@@ -31,7 +31,7 @@ export const ContextMenu = ({
 					</ReactionsWrapper>
 					<List>
 						<ListItem disablePadding>
-							<ListItemButton onClick={onDeleteMessage}>
+							<ListItemButton onMouseDown={onDeleteMessage} onTouchStart={onDeleteMessage}>
 								<ListItemIcon>
 									<MenuDeleteIcon />
 								</ListItemIcon>

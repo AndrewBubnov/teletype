@@ -2,11 +2,11 @@
 import { styled } from '@mui/material/styles';
 import emotionStyled from '@emotion/styled';
 import Image, { ImageProps } from 'next/image';
-import { Box, IconButton, ListItem, ListItemButton } from '@mui/material';
+import { Box, Button, Checkbox, IconButton, ListItem, ListItemButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ReplyIcon from '@mui/icons-material/ReplyOutlined';
-import { ElapsedTimeWrapperProps, MessageBoxProps, MessageItemBottomProps } from '@/types';
+import { ElapsedTimeWrapperProps, MessageBoxProps, MessageItemBottomProps, StyledButtonProps } from '@/types';
 
 export const ChatWrapper = styled(Box)`
 	padding: 1rem;
@@ -101,6 +101,11 @@ export const EmojiWrapper = styled(Box)`
 	right: 0.5rem;
 `;
 
+export const StyledButton = styled(({ textColor, ...props }: StyledButtonProps) => <Button {...props} />)`
+	text-transform: none;
+	color: ${({ textColor }) => (textColor ? textColor : 'currentColor')};
+`;
+
 export const ReactionsWrapper = styled(Box)`
 	display: flex;
 	overflow-x: auto;
@@ -132,6 +137,15 @@ export const ReactionsWrapper = styled(Box)`
 		&::-webkit-scrollbar-track {
 			height: 3px;
 		}
+	}
+`;
+
+export const StyledBlackCheckbox = styled(Checkbox)`
+	color: #1a1a1a;
+	padding-left: 0;
+
+	&.Mui-checked {
+		color: #1a1a1a;
 	}
 `;
 
