@@ -1,6 +1,6 @@
 'use client';
 import { ChangeEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { ChatWrapper, SendMessageForm, SendMessageFormWrapper } from '@/app/chat/[chatId]/styled';
+import { ChatWrapper, CoverWrapper, SendMessageForm, SendMessageFormWrapper } from '@/app/chat/[chatId]/styled';
 import { StyledInput } from '@/app/chat/styled';
 import { Box, InputAdornment } from '@mui/material';
 import { addMessageToChat } from '@/actions/addMessageToChat';
@@ -112,7 +112,7 @@ export const Chat = ({ chat }: ChatProps) => {
 				interlocutorName={interlocutorName}
 				interlocutorImageUrl={interlocutorImageUrl}
 			/>
-			<Box style={{ position: 'relative' }}>
+			<CoverWrapper>
 				<ChatWrapper ref={containerRef}>
 					{messageList.map(message => (
 						<SingleMessage
@@ -132,8 +132,7 @@ export const Chat = ({ chat }: ChatProps) => {
 						menuTop={menuTop}
 					/>
 				)}
-			</Box>
-
+			</CoverWrapper>
 			<SendMessageFormWrapper>
 				<SendMessageForm action={submitHandler}>
 					<StyledInput

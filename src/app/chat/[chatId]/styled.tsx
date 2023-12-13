@@ -13,6 +13,10 @@ export const ChatWrapper = styled(Box)`
 	overflow-x: hidden;
 	height: 80vh;
 `;
+
+export const CoverWrapper = styled(Box)`
+	position: relative;
+`;
 export const Backdrop = styled(Box)`
 	position: absolute;
 	display: flex;
