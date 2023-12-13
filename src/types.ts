@@ -144,6 +144,7 @@ export interface ContextMenuProps {
 	closeContextMenu(): void;
 	initMenuParams: MutableRefObject<DOMRect | null>;
 	menuTop: number;
+	onDeleteMessage(): void;
 }
 
 export interface EditMessageClient {

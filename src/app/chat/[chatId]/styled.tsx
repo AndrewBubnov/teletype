@@ -2,9 +2,10 @@
 import { styled } from '@mui/material/styles';
 import emotionStyled from '@emotion/styled';
 import Image, { ImageProps } from 'next/image';
-import { Box, IconButton } from '@mui/material';
+import { Box, IconButton, ListItem, ListItemButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import ReplyIcon from '@mui/icons-material/ReplyOutlined';
 import { ElapsedTimeWrapperProps, MessageBoxProps, MessageItemBottomProps } from '@/types';
 
 export const ChatWrapper = styled(Box)`
@@ -85,10 +86,14 @@ export const SendMessageFormWrapper = styled(Box)`
 
 export const MenuCard = styled(Box)`
 	padding: 0.5rem;
-	width: 50%;
+	width: 40%;
 	height: fit-content;
 	background: lightgoldenrodyellow;
 	border-radius: 0.25rem;
+	color: #000;
+	@media (max-width: 600px) {
+		width: 60%;
+	}
 `;
 export const EmojiWrapper = styled(Box)`
 	position: absolute;
@@ -141,6 +146,12 @@ export const ChatsListDeleteButton = styled(IconButton)`
 `;
 export const DeleteIcon = styled(DeleteOutlineIcon)`
 	fill: #fff;
+`;
+export const MenuDeleteIcon = styled(DeleteOutlineIcon)`
+	fill: #1a1a1a;
+`;
+export const MenuReplyIcon = styled(ReplyIcon)`
+	fill: #000;
 `;
 
 export const ChatHeaderWrapper = styled(Box)`

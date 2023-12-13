@@ -15,6 +15,7 @@ import { addReactionToMessage } from '@/actions/addReactionToMessage';
 import { sendEditMessage } from '@/utils/sendEditMessage';
 import { ContextMenu } from '@/app/chat/[chatId]/components/ContextMenu';
 import { useMenuTransition } from '@/app/chat/[chatId]/hooks/useMenuTransition';
+import { deleteSingleMessage } from '@/actions/deleteSingleMessage';
 
 export const Chat = ({ chat }: ChatProps) => {
 	const { messageList, addReaction, interlocutorName, interlocutorImageUrl, userId, chatId, interlocutorId } =
@@ -74,6 +75,13 @@ export const Chat = ({ chat }: ChatProps) => {
 		setMenuActiveId('');
 	};
 
+	const onDeleteMessage = async () => {
+		const message = messageList.find(el => el.id === menuActiveId);
+		if (!message) return;
+		sendEditMessage({ messageId: message.id, message: null, roomId: chatId });
+		await deleteSingleMessage(message.id, chatId);
+	};
+
 	return (
 		<Box>
 			<ChatHeader
@@ -99,6 +107,7 @@ export const Chat = ({ chat }: ChatProps) => {
 						onAddReaction={addReactionHandler}
 						closeContextMenu={closeMenuHandler}
 						initMenuParams={initMenuParams}
+						onDeleteMessage={onDeleteMessage}
 						menuTop={menuTop}
 					/>
 				)}

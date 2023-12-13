@@ -1,15 +1,21 @@
 import { useLayoutEffect, useRef } from 'react';
-import { Box, Grow, Typography } from '@mui/material';
-import { Backdrop, MenuCard, ReactionsWrapper } from '@/app/chat/[chatId]/styled';
+import { Box, Grow, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Backdrop, MenuCard, MenuDeleteIcon, MenuReplyIcon, ReactionsWrapper } from '@/app/chat/[chatId]/styled';
 import getBoundingClientRect from '@popperjs/core/lib/dom-utils/getBoundingClientRect';
+
 import { reactions } from '@/app/chat/[chatId]/constants';
 import { ContextMenuProps } from '@/types';
 
-export const ContextMenu = ({ onAddReaction, closeContextMenu, initMenuParams, menuTop }: ContextMenuProps) => {
+export const ContextMenu = ({
+	onAddReaction,
+	closeContextMenu,
+	initMenuParams,
+	menuTop,
+	onDeleteMessage,
+}: ContextMenuProps) => {
 	const ref = useRef();
 	useLayoutEffect(() => {
 		if (!ref.current) return;
-		const params = getBoundingClientRect(ref.current);
 		initMenuParams.current = getBoundingClientRect(ref.current) as DOMRect;
 	}, []);
 	return (
@@ -23,8 +29,24 @@ export const ContextMenu = ({ onAddReaction, closeContextMenu, initMenuParams, m
 							</Box>
 						))}
 					</ReactionsWrapper>
-					<Typography>Reply</Typography>
-					<Typography>Delete</Typography>
+					<List>
+						<ListItem disablePadding>
+							<ListItemButton onClick={onDeleteMessage}>
+								<ListItemIcon>
+									<MenuDeleteIcon />
+								</ListItemIcon>
+								<ListItemText primary="Delete" />
+							</ListItemButton>
+						</ListItem>
+						<ListItem disablePadding>
+							<ListItemButton>
+								<ListItemIcon>
+									<MenuReplyIcon />
+								</ListItemIcon>
+								<ListItemText primary="Reply" />
+							</ListItemButton>
+						</ListItem>
+					</List>
 				</MenuCard>
 			</Grow>
 		</Backdrop>
