@@ -146,6 +146,7 @@ export interface ContextMenuProps {
 	initMenuParams: MutableRefObject<DOMRect | null>;
 	menuTop: number;
 	onDeleteMessage(evt: SyntheticEvent): void;
+	onReplyMessage(): void;
 }
 
 export interface EditMessageClient {
@@ -159,4 +160,10 @@ export interface EditMessageServer extends EditMessageClient {
 
 export interface StyledButtonProps extends ButtonProps {
 	textColor?: string;
+}
+
+export interface RepliedMessageBoxProps {
+	message: Message | null;
+	onDropMessage(): void;
+	nameMap: Record<string, string>;
 }

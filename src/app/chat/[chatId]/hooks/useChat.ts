@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { createRoom } from '@/utils/createRoom';
 import { sendChangeVisitorStatus } from '@/utils/sendChangeVisitorStatus';
@@ -15,6 +15,7 @@ export const useChat = (chat: UserChat) => {
 	const interlocutor = members.find(user => user.userId !== userId);
 	const interlocutorId = interlocutor?.userId || '';
 	const interlocutorName = interlocutor?.username || interlocutor?.email || '';
+	const authorName = author?.username || author?.email || '';
 	const authorImageUrl = author?.imageUrl;
 	const interlocutorImageUrl = interlocutor?.imageUrl;
 
@@ -66,5 +67,22 @@ export const useChat = (chat: UserChat) => {
 		[authorImageUrl]
 	);
 
-	return { messageList, addReaction, interlocutorName, interlocutorImageUrl, userId, chatId, interlocutorId };
+	const nameMap = useMemo(
+		() => ({
+			[userId]: authorName,
+			[interlocutorId]: interlocutorName,
+		}),
+		[userId, authorName, interlocutorId, interlocutorName]
+	);
+
+	return {
+		messageList,
+		addReaction,
+		interlocutorName,
+		interlocutorImageUrl,
+		userId,
+		chatId,
+		interlocutorId,
+		nameMap,
+	};
 };

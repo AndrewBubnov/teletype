@@ -12,6 +12,7 @@ export const ContextMenu = ({
 	initMenuParams,
 	menuTop,
 	onDeleteMessage,
+	onReplyMessage,
 }: ContextMenuProps) => {
 	const ref = useRef();
 	useLayoutEffect(() => {
@@ -38,7 +39,7 @@ export const ContextMenu = ({
 								<ListItemText primary="Delete" />
 							</ListItemButton>
 						</ListItem>
-						<ListItem disablePadding>
+						<ListItem disablePadding onMouseDown={onReplyMessage} onTouchStart={onReplyMessage}>
 							<ListItemButton>
 								<ListItemIcon>
 									<MenuReplyIcon />

@@ -8,7 +8,7 @@ import { sendMessageToServer } from '@/utils/sendMessageToServer';
 import { ChatHeader } from '@/app/chat/[chatId]/components/ChatHeader';
 import { Emoji } from '@/app/chat/[chatId]/components/Emoji';
 import { EmojiClickData } from 'emoji-picker-react';
-import { ChatProps, MessageType } from '@/types';
+import { ChatProps, Message, MessageType } from '@/types';
 import { SingleMessage } from '@/app/chat/[chatId]/components/SingleMessage';
 import { useChat } from '@/app/chat/[chatId]/hooks/useChat';
 import { addReactionToMessage } from '@/actions/addReactionToMessage';
@@ -17,11 +17,21 @@ import { ContextMenu } from '@/app/chat/[chatId]/components/ContextMenu';
 import { useMenuTransition } from '@/app/chat/[chatId]/hooks/useMenuTransition';
 import { deleteSingleMessage } from '@/actions/deleteSingleMessage';
 import { ConfirmDialog } from '@/app/chat/[chatId]/components/ConfirmDialog';
+import { RepliedMessageBox } from '@/app/chat/[chatId]/components/RepliedMessageBox';
 
 export const Chat = ({ chat }: ChatProps) => {
-	const { messageList, addReaction, interlocutorName, interlocutorImageUrl, userId, chatId, interlocutorId } =
-		useChat(chat);
+	const {
+		messageList,
+		addReaction,
+		interlocutorName,
+		interlocutorImageUrl,
+		userId,
+		chatId,
+		interlocutorId,
+		nameMap,
+	} = useChat(chat);
 
+	const [repliedMessage, setRepliedMessage] = useState<Message | null>(null);
 	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 	const [messageText, setMessageText] = useState<string>('');
 	const [messageImageUrl, setMessageImageUrl] = useState<string>('');
@@ -64,8 +74,10 @@ export const Chat = ({ chat }: ChatProps) => {
 		setMessageText(prevState => `${prevState} ${data.emoji}`);
 	};
 
+	const getMessage = () => messageList.find(el => el.id === menuActiveId);
+
 	const addReactionHandler = async (reactionString: string) => {
-		const message = messageList.find(el => el.id === menuActiveId);
+		const message = getMessage();
 		if (!message) return;
 		const reaction = message.reaction === reactionString ? '' : reactionString;
 		addReaction(message.id, reaction);
@@ -85,6 +97,13 @@ export const Chat = ({ chat }: ChatProps) => {
 		evt.stopPropagation();
 		setDialogOpen(true);
 	};
+
+	const onReplyMessage = () => {
+		const message = getMessage();
+		if (message) setRepliedMessage(message);
+	};
+
+	const dropReplyHandler = () => setRepliedMessage(null);
 
 	return (
 		<Box>
@@ -112,11 +131,13 @@ export const Chat = ({ chat }: ChatProps) => {
 						closeContextMenu={closeMenuHandler}
 						initMenuParams={initMenuParams}
 						onDeleteMessage={onDeleteMessage}
+						onReplyMessage={onReplyMessage}
 						menuTop={menuTop}
 					/>
 				)}
 			</CoverWrapper>
 			<SendMessageFormWrapper>
+				<RepliedMessageBox message={repliedMessage} nameMap={nameMap} onDropMessage={dropReplyHandler} />
 				<SendMessageForm action={submitHandler}>
 					<StyledInput
 						fullWidth
