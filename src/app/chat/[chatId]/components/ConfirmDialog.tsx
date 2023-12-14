@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
-import { StyledBlackCheckbox, StyledButton } from '@/app/chat/[chatId]/styled';
+import { StyledBlackCheckbox, StyledButton, StyledDialogContentText } from '@/app/chat/[chatId]/styled';
 
 interface ConfirmDialogProps {
 	open: boolean;
@@ -17,10 +17,10 @@ export const ConfirmDialog = ({ open, onCancel, onConfirm, interlocutorName }: C
 			<DialogTitle>Delete message</DialogTitle>
 			<DialogContent>
 				<DialogContentText>Are you sure you want to delete this message?</DialogContentText>
-				<DialogContentText>
+				<StyledDialogContentText>
 					<StyledBlackCheckbox checked={deleteBoth} onChange={changeHandler} />
 					Also delete for {interlocutorName}
-				</DialogContentText>
+				</StyledDialogContentText>
 			</DialogContent>
 			<DialogActions>
 				<StyledButton size="small" variant="text" onClick={onCancel}>

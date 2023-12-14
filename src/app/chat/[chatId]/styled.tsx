@@ -2,7 +2,7 @@
 import { styled } from '@mui/material/styles';
 import emotionStyled from '@emotion/styled';
 import Image, { ImageProps } from 'next/image';
-import { Box, Button, Checkbox, IconButton, ListItem, ListItemButton } from '@mui/material';
+import { Box, Button, Checkbox, DialogContentText, IconButton, ListItem, ListItemButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ReplyIcon from '@mui/icons-material/ReplyOutlined';
@@ -154,6 +154,9 @@ export const ChatsListHeader = styled(Box)`
 	flex-direction: row-reverse;
 	margin-top: 1rem;
 	height: 1.5rem;
+`;
+export const StyledDialogContentText = styled(DialogContentText)`
+	color: #000;
 `;
 export const ChatsListDeleteButton = styled(IconButton)`
 	padding: 9px;
