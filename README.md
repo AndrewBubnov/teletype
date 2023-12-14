@@ -23,6 +23,14 @@ Teletype is a real-time chat application built with Next.js 14, Prisma ORM, Atla
 - **Real-time Status Updates:** Users can see the current status of their conversation partners in real-time. The status includes whether the user is online in the current chat, online in another chat, or offline. If the conversation partner is not in the current chat or is offline, the user sees how much time has passed since their last visit to that chat, updated in real-time (e.g., seconds, minutes, hours).
   
 - **Online Status Indicators:** In the chat list, users who are currently online are highlighted with a green circle around their avatars. Clerk JS account images are used as avatars by default.
+
+- **Emoji Support:** Users can now include emojis in their messages, either along with text or as standalone emoji messages.
+
+- **Message Context Menu:** Clicking or tapping on a message reveals a context menu for that specific message.
+
+- **Message Reactions:** From the context menu, users can react to messages by adding emoji reactions. The message will display the reaction and the avatar of the user who added the reaction.
+
+- **Message Deletion:** Users can delete messages from the context menu. Deletion options include removal by the message sender only or by both chat participants.
   
 - **Message Persistence:** Messages for users not in the current chat are stored in the database and removed after they enter the chat and read the messages. Messages are deleted due to the usage of the free Atlas plan with limited storage.
 
