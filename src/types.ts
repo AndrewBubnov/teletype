@@ -1,4 +1,4 @@
-import { HTMLAttributes, MutableRefObject, PointerEvent, ReactNode, SyntheticEvent } from 'react';
+import { HTMLAttributes, MutableRefObject, PointerEvent, ReactNode } from 'react';
 import { ImageProps } from 'next/image';
 import { ButtonProps } from '@mui/material';
 
