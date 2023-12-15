@@ -1,5 +1,6 @@
-import { useContext, useMemo } from 'react';
+import { memo, useContext, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import { SocketContext } from '@/app/providers/SocketProvider';
 import {
 	CenterHorizontalWrapper,
 	ChatHeaderWrapper,
@@ -8,13 +9,12 @@ import {
 } from '@/app/chat/[chatId]/styled';
 import { IconButton, Typography } from '@mui/material';
 import { UserPhotoImage } from '@/app/chat/styled';
-import { ChatHeaderProps, VisitorStatus } from '@/types';
 import { ElapsedTime } from '@/app/chat/[chatId]/components/ElapsedTime';
 import { getInterlocutorState } from '@/app/chat/[chatId]/utils/getInterlocutorState';
-import { SocketContext } from '@/app/providers/SocketProvider';
 import { CHATS_LIST } from '@/constants';
+import { ChatHeaderProps, VisitorStatus } from '@/types';
 
-export const ChatHeader = ({ chatId, interlocutorId, interlocutorName, interlocutorImageUrl }: ChatHeaderProps) => {
+const ChatHeaderComponent = ({ chatId, interlocutorId, interlocutorName, interlocutorImageUrl }: ChatHeaderProps) => {
 	const { chatVisitorStatus, activeUsers } = useContext(SocketContext);
 	const { push } = useRouter();
 	const redirectToChatPage = () => push(CHATS_LIST);
@@ -50,3 +50,5 @@ export const ChatHeader = ({ chatId, interlocutorId, interlocutorName, interlocu
 		</ChatHeaderWrapper>
 	);
 };
+
+export const ChatHeader = memo(ChatHeaderComponent);

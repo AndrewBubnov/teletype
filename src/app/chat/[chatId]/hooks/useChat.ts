@@ -72,7 +72,6 @@ export const useChat = (chat: UserChat) => {
 		addReaction,
 		interlocutorName,
 		interlocutorImageUrl,
-		userId,
 		chatId,
 		interlocutorId,
 		authorName,

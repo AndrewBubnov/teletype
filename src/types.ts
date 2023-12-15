@@ -120,13 +120,6 @@ export interface GetInterlocutorState {
 	activeUsers: string[];
 }
 
-export interface ChatHeaderProps {
-	chatId: string;
-	interlocutorId: string;
-	interlocutorName: string;
-	interlocutorImageUrl?: string | null;
-}
-
 export type SingleMessageProps = {
 	message: Message;
 	repliedMessage?: Message | null;
@@ -141,15 +134,6 @@ export interface AddMessageToChat {
 	messageText?: string;
 	messageImageUrl?: string;
 	replyToId?: string;
-}
-
-export interface ContextMenuProps {
-	onAddReaction(arg: string): void;
-	closeContextMenu(): void;
-	initMenuParams: MutableRefObject<DOMRect | null>;
-	menuTop: number;
-	onDeleteMessage(evt: SyntheticEvent): void;
-	onReplyMessage(): void;
 }
 
 export interface EditMessageClient {
@@ -174,4 +158,22 @@ export interface UseLongPress {
 	onLongPress: (event: PointerEvent) => void;
 	onPress?: (event: PointerEvent) => void;
 	delay?: number;
+}
+
+export interface ContextMenuProps {
+	chatId: string;
+	interlocutorName: string;
+	menuActiveId: string;
+	onAddReaction(arg: string): void;
+	closeContextMenu(): void;
+	initMenuParams: MutableRefObject<DOMRect | null>;
+	onReplyMessage(): void;
+	menuTop: number;
+}
+
+export interface ChatHeaderProps {
+	chatId: string;
+	interlocutorId: string;
+	interlocutorName: string;
+	interlocutorImageUrl?: string | null;
 }
