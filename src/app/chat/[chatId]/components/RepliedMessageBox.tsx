@@ -10,7 +10,8 @@ import {
 	RepliedTimeContainer,
 } from '@/app/chat/[chatId]/styled';
 import { options } from '@/app/chat/[chatId]/constants';
-import { RepliedMessageBoxProps } from '@/types';
+import { MessageType, RepliedMessageBoxProps } from '@/types';
+import Image from 'next/image';
 
 export const RepliedMessageBox = ({ message, onDropMessage, authorName }: RepliedMessageBoxProps) =>
 	message ? (
@@ -27,7 +28,13 @@ export const RepliedMessageBox = ({ message, onDropMessage, authorName }: Replie
 				</RepliedTimeContainer>
 			</RepliedMessageAuthor>
 			<RepliedMessageText>
-				<RepliedMessageInner>{message.text}</RepliedMessageInner>
+				<RepliedMessageInner>
+					{message.type === MessageType.TEXT ? (
+						message.text
+					) : (
+						<Image src={message.imageUrl!} width={20} height={20} alt="" />
+					)}
+				</RepliedMessageInner>
 			</RepliedMessageText>
 		</RepliedMessageContainer>
 	) : null;
