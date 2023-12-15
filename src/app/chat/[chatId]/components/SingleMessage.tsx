@@ -1,4 +1,8 @@
 import { useEffect, useRef } from 'react';
+import { useUser } from '@clerk/nextjs';
+import Image from 'next/image';
+import { useLongPress } from '@/app/chat/[chatId]/hooks/useLongPress';
+import { ReplyTo } from '@/app/chat/[chatId]/components/ReplyTo';
 import {
 	AuthorMessageWrapper,
 	InterlocutorMessageWrapper,
@@ -11,9 +15,6 @@ import {
 } from '@/app/chat/[chatId]/styled';
 import { options } from '@/app/chat/[chatId]/constants';
 import { MessageType, SingleMessageProps } from '@/types';
-import { useUser } from '@clerk/nextjs';
-import Image from 'next/image';
-import { ReplyTo } from '@/app/chat/[chatId]/components/ReplyTo';
 
 export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage }: SingleMessageProps) => {
 	const { user } = useUser();
@@ -28,17 +29,19 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage }: 
 
 	const Container = isAuthoredByUser ? AuthorMessageWrapper : InterlocutorMessageWrapper;
 
-	const menuOpenHandler = () => {
+	const onLongPress = () => {
 		const params = messageRef.current?.getBoundingClientRect();
 		if (!params) return;
 		onContextMenuToggle('open', params);
 	};
 
+	const pressHandler = useLongPress({ onLongPress });
+
 	return (
-		<Container ref={containerRef}>
+		<Container ref={containerRef} id={message.id}>
 			<SubContainer ref={messageRef}>
 				{message.type === MessageType.TEXT ? (
-					<MessageItem isAuthoredByUser={isAuthoredByUser} onClick={menuOpenHandler}>
+					<MessageItem isAuthoredByUser={isAuthoredByUser} {...pressHandler}>
 						<ReplyTo message={repliedMessage} />
 						{message.text!}
 						<MessageItemBottom multipleChild={!!message.reaction}>
@@ -56,7 +59,7 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage }: 
 						</MessageItemBottom>
 					</MessageItem>
 				) : (
-					<MessageItem transparent isAuthoredByUser={isAuthoredByUser} onClick={menuOpenHandler}>
+					<MessageItem transparent isAuthoredByUser={isAuthoredByUser} {...pressHandler}>
 						<ReplyTo message={repliedMessage} />
 						<Image
 							src={message.imageUrl!}

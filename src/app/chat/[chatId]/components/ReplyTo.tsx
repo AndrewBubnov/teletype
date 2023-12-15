@@ -8,9 +8,14 @@ import {
 	ReplyToText,
 } from '@/app/chat/[chatId]/styled';
 
-export const ReplyTo = ({ message }: { message?: Message | null }) =>
-	message ? (
-		<ReplyToContainer>
+export const ReplyTo = ({ message }: { message?: Message | null }) => {
+	if (!message) return null;
+	const clickHandler = () => {
+		const node = document.getElementById(message.id);
+		node?.scrollIntoView({ behavior: 'smooth' });
+	};
+	return (
+		<ReplyToContainer onMouseDown={clickHandler} onTouchStart={clickHandler}>
 			<ReplyToAuthor>{message.authorName}</ReplyToAuthor>
 			<ReplyToText>{message.text}</ReplyToText>
 			<ReplyToDateWrapper>
@@ -19,4 +24,5 @@ export const ReplyTo = ({ message }: { message?: Message | null }) =>
 				</ReplyToDate>
 			</ReplyToDateWrapper>
 		</ReplyToContainer>
-	) : null;
+	);
+};

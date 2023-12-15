@@ -1,4 +1,4 @@
-import { HTMLAttributes, MutableRefObject, ReactNode, SyntheticEvent } from 'react';
+import { HTMLAttributes, MutableRefObject, PointerEvent, ReactNode, SyntheticEvent } from 'react';
 import { ImageProps } from 'next/image';
 import { ButtonProps } from '@mui/material';
 
@@ -93,7 +93,7 @@ export type Mode = 'common' | 'delete';
 
 export interface ChatListItemProps {
 	interlocutor: User;
-	onClick(): void;
+	onPress(): void;
 	onLongPress(): void;
 	mode: Mode;
 	onCheckboxToggle(): void;
@@ -169,4 +169,9 @@ export interface RepliedMessageBoxProps {
 	message: Message | null;
 	onDropMessage(): void;
 	authorName: string;
+}
+export interface UseLongPress {
+	onLongPress: (event: PointerEvent) => void;
+	onPress?: (event: PointerEvent) => void;
+	delay?: number;
 }

@@ -1,12 +1,9 @@
 import { useCallback, useRef, useState, PointerEvent } from 'react';
+import { UseLongPress } from '@/types';
 
 const preventDefault = (event: Event) => event.preventDefault();
 
-export const useLongPress = (
-	onLongPress: (event: PointerEvent) => void,
-	onClick: (event: PointerEvent) => void,
-	delay = 400
-) => {
+export const useLongPress = ({ onLongPress, onPress = () => null, delay = 500 }: UseLongPress) => {
 	const [longPressTriggered, setLongPressTriggered] = useState(false);
 	const timeout = useRef<number | undefined>();
 	const target = useRef<EventTarget | null>();
@@ -14,9 +11,7 @@ export const useLongPress = (
 	const start = useCallback(
 		(event: PointerEvent) => {
 			if (event.target) {
-				event.target.addEventListener('pointerup', preventDefault, {
-					passive: false,
-				});
+				event.target.addEventListener('pointerup', preventDefault, { passive: false });
 				target.current = event.target;
 			}
 			timeout.current = window.setTimeout(() => {
@@ -30,11 +25,11 @@ export const useLongPress = (
 	const clear = useCallback(
 		(event: PointerEvent, shouldTriggerClick = true) => {
 			timeout.current && window.clearTimeout(timeout.current);
-			shouldTriggerClick && !longPressTriggered && onClick(event);
+			shouldTriggerClick && !longPressTriggered && onPress(event);
 			setLongPressTriggered(false);
 			if (target.current) target.current.removeEventListener('pointerup', preventDefault);
 		},
-		[onClick, longPressTriggered]
+		[onPress, longPressTriggered]
 	);
 
 	return {

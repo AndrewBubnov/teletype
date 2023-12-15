@@ -7,7 +7,7 @@ import { FlexWrapper } from '@/app/shared/styled';
 
 export const ChatListItem = ({
 	interlocutor,
-	onClick,
+	onPress,
 	onLongPress,
 	mode,
 	onCheckboxToggle,
@@ -15,7 +15,7 @@ export const ChatListItem = ({
 }: ChatListItemProps) => {
 	const { activeUsers } = useContext(SocketContext);
 
-	const pressHandler = useLongPress(onLongPress, onClick);
+	const pressHandler = useLongPress({ onLongPress, onPress });
 
 	const isActive = useMemo(
 		() => activeUsers.includes(interlocutor?.userId || ''),

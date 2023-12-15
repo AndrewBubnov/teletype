@@ -51,7 +51,7 @@ export const ChatsList = () => {
 						<ChatListItem
 							key={chatId}
 							interlocutor={interlocutor}
-							onClick={setActiveChat(chatId)}
+							onPress={setActiveChat(chatId)}
 							onLongPress={toggleMode(chatId)}
 							mode={mode}
 							onCheckboxToggle={deleteCheckboxHandler(chatId)}
