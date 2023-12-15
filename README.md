@@ -26,7 +26,7 @@ Teletype is a real-time chat application built with Next.js 14, Prisma ORM, Atla
 
 - **Emoji Support:** Users can now include emojis in their messages, either along with text or as standalone emoji messages.
 
-- **Message Context Menu:** Clicking or tapping on a message reveals a context menu for that specific message.
+- **Message Context Menu:** Long click or tap on a message reveals a context menu for that specific message. Users can also reply to specific messages. In a reply, the original author, the first line of its content for text messages, and the timestamp of its sending are displayed. Clicking or tapping on the area displaying the replied message smoothly scrolls the screen to that message.
 
 - **Message Reactions:** From the context menu, users can react to messages by adding emoji reactions. The message will display the reaction and the avatar of the user who added the reaction.
 
