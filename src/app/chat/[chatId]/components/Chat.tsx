@@ -13,7 +13,6 @@ import { MessageInput } from '@/app/chat/[chatId]/components/MessageInput';
 import { ChatProps, Message } from '@/types';
 
 export const Chat = ({ chat }: ChatProps) => {
-	console.log(chat);
 	const { messageList, addReaction, interlocutorName, interlocutorImageUrl, chatId, interlocutorId, authorName } =
 		useChat(chat);
 	const [repliedMessage, setRepliedMessage] = useState<Message | null>(null);
