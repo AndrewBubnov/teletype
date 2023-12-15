@@ -27,6 +27,7 @@ export const RepliedMessageContainer = styled(Box)`
 	flex-direction: column;
 	height: 3.5rem;
 	color: #1a1a1a;
+	margin-bottom: 3px;
 `;
 export const RepliedMessageAuthor = styled(Box)`
 	flex: 1;
@@ -37,6 +38,34 @@ export const RepliedMessageAuthor = styled(Box)`
 	border-top-left-radius: 4px;
 	border-top-right-radius: 4px;
 	padding: 0 0.5rem;
+`;
+export const ReplyToContainer = styled(Box)`
+	background: palegreen;
+	border-radius: 0.25rem;
+	padding: 0.25rem;
+	margin-bottom: 0.5rem;
+`;
+export const ReplyToAuthor = styled(Box)`
+	font-size: 0.7rem;
+	color: green;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	margin-bottom: 0.25rem;
+`;
+export const ReplyToText = styled(Box)`
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: #1a1a1a;
+`;
+export const ReplyToDateWrapper = styled(Box)`
+	display: flex;
+	flex-direction: row-reverse;
+`;
+export const ReplyToDate = styled(Box)`
+	font-size: 0.5rem;
+	color: green;
 `;
 export const RepliedMessageAuthorInner = styled(Box)`
 	display: flex;
@@ -80,6 +109,9 @@ const MessageWrapper = styled(Box)(() => ({
 	display: 'flex',
 	padding: '1rem 0',
 }));
+export const SubContainer = styled(Box)`
+	max-width: 100%;
+`;
 export const AuthorMessageWrapper = styled(MessageWrapper)`
 	flex-direction: row-reverse;
 `;

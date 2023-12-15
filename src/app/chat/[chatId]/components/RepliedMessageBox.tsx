@@ -12,7 +12,7 @@ import {
 import { options } from '@/app/chat/[chatId]/constants';
 import { RepliedMessageBoxProps } from '@/types';
 
-export const RepliedMessageBox = ({ message, onDropMessage, nameMap }: RepliedMessageBoxProps) =>
+export const RepliedMessageBox = ({ message, onDropMessage, authorName }: RepliedMessageBoxProps) =>
 	message ? (
 		<RepliedMessageContainer>
 			<RepliedMessageAuthor>
@@ -20,7 +20,7 @@ export const RepliedMessageBox = ({ message, onDropMessage, nameMap }: RepliedMe
 					<DropReplyMessageButton>
 						<ClearIcon onMouseDown={onDropMessage} onTouchStart={onDropMessage} />
 					</DropReplyMessageButton>
-					<RepliedMessageInner>{nameMap[message.authorId]}</RepliedMessageInner>
+					<RepliedMessageInner>{authorName}</RepliedMessageInner>
 				</RepliedMessageAuthorInner>
 				<RepliedTimeContainer>
 					<Box>{new Intl.DateTimeFormat('en-US', options).format(new Date(message.date))}</Box>

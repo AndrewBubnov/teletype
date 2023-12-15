@@ -17,13 +17,15 @@ model Message {
   id                     String      @id @default(uuid()) @map("_id")
   date                   DateTime    @default(now())
   authorId               String
+  authorName             String
   type                   MessageType
   chatId                 String
+  replyToId              String?
   text                   String?
   imageUrl               String?
   reaction               String?
   reactionAuthorImageUrl String?
-  chat                   Chat?       @relation(fields: [chatId], references: [chatId])
+  chat                   Chat?        @relation(fields: [chatId], references: [chatId])
 }
 
 model Chat {

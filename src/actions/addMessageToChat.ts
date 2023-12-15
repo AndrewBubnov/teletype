@@ -5,9 +5,11 @@ import { AddMessageToChat, Message, MessageType } from '@/types';
 export async function addMessageToChat({
 	chatId,
 	authorId,
+	authorName,
 	messageType,
 	messageText,
 	messageImageUrl,
+	replyToId,
 }: AddMessageToChat) {
 	if (!messageText) return;
 
@@ -17,6 +19,8 @@ export async function addMessageToChat({
 			...(messageType === MessageType.TEXT ? { text: messageText } : { imageUrl: messageImageUrl }),
 			chatId,
 			authorId,
+			authorName,
+			replyToId,
 		},
 	})) as Message;
 

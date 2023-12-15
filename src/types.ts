@@ -29,6 +29,7 @@ export type Message = {
 	id: string;
 	date: Date;
 	authorId: string;
+	authorName: string;
 	type: MessageType;
 	chatId: string | null;
 	chat?: Chat;
@@ -36,6 +37,7 @@ export type Message = {
 	imageUrl: string | null;
 	reaction: string | null;
 	reactionAuthorImageUrl?: string | null;
+	replyToId: string | null;
 };
 
 export type Chat = {
@@ -127,17 +129,18 @@ export interface ChatHeaderProps {
 
 export type SingleMessageProps = {
 	message: Message;
+	repliedMessage?: Message | null;
 	onContextMenuToggle(type: 'open' | 'close', middle?: DOMRect): void;
-	menuActive: boolean;
-	onAddReaction(arg: string): void;
 };
 
 export interface AddMessageToChat {
 	chatId: string;
 	authorId: string;
+	authorName: string;
 	messageType: MessageType;
 	messageText?: string;
 	messageImageUrl?: string;
+	replyToId?: string;
 }
 
 export interface ContextMenuProps {
@@ -165,5 +168,5 @@ export interface StyledButtonProps extends ButtonProps {
 export interface RepliedMessageBoxProps {
 	message: Message | null;
 	onDropMessage(): void;
-	nameMap: Record<string, string>;
+	authorName: string;
 }

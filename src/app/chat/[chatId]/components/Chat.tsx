@@ -28,7 +28,7 @@ export const Chat = ({ chat }: ChatProps) => {
 		userId,
 		chatId,
 		interlocutorId,
-		nameMap,
+		authorName,
 	} = useChat(chat);
 
 	const [repliedMessage, setRepliedMessage] = useState<Message | null>(null);
@@ -51,12 +51,15 @@ export const Chat = ({ chat }: ChatProps) => {
 		const message = await addMessageToChat({
 			chatId,
 			authorId: userId,
+			authorName,
 			messageType,
 			messageText,
 			messageImageUrl,
+			replyToId: repliedMessage?.id,
 		});
 		if (message) sendMessageToServer(message, chatId);
 		setMessageType(MessageType.TEXT);
+		setRepliedMessage(null);
 	};
 
 	const contextMenuToggleHandler = (id: string) => (type: 'open' | 'close', messageParams: DOMRect) => {
@@ -115,15 +118,19 @@ export const Chat = ({ chat }: ChatProps) => {
 			/>
 			<CoverWrapper>
 				<ChatWrapper ref={containerRef}>
-					{messageList.map(message => (
-						<SingleMessage
-							key={message.id}
-							message={message}
-							onContextMenuToggle={contextMenuToggleHandler(message.id)}
-							menuActive={menuActiveId === message.id}
-							onAddReaction={addReactionHandler}
-						/>
-					))}
+					{messageList.map(message => {
+						const repliedMessage = message.replyToId
+							? messageList.find(el => el.id === message.replyToId)
+							: null;
+						return (
+							<SingleMessage
+								key={message.id}
+								message={message}
+								repliedMessage={repliedMessage}
+								onContextMenuToggle={contextMenuToggleHandler(message.id)}
+							/>
+						);
+					})}
 				</ChatWrapper>
 				{!!menuActiveId && (
 					<ContextMenu
@@ -137,7 +144,7 @@ export const Chat = ({ chat }: ChatProps) => {
 				)}
 			</CoverWrapper>
 			<SendMessageFormWrapper>
-				<RepliedMessageBox message={repliedMessage} nameMap={nameMap} onDropMessage={dropReplyHandler} />
+				<RepliedMessageBox message={repliedMessage} authorName={authorName} onDropMessage={dropReplyHandler} />
 				<SendMessageForm action={submitHandler}>
 					<StyledInput
 						fullWidth
