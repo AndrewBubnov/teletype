@@ -8,6 +8,7 @@ import { clearUpdateClientMessage, updateClientMessage } from '@/utils/updateCli
 import { EditMessageClient, Message, UserChat, VisitorStatus } from '@/types';
 
 export const useChat = (chat: UserChat) => {
+	console.log(chat);
 	const { user } = useUser();
 	const userId = user?.id as string;
 	const { messages, members, chatId } = chat;
@@ -28,9 +29,13 @@ export const useChat = (chat: UserChat) => {
 	useEffect(() => {
 		const rest = { chatId, userId };
 		sendChangeVisitorStatus({ status: VisitorStatus.IN, ...rest });
-		deleteChatMessages(chatId).then();
+
 		return () => {
 			sendChangeVisitorStatus({ status: VisitorStatus.OUT, ...rest });
+			console.log('here');
+			(async function () {
+				await deleteChatMessages(chatId);
+			})();
 		};
 	}, [chatId, userId]);
 
@@ -54,6 +59,13 @@ export const useChat = (chat: UserChat) => {
 		};
 	}, []);
 
+	const unreadNumber = messageList.filter(el => !el.isRead && el.authorId !== userId).length;
+
+	const updateIsRead = useCallback(
+		(id: string) => setMessageList(prevList => prevList.map(el => (el.id === id ? { ...el, isRead: true } : el))),
+		[]
+	);
+
 	const addReaction = useCallback(
 		(id: string, reaction: string) =>
 			setMessageList(prevState =>
@@ -75,5 +87,7 @@ export const useChat = (chat: UserChat) => {
 		chatId,
 		interlocutorId,
 		authorName,
+		unreadNumber,
+		updateIsRead,
 	};
 };

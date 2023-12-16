@@ -1,7 +1,7 @@
 'use server';
 import { prisma } from '@/db';
 import { auth } from '@clerk/nextjs';
-import { Message } from '@/types';
+import { Message, ServerMessage } from '@/types';
 
 export const addReactionToMessage = async (messageId: string, reaction: string) => {
 	const userId = auth().userId as string;
@@ -11,5 +11,5 @@ export const addReactionToMessage = async (messageId: string, reaction: string) 
 	return prisma.message.update({
 		where: { id: messageId },
 		data: { reaction, reactionAuthorImageUrl: reaction ? user?.imageUrl : null },
-	}) as Promise<Message>;
+	}) as Promise<ServerMessage>;
 };

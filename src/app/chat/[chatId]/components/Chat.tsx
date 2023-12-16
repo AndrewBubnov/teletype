@@ -13,8 +13,17 @@ import { MessageInput } from '@/app/chat/[chatId]/components/MessageInput';
 import { ChatProps, Message } from '@/types';
 
 export const Chat = ({ chat }: ChatProps) => {
-	const { messageList, addReaction, interlocutorName, interlocutorImageUrl, chatId, interlocutorId, authorName } =
-		useChat(chat);
+	const {
+		messageList,
+		addReaction,
+		interlocutorName,
+		interlocutorImageUrl,
+		chatId,
+		interlocutorId,
+		authorName,
+		unreadNumber,
+		updateIsRead,
+	} = useChat(chat);
 	const [repliedMessage, setRepliedMessage] = useState<Message | null>(null);
 	const [menuActiveId, setMenuActiveId] = useState<string>('');
 
@@ -36,7 +45,7 @@ export const Chat = ({ chat }: ChatProps) => {
 			const reaction = message.reaction === reactionString ? '' : reactionString;
 			addReaction(message.id, reaction);
 			const updated = (await addReactionToMessage(message.id, reaction)) || message;
-			sendEditMessage({ messageId: message.id, message: updated, roomId: chatId });
+			sendEditMessage({ messageId: message.id, message: { ...updated, isRead: true }, roomId: chatId });
 			closeMenuHandler();
 		},
 		[addReaction, chatId, closeMenuHandler, getMessage]
@@ -67,6 +76,7 @@ export const Chat = ({ chat }: ChatProps) => {
 								message={message}
 								repliedMessage={repliedMessage}
 								onContextMenuToggle={contextMenuToggleHandler(message.id)}
+								updateIsRead={updateIsRead}
 							/>
 						);
 					})}
@@ -83,6 +93,27 @@ export const Chat = ({ chat }: ChatProps) => {
 						interlocutorName={interlocutorName}
 					/>
 				)}
+				{unreadNumber ? (
+					<div
+						style={{
+							position: 'absolute',
+							bottom: '7%',
+							right: '7%',
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'center',
+							fontSize: '0.6rem',
+							fontWeight: 600,
+							width: '1.5rem',
+							height: '1.5rem',
+							background: 'lightgray',
+							color: '#1a1a1a',
+							borderRadius: '50%',
+						}}
+					>
+						{unreadNumber}
+					</div>
+				) : null}
 			</CoverWrapper>
 			<MessageInput
 				chatId={chatId}

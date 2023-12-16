@@ -6,12 +6,27 @@ import { TextMessage } from '@/app/chat/[chatId]/components/TextMessage';
 import { ImageMessage } from '@/app/chat/[chatId]/components/ImageMessage';
 import { MessageType, SingleMessageProps } from '@/types';
 
-export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage }: SingleMessageProps) => {
+export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, updateIsRead }: SingleMessageProps) => {
 	const { user } = useUser();
 	const containerRef = useRef<HTMLDivElement | null>(null);
 	const messageRef = useRef<HTMLDivElement | null>(null);
 
 	const isAuthoredByUser = message.authorId === user?.id;
+
+	useEffect(() => {
+		if (!containerRef.current) return;
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting) {
+					updateIsRead(entry.target.id);
+					observer.disconnect();
+				}
+			},
+			{ rootMargin: '0px', threshold: 1 }
+		);
+		observer.observe(containerRef.current);
+		return () => observer.disconnect();
+	}, [updateIsRead]);
 
 	useEffect(() => {
 		if (isAuthoredByUser) containerRef.current?.scrollIntoView({ behavior: 'smooth' });

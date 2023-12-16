@@ -26,7 +26,7 @@ export enum MessageType {
 	EMOJI = 'EMOJI',
 }
 
-export type Message = {
+export interface ServerMessage {
 	id: string;
 	date: Date;
 	authorId: string;
@@ -39,7 +39,11 @@ export type Message = {
 	reaction: string | null;
 	reactionAuthorImageUrl?: string | null;
 	replyToId: string | null;
-};
+}
+
+export interface Message extends ServerMessage {
+	isRead: boolean;
+}
 
 export type Chat = {
 	id: string;
@@ -125,6 +129,7 @@ export type SingleMessageProps = {
 	message: Message;
 	repliedMessage?: Message | null;
 	onContextMenuToggle(type: 'open' | 'close', middle?: DOMRect): void;
+	updateIsRead(arg: string): void;
 };
 
 export interface AddMessageToChat {
