@@ -8,15 +8,15 @@ export const getChatByChatId = async (chatId: string): Promise<UserChat | undefi
 		where: { chatId },
 	});
 	if (!chat) return;
-	const connectedUsers = (await Promise.all(chat.memberIds.map(id => getUserByUserId(id)))) as User[];
+	const members = (await Promise.all(chat.memberIds.map(id => getUserByUserId(id)))) as User[];
 
-	const messages = await prisma.message.findMany({
+	const messages = (await prisma.message.findMany({
 		where: { id: { in: chat.messageIds } },
-	});
+	})) as Message[];
 
 	return {
 		...chat,
-		messages: messages.map(el => ({ ...el, isRead: false })) as Message[],
-		members: connectedUsers,
+		messages,
+		members,
 	};
 };

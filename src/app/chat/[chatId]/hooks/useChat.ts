@@ -6,7 +6,8 @@ import { clearAddClientMessage, addClientMessage } from '@/utils/addClientMessag
 import { clearUpdateClientMessage, updateClientMessage } from '@/utils/updateClientMessage';
 import { useLatest } from '@/app/chat/hooks/useLatest';
 import { EditMessageClient, Message, UserChat, VisitorStatus } from '@/types';
-import { deleteSingleMessage } from '@/actions/deleteSingleMessage';
+import { updateMessageIsRead } from '@/actions/updateMessageIsRead';
+import { deleteReadMessages } from '@/actions/deleteReadMessages';
 
 export const useChat = (chat: UserChat) => {
 	const { user } = useUser();
@@ -23,6 +24,10 @@ export const useChat = (chat: UserChat) => {
 	const [messageList, setMessageList] = useState<Message[]>(messages);
 
 	const messageListRef = useLatest(messageList);
+
+	useEffect(() => {
+		deleteReadMessages(chatId).then();
+	}, [chatId]);
 
 	useEffect(() => {
 		createRoom(chatId, interlocutorId);
@@ -62,11 +67,11 @@ export const useChat = (chat: UserChat) => {
 	const updateIsRead = useCallback(
 		async (id: string) => {
 			const predicate = (el: Message): boolean => el.id === id && el.authorId !== userId;
-			const message = messageListRef.current.find(el => predicate(el));
+			const message = messageListRef.current.find(predicate);
 			setMessageList(prevList => prevList.map(el => (predicate(el) ? { ...el, isRead: true } : el)));
-			if (message) await deleteSingleMessage(id, chatId);
+			if (message) await updateMessageIsRead(id);
 		},
-		[chatId, messageListRef, userId]
+		[messageListRef, userId]
 	);
 
 	const addReaction = useCallback(

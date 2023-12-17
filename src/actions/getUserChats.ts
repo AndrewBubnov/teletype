@@ -32,7 +32,7 @@ export const getUserChats = async (chatIdsArray: string[]): Promise<UserChat[]> 
 			type: message.type as MessageType,
 			text: message.text,
 			imageUrl: message.imageUrl,
-			isRead: false,
+			isRead: message.isRead,
 		})),
 		members: connectedUsers[index],
 	}));

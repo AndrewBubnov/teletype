@@ -20,6 +20,7 @@ model Message {
   authorName             String
   type                   MessageType
   chatId                 String
+  isRead                 Boolean     @default(false)
   replyToId              String?
   text                   String?
   imageUrl               String?
