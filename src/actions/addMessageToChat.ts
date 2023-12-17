@@ -1,8 +1,6 @@
 'use server';
 import { prisma } from '@/db';
 import { AddMessageToChat, Message, MessageType } from '@/types';
-import { revalidatePath } from 'next/cache';
-import { CHATS_LIST } from '@/constants';
 
 export async function addMessageToChat({
 	chatId,
@@ -26,16 +24,18 @@ export async function addMessageToChat({
 			replyToId,
 		},
 	})) as Message;
+	const chat = await prisma.chat.findUnique({ where: { chatId }, select: { messageIds: true } });
+	if (!chat) return;
 
 	await prisma.chat.update({
 		where: { chatId },
 		data: {
-			messages: {
-				connect: [{ id: createdMessage.id }],
+			messageIds: {
+				set: [...chat.messageIds, createdMessage.id],
 			},
 		},
-		include: { messages: true },
+		select: { messageIds: true },
 	});
-	revalidatePath(`${CHATS_LIST}/${chatId}`);
+
 	return createdMessage;
 }

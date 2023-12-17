@@ -21,12 +21,12 @@ export const getInterlocutorState = ({
 			status,
 			text: 'Online, not in the chat',
 			data: date,
-			color: 'yellow',
+			color: 'palegoldenrod',
 		};
 	return {
 		status,
 		text: 'Online, in the chat',
 		data: null,
-		color: 'lightgreen',
+		color: 'limegreen',
 	};
 };

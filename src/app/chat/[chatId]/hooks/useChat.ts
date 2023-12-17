@@ -2,13 +2,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { createRoom } from '@/utils/createRoom';
 import { sendChangeVisitorStatus } from '@/utils/sendChangeVisitorStatus';
-import { deleteChatMessages } from '@/actions/deleteChatMessages';
 import { clearAddClientMessage, addClientMessage } from '@/utils/addClientMessage';
 import { clearUpdateClientMessage, updateClientMessage } from '@/utils/updateClientMessage';
+import { useLatest } from '@/app/chat/hooks/useLatest';
 import { EditMessageClient, Message, UserChat, VisitorStatus } from '@/types';
+import { deleteSingleMessage } from '@/actions/deleteSingleMessage';
 
 export const useChat = (chat: UserChat) => {
-	console.log(chat);
 	const { user } = useUser();
 	const userId = user?.id as string;
 	const { messages, members, chatId } = chat;
@@ -22,6 +22,8 @@ export const useChat = (chat: UserChat) => {
 
 	const [messageList, setMessageList] = useState<Message[]>(messages);
 
+	const messageListRef = useLatest(messageList);
+
 	useEffect(() => {
 		createRoom(chatId, interlocutorId);
 	}, [chatId, interlocutorId]);
@@ -32,10 +34,6 @@ export const useChat = (chat: UserChat) => {
 
 		return () => {
 			sendChangeVisitorStatus({ status: VisitorStatus.OUT, ...rest });
-			console.log('here');
-			(async function () {
-				await deleteChatMessages(chatId);
-			})();
 		};
 	}, [chatId, userId]);
 
@@ -62,8 +60,13 @@ export const useChat = (chat: UserChat) => {
 	const unreadNumber = messageList.filter(el => !el.isRead && el.authorId !== userId).length;
 
 	const updateIsRead = useCallback(
-		(id: string) => setMessageList(prevList => prevList.map(el => (el.id === id ? { ...el, isRead: true } : el))),
-		[]
+		async (id: string) => {
+			const predicate = (el: Message): boolean => el.id === id && el.authorId !== userId;
+			const message = messageListRef.current.find(el => predicate(el));
+			setMessageList(prevList => prevList.map(el => (predicate(el) ? { ...el, isRead: true } : el)));
+			if (message) await deleteSingleMessage(id, chatId);
+		},
+		[chatId, messageListRef, userId]
 	);
 
 	const addReaction = useCallback(

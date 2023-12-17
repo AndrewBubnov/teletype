@@ -25,14 +25,13 @@ model Message {
   imageUrl               String?
   reaction               String?
   reactionAuthorImageUrl String?
-  chat                   Chat?        @relation(fields: [chatId], references: [chatId])
 }
 
 model Chat {
-  id        String    @id @default(uuid()) @map("_id")
-  chatId    String    @unique
-  memberIds String[]
-  messages  Message[]
+  id          String    @id @default(uuid()) @map("_id")
+  chatId      String    @unique
+  memberIds   String[]
+  messageIds  String[]
 }
 
 model User {

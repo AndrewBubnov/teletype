@@ -29,6 +29,21 @@ export const RepliedMessageContainer = styled(Box)`
 	color: #1a1a1a;
 	margin-bottom: 3px;
 `;
+export const UnreadNumber = styled(Box)`
+	position: absolute;
+	bottom: 5%;
+	right: 7%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 0.8rem;
+	font-weight: 500;
+	width: 1.5rem;
+	height: 1.5rem;
+	background: #1a1a;
+	color: #fff;
+	border-radius: 50%;
+`;
 export const RepliedMessageAuthor = styled(Box)`
 	flex: 1;
 	display: flex;

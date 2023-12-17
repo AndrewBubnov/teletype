@@ -49,11 +49,12 @@ export type Chat = {
 	id: string;
 	chatId: string;
 	memberIds: string[];
-	messages: Message[];
+	messageIds: string[];
 };
 
 export interface UserChat extends Chat {
 	members: User[];
+	messages: Message[]
 }
 
 export type User = {

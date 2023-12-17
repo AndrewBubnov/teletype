@@ -2,7 +2,7 @@
 import { useCallback, useState } from 'react';
 import { useChat } from '@/app/chat/[chatId]/hooks/useChat';
 import { useMenuTransition } from '@/app/chat/[chatId]/hooks/useMenuTransition';
-import { ChatWrapper, CoverWrapper } from '@/app/chat/[chatId]/styled';
+import { ChatWrapper, CoverWrapper, UnreadNumber } from '@/app/chat/[chatId]/styled';
 import { Box } from '@mui/material';
 import { ChatHeader } from '@/app/chat/[chatId]/components/ChatHeader';
 import { SingleMessage } from '@/app/chat/[chatId]/components/SingleMessage';
@@ -56,6 +56,13 @@ export const Chat = ({ chat }: ChatProps) => {
 		if (message) setRepliedMessage(message);
 	}, [getMessage]);
 
+	const scrollToLastHandler = () => {
+		const id = messageList.at(-1)?.id;
+		if (!id) return;
+		const node = document.getElementById(id);
+		node?.scrollIntoView({ behavior: 'smooth' });
+	};
+
 	return (
 		<Box>
 			<ChatHeader
@@ -94,25 +101,9 @@ export const Chat = ({ chat }: ChatProps) => {
 					/>
 				)}
 				{unreadNumber ? (
-					<div
-						style={{
-							position: 'absolute',
-							bottom: '7%',
-							right: '7%',
-							display: 'flex',
-							justifyContent: 'center',
-							alignItems: 'center',
-							fontSize: '0.6rem',
-							fontWeight: 600,
-							width: '1.5rem',
-							height: '1.5rem',
-							background: 'lightgray',
-							color: '#1a1a1a',
-							borderRadius: '50%',
-						}}
-					>
+					<UnreadNumber onTouchStart={scrollToLastHandler} onMouseDown={scrollToLastHandler}>
 						{unreadNumber}
-					</div>
+					</UnreadNumber>
 				) : null}
 			</CoverWrapper>
 			<MessageInput
