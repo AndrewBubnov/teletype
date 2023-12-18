@@ -95,8 +95,6 @@ export interface UserPhotoImageProps extends ImageProps {
 	size?: number;
 }
 
-export type Mode = 'common' | 'delete';
-
 export interface ChatListItemProps {
 	interlocutor: User;
 	onPress(): void;

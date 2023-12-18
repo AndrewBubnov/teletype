@@ -8,18 +8,17 @@ import { ChatsListDeleteButton, ChatsListHeader, DeleteIcon } from '@/app/chat/[
 import { deleteChats } from '@/actions/deleteChats';
 import { sendDeleteUserChats } from '@/utils/sendDeleteUserChats';
 import { CHATS_LIST } from '@/constants';
-import { Mode } from '@/types';
 
 export const ChatsList = () => {
 	const { push } = useRouter();
 	const { chatList, userId } = useContext(MainContext);
-	const [mode, setMode] = useState<Mode>('common');
+	const [isDeleteMode, setIsDeleteMode] = useState<boolean>(false);
 	const [deletedChatIds, setDeletedChatIds] = useState<string[]>([]);
 
 	const setActiveChat = (chatId: string) => () => push(`${CHATS_LIST}/${chatId}`);
 
 	const toggleMode = (chatId: string) => () => {
-		setMode(prevState => (prevState === 'common' ? 'delete' : 'common'));
+		setIsDeleteMode(prevState => !prevState);
 		setDeletedChatIds(prevState => [...prevState, chatId]);
 	};
 
@@ -30,12 +29,10 @@ export const ChatsList = () => {
 		});
 
 	const deleteChatsHandler = async () => {
-		setMode('common');
+		setIsDeleteMode(false);
 		sendDeleteUserChats(deletedChatIds);
 		await deleteChats(deletedChatIds);
 	};
-
-	const isDeleteMode = mode === 'delete';
 
 	return (
 		<>
