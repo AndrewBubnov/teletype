@@ -35,27 +35,33 @@ export const ChatsList = () => {
 		await deleteChats(deletedChatIds);
 	};
 
+	const isDeleteMode = mode === 'delete';
+
 	return (
 		<>
 			<ChatsListHeader>
-				{mode === 'delete' && (
+				{isDeleteMode && (
 					<ChatsListDeleteButton onClick={deleteChatsHandler}>
 						<DeleteIcon />
 					</ChatsListDeleteButton>
 				)}
 			</ChatsListHeader>
 			<Box>
-				{chatList.map(({ chatId, members }) => {
+				{chatList.map(({ chatId, members, messages }) => {
 					const [interlocutor] = members.filter(member => member.userId !== userId);
+					const unreadNumberStored = messages.filter(el => !el.isRead && el.authorId !== userId).length;
+					const lastMessageStored = messages.at(-1) || null;
 					return (
 						<ChatListItem
 							key={chatId}
 							interlocutor={interlocutor}
 							onPress={setActiveChat(chatId)}
 							onLongPress={toggleMode(chatId)}
-							mode={mode}
+							isDeleteMode={isDeleteMode}
 							onCheckboxToggle={deleteCheckboxHandler(chatId)}
 							isChecked={deletedChatIds.includes(chatId)}
+							unreadNumberStored={unreadNumberStored}
+							lastMessageStored={lastMessageStored}
 						/>
 					);
 				})}

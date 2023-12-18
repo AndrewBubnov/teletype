@@ -2,10 +2,11 @@
 import { styled } from '@mui/material/styles';
 import emotionStyled from '@emotion/styled';
 import Image, { ImageProps } from 'next/image';
-import { Box, Button, Checkbox, DialogContentText, IconButton, ListItem, ListItemButton } from '@mui/material';
+import { Box, Button, Checkbox, DialogContentText, IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ReplyIcon from '@mui/icons-material/ReplyOutlined';
+import DownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { ElapsedTimeWrapperProps, MessageBoxProps, MessageItemBottomProps, StyledButtonProps } from '@/types';
 
 export const ChatWrapper = styled(Box)`
@@ -13,6 +14,23 @@ export const ChatWrapper = styled(Box)`
 	overflow-y: auto;
 	overflow-x: hidden;
 	height: 80vh;
+
+	&::-webkit-scrollbar {
+		width: 6px;
+	}
+
+	&::-webkit-scrollbar-track {
+		width: 6px;
+		background-color: transparent;
+		border: solid 1px transparent;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: rgba(70, 130, 180, 0.6);
+		border: solid 1px transparent;
+		border-radius: 6px;
+		background-clip: padding-box;
+	}
 
 	@media (max-width: 600px) {
 		height: 75vh;
@@ -29,20 +47,41 @@ export const RepliedMessageContainer = styled(Box)`
 	color: #1a1a1a;
 	margin-bottom: 3px;
 `;
-export const UnreadNumber = styled(Box)`
+export const UnreadNumberButton = styled(Button)`
 	position: absolute;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	bottom: 5%;
 	right: 7%;
+`;
+export const UnreadNumber = styled(Box)`
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	font-size: 0.8rem;
 	font-weight: 500;
-	width: 1.5rem;
-	height: 1.5rem;
-	background: #1a1a;
+	width: 1.2rem;
+	height: 1.2rem;
+	background: darkgreen;
 	color: #fff;
 	border-radius: 50%;
+	z-index: 10;
+`;
+export const UnreadNumberIconWrapper = styled(Box)`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 1.5rem;
+	height: 1.5rem;
+	background: #fff;
+	border-radius: 50%;
+	margin-top: -0.5rem;
+`;
+
+export const UnreadNumberIcon = styled(DownIcon)`
+	fill: darkgreen;
+	margin-top: 3px;
 `;
 export const RepliedMessageAuthor = styled(Box)`
 	flex: 1;

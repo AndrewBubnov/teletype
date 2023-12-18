@@ -2,12 +2,11 @@
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 import { Box, Checkbox, TextField, Typography } from '@mui/material';
-import { UserPhotoImageProps, UserPhotoStubProps } from '@/types';
+import { ChatListItemInnerWrapperProps, UserPhotoImageProps, UserPhotoStubProps } from '@/types';
 
 export const UserPhotoImage = styled(({ isActive = false, size = 50, ...props }: UserPhotoImageProps) => (
 	<Image width={size} height={size} {...props} alt={props.alt} />
 ))`
-	position: relative;
 	border-radius: 50%;
 	margin-right: 0.5rem;
 	object-fit: cover;
@@ -30,6 +29,7 @@ export const UserPhotoStub = styled(({ isActive, ...props }: UserPhotoStubProps)
 
 export const StyledCheckbox = styled(Checkbox)`
 	color: #fff;
+	padding: 0;
 
 	&.Mui-checked {
 		color: #fff;
@@ -66,12 +66,15 @@ export const UserWrapper = styled(Box)({
 	display: 'flex',
 	justifyContent: 'space-between',
 	alignItems: 'center',
-	padding: '1rem',
-	cursor: 'pointer',
-	width: '90%',
+});
+export const ChatListItemMessageText = styled(Typography)({
+	textOverflow: 'ellipsis',
+	whiteSpace: 'nowrap',
+	overflow: 'hidden',
+	maxWidth: 'calc(100% - 1em - 1rem)',
 });
 
-export const UserNameWrapper = styled(Typography)({
+export const ChatListItemUsername = styled(Typography)({
 	textOverflow: 'ellipsis',
 	whiteSpace: 'nowrap',
 	overflow: 'hidden',
@@ -85,8 +88,44 @@ export const HeaderContainer = styled(Box)(() => ({
 	height: '3.5rem',
 	padding: '0px 1rem',
 }));
+
+export const ChatListItemWrapper = styled(Box)(() => ({
+	display: 'flex',
+	justifyContent: 'space-between',
+	alignItems: 'center',
+	padding: '0.5rem',
+	cursor: 'pointer',
+}));
+
+export const ChatListItemInnerWrapper = styled(({ isDeleteMode, ...props }: ChatListItemInnerWrapperProps) => (
+	<Box {...props} />
+))`
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	width: ${({ isDeleteMode }) => (isDeleteMode ? 'calc(100% - 1em - 1rem)' : '100%')};
+`;
+
+export const ChatUnreadMessages = styled(Box)(() => ({
+	width: '1.5rem',
+	height: '1.5rem',
+	display: 'flex',
+	justifyContent: 'center',
+	alignItems: 'center',
+	background: 'darkgrey',
+	borderRadius: '50%',
+	color: '#ffffff',
+	fontSize: '0.8rem',
+	fontWeight: 600,
+}));
 export const UserButtonWrapper = styled(Box)(() => ({
 	width: '2rem',
 	height: '2rem',
 	marginRight: '0.5rem',
+}));
+export const UserNameWrapper = styled(Box)(() => ({
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'space-between',
+	maxWidth: '85%',
 }));

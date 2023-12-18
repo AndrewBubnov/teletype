@@ -54,7 +54,7 @@ export type Chat = {
 
 export interface UserChat extends Chat {
 	members: User[];
-	messages: Message[]
+	messages: Message[];
 }
 
 export type User = {
@@ -101,9 +101,11 @@ export interface ChatListItemProps {
 	interlocutor: User;
 	onPress(): void;
 	onLongPress(): void;
-	mode: Mode;
+	isDeleteMode: boolean;
 	onCheckboxToggle(): void;
 	isChecked: boolean;
+	unreadNumberStored: number;
+	lastMessageStored: Message | null;
 }
 
 export enum VisitorStatus {
@@ -156,6 +158,10 @@ export interface StyledButtonProps extends ButtonProps {
 	textColor?: string;
 }
 
+export interface ChatListItemInnerWrapperProps extends HTMLAttributes<any> {
+	isDeleteMode: boolean;
+}
+
 export interface RepliedMessageBoxProps {
 	message: Message | null;
 	onDropMessage(): void;
@@ -189,4 +195,9 @@ export interface MessageProps {
 	pressHandler: ReturnType<typeof useLongPress>;
 	message: Message;
 	repliedMessage?: Message | null;
+}
+
+export interface ScrollToBottomButtonProps {
+	unreadNumber: number;
+	onPress(): void;
 }

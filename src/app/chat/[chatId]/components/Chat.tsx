@@ -2,7 +2,7 @@
 import { useCallback, useState } from 'react';
 import { useChat } from '@/app/chat/[chatId]/hooks/useChat';
 import { useMenuTransition } from '@/app/chat/[chatId]/hooks/useMenuTransition';
-import { ChatWrapper, CoverWrapper, UnreadNumber } from '@/app/chat/[chatId]/styled';
+import { ChatWrapper, CoverWrapper } from '@/app/chat/[chatId]/styled';
 import { Box } from '@mui/material';
 import { ChatHeader } from '@/app/chat/[chatId]/components/ChatHeader';
 import { SingleMessage } from '@/app/chat/[chatId]/components/SingleMessage';
@@ -11,6 +11,7 @@ import { sendEditMessage } from '@/utils/sendEditMessage';
 import { ContextMenu } from '@/app/chat/[chatId]/components/ContextMenu';
 import { MessageInput } from '@/app/chat/[chatId]/components/MessageInput';
 import { ChatProps, Message } from '@/types';
+import { ScrollToBottomButton } from '@/app/chat/[chatId]/components/ScrollToBottomButton';
 
 export const Chat = ({ chat }: ChatProps) => {
 	const {
@@ -101,9 +102,7 @@ export const Chat = ({ chat }: ChatProps) => {
 					/>
 				)}
 				{unreadNumber ? (
-					<UnreadNumber onTouchStart={scrollToLastHandler} onMouseDown={scrollToLastHandler}>
-						{unreadNumber}
-					</UnreadNumber>
+					<ScrollToBottomButton unreadNumber={unreadNumber} onPress={scrollToLastHandler} />
 				) : null}
 			</CoverWrapper>
 			<MessageInput
