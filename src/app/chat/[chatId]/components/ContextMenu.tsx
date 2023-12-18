@@ -48,7 +48,7 @@ export const ContextMenu = ({
 	};
 	return (
 		<>
-			<Backdrop onClick={closeContextMenu}>
+			<Backdrop onTouchStart={closeContextMenu} onMouseDown={closeContextMenu}>
 				<Grow in style={{ transformOrigin: '0 0 0' }}>
 					<MenuCard ref={ref} style={{ transform: `translateY(${menuTop}px)` }}>
 						<ReactionsWrapper>
