@@ -18,8 +18,8 @@ export const ChatsList = () => {
 	const setActiveChat = (chatId: string) => () => push(`${CHATS_LIST}/${chatId}`);
 
 	const toggleMode = (chatId: string) => () => {
+		if (!isDeleteMode) setDeletedChatIds(prevState => [...prevState, chatId]);
 		setIsDeleteMode(prevState => !prevState);
-		setDeletedChatIds(prevState => [...prevState, chatId]);
 	};
 
 	const deleteCheckboxHandler = (chatId: string) => () =>
