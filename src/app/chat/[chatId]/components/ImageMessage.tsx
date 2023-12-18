@@ -4,8 +4,8 @@ import { MessageItem, ReactionWrapper, TimeWrapper } from '@/app/chat/[chatId]/s
 import { options } from '@/app/chat/[chatId]/constants';
 import { MessageProps, MessageType } from '@/types';
 
-export const ImageMessage = ({ isAuthoredByUser, pressHandler, message, repliedMessage }: MessageProps) => (
-	<MessageItem transparent isAuthoredByUser={isAuthoredByUser} {...pressHandler}>
+export const ImageMessage = ({ isAuthoredByUser, onPress, message, repliedMessage }: MessageProps) => (
+	<MessageItem transparent isAuthoredByUser={isAuthoredByUser} onClick={onPress}>
 		<ReplyTo message={repliedMessage} />
 		<Image
 			src={message.imageUrl!}

@@ -9,8 +9,8 @@ import {
 import { options } from '@/app/chat/[chatId]/constants';
 import { MessageProps } from '@/types';
 
-export const TextMessage = ({ isAuthoredByUser, pressHandler, message, repliedMessage }: MessageProps) => (
-	<MessageItem isAuthoredByUser={isAuthoredByUser} {...pressHandler}>
+export const TextMessage = ({ isAuthoredByUser, onPress, message, repliedMessage }: MessageProps) => (
+	<MessageItem isAuthoredByUser={isAuthoredByUser} onClick={onPress}>
 		<ReplyTo message={repliedMessage} />
 		{message.text!}
 		<MessageItemBottom multipleChild={!!message.reaction}>

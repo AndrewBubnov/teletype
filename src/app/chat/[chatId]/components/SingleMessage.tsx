@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { useUser } from '@clerk/nextjs';
-import { useLongPress } from '@/app/chat/[chatId]/hooks/useLongPress';
 import { AuthorMessageWrapper, InterlocutorMessageWrapper, SubContainer } from '@/app/chat/[chatId]/styled';
 import { TextMessage } from '@/app/chat/[chatId]/components/TextMessage';
 import { ImageMessage } from '@/app/chat/[chatId]/components/ImageMessage';
@@ -34,13 +33,11 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 
 	const Container = isAuthoredByUser ? AuthorMessageWrapper : InterlocutorMessageWrapper;
 
-	const onLongPress = () => {
+	const onPress = () => {
 		const params = messageRef.current?.getBoundingClientRect();
 		if (!params) return;
 		onContextMenuToggle('open', params);
 	};
-
-	const pressHandler = useLongPress({ onLongPress });
 
 	return (
 		<Container ref={containerRef} id={message.id}>
@@ -50,14 +47,14 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 						message={message}
 						repliedMessage={repliedMessage}
 						isAuthoredByUser={isAuthoredByUser}
-						pressHandler={pressHandler}
+						onPress={onPress}
 					/>
 				) : (
 					<ImageMessage
 						message={message}
 						repliedMessage={repliedMessage}
 						isAuthoredByUser={isAuthoredByUser}
-						pressHandler={pressHandler}
+						onPress={onPress}
 					/>
 				)}
 			</SubContainer>

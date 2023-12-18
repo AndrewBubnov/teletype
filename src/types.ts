@@ -1,7 +1,6 @@
 import { HTMLAttributes, MutableRefObject, PointerEvent, ReactNode } from 'react';
 import { ImageProps } from 'next/image';
 import { ButtonProps } from '@mui/material';
-import { useLongPress } from '@/app/chat/[chatId]/hooks/useLongPress';
 
 export interface MainProviderProps {
 	children: ReactNode;
@@ -190,7 +189,7 @@ export interface ChatHeaderProps {
 }
 export interface MessageProps {
 	isAuthoredByUser: boolean;
-	pressHandler: ReturnType<typeof useLongPress>;
+	onPress(): void;
 	message: Message;
 	repliedMessage?: Message | null;
 }

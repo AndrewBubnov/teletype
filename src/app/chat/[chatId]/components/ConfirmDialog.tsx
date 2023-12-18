@@ -11,7 +11,7 @@ interface ConfirmDialogProps {
 
 export const ConfirmDialog = ({ open, onCancel, onConfirm, interlocutorName }: ConfirmDialogProps) => {
 	const [deleteBoth, setDeleteBoth] = useState(false);
-	const [enter, setEnter] = useState(false);
+	const [enter, setEnter] = useState<boolean>(false);
 	const changeHandler = (event: ChangeEvent<HTMLInputElement>) => setDeleteBoth(event.target.checked);
 	const backdropPressHandler = () => {
 		if (!enter) onCancel();
