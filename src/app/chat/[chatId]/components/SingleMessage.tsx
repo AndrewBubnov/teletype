@@ -3,6 +3,7 @@ import { useUser } from '@clerk/nextjs';
 import { AuthorMessageWrapper, InterlocutorMessageWrapper } from '@/app/chat/[chatId]/styled';
 import { TextMessage } from '@/app/chat/[chatId]/components/TextMessage';
 import { ImageMessage } from '@/app/chat/[chatId]/components/ImageMessage';
+import { EmojiMessage } from '@/app/chat/[chatId]/components/EmojiMessage';
 import { MessageType, SingleMessageProps } from '@/types';
 
 export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, updateIsRead }: SingleMessageProps) => {
@@ -38,24 +39,22 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 		onContextMenuToggle('open', params);
 	};
 
+	const Component =
+		message.type === MessageType.TEXT
+			? TextMessage
+			: message.type === MessageType.IMAGE
+				? ImageMessage
+				: EmojiMessage;
+
 	return (
 		<Container ref={containerRef} id={message.id}>
-			{message.type === MessageType.TEXT ? (
-				<TextMessage
-					message={message}
-					repliedMessage={repliedMessage}
-					isAuthoredByUser={isAuthoredByUser}
-					onPress={onPress}
-				/>
-			) : (
-				<ImageMessage
-					message={message}
-					repliedMessage={repliedMessage}
-					isAuthoredByUser={isAuthoredByUser}
-					onPress={onPress}
-					width={containerRef.current?.clientWidth}
-				/>
-			)}
+			<Component
+				message={message}
+				repliedMessage={repliedMessage}
+				isAuthoredByUser={isAuthoredByUser}
+				onPress={onPress}
+				width={containerRef.current?.clientWidth}
+			/>
 		</Container>
 	);
 };

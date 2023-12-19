@@ -1,14 +1,15 @@
 'use client';
 import { styled } from '@mui/material/styles';
-import emotionStyled from '@emotion/styled';
 import Image, { ImageProps } from 'next/image';
-import { Box, Button, Checkbox, DialogContentText, IconButton, FormLabel } from '@mui/material';
+import { Box, Button, Checkbox, DialogContentText, IconButton, FormLabel, BoxProps } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ReplyIcon from '@mui/icons-material/ReplyOutlined';
 import DownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import SendIcon from '@mui/icons-material/Send';
 import { ElapsedTimeWrapperProps, MessageBoxProps, MessageItemBottomProps, StyledButtonProps } from '@/types';
+import { HTMLAttributes } from 'react';
 
 export const ChatWrapper = styled(Box)`
 	padding: 1rem;
@@ -218,6 +219,7 @@ export const ReactionAuthorImage = styled((props: ImageProps) => <Image width={1
 `;
 
 export const StyledImage = styled(Image)`
+	display: block;
 	border-radius: 0.25rem;
 `;
 export const SendMessageFormWrapper = styled(Box)`
@@ -328,6 +330,9 @@ export const CenterHorizontalWrapper = styled(Box)`
 	display: flex;
 	align-items: center;
 `;
+export const EmojiDisplayWrapper = styled(({ component, ...props }: BoxProps) => <Box component="span" {...props} />)`
+	font-size: 2.5rem;
+`;
 export const StyledBackIcon = styled(ArrowBackIcon)`
 	fill: #fff;
 	margin-right: 1rem;
@@ -344,6 +349,20 @@ export const ElapsedTimeWrapper = styled(({ color, ...props }: ElapsedTimeWrappe
 	}
 `;
 
-export const SendMessageForm = emotionStyled.form`
-    width: 100%;
+export const SendButton = styled(Button)`
+	text-transform: none;
+	border: 1px solid lightgray;
+
+	& .MuiButton-endIcon {
+		margin: 0;
+	}
+`;
+
+export const SendWrapper = styled(Box)`
+	display: flex;
+	gap: 0.25rem;
+`;
+
+export const SendMessageIcon = styled(SendIcon)`
+	fill: lightgray;
 `;

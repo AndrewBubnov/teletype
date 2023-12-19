@@ -19,7 +19,8 @@ export async function addMessageToChat({
 	const createdMessage = (await prisma.message.create({
 		data: {
 			type: messageType,
-			...(messageType === MessageType.TEXT ? { text: messageText } : { imageUrl: messageImageUrl }),
+			text: messageText ? messageText : null,
+			imageUrl: messageImageUrl ? messageImageUrl : null,
 			chatId,
 			authorId,
 			authorName,
