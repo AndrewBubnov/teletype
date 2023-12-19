@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useUser } from '@clerk/nextjs';
-import { AuthorMessageWrapper, InterlocutorMessageWrapper, SubContainer } from '@/app/chat/[chatId]/styled';
+import { AuthorMessageWrapper, InterlocutorMessageWrapper } from '@/app/chat/[chatId]/styled';
 import { TextMessage } from '@/app/chat/[chatId]/components/TextMessage';
 import { ImageMessage } from '@/app/chat/[chatId]/components/ImageMessage';
 import { MessageType, SingleMessageProps } from '@/types';
@@ -8,7 +8,6 @@ import { MessageType, SingleMessageProps } from '@/types';
 export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, updateIsRead }: SingleMessageProps) => {
 	const { user } = useUser();
 	const containerRef = useRef<HTMLDivElement | null>(null);
-	const messageRef = useRef<HTMLDivElement | null>(null);
 
 	const isAuthoredByUser = message.authorId === user?.id;
 
@@ -34,30 +33,29 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 	const Container = isAuthoredByUser ? AuthorMessageWrapper : InterlocutorMessageWrapper;
 
 	const onPress = () => {
-		const params = messageRef.current?.getBoundingClientRect();
+		const params = containerRef.current?.getBoundingClientRect();
 		if (!params) return;
 		onContextMenuToggle('open', params);
 	};
 
 	return (
 		<Container ref={containerRef} id={message.id}>
-			<SubContainer ref={messageRef}>
-				{message.type === MessageType.TEXT ? (
-					<TextMessage
-						message={message}
-						repliedMessage={repliedMessage}
-						isAuthoredByUser={isAuthoredByUser}
-						onPress={onPress}
-					/>
-				) : (
-					<ImageMessage
-						message={message}
-						repliedMessage={repliedMessage}
-						isAuthoredByUser={isAuthoredByUser}
-						onPress={onPress}
-					/>
-				)}
-			</SubContainer>
+			{message.type === MessageType.TEXT ? (
+				<TextMessage
+					message={message}
+					repliedMessage={repliedMessage}
+					isAuthoredByUser={isAuthoredByUser}
+					onPress={onPress}
+				/>
+			) : (
+				<ImageMessage
+					message={message}
+					repliedMessage={repliedMessage}
+					isAuthoredByUser={isAuthoredByUser}
+					onPress={onPress}
+					width={containerRef.current?.clientWidth}
+				/>
+			)}
 		</Container>
 	);
 };

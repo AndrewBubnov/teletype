@@ -36,3 +36,7 @@ export const reactions = [
 	'1f626',
 	'1f44d',
 ];
+
+export const IMAGE_RATIO = 5 / 6;
+export const DEFAULT_IMAGE_WIDTH = 350;
+export const EMOJI_SIZE = 40;

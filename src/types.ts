@@ -75,7 +75,7 @@ export interface ActiveChatProps {
 
 export interface MessageBoxProps extends HTMLAttributes<HTMLDivElement> {
 	isAuthoredByUser: boolean;
-	transparent?: boolean;
+	isImage?: boolean;
 }
 
 export interface MessageItemBottomProps extends HTMLAttributes<HTMLDivElement> {
@@ -192,6 +192,7 @@ export interface MessageProps {
 	onPress(): void;
 	message: Message;
 	repliedMessage?: Message | null;
+	width?: number;
 }
 
 export interface ScrollToBottomButtonProps {

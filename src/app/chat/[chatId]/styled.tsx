@@ -2,11 +2,12 @@
 import { styled } from '@mui/material/styles';
 import emotionStyled from '@emotion/styled';
 import Image, { ImageProps } from 'next/image';
-import { Box, Button, Checkbox, DialogContentText, IconButton } from '@mui/material';
+import { Box, Button, Checkbox, DialogContentText, IconButton, FormLabel } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ReplyIcon from '@mui/icons-material/ReplyOutlined';
 import DownIcon from '@mui/icons-material/KeyboardArrowDown';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { ElapsedTimeWrapperProps, MessageBoxProps, MessageItemBottomProps, StyledButtonProps } from '@/types';
 
 export const ChatWrapper = styled(Box)`
@@ -39,6 +40,9 @@ export const ChatWrapper = styled(Box)`
 
 export const CoverWrapper = styled(Box)`
 	position: relative;
+`;
+export const UploadLabel = styled(FormLabel)`
+	margin-top: 0.5rem;
 `;
 export const RepliedMessageContainer = styled(Box)`
 	display: flex;
@@ -82,6 +86,10 @@ export const UnreadNumberIconWrapper = styled(Box)`
 export const UnreadNumberIcon = styled(DownIcon)`
 	fill: darkgreen;
 	margin-top: 3px;
+`;
+
+export const UploadFileIcon = styled(AttachFileIcon)`
+	margin-right: 1rem;
 `;
 export const RepliedMessageAuthor = styled(Box)`
 	flex: 1;
@@ -163,20 +171,19 @@ const MessageWrapper = styled(Box)(() => ({
 	display: 'flex',
 	padding: '1rem 0',
 }));
-export const SubContainer = styled(Box)`
-	max-width: 100%;
-`;
 export const AuthorMessageWrapper = styled(MessageWrapper)`
 	flex-direction: row-reverse;
 `;
 export const InterlocutorMessageWrapper = styled(MessageWrapper)`
 	flex-direction: row;
 `;
-export const MessageItem = styled(({ isAuthoredByUser, transparent, ...props }: MessageBoxProps) => <Box {...props} />)`
-	position: relative;
-	padding: 0.5rem;
-	background: ${({ isAuthoredByUser, transparent }) => {
-		if (transparent) return 'transparent';
+export const MessageItem = styled(({ isAuthoredByUser, isImage = false, ...props }: MessageBoxProps) => (
+	<Box {...props} />
+))`
+	padding: ${({ isImage }) => (isImage ? 0 : '0.5rem')};
+
+	background: ${({ isAuthoredByUser, isImage }) => {
+		if (isImage) return 'transparent';
 		return isAuthoredByUser ? 'rgba(70,130,180,0.6)' : 'rgba(112,128,144,0.5)';
 	}};
 	border-radius: 4px;
@@ -210,6 +217,9 @@ export const ReactionAuthorImage = styled((props: ImageProps) => <Image width={1
 	border-radius: 50%;
 `;
 
+export const StyledImage = styled(Image)`
+	border-radius: 0.25rem;
+`;
 export const SendMessageFormWrapper = styled(Box)`
 	width: 100%;
 	padding: 0 1rem;

@@ -1,7 +1,7 @@
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { RepliedMessageBox } from '@/app/chat/[chatId]/components/RepliedMessageBox';
-import { SendMessageForm, SendMessageFormWrapper } from '@/app/chat/[chatId]/styled';
+import { SendMessageForm, SendMessageFormWrapper, UploadFileIcon, UploadLabel } from '@/app/chat/[chatId]/styled';
 import { StyledInput } from '@/app/chat/styled';
 import { InputAdornment } from '@mui/material';
 import { Emoji } from '@/app/chat/[chatId]/components/Emoji';
@@ -31,7 +31,7 @@ export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMes
 		setMessageType(MessageType.TEXT);
 	};
 
-	const submitHandler = async () => {
+	const textSubmitHandler = async () => {
 		setMessageText('');
 		setMessageImageUrl('');
 		const message = await addMessageToChat({
@@ -57,10 +57,36 @@ export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMes
 	};
 	const dropReplyHandler = () => setRepliedMessage(null);
 
+	const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0];
+		if (file) {
+			const reader = new FileReader();
+
+			reader.onload = async upload => {
+				const base64Image: string | ArrayBuffer | null | undefined = upload.target?.result;
+				if (typeof base64Image === 'string') {
+					const message = await addMessageToChat({
+						chatId,
+						authorId: userId,
+						authorName,
+						messageType: MessageType.IMAGE,
+						messageImageUrl: base64Image,
+						replyToId: repliedMessage?.id,
+					});
+					if (message) sendMessageToServer(message, chatId);
+					setMessageType(MessageType.TEXT);
+					setRepliedMessage(null);
+				}
+			};
+
+			reader.readAsDataURL(file);
+		}
+	};
+
 	return (
 		<SendMessageFormWrapper>
 			<RepliedMessageBox message={repliedMessage} authorName={authorName} onDropMessage={dropReplyHandler} />
-			<SendMessageForm action={submitHandler}>
+			<SendMessageForm action={textSubmitHandler}>
 				<StyledInput
 					fullWidth
 					value={messageText}
@@ -69,6 +95,12 @@ export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMes
 					InputProps={{
 						endAdornment: (
 							<InputAdornment position="end">
+								{!messageText ? (
+									<UploadLabel htmlFor="formId">
+										<UploadFileIcon />
+										<input id="formId" type="file" onChange={handleFileSelect} hidden />
+									</UploadLabel>
+								) : null}
 								<Emoji onAddEmoji={onAddEmoji} />
 							</InputAdornment>
 						),
