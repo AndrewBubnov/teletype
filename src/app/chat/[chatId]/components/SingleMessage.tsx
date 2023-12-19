@@ -6,6 +6,12 @@ import { ImageMessage } from '@/app/chat/[chatId]/components/ImageMessage';
 import { EmojiMessage } from '@/app/chat/[chatId]/components/EmojiMessage';
 import { MessageType, SingleMessageProps } from '@/types';
 
+const ComponentMap = {
+	[MessageType.TEXT]: TextMessage,
+	[MessageType.IMAGE]: ImageMessage,
+	[MessageType.EMOJI]: EmojiMessage,
+};
+
 export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, updateIsRead }: SingleMessageProps) => {
 	const { user } = useUser();
 	const containerRef = useRef<HTMLDivElement | null>(null);
@@ -39,12 +45,7 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 		onContextMenuToggle('open', params);
 	};
 
-	const Component =
-		message.type === MessageType.TEXT
-			? TextMessage
-			: message.type === MessageType.IMAGE
-				? ImageMessage
-				: EmojiMessage;
+	const Component = ComponentMap[message.type];
 
 	return (
 		<Container ref={containerRef} id={message.id}>
