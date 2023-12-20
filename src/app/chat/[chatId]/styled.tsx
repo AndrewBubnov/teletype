@@ -8,6 +8,8 @@ import ReplyIcon from '@mui/icons-material/ReplyOutlined';
 import DownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import SendIcon from '@mui/icons-material/Send';
+import OpenInFullIcon from '@mui/icons-material/OpenInFull';
+import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
 import {
 	ElapsedTimeWrapperProps,
 	InnerMessageBoxProps,
@@ -254,7 +256,30 @@ export const ReactionAuthorImage = styled((props: ImageProps) => <Image width={1
 
 export const StyledImage = styled(Image)`
 	display: block;
+	object-fit: cover;
 	border-radius: 0.25rem;
+`;
+
+export const StyledImageButton = styled(IconButton)`
+	position: absolute;
+	bottom: 2%;
+	right: 3%;
+	background: rgba(26, 26, 26, 0.6);
+	padding: 6px;
+`;
+
+export const BasicImageWrapper = styled(Box)`
+	position: relative;
+`;
+export const StyledFullWidthIcon = styled(OpenInFullIcon)`
+	width: 0.7em;
+	height: 0.7em;
+	fill: lightgray;
+`;
+export const StyledCloseFullWidthIcon = styled(CloseFullscreenIcon)`
+	width: 0.7em;
+	height: 0.7em;
+	fill: lightgray;
 `;
 export const SendMessageFormWrapper = styled(Box)`
 	width: 100%;

@@ -39,5 +39,3 @@ export const reactions = [
 
 export const IMAGE_RATIO = 5 / 6;
 export const DEFAULT_IMAGE_WIDTH = 350;
-export const EMOJI_SIZE = 40;
-export const BASE64_TOKEN = 'base64';

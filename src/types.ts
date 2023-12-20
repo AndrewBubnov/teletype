@@ -217,3 +217,8 @@ export interface MessageInputProps {
 	repliedMessage: Message | null;
 	setRepliedMessage: Dispatch<SetStateAction<Message | null>>;
 }
+
+export interface ImageMessageProps {
+	message: Message;
+	width?: number;
+}
