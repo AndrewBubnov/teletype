@@ -28,7 +28,7 @@ Teletype is a real-time chat application built with Next.js 14, Prisma ORM, Atla
   
 - **Unread Message Indicator and Scrolling**: When a user enters a chat and there are unread messages that don't fit on the initial screen, they see a button indicating the number of such messages. This count dynamically changes as the user scrolls to these messages. Additionally, by clicking this button, the user is automatically scrolled to the last received message.
   
-- **Message Variety**: Messages can consist of text-only, images-only, or a combination of both text and images, offering users a flexible and dynamic communication experience. Image previews are displayed alongside text in the conversation, enriching the visual aspect of the messages.
+- **Message Variety**: Messages can consist of text-only, images-only, or a combination of both text and images, offering users a flexible and dynamic communication experience. Image previews are displayed alongside text in the conversation, enriching the visual aspect of the messages. Additionally, messages can be composed of text with emojis or an unlimited number of emojis without accompanying text, providing users with expressive and diverse communication options.
 
 - **Image Exchange**: Users can seamlessly exchange images within chats. An icon for expanding an image to fullscreen is located in the bottom right corner of the image, and a corresponding icon allows users to reduce the image back to its original size.
 
