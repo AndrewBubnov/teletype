@@ -5,7 +5,7 @@ import { Box, Checkbox, TextField, Typography } from '@mui/material';
 import { ChatListItemInnerWrapperProps, UserPhotoImageProps, UserPhotoStubProps } from '@/types';
 
 export const UserPhotoImage = styled(({ isActive = false, size = 50, ...props }: UserPhotoImageProps) => (
-	<Image width={size} height={size} {...props} alt={props.alt} />
+	<Image width={size} height={size} {...props} alt={props.alt} quality={100} />
 ))`
 	border-radius: 50%;
 	margin-right: 0.5rem;

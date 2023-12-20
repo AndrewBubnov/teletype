@@ -22,6 +22,7 @@ export const ChatWrapper = styled(Box)`
 	overflow-y: auto;
 	overflow-x: hidden;
 	height: 80vh;
+	margin-top: 1rem;
 
 	&::-webkit-scrollbar {
 		width: 6px;
@@ -38,10 +39,6 @@ export const ChatWrapper = styled(Box)`
 		border: solid 1px transparent;
 		border-radius: 6px;
 		background-clip: padding-box;
-	}
-
-	@media (max-width: 600px) {
-		height: 75vh;
 	}
 `;
 
@@ -65,6 +62,16 @@ export const UnreadNumberButton = styled(Button)`
 	align-items: center;
 	bottom: 5%;
 	right: 7%;
+	animation: enter 1s;
+
+	@keyframes enter {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
 `;
 export const UnreadNumber = styled(Box)`
 	display: flex;
