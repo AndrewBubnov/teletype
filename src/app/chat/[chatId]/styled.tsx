@@ -203,7 +203,7 @@ export const MessageItem = styled(
 		if (transparent) return 'transparent';
 		return isAuthoredByUser ? '#4682b499' : '#70809080';
 	}};
-	border-radius: 4px;
+	border-radius: 0.25rem;
 `;
 
 export const InnerMessageItem = styled(({ isAuthoredByUser, withPadding, ...props }: InnerMessageBoxProps) => (
@@ -211,7 +211,7 @@ export const InnerMessageItem = styled(({ isAuthoredByUser, withPadding, ...prop
 ))`
 	padding: ${({ withPadding }) => (withPadding ? '0.5rem' : 0)};
 	margin-top: 0.5rem;
-	border-radius: 4px;
+	border-radius: 0.25rem;
 `;
 
 export const MessageItemBottom = styled(({ multipleChild, withOffset, ...props }: MessageItemBottomProps) => (
