@@ -2,8 +2,8 @@ import { MessageItemBottom, ReactionAuthorImage, ReactionWrapper, TimeWrapper } 
 import { options } from '@/app/chat/[chatId]/constants';
 import { Message } from '@/types';
 
-export const MessageBottom = ({ message }: { message: Message }) => (
-	<MessageItemBottom multipleChild={!!message.reaction}>
+export const MessageBottom = ({ message, withOffset }: { message: Message; withOffset?: boolean }) => (
+	<MessageItemBottom multipleChild={!!message.reaction} withOffset={withOffset}>
 		{message.reaction && (
 			<ReactionWrapper>
 				{String.fromCodePoint(parseInt(message.reaction, 16))}

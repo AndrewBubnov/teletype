@@ -1,6 +1,6 @@
 import { ChangeEvent } from 'react';
 
-export const fileInputHelper = (event: ChangeEvent<HTMLInputElement>, callback: (arg: string) => Promise<void>) => {
+export const fileInputHelper = (event: ChangeEvent<HTMLInputElement>, callback: (arg: string) => void) => {
 	const file = event.target.files?.[0];
 	if (!file) return;
 	const reader = new FileReader();
@@ -8,7 +8,8 @@ export const fileInputHelper = (event: ChangeEvent<HTMLInputElement>, callback: 
 	reader.onload = async upload => {
 		const base64Image = upload.target?.result;
 		if (typeof base64Image !== 'string') return;
-		await callback(base64Image);
+		callback(base64Image);
+		event.target.value = '';
 	};
 	reader.readAsDataURL(file);
 };

@@ -1,16 +1,16 @@
 import { useEffect, useRef } from 'react';
 import { useUser } from '@clerk/nextjs';
-import { AuthorMessageWrapper, InterlocutorMessageWrapper } from '@/app/chat/[chatId]/styled';
-import { TextMessage } from '@/app/chat/[chatId]/components/TextMessage';
-import { ImageMessage } from '@/app/chat/[chatId]/components/ImageMessage';
+import {
+	AuthorMessageWrapper,
+	InnerMessageItem,
+	InterlocutorMessageWrapper,
+	MessageItem,
+} from '@/app/chat/[chatId]/styled';
 import { EmojiMessage } from '@/app/chat/[chatId]/components/EmojiMessage';
+import { ReplyTo } from '@/app/chat/[chatId]/components/ReplyTo';
+import { ImageMessage } from '@/app/chat/[chatId]/components/ImageMessage';
+import { MessageBottom } from '@/app/chat/[chatId]/components/MessageBottom';
 import { MessageType, SingleMessageProps } from '@/types';
-
-const ComponentMap = {
-	[MessageType.TEXT]: TextMessage,
-	[MessageType.IMAGE]: ImageMessage,
-	[MessageType.EMOJI]: EmojiMessage,
-};
 
 export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, updateIsRead }: SingleMessageProps) => {
 	const { user } = useUser();
@@ -45,17 +45,31 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 		onContextMenuToggle('open', params);
 	};
 
-	const Component = ComponentMap[message.type];
+	if (message.type === MessageType.EMOJI) {
+		return (
+			<Container ref={containerRef} id={message.id}>
+				<EmojiMessage
+					isAuthoredByUser={isAuthoredByUser}
+					onPress={onPress}
+					message={message}
+					repliedMessage={repliedMessage}
+				/>
+			</Container>
+		);
+	}
 
 	return (
 		<Container ref={containerRef} id={message.id}>
-			<Component
-				message={message}
-				repliedMessage={repliedMessage}
-				isAuthoredByUser={isAuthoredByUser}
-				onPress={onPress}
-				width={containerRef.current?.clientWidth}
-			/>
+			<MessageItem singlePadding={!repliedMessage} isAuthoredByUser={isAuthoredByUser} onClick={onPress}>
+				<ReplyTo message={repliedMessage} />
+				{message.imageUrl && <ImageMessage message={message} width={containerRef.current?.clientWidth} />}
+				{message.text && (
+					<InnerMessageItem withPadding={!repliedMessage} isAuthoredByUser={isAuthoredByUser}>
+						{message.text}
+					</InnerMessageItem>
+				)}
+				<MessageBottom message={message} withOffset={!repliedMessage} />
+			</MessageItem>
 		</Container>
 	);
 };

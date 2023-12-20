@@ -5,6 +5,7 @@ import {
 	RepliedMessageAuthor,
 	RepliedMessageAuthorInner,
 	RepliedMessageContainer,
+	RepliedMessageImage,
 	RepliedMessageInner,
 	RepliedMessageText,
 	RepliedTimeContainer,
@@ -27,14 +28,13 @@ export const RepliedMessageBox = ({ message, onDropMessage, authorName }: Replie
 					<Box>{new Intl.DateTimeFormat('en-US', options).format(new Date(message.date))}</Box>
 				</RepliedTimeContainer>
 			</RepliedMessageAuthor>
-			<RepliedMessageText>
-				<RepliedMessageInner>
-					{message.type === MessageType.TEXT ? (
-						message.text
-					) : (
+			<RepliedMessageText isMultiple={!!message.text && !!message.imageUrl}>
+				<RepliedMessageInner>{message.text && message.text}</RepliedMessageInner>
+				{message.imageUrl && (
+					<RepliedMessageImage>
 						<Image src={message.imageUrl!} width={20} height={20} alt="" />
-					)}
-				</RepliedMessageInner>
+					</RepliedMessageImage>
+				)}
 			</RepliedMessageText>
 		</RepliedMessageContainer>
 	) : null;

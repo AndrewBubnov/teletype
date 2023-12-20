@@ -8,8 +8,14 @@ import ReplyIcon from '@mui/icons-material/ReplyOutlined';
 import DownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import SendIcon from '@mui/icons-material/Send';
-import { ElapsedTimeWrapperProps, MessageBoxProps, MessageItemBottomProps, StyledButtonProps } from '@/types';
-import { HTMLAttributes } from 'react';
+import {
+	ElapsedTimeWrapperProps,
+	InnerMessageBoxProps,
+	MessageBoxProps,
+	MessageItemBottomProps,
+	RepliedMessageTextProps,
+	StyledButtonProps,
+} from '@/types';
 
 export const ChatWrapper = styled(Box)`
 	padding: 1rem;
@@ -122,6 +128,11 @@ export const ReplyToText = styled(Box)`
 	white-space: nowrap;
 	color: #1a1a1a;
 `;
+
+export const ReplyToWrapper = styled(Box)`
+	display: flex;
+	max-width: 20rem;
+`;
 export const ReplyToDateWrapper = styled(Box)`
 	display: flex;
 	flex-direction: row-reverse;
@@ -135,14 +146,19 @@ export const RepliedMessageAuthorInner = styled(Box)`
 	max-width: 85%;
 	align-items: center;
 `;
-export const RepliedMessageText = styled(Box)`
+export const RepliedMessageText = styled(({ isMultiple, ...props }: RepliedMessageTextProps) => <Box {...props} />)`
 	flex: 1;
 	display: flex;
+	justify-content: ${({ isMultiple }) => (isMultiple ? 'space-between' : 'flex-start')};
 	align-items: center;
 	background: lightgray;
 	border-bottom-left-radius: 4px;
 	border-bottom-right-radius: 4px;
 	padding: 0 0.5rem;
+`;
+
+export const RepliedMessageImage = styled(Box)`
+	margin-left: 0.5rem;
 `;
 export const RepliedMessageInner = styled(Box)`
 	overflow: hidden;
@@ -178,24 +194,35 @@ export const AuthorMessageWrapper = styled(MessageWrapper)`
 export const InterlocutorMessageWrapper = styled(MessageWrapper)`
 	flex-direction: row;
 `;
-export const MessageItem = styled(({ isAuthoredByUser, isImage = false, ...props }: MessageBoxProps) => (
-	<Box {...props} />
-))`
-	padding: ${({ isImage }) => (isImage ? 0 : '0.5rem')};
-
-	background: ${({ isAuthoredByUser, isImage }) => {
-		if (isImage) return 'transparent';
-		return isAuthoredByUser ? 'rgba(70,130,180,0.6)' : 'rgba(112,128,144,0.5)';
+export const MessageItem = styled(
+	({ isAuthoredByUser, singlePadding, withOffset, transparent, ...props }: MessageBoxProps) => <Box {...props} />
+)`
+	padding: ${({ singlePadding }) => (singlePadding ? '0 0 0.5rem 0' : '0.5rem')};
+	margin-top: ${({ withOffset }) => (withOffset ? '0.5rem' : 0)};
+	background: ${({ isAuthoredByUser, transparent }) => {
+		if (transparent) return 'transparent';
+		return isAuthoredByUser ? '#4682b499' : '#70809080';
 	}};
 	border-radius: 4px;
 `;
 
-export const MessageItemBottom = styled(({ multipleChild, ...props }: MessageItemBottomProps) => <Box {...props} />)`
-	display: flex;
-	flex-direction: ${({ multipleChild }) => (multipleChild ? 'row' : 'row-reverse')};
-	align-items: flex-end;
-	gap: 1rem;
+export const InnerMessageItem = styled(({ isAuthoredByUser, withPadding, ...props }: InnerMessageBoxProps) => (
+	<Box {...props} />
+))`
+	padding: ${({ withPadding }) => (withPadding ? '0.5rem' : 0)};
 	margin-top: 0.5rem;
+	border-radius: 4px;
+`;
+
+export const MessageItemBottom = styled(({ multipleChild, withOffset, ...props }: MessageItemBottomProps) => (
+	<Box {...props} />
+))`
+	display: flex;
+	gap: 1rem;
+	flex-direction: ${({ multipleChild }) => (multipleChild ? 'row' : 'row-reverse')};
+	margin: ${({ withOffset }) => (withOffset ? '0.5rem 0.5rem 0 0.5rem' : '0.5rem 0 0 0')};
+	justify-content: space-between;
+	align-items: flex-end;
 `;
 
 export const TimeWrapper = styled(Box)`
@@ -365,4 +392,14 @@ export const SendWrapper = styled(Box)`
 
 export const SendMessageIcon = styled(SendIcon)`
 	fill: lightgray;
+`;
+
+export const PreviewWrapper = styled(Box)`
+	position: relative;
+	box-sizing: border-box;
+	width: 4rem;
+	height: 3.5rem;
+	overflow: hidden;
+	border-radius: 4px;
+	border: 1px solid lightgray;
 `;

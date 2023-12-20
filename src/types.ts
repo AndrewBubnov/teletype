@@ -1,4 +1,4 @@
-import { HTMLAttributes, MutableRefObject, PointerEvent, ReactNode } from 'react';
+import { Dispatch, HTMLAttributes, MutableRefObject, PointerEvent, ReactNode, SetStateAction } from 'react';
 import { ImageProps } from 'next/image';
 import { ButtonProps } from '@mui/material';
 
@@ -20,8 +20,7 @@ export interface SocketContextProps {
 export type MainContextProps = Omit<MainContext, 'children' | 'userChats'>;
 
 export enum MessageType {
-	TEXT = 'TEXT',
-	IMAGE = 'IMAGE',
+	COMMON = 'COMMON',
 	EMOJI = 'EMOJI',
 }
 
@@ -75,14 +74,26 @@ export interface ActiveChatProps {
 
 export interface MessageBoxProps extends HTMLAttributes<HTMLDivElement> {
 	isAuthoredByUser: boolean;
-	isImage?: boolean;
+	transparent?: boolean;
+	singlePadding?: boolean;
+	withOffset?: boolean;
+}
+
+export interface InnerMessageBoxProps extends HTMLAttributes<HTMLDivElement> {
+	isAuthoredByUser: boolean;
+	withPadding?: boolean;
 }
 
 export interface MessageItemBottomProps extends HTMLAttributes<HTMLDivElement> {
 	multipleChild: boolean;
+	withOffset?: boolean;
 }
 export interface ElapsedTimeWrapperProps extends HTMLAttributes<HTMLDivElement> {
 	color: string;
+}
+
+export interface RepliedMessageTextProps extends HTMLAttributes<HTMLDivElement> {
+	isMultiple: boolean;
 }
 
 export interface ChatProps {
@@ -198,4 +209,11 @@ export interface MessageProps {
 export interface ScrollToBottomButtonProps {
 	unreadNumber: number;
 	onPress(): void;
+}
+
+export interface MessageInputProps {
+	chatId: string;
+	authorName: string;
+	repliedMessage: Message | null;
+	setRepliedMessage: Dispatch<SetStateAction<Message | null>>;
 }

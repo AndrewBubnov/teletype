@@ -1,11 +1,13 @@
-import { Message, MessageType } from '@/types';
+import { Message } from '@/types';
 import { options } from '@/app/chat/[chatId]/constants';
 import {
+	RepliedMessageImage,
 	ReplyToAuthor,
 	ReplyToContainer,
 	ReplyToDate,
 	ReplyToDateWrapper,
 	ReplyToText,
+	ReplyToWrapper,
 } from '@/app/chat/[chatId]/styled';
 import Image from 'next/image';
 
@@ -18,13 +20,14 @@ export const ReplyTo = ({ message }: { message?: Message | null }) => {
 	return (
 		<ReplyToContainer onMouseDown={clickHandler} onTouchStart={clickHandler}>
 			<ReplyToAuthor>{message.authorName}</ReplyToAuthor>
-			<ReplyToText>
-				{message.type === MessageType.TEXT ? (
-					message.text
-				) : (
-					<Image src={message.imageUrl!} width={20} height={20} alt="" />
+			<ReplyToWrapper>
+				{message.text && <ReplyToText>{message.text}</ReplyToText>}
+				{message.imageUrl && (
+					<RepliedMessageImage>
+						<Image src={message.imageUrl!} width={20} height={20} alt="" />
+					</RepliedMessageImage>
 				)}
-			</ReplyToText>
+			</ReplyToWrapper>
 			<ReplyToDateWrapper>
 				<ReplyToDate>
 					{message.date && new Intl.DateTimeFormat('en-US', options).format(new Date(message.date))}

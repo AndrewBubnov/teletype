@@ -8,8 +8,7 @@ datasource db {
 }
 
 enum MessageType {
-  TEXT
-  IMAGE
+  COMMON
   EMOJI
 }
 

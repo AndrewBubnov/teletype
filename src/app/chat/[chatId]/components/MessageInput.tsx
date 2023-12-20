@@ -1,7 +1,10 @@
-import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
+import Image from 'next/image';
+import { EmojiClickData } from 'emoji-picker-react';
 import { RepliedMessageBox } from '@/app/chat/[chatId]/components/RepliedMessageBox';
 import {
+	PreviewWrapper,
 	SendButton,
 	SendMessageFormWrapper,
 	SendMessageIcon,
@@ -12,18 +15,10 @@ import {
 import { StyledInput } from '@/app/chat/styled';
 import { InputAdornment } from '@mui/material';
 import { Emoji } from '@/app/chat/[chatId]/components/Emoji';
-import { Message, MessageType } from '@/types';
 import { addMessageToChat } from '@/actions/addMessageToChat';
 import { sendMessageToServer } from '@/utils/sendMessageToServer';
-import { EmojiClickData } from 'emoji-picker-react';
 import { fileInputHelper } from '@/app/chat/[chatId]/utils/fileInputHelper';
-
-interface MessageInputProps {
-	chatId: string;
-	authorName: string;
-	repliedMessage: Message | null;
-	setRepliedMessage: Dispatch<SetStateAction<Message | null>>;
-}
+import { MessageInputProps, MessageType } from '@/types';
 
 export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMessage }: MessageInputProps) => {
 	const { user } = useUser();
@@ -31,19 +26,19 @@ export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMes
 
 	const [messageImageUrl, setMessageImageUrl] = useState<string>('');
 	const [messageText, setMessageText] = useState<string>('');
-	const [messageType, setMessageType] = useState<MessageType | null>(null);
+	const [emoji, setEmoji] = useState<string>('');
 
 	const textChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => setMessageText(evt.target.value);
 
 	const resetState = () => {
 		setMessageText('');
 		setMessageImageUrl('');
-		setMessageType(null);
+		setEmoji('');
 		setRepliedMessage(null);
 	};
 
-	const textSubmitHandler = async () => {
-		const type = messageType ? messageType : messageImageUrl ? MessageType.IMAGE : MessageType.TEXT;
+	const submitHandler = async () => {
+		const type = messageText && emoji && messageText === emoji ? MessageType.EMOJI : MessageType.COMMON;
 		const message = await addMessageToChat({
 			chatId,
 			authorId: userId,
@@ -58,33 +53,22 @@ export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMes
 	};
 
 	const onAddEmoji = (data: EmojiClickData) => {
-		setMessageType(MessageType.EMOJI);
 		setMessageText(prevState => `${prevState} ${data.emoji}`);
+		setEmoji(prevState => `${prevState} ${data.emoji}`);
 	};
 	const dropReplyHandler = () => setRepliedMessage(null);
 
-	const createImage = async (messageImageUrl: string) => {
-		const message = await addMessageToChat({
-			chatId,
-			authorId: userId,
-			authorName,
-			messageText,
-			messageType: MessageType.IMAGE,
-			messageImageUrl,
-			replyToId: repliedMessage?.id,
-		});
-		if (message) sendMessageToServer(message, chatId);
-		resetState();
-	};
+	const createPreview = (imgUrl: string) => setMessageImageUrl(imgUrl);
 
-	const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => fileInputHelper(event, createImage);
+	const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => fileInputHelper(event, createPreview);
+
+	const dropMessageImageUrl = () => setMessageImageUrl('');
 
 	return (
 		<SendMessageFormWrapper>
 			<RepliedMessageBox message={repliedMessage} authorName={authorName} onDropMessage={dropReplyHandler} />
 			<SendWrapper>
 				<StyledInput
-					onInput={() => setMessageType(MessageType.TEXT)}
 					fullWidth
 					value={messageText}
 					onChange={textChangeHandler}
@@ -103,7 +87,12 @@ export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMes
 						),
 					}}
 				/>
-				<SendButton onClick={textSubmitHandler} endIcon={<SendMessageIcon />} />
+				{messageImageUrl ? (
+					<PreviewWrapper onClick={dropMessageImageUrl}>
+						<Image src={messageImageUrl} alt="preview" fill />
+					</PreviewWrapper>
+				) : null}
+				<SendButton onClick={submitHandler} endIcon={<SendMessageIcon />} />
 			</SendWrapper>
 		</SendMessageFormWrapper>
 	);

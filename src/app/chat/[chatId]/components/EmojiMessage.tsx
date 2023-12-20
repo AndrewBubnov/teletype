@@ -8,7 +8,7 @@ export const EmojiMessage = ({ isAuthoredByUser, onPress, message, repliedMessag
 	if (!message.text) return null;
 
 	return (
-		<MessageItem isImage isAuthoredByUser={isAuthoredByUser} onClick={onPress}>
+		<MessageItem singlePadding transparent isAuthoredByUser={isAuthoredByUser} onClick={onPress}>
 			<ReplyTo message={repliedMessage} />
 			<EmojiDisplayWrapper>
 				{message.text.split(' ').map((emoji, index) => (
@@ -17,7 +17,7 @@ export const EmojiMessage = ({ isAuthoredByUser, onPress, message, repliedMessag
 					</Box>
 				))}
 			</EmojiDisplayWrapper>
-			<MessageBottom message={message} />
+			<MessageBottom message={message} withOffset={true} />
 		</MessageItem>
 	);
 };
