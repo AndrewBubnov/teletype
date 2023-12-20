@@ -9,8 +9,6 @@ import {
 	SendMessageFormWrapper,
 	SendMessageIcon,
 	SendWrapper,
-	UploadFileIcon,
-	UploadLabel,
 } from '@/app/chat/[chatId]/styled';
 import { StyledInput } from '@/app/chat/styled';
 import { InputAdornment } from '@mui/material';
@@ -18,6 +16,7 @@ import { Emoji } from '@/app/chat/[chatId]/components/Emoji';
 import { addMessageToChat } from '@/actions/addMessageToChat';
 import { sendMessageToServer } from '@/utils/sendMessageToServer';
 import { fileInputHelper } from '@/app/chat/[chatId]/utils/fileInputHelper';
+import { FileUploadInput } from '@/app/chat/[chatId]/components/FileUploadInput';
 import { MessageInputProps, MessageType } from '@/types';
 
 export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMessage }: MessageInputProps) => {
@@ -52,7 +51,7 @@ export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMes
 		resetState();
 	};
 
-	const onAddEmoji = (data: EmojiClickData) => {
+	const emojiHandler = (data: EmojiClickData) => {
 		setMessageText(prevState => `${prevState} ${data.emoji}`);
 		setEmoji(prevState => `${prevState} ${data.emoji}`);
 	};
@@ -60,7 +59,7 @@ export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMes
 
 	const createPreview = (imgUrl: string) => setMessageImageUrl(imgUrl);
 
-	const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => fileInputHelper(event, createPreview);
+	const selectFileHandler = (event: ChangeEvent<HTMLInputElement>) => fileInputHelper(event, createPreview);
 
 	const dropMessageImageUrl = () => setMessageImageUrl('');
 
@@ -76,13 +75,8 @@ export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMes
 					InputProps={{
 						endAdornment: (
 							<InputAdornment position="end">
-								(
-								<UploadLabel htmlFor="formId">
-									<UploadFileIcon />
-									<input id="formId" type="file" onChange={handleFileSelect} hidden />
-								</UploadLabel>
-								)
-								<Emoji onAddEmoji={onAddEmoji} />
+								<FileUploadInput onChange={selectFileHandler} />
+								<Emoji onAddEmoji={emojiHandler} />
 							</InputAdornment>
 						),
 					}}
