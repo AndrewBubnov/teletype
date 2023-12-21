@@ -40,6 +40,7 @@ export async function addMessageToChat({
 		select: { messageIds: true },
 	});
 	revalidatePath(CHATS_LIST);
+	revalidatePath(`${CHATS_LIST}/${chatId}`);
 
 	return createdMessage;
 }
