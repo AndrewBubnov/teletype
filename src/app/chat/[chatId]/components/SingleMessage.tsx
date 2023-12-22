@@ -36,8 +36,8 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 	}, [updateIsRead]);
 
 	useEffect(() => {
-		if (isAuthoredByUser) containerRef.current?.scrollIntoView({ behavior: 'smooth' });
-	}, [isAuthoredByUser]);
+		if (isAuthoredByUser || isImageEnlarged) containerRef.current?.scrollIntoView({ behavior: 'smooth' });
+	}, [isAuthoredByUser, isImageEnlarged]);
 
 	const Container = isAuthoredByUser ? AuthorMessageWrapper : InterlocutorMessageWrapper;
 
@@ -52,43 +52,43 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 		onContextMenuToggle('open', params);
 	};
 
-	if (message.type === MessageType.EMOJI) {
+	if (message.type === MessageType.COMMON) {
 		return (
-			<Container ref={containerRef} id={message.id}>
-				<EmojiMessage
+			<Container ref={containerRef} id={message.id} style={{ height: isImageEnlarged ? '100%' : 'unset' }}>
+				<MessageItem
+					singlePadding={!repliedMessage}
 					isAuthoredByUser={isAuthoredByUser}
-					onPress={onPress}
-					message={message}
-					repliedMessage={repliedMessage}
-				/>
+					fullWidth={isImageEnlarged}
+					onClick={onPress}
+				>
+					<ReplyTo message={repliedMessage} />
+					{message.imageUrl && (
+						<ImageMessage
+							message={message}
+							isEnlarged={isImageEnlarged}
+							onEnlargeToggle={toggleEnlargeHandler}
+							width={containerRef.current?.clientWidth}
+						/>
+					)}
+					{message.text && (
+						<InnerMessageItem withPadding={!repliedMessage} isAuthoredByUser={isAuthoredByUser}>
+							{message.text}
+						</InnerMessageItem>
+					)}
+					<MessageBottom message={message} withOffset={!repliedMessage} />
+				</MessageItem>
 			</Container>
 		);
 	}
 
 	return (
-		<Container ref={containerRef} id={message.id} style={{ height: isImageEnlarged ? '100%' : 'unset' }}>
-			<MessageItem
-				singlePadding={!repliedMessage}
+		<Container ref={containerRef} id={message.id}>
+			<EmojiMessage
 				isAuthoredByUser={isAuthoredByUser}
-				fullWidth={isImageEnlarged}
-				onClick={onPress}
-			>
-				<ReplyTo message={repliedMessage} />
-				{message.imageUrl && (
-					<ImageMessage
-						message={message}
-						isEnlarged={isImageEnlarged}
-						onEnlargeToggle={toggleEnlargeHandler}
-						width={containerRef.current?.clientWidth}
-					/>
-				)}
-				{message.text && (
-					<InnerMessageItem withPadding={!repliedMessage} isAuthoredByUser={isAuthoredByUser}>
-						{message.text}
-					</InnerMessageItem>
-				)}
-				<MessageBottom message={message} withOffset={!repliedMessage} />
-			</MessageItem>
+				onPress={onPress}
+				message={message}
+				repliedMessage={repliedMessage}
+			/>
 		</Container>
 	);
 };
