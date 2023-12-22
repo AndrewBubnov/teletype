@@ -1,4 +1,12 @@
-import { Dispatch, HTMLAttributes, MutableRefObject, PointerEvent, ReactNode, SetStateAction } from 'react';
+import {
+	Dispatch,
+	HTMLAttributes,
+	MutableRefObject,
+	PointerEvent,
+	ReactNode,
+	SetStateAction,
+	SyntheticEvent,
+} from 'react';
 import { ImageProps } from 'next/image';
 import { ButtonProps } from '@mui/material';
 
@@ -11,14 +19,17 @@ export interface MainProviderProps {
 
 export type MessageMap = Record<string, Message[]>;
 
-export interface MessageProviderProps {
+export interface ChatProviderProps {
 	children: ReactNode;
 	messageMap: MessageMap;
 	updateIsReadMap: (chatId: string) => (id: string) => Promise<void>;
-	addReactionMap: (chatId: string, authorImageUrl: string | null) => (id: string, reaction: string) => void;
+	addReactionMap: (
+		chatId: string,
+		authorImageUrl: string | null | undefined
+	) => (id: string, reaction: string) => void;
 }
 
-export type MessageContextProps = Omit<MessageProviderProps, 'children'>;
+export type ChatContextProps = Omit<ChatProviderProps, 'children'>;
 
 interface MainContext extends MainProviderProps {
 	chatList: UserChat[];
@@ -86,6 +97,7 @@ export interface ActiveChatProps {
 
 export interface MessageBoxProps extends HTMLAttributes<HTMLDivElement> {
 	isAuthoredByUser: boolean;
+	fullWidth?: boolean;
 	transparent?: boolean;
 	singlePadding?: boolean;
 	withOffset?: boolean;
@@ -231,5 +243,7 @@ export interface MessageInputProps {
 
 export interface ImageMessageProps {
 	message: Message;
+	isEnlarged: boolean;
+	onEnlargeToggle(evt: SyntheticEvent): void;
 	width?: number;
 }

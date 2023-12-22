@@ -193,19 +193,25 @@ export const Backdrop = styled(Box)`
 	inset: 0;
 	background: rgba(0, 0, 0, 0.3);
 `;
-const MessageWrapper = styled(Box)(() => ({
-	display: 'flex',
-	padding: '1rem 0',
-}));
+const MessageWrapper = styled(Box)`
+	display: flex;
+	padding: 1rem 0;
+`;
 export const AuthorMessageWrapper = styled(MessageWrapper)`
+	position: relative;
 	flex-direction: row-reverse;
 `;
 export const InterlocutorMessageWrapper = styled(MessageWrapper)`
+	position: relative;
 	flex-direction: row;
 `;
 export const MessageItem = styled(
-	({ isAuthoredByUser, singlePadding, withOffset, transparent, ...props }: MessageBoxProps) => <Box {...props} />
+	({ isAuthoredByUser, singlePadding, withOffset, fullWidth, transparent, ...props }: MessageBoxProps) => (
+		<Box {...props} />
+	)
 )`
+	position: relative;
+	width: ${({ fullWidth }) => (fullWidth ? '100%' : 'unset')};
 	padding: ${({ singlePadding }) => (singlePadding ? '0 0 0.5rem 0' : '0.5rem')};
 	margin-top: ${({ withOffset }) => (withOffset ? '0.5rem' : 0)};
 	background: ${({ isAuthoredByUser, transparent }) => {

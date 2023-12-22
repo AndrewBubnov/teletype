@@ -1,7 +1,7 @@
 import { useContext, useMemo } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { SocketContext } from '@/app/providers/SocketProvider';
-import { MessageContext } from '@/app/chat/providers/MessageProvider';
+import { MessageContext } from '@/app/chat/providers/ChatProvider';
 import { useLongPress } from '@/app/chat/[chatId]/hooks/useLongPress';
 import {
 	ChatListItemWrapper,

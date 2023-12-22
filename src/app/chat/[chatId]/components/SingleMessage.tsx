@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import {
 	AuthorMessageWrapper,
@@ -14,6 +14,8 @@ import { MessageType, SingleMessageProps } from '@/types';
 
 export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, updateIsRead }: SingleMessageProps) => {
 	const { user } = useUser();
+	const [isImageEnlarged, setIsImageEnlarged] = useState<boolean>(false);
+
 	const containerRef = useRef<HTMLDivElement | null>(null);
 
 	const isAuthoredByUser = message.authorId === user?.id;
@@ -39,6 +41,11 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 
 	const Container = isAuthoredByUser ? AuthorMessageWrapper : InterlocutorMessageWrapper;
 
+	const toggleEnlargeHandler = (evt: SyntheticEvent) => {
+		evt.stopPropagation();
+		setIsImageEnlarged(prevState => !prevState);
+	};
+
 	const onPress = () => {
 		const params = containerRef.current?.getBoundingClientRect();
 		if (!params) return;
@@ -59,10 +66,22 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 	}
 
 	return (
-		<Container ref={containerRef} id={message.id}>
-			<MessageItem singlePadding={!repliedMessage} isAuthoredByUser={isAuthoredByUser} onClick={onPress}>
+		<Container ref={containerRef} id={message.id} style={{ height: isImageEnlarged ? '100%' : 'unset' }}>
+			<MessageItem
+				singlePadding={!repliedMessage}
+				isAuthoredByUser={isAuthoredByUser}
+				fullWidth={isImageEnlarged}
+				onClick={onPress}
+			>
 				<ReplyTo message={repliedMessage} />
-				{message.imageUrl && <ImageMessage message={message} width={containerRef.current?.clientWidth} />}
+				{message.imageUrl && (
+					<ImageMessage
+						message={message}
+						isEnlarged={isImageEnlarged}
+						onEnlargeToggle={toggleEnlargeHandler}
+						width={containerRef.current?.clientWidth}
+					/>
+				)}
 				{message.text && (
 					<InnerMessageItem withPadding={!repliedMessage} isAuthoredByUser={isAuthoredByUser}>
 						{message.text}

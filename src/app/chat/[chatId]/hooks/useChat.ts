@@ -5,7 +5,7 @@ import { sendChangeVisitorStatus } from '@/utils/sendChangeVisitorStatus';
 import { useLatest } from '@/app/chat/hooks/useLatest';
 import { updateMessageIsRead } from '@/actions/updateMessageIsRead';
 import { deleteReadMessages } from '@/actions/deleteReadMessages';
-import { MessageContext } from '@/app/chat/providers/MessageProvider';
+import { MessageContext } from '@/app/chat/providers/ChatProvider';
 import { Message, UserChat, VisitorStatus } from '@/types';
 
 export const useChat = (chat: UserChat) => {

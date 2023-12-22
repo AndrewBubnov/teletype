@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import { MessageProvider } from '@/app/chat/providers/MessageProvider';
+import { ChatProvider } from '@/app/chat/providers/ChatProvider';
 
 export default function ChatLayout({ children }: { children: ReactNode }) {
-	return <MessageProvider>{children}</MessageProvider>;
+	return <ChatProvider>{children}</ChatProvider>;
 }

@@ -78,16 +78,17 @@ export const useChatProviderSource = () => {
 		if (message) await updateMessageIsRead(id);
 	};
 
-	const addReactionMap = (chatId: string, authorImageUrl: string | null) => (id: string, reaction: string) =>
-		setMessageMap(prevState => ({
-			...prevState,
-			[chatId]: prevState[chatId].map(message => {
-				if (message.id === id) {
-					return { ...message, reaction, reactionAuthorImageUrl: reaction ? authorImageUrl : null };
-				}
-				return message;
-			}),
-		}));
+	const addReactionMap =
+		(chatId: string, authorImageUrl: string | null | undefined) => (id: string, reaction: string) =>
+			setMessageMap(prevState => ({
+				...prevState,
+				[chatId]: prevState[chatId].map(message => {
+					if (message.id === id) {
+						return { ...message, reaction, reactionAuthorImageUrl: reaction ? authorImageUrl : null };
+					}
+					return message;
+				}),
+			}));
 
 	return { messageMap, updateIsReadMap, addReactionMap };
 };

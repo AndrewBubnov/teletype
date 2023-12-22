@@ -10,8 +10,8 @@ import { addReactionToMessage } from '@/actions/addReactionToMessage';
 import { sendEditMessage } from '@/utils/sendEditMessage';
 import { ContextMenu } from '@/app/chat/[chatId]/components/ContextMenu';
 import { MessageInput } from '@/app/chat/[chatId]/components/MessageInput';
-import { ChatProps, Message } from '@/types';
 import { ScrollToBottomButton } from '@/app/chat/[chatId]/components/ScrollToBottomButton';
+import { ChatProps, Message } from '@/types';
 
 export const Chat = ({ chat }: ChatProps) => {
 	const {
