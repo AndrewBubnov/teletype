@@ -70,7 +70,8 @@ export const ChatListItem = ({
 					<UserWrapper>
 						<ChatListItemMessageText>
 							{lastMessage.text}
-							{lastMessage.imageUrl ? <Italic> + Image</Italic> : null}
+							{lastMessage.text && lastMessage.imageUrl ? <Italic> + </Italic> : null}
+							{lastMessage.imageUrl ? <Italic>Image</Italic> : null}
 						</ChatListItemMessageText>
 						{unreadNumber && !isDeleteMode ? <ChatUnreadMessages>{unreadNumber}</ChatUnreadMessages> : null}
 					</UserWrapper>
