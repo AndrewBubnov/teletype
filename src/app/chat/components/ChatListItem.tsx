@@ -1,7 +1,6 @@
-import { useContext, useMemo } from 'react';
+import { useMemo } from 'react';
+import { useStore } from '@/store';
 import { useUser } from '@clerk/nextjs';
-import { SocketContext } from '@/app/providers/SocketProvider';
-import { MessageContext } from '@/app/chat/providers/ChatProvider';
 import { useLongPress } from '@/app/chat/[chatId]/hooks/useLongPress';
 import {
 	ChatListItemWrapper,
@@ -18,8 +17,8 @@ import {
 	Italic,
 } from '@/app/chat/styled';
 import { options } from '@/app/chat/[chatId]/constants';
-
 import { ChatListItemProps } from '@/types';
+
 export const ChatListItem = ({
 	chatId,
 	interlocutor,
@@ -32,8 +31,10 @@ export const ChatListItem = ({
 	const { user } = useUser();
 	const userId = user?.id as string;
 
-	const { activeUsers } = useContext(SocketContext);
-	const { messageMap } = useContext(MessageContext);
+	const { messageMap, activeUsers } = useStore(state => ({
+		messageMap: state.messageMap,
+		activeUsers: state.activeUsers,
+	}));
 
 	const messageList = messageMap[chatId] || [];
 	const unreadNumber = messageList.filter(el => !el.isRead && el.authorId !== userId).length;

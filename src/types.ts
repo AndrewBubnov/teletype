@@ -247,3 +247,19 @@ export interface ImageMessageProps {
 	onEnlargeToggle(evt: SyntheticEvent): void;
 	width?: number;
 }
+
+export interface Store {
+	activeUsers: string[];
+	setActiveUsers(arg: string[]): void;
+	chatVisitorStatus: ChatVisitorStatus;
+	setChatVisitorStatus(arg: ChatVisitorStatus): void;
+	messageMap: MessageMap;
+	setMessageMap(arg: MessageMap): void;
+	addMessageToMessageMap(arg: Message): void;
+	updateMessageInMessageMap(args: EditMessageClient): void;
+	updateIsReadMap: (chatId: string, userId: string) => (id: string) => Promise<void>;
+	addReactionMap: (
+		chatId: string,
+		authorImageUrl: string | null | undefined
+	) => (id: string, reaction: string) => void;
+}

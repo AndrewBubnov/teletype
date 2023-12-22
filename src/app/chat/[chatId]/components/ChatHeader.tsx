@@ -1,6 +1,5 @@
-import { memo, useContext, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { SocketContext } from '@/app/providers/SocketProvider';
 import {
 	CenterHorizontalWrapper,
 	ChatHeaderWrapper,
@@ -13,9 +12,13 @@ import { ElapsedTime } from '@/app/chat/[chatId]/components/ElapsedTime';
 import { getInterlocutorState } from '@/app/chat/[chatId]/utils/getInterlocutorState';
 import { CHATS_LIST } from '@/constants';
 import { ChatHeaderProps, VisitorStatus } from '@/types';
+import { useStore } from '@/store';
 
 const ChatHeaderComponent = ({ chatId, interlocutorId, interlocutorName, interlocutorImageUrl }: ChatHeaderProps) => {
-	const { chatVisitorStatus, activeUsers } = useContext(SocketContext);
+	const { chatVisitorStatus, activeUsers } = useStore(state => ({
+		chatVisitorStatus: state.chatVisitorStatus,
+		activeUsers: state.activeUsers,
+	}));
 	const { push } = useRouter();
 	const redirectToChatPage = () => push(CHATS_LIST);
 

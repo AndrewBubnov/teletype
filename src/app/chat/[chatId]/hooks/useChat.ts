@@ -1,12 +1,10 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useStore } from '@/store';
 import { useUser } from '@clerk/nextjs';
 import { createRoom } from '@/utils/createRoom';
 import { sendChangeVisitorStatus } from '@/utils/sendChangeVisitorStatus';
-import { useLatest } from '@/app/chat/hooks/useLatest';
-import { updateMessageIsRead } from '@/actions/updateMessageIsRead';
 import { deleteReadMessages } from '@/actions/deleteReadMessages';
-import { MessageContext } from '@/app/chat/providers/ChatProvider';
-import { Message, UserChat, VisitorStatus } from '@/types';
+import { UserChat, VisitorStatus } from '@/types';
 
 export const useChat = (chat: UserChat) => {
 	const { user } = useUser();
@@ -20,10 +18,12 @@ export const useChat = (chat: UserChat) => {
 	const authorImageUrl = author?.imageUrl;
 	const interlocutorImageUrl = interlocutor?.imageUrl;
 
-	const { messageMap, addReactionMap, updateIsReadMap } = useContext(MessageContext);
+	const { messageMap, updateIsReadMap, addReactionMap } = useStore(state => ({
+		messageMap: state.messageMap,
+		updateIsReadMap: state.updateIsReadMap,
+		addReactionMap: state.addReactionMap,
+	}));
 	const messageList = messageMap[chatId] || [];
-
-	const messageListRef = useLatest(messageList);
 
 	useEffect(() => {
 		deleteReadMessages(chatId).then();
@@ -44,7 +44,7 @@ export const useChat = (chat: UserChat) => {
 
 	const unreadNumber = messageList.filter(el => !el.isRead && el.authorId !== userId).length;
 
-	const updateIsRead = updateIsReadMap(chatId);
+	const updateIsRead = updateIsReadMap(chatId, userId);
 
 	const addReaction = addReactionMap(chatId, authorImageUrl);
 

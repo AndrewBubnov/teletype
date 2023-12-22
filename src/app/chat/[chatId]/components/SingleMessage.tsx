@@ -21,7 +21,8 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 	const isAuthoredByUser = message.authorId === user?.id;
 
 	useEffect(() => {
-		if (!containerRef.current) return;
+		if (!containerRef.current || message.isRead) return;
+
 		const observer = new IntersectionObserver(
 			([entry]) => {
 				if (entry.isIntersecting) {
@@ -33,7 +34,7 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 		);
 		observer.observe(containerRef.current);
 		return () => observer.disconnect();
-	}, [updateIsRead]);
+	}, [message.isRead, updateIsRead]);
 
 	useEffect(() => {
 		if (isAuthoredByUser || isImageEnlarged)
