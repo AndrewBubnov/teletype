@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
-import { getUser } from '@/actions/getUser';
-import { getUserChats } from '@/actions/getUserChats';
-import { addClientMessage, clearAddClientMessage } from '@/utils/addClientMessage';
-import { EditMessageClient, Message, MessageMap } from '@/types';
-import { clearUpdateClientMessage, updateClientMessage } from '@/utils/updateClientMessage';
-import { updateMessageIsRead } from '@/actions/updateMessageIsRead';
 import { useUser } from '@clerk/nextjs';
 import { useLatest } from '@/app/chat/hooks/useLatest';
+import { getUser } from '@/actions/getUser';
+import { getUserChats } from '@/actions/getUserChats';
+import { updateMessageIsRead } from '@/actions/updateMessageIsRead';
+import { addClientMessage, clearAddClientMessage } from '@/utils/addClientMessage';
+import { clearUpdateClientMessage, updateClientMessage } from '@/utils/updateClientMessage';
+import { EditMessageClient, Message, MessageMap } from '@/types';
 
-export const useMessageMap = () => {
+export const useChatProviderSource = () => {
 	const { user } = useUser();
 	const userId = user?.id as string;
 	const [messageMap, setMessageMap] = useState<MessageMap>({} as MessageMap);
