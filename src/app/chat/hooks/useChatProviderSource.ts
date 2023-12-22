@@ -71,11 +71,13 @@ export const useChatProviderSource = () => {
 	const updateIsReadMap = (chatId: string) => async (id: string) => {
 		const predicate = (el: Message): boolean => el.id === id && el.authorId !== userId;
 		const message = messagesMapRef.current[chatId].find(predicate);
-		setMessageMap(prevState => ({
-			...prevState,
-			[chatId]: prevState[chatId].map(el => (predicate(el) ? { ...el, isRead: true } : el)),
-		}));
-		if (message) await updateMessageIsRead(id);
+		if (message && !message?.isRead) {
+			setMessageMap(prevState => ({
+				...prevState,
+				[chatId]: prevState[chatId].map(el => (predicate(el) ? { ...el, isRead: true } : el)),
+			}));
+			await updateMessageIsRead(id);
+		}
 	};
 
 	const addReactionMap =
