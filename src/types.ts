@@ -8,6 +8,18 @@ export interface MainProviderProps {
 	userId: string;
 	userChats: UserChat[];
 }
+
+export type MessageMap = Record<string, Message[]>;
+
+export interface MessageProviderProps {
+	children: ReactNode;
+	messageMap: MessageMap;
+	updateIsReadMap: (chatId: string) => (id: string) => Promise<void>;
+	addReactionMap: (chatId: string, authorImageUrl: string | null) => (id: string, reaction: string) => void;
+}
+
+export type MessageContextProps = Omit<MessageProviderProps, 'children'>;
+
 interface MainContext extends MainProviderProps {
 	chatList: UserChat[];
 }
@@ -106,14 +118,13 @@ export interface UserPhotoImageProps extends ImageProps {
 }
 
 export interface ChatListItemProps {
+	chatId: string;
 	interlocutor: User;
 	onPress(): void;
 	onLongPress(): void;
 	isDeleteMode: boolean;
 	onCheckboxToggle(): void;
 	isChecked: boolean;
-	unreadNumberStored: number;
-	lastMessageStored: Message | null;
 }
 
 export enum VisitorStatus {
@@ -156,9 +167,9 @@ export interface AddMessageToChat {
 export interface EditMessageClient {
 	messageId: string;
 	message: Message | null;
+	roomId: string;
 }
 export interface EditMessageServer extends EditMessageClient {
-	roomId: string;
 	authorOnly?: boolean;
 }
 

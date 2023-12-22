@@ -89,6 +89,10 @@ export const HeaderContainer = styled(Box)(() => ({
 	padding: '0px 1rem',
 }));
 
+export const ChatListItemDateWrapper = styled(Box)(() => ({
+	fontSize: '0.7rem',
+}));
+
 export const ChatListItemWrapper = styled(Box)(() => ({
 	display: 'flex',
 	justifyContent: 'space-between',

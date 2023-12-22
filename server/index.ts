@@ -67,9 +67,9 @@ io.on('connection', socket => {
 	);
 	socket.on('edit-message-to-server', ({ messageId, message, roomId, authorOnly }: EditMessageServer) => {
 		if (authorOnly) {
-			return socket.emit('edit-message-to-client', { messageId, message });
+			return socket.emit('edit-message-to-client', { messageId, message, roomId });
 		}
-		return io.to(roomId).emit('edit-message-to-client', { messageId, message });
+		return io.to(roomId).emit('edit-message-to-client', { messageId, message, roomId });
 	});
 	socket.on('change-visitor-status-server', ({ status, userId, chatId }: ChangeVisitorStatus) => {
 		chatVisitorStatus = {

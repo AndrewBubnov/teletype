@@ -1,4 +1,6 @@
 import { useContext, useMemo } from 'react';
+import { SocketContext } from '@/app/providers/SocketProvider';
+
 import { useLongPress } from '@/app/chat/[chatId]/hooks/useLongPress';
 import {
 	ChatListItemWrapper,
@@ -11,24 +13,28 @@ import {
 	ChatListItemUsername,
 	UserNameWrapper,
 	ChatListItemInnerWrapper,
+	ChatListItemDateWrapper,
 } from '@/app/chat/styled';
-import { SocketContext } from '@/app/providers/SocketProvider';
-import { ChatListItemProps } from '@/types';
-import { useUnread } from '@/app/chat/[chatId]/hooks/useUnread';
 import { options } from '@/app/chat/[chatId]/constants';
+import { ChatListItemProps } from '@/types';
+import { MessageContext } from '@/app/chat/providers/MessageProvider';
+import { MainContext } from '@/app/chat/providers/MainProvider';
 
 export const ChatListItem = ({
+	chatId,
 	interlocutor,
 	onPress,
 	onLongPress,
 	isDeleteMode,
 	onCheckboxToggle,
 	isChecked,
-	unreadNumberStored,
-	lastMessageStored,
 }: ChatListItemProps) => {
 	const { activeUsers } = useContext(SocketContext);
-	const { unreadNumber, lastMessage } = useUnread(unreadNumberStored, lastMessageStored);
+	const { messageMap, userId } = useContext(MessageContext);
+
+	const messageList = messageMap[chatId] || [];
+	const unreadNumber = messageList.filter(el => !el.isRead && el.authorId !== userId).length;
+	const lastMessage = messageList.at(-1) || null;
 
 	const pressHandler = useLongPress({ onLongPress, onPress });
 
@@ -52,14 +58,16 @@ export const ChatListItem = ({
 						<ChatListItemUsername>{interlocutor?.username || interlocutor?.email}</ChatListItemUsername>
 					</UserNameWrapper>
 					{lastMessage && !isDeleteMode ? (
-						<div style={{ fontSize: '0.7rem' }}>
+						<ChatListItemDateWrapper>
 							{new Intl.DateTimeFormat('en-US', options).format(new Date(lastMessage.date))}
-						</div>
+						</ChatListItemDateWrapper>
 					) : null}
 				</UserWrapper>
 				{lastMessage ? (
 					<UserWrapper>
-						<ChatListItemMessageText>{lastMessage.text}</ChatListItemMessageText>
+						<ChatListItemMessageText>{`${lastMessage.text}${
+							lastMessage.imageUrl ? ' + Image' : ''
+						}`}</ChatListItemMessageText>
 						{unreadNumber && !isDeleteMode ? <ChatUnreadMessages>{unreadNumber}</ChatUnreadMessages> : null}
 					</UserWrapper>
 				) : null}

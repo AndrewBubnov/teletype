@@ -1,18 +1,17 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { createRoom } from '@/utils/createRoom';
 import { sendChangeVisitorStatus } from '@/utils/sendChangeVisitorStatus';
-import { clearAddClientMessage, addClientMessage } from '@/utils/addClientMessage';
-import { clearUpdateClientMessage, updateClientMessage } from '@/utils/updateClientMessage';
 import { useLatest } from '@/app/chat/hooks/useLatest';
-import { EditMessageClient, Message, UserChat, VisitorStatus } from '@/types';
 import { updateMessageIsRead } from '@/actions/updateMessageIsRead';
 import { deleteReadMessages } from '@/actions/deleteReadMessages';
+import { MessageContext } from '@/app/chat/providers/MessageProvider';
+import { Message, UserChat, VisitorStatus } from '@/types';
 
 export const useChat = (chat: UserChat) => {
 	const { user } = useUser();
 	const userId = user?.id as string;
-	const { messages, members, chatId } = chat;
+	const { members, chatId } = chat;
 	const author = members.find(user => user.userId === userId);
 	const interlocutor = members.find(user => user.userId !== userId);
 	const interlocutorId = interlocutor?.userId || '';
@@ -21,7 +20,8 @@ export const useChat = (chat: UserChat) => {
 	const authorImageUrl = author?.imageUrl;
 	const interlocutorImageUrl = interlocutor?.imageUrl;
 
-	const [messageList, setMessageList] = useState<Message[]>(messages);
+	const { messageMap, addReactionMap, updateIsReadMap } = useContext(MessageContext);
+	const messageList = messageMap[chatId] || [];
 
 	const messageListRef = useLatest(messageList);
 
@@ -42,50 +42,11 @@ export const useChat = (chat: UserChat) => {
 		};
 	}, [chatId, userId]);
 
-	useEffect(() => {
-		const handler = (message: Message) => setMessageList(prevList => [...prevList, message]);
-		addClientMessage(handler);
-		return () => {
-			clearAddClientMessage(handler);
-		};
-	}, []);
-
-	useEffect(() => {
-		const handler = ({ message, messageId }: EditMessageClient) =>
-			setMessageList(prevList => {
-				if (!message) return prevList.filter(el => el.id !== messageId);
-				return prevList.map(el => (el.id === messageId ? message : el));
-			});
-		updateClientMessage(handler);
-		return () => {
-			clearUpdateClientMessage(handler);
-		};
-	}, []);
-
 	const unreadNumber = messageList.filter(el => !el.isRead && el.authorId !== userId).length;
 
-	const updateIsRead = useCallback(
-		async (id: string) => {
-			const predicate = (el: Message): boolean => el.id === id && el.authorId !== userId;
-			const message = messageListRef.current.find(predicate);
-			setMessageList(prevList => prevList.map(el => (predicate(el) ? { ...el, isRead: true } : el)));
-			if (message) await updateMessageIsRead(id);
-		},
-		[messageListRef, userId]
-	);
+	const updateIsRead = updateIsReadMap(chatId);
 
-	const addReaction = useCallback(
-		(id: string, reaction: string) =>
-			setMessageList(prevState =>
-				prevState.map(message => {
-					if (message.id === id) {
-						return { ...message, reaction, reactionAuthorImageUrl: reaction ? authorImageUrl : null };
-					}
-					return message;
-				})
-			),
-		[authorImageUrl]
-	);
+	const addReaction = addReactionMap(chatId, authorImageUrl);
 
 	return {
 		messageList,

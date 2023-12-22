@@ -3,15 +3,17 @@ import { useContext, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MainContext } from '@/app/chat/providers/MainProvider';
 import { Box } from '@mui/material';
-import { ChatListItem } from '@/app/chat/[chatId]/components/ChatListItem';
+import { ChatListItem } from '@/app/chat/components/ChatListItem';
 import { ChatsListDeleteButton, ChatsListHeader, DeleteIcon } from '@/app/chat/[chatId]/styled';
 import { deleteChats } from '@/actions/deleteChats';
 import { sendDeleteUserChats } from '@/utils/sendDeleteUserChats';
 import { CHATS_LIST } from '@/constants';
+import { MessageContext } from '@/app/chat/providers/MessageProvider';
 
 export const ChatsList = () => {
 	const { push } = useRouter();
 	const { chatList, userId } = useContext(MainContext);
+
 	const [isDeleteMode, setIsDeleteMode] = useState<boolean>(false);
 	const [deletedChatIds, setDeletedChatIds] = useState<string[]>([]);
 
@@ -46,19 +48,16 @@ export const ChatsList = () => {
 			<Box>
 				{chatList.map(({ chatId, members, messages }) => {
 					const [interlocutor] = members.filter(member => member.userId !== userId);
-					const unreadNumberStored = messages.filter(el => !el.isRead && el.authorId !== userId).length;
-					const lastMessageStored = messages.at(-1) || null;
 					return (
 						<ChatListItem
 							key={chatId}
+							chatId={chatId}
 							interlocutor={interlocutor}
 							onPress={setActiveChat(chatId)}
 							onLongPress={toggleMode(chatId)}
 							isDeleteMode={isDeleteMode}
 							onCheckboxToggle={deleteCheckboxHandler(chatId)}
 							isChecked={deletedChatIds.includes(chatId)}
-							unreadNumberStored={unreadNumberStored}
-							lastMessageStored={lastMessageStored}
 						/>
 					);
 				})}
