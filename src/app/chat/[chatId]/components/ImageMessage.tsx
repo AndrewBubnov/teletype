@@ -7,7 +7,7 @@ import {
 	StyledImage,
 	StyledImageButton,
 } from '@/app/chat/[chatId]/styled';
-import { DEFAULT_IMAGE_WIDTH, IMAGE_RATIO } from '@/app/chat/[chatId]/constants';
+import { DEFAULT_IMAGE_WIDTH, MAX_MESSAGE_WIDTH } from '@/app/chat/[chatId]/constants';
 import { ImageMessageProps } from '@/types';
 
 export const ImageMessage = ({
@@ -35,8 +35,8 @@ export const ImageMessage = ({
 		<BasicImageWrapper>
 			<StyledImage
 				src={message.imageUrl}
-				width={width * IMAGE_RATIO}
-				height={(width * IMAGE_RATIO) / aspectRatio}
+				width={width * MAX_MESSAGE_WIDTH}
+				height={(width * MAX_MESSAGE_WIDTH) / aspectRatio}
 				alt=""
 			/>
 			<StyledImageButton onClick={onEnlargeToggle}>

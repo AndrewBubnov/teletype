@@ -18,6 +18,7 @@ import {
 	RepliedMessageTextProps,
 	StyledButtonProps,
 } from '@/types';
+import { MAX_MESSAGE_WIDTH } from '@/app/chat/[chatId]/constants';
 
 export const ChatWrapper = styled(Box)`
 	padding: 1rem;
@@ -211,6 +212,7 @@ export const MessageItem = styled(
 	)
 )`
 	position: relative;
+	max-width: ${({ fullWidth }) => (fullWidth ? 'unset' : `${MAX_MESSAGE_WIDTH * 100}%`)};
 	width: ${({ fullWidth }) => (fullWidth ? '100%' : 'unset')};
 	padding: ${({ singlePadding }) => (singlePadding ? '0 0 0.5rem 0' : '0.5rem')};
 	margin-top: ${({ withOffset }) => (withOffset ? '0.5rem' : 0)};
@@ -226,6 +228,7 @@ export const InnerMessageItem = styled(({ isAuthoredByUser, withPadding, ...prop
 ))`
 	padding: ${({ withPadding }) => (withPadding ? '0.5rem' : 0)};
 	margin-top: 0.5rem;
+	max-width: 100%;
 	border-radius: 0.25rem;
 `;
 

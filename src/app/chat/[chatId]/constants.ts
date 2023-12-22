@@ -37,5 +37,5 @@ export const reactions = [
 	'1f44d',
 ];
 
-export const IMAGE_RATIO = 5 / 6;
+export const MAX_MESSAGE_WIDTH = 5 / 6;
 export const DEFAULT_IMAGE_WIDTH = 350;

@@ -36,7 +36,8 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 	}, [updateIsRead]);
 
 	useEffect(() => {
-		if (isAuthoredByUser || isImageEnlarged) containerRef.current?.scrollIntoView({ behavior: 'smooth' });
+		if (isAuthoredByUser || isImageEnlarged)
+			containerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 	}, [isAuthoredByUser, isImageEnlarged]);
 
 	const Container = isAuthoredByUser ? AuthorMessageWrapper : InterlocutorMessageWrapper;
