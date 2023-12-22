@@ -1,6 +1,7 @@
 import { useContext, useMemo } from 'react';
+import { useUser } from '@clerk/nextjs';
 import { SocketContext } from '@/app/providers/SocketProvider';
-
+import { MessageContext } from '@/app/chat/providers/MessageProvider';
 import { useLongPress } from '@/app/chat/[chatId]/hooks/useLongPress';
 import {
 	ChatListItemWrapper,
@@ -16,10 +17,8 @@ import {
 	ChatListItemDateWrapper,
 } from '@/app/chat/styled';
 import { options } from '@/app/chat/[chatId]/constants';
-import { ChatListItemProps } from '@/types';
-import { MessageContext } from '@/app/chat/providers/MessageProvider';
-import { MainContext } from '@/app/chat/providers/MainProvider';
 
+import { ChatListItemProps } from '@/types';
 export const ChatListItem = ({
 	chatId,
 	interlocutor,
@@ -29,8 +28,11 @@ export const ChatListItem = ({
 	onCheckboxToggle,
 	isChecked,
 }: ChatListItemProps) => {
+	const { user } = useUser();
+	const userId = user?.id as string;
+
 	const { activeUsers } = useContext(SocketContext);
-	const { messageMap, userId } = useContext(MessageContext);
+	const { messageMap } = useContext(MessageContext);
 
 	const messageList = messageMap[chatId] || [];
 	const unreadNumber = messageList.filter(el => !el.isRead && el.authorId !== userId).length;

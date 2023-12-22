@@ -29,7 +29,7 @@ export interface SocketContextProps {
 	chatVisitorStatus: ChatVisitorStatus;
 }
 
-export type MainContextProps = Omit<MainContext, 'children' | 'userChats'>;
+export type MainContextProps = Omit<MainContext, 'children' | 'userChats' | 'userId'>;
 
 export enum MessageType {
 	COMMON = 'COMMON',

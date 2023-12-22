@@ -4,8 +4,8 @@ import { useUpdateData } from '@/app/hooks/useUpdateData';
 import { useLatest } from '@/app/chat/hooks/useLatest';
 import { updateChatList } from '@/utils/updateChatList';
 import { createRooms } from '@/app/chat/utils/createRooms';
-import { UserChat, MainContextProps, MainProviderProps } from '@/types';
 import { initUserChat } from '@/utils/initUserChat';
+import { UserChat, MainContextProps, MainProviderProps } from '@/types';
 
 export const MainContext = createContext({} as MainContextProps);
 
@@ -20,5 +20,5 @@ export const MainProvider = ({ userEmails, userId, userChats, children }: MainPr
 
 	useEffect(() => createRooms(userChats, userId), [userChats, userId]);
 
-	return <MainContext.Provider value={{ userEmails, userId, chatList }}>{children}</MainContext.Provider>;
+	return <MainContext.Provider value={{ userEmails, chatList }}>{children}</MainContext.Provider>;
 };
