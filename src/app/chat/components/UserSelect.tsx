@@ -1,5 +1,6 @@
 'use client';
 import { SyntheticEvent, useContext, useState } from 'react';
+import { useUser } from '@clerk/nextjs';
 import { StyledInput } from '@/app/chat/styled';
 import { Autocomplete } from '@mui/material';
 import { MainContext } from '@/app/chat/providers/MainProvider';
@@ -7,7 +8,10 @@ import { getUserIdByEmail } from '@/actions/getUserIdByEmail';
 import { onCreateChat } from '@/app/chat/utils/onCreateChat';
 
 export const UserSelect = () => {
-	const { userEmails, userId } = useContext(MainContext);
+	const { user } = useUser();
+	const userId = user?.id as string;
+
+	const { userEmails } = useContext(MainContext);
 	const [userEmail, setUserEmail] = useState<string | null>(null);
 	const changeHandler = async (evt: SyntheticEvent<Element, Event>, value: string | null) => {
 		setUserEmail(value);
