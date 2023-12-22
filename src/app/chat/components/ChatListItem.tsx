@@ -15,6 +15,7 @@ import {
 	UserNameWrapper,
 	ChatListItemInnerWrapper,
 	ChatListItemDateWrapper,
+	Italic,
 } from '@/app/chat/styled';
 import { options } from '@/app/chat/[chatId]/constants';
 
@@ -67,9 +68,10 @@ export const ChatListItem = ({
 				</UserWrapper>
 				{lastMessage ? (
 					<UserWrapper>
-						<ChatListItemMessageText>{`${lastMessage.text}${
-							lastMessage.imageUrl ? ' + Image' : ''
-						}`}</ChatListItemMessageText>
+						<ChatListItemMessageText>
+							{lastMessage.text}
+							{lastMessage.imageUrl ? <Italic> + Image</Italic> : null}
+						</ChatListItemMessageText>
 						{unreadNumber && !isDeleteMode ? <ChatUnreadMessages>{unreadNumber}</ChatUnreadMessages> : null}
 					</UserWrapper>
 				) : null}

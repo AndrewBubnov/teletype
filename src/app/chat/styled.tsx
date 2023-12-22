@@ -1,7 +1,7 @@
 'use client';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
-import { Box, Checkbox, TextField, Typography } from '@mui/material';
+import { Box, BoxProps, Checkbox, TextField, Typography } from '@mui/material';
 import { ChatListItemInnerWrapperProps, UserPhotoImageProps, UserPhotoStubProps } from '@/types';
 
 export const UserPhotoImage = styled(({ isActive = false, size = 50, ...props }: UserPhotoImageProps) => (
@@ -74,6 +74,11 @@ export const ChatListItemMessageText = styled(Typography)({
 	maxWidth: 'calc(100% - 1em - 1rem)',
 });
 
+export const Italic = styled((props: BoxProps) => <Box {...props} component="span" />)({
+	fontStyle: 'italic',
+	color: 'palegoldenrod',
+});
+
 export const ChatListItemUsername = styled(Typography)({
 	textOverflow: 'ellipsis',
 	whiteSpace: 'nowrap',
@@ -99,6 +104,7 @@ export const ChatListItemWrapper = styled(Box)(() => ({
 	alignItems: 'center',
 	padding: '0.5rem',
 	cursor: 'pointer',
+	marginBottom: '1rem',
 }));
 
 export const ChatListItemInnerWrapper = styled(({ isDeleteMode, ...props }: ChatListItemInnerWrapperProps) => (
