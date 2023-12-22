@@ -10,15 +10,17 @@ import {
 	ReplyToWrapper,
 } from '@/app/chat/[chatId]/styled';
 import Image from 'next/image';
+import { SyntheticEvent } from 'react';
 
 export const ReplyTo = ({ message }: { message?: Message | null }) => {
 	if (!message) return null;
-	const clickHandler = () => {
+	const clickHandler = (evt: SyntheticEvent) => {
+		evt.stopPropagation();
 		const node = document.getElementById(message.id);
 		node?.scrollIntoView({ behavior: 'smooth' });
 	};
 	return (
-		<ReplyToContainer onMouseDown={clickHandler} onTouchStart={clickHandler}>
+		<ReplyToContainer onClick={clickHandler}>
 			<ReplyToAuthor>{message.authorName}</ReplyToAuthor>
 			<ReplyToWrapper>
 				{message.text && <ReplyToText>{message.text}</ReplyToText>}
