@@ -1,23 +1,25 @@
+'use client';
+import { MessageMap, UserChat } from '@/types';
 import { useStore } from '@/store';
 import { useEffect } from 'react';
+import { createRooms } from '@/app/chat/utils/createRooms';
+import { initUserChat } from '@/utils/initUserChat';
+import { sendJoin } from '@/utils/sendJoin';
+import { useSubscribe } from '@/app/hooks/useSubscribe';
 import { clearActiveUsers, updateActiveUsers } from '@/utils/updateActiveUsers';
-import { getUser } from '@/actions/getUser';
-import { getUserChats } from '@/actions/getUserChats';
-import { useUser } from '@clerk/nextjs';
 import { addClientMessage, clearAddClientMessage } from '@/utils/addClientMessage';
 import { clearUpdateClientMessage, updateClientMessage } from '@/utils/updateClientMessage';
-import { sendJoin } from '@/utils/sendJoin';
 import { clearUpdateChatList, updateChatList } from '@/utils/updateChatList';
-import { getAllUserEmails } from '@/actions/getAllUserEmails';
-import { initUserChat } from '@/utils/initUserChat';
-import { createRooms } from '@/app/chat/utils/createRooms';
-import { MessageMap } from '@/types';
-import { useSubscribe } from '@/app/hooks/useSubscribe';
 
-export const useAddSubscriptions = () => {
-	const { user } = useUser();
-	const userId = user?.id as string;
-
+export const Subscriber = ({
+	userChats,
+	userEmails,
+	userId,
+}: {
+	userChats: UserChat[];
+	userEmails: string[];
+	userId: string;
+}) => {
 	const {
 		setActiveUsers,
 		setMessageMap,
@@ -39,21 +41,16 @@ export const useAddSubscriptions = () => {
 	useEffect(() => createRooms(chatList, userId), [chatList, userId]);
 
 	useEffect(() => {
-		(async function () {
-			const user = await getUser();
-			const userChats = await getUserChats(user.chatIds);
-			const userEmails = await getAllUserEmails();
-			setUserEmails(userEmails);
-			setChatList(userChats);
-			initUserChat(userChats);
-			if (user.id) sendJoin(user.id);
-			const map: MessageMap = userChats.reduce((acc, cur) => {
-				acc[cur.chatId] = cur.messages;
-				return acc;
-			}, {} as MessageMap);
-			setMessageMap(map);
-		})();
-	}, [setMessageMap, setChatList, setUserEmails]);
+		setUserEmails(userEmails);
+		setChatList(userChats);
+		initUserChat(userChats);
+		sendJoin(userId);
+		const map: MessageMap = userChats.reduce((acc, cur) => {
+			acc[cur.chatId] = cur.messages;
+			return acc;
+		}, {} as MessageMap);
+		setMessageMap(map);
+	}, [setMessageMap, setChatList, setUserEmails, userEmails, userChats, userId]);
 
 	useSubscribe(setActiveUsers, updateActiveUsers, clearActiveUsers);
 
@@ -62,4 +59,6 @@ export const useAddSubscriptions = () => {
 	useSubscribe(updateMessageInMessageMap, updateClientMessage, clearUpdateClientMessage);
 
 	useSubscribe(setChatList, updateChatList, clearUpdateChatList);
+
+	return null;
 };
