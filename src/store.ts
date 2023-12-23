@@ -1,9 +1,14 @@
 import { create } from 'zustand';
-import { ChatVisitorStatus, Message, MessageMap, Store } from '@/types';
+import { ChatVisitorStatus, Message, MessageMap, Store, UserChat } from '@/types';
+import { updateMessageIsRead } from '@/actions/updateMessageIsRead';
 
 export const useStore = create<Store>(set => ({
 	activeUsers: [],
+	chatList: [],
+	userEmails: [],
 	setActiveUsers: (updated: string[]) => set({ activeUsers: updated }),
+	setUserEmails: (updated: string[]) => set({ activeUsers: updated }),
+	setChatList: (updated: UserChat[]) => set({ chatList: updated }),
 	chatVisitorStatus: {},
 	setChatVisitorStatus: (updated: ChatVisitorStatus) => set({ chatVisitorStatus: updated }),
 	messageMap: {},
@@ -37,13 +42,12 @@ export const useStore = create<Store>(set => ({
 				},
 			};
 		}),
-	updateIsReadMap: (chatId: string, userId: string) => async (id: string) =>
-		set(state => {
-			console.log('here');
+	updateIsReadMap: (chatId: string, userId: string) => async (id: string) => {
+		await updateMessageIsRead(id);
+		return set(state => {
 			const predicate = (el: Message): boolean => el.id === id && el.authorId !== userId;
 			const message = state.messageMap[chatId].find(predicate);
 			if (message && !message?.isRead) {
-				// await updateMessageIsRead(id);
 				return {
 					messageMap: {
 						...state.messageMap,
@@ -52,7 +56,8 @@ export const useStore = create<Store>(set => ({
 				};
 			}
 			return state;
-		}),
+		});
+	},
 	addReactionMap: (chatId: string, authorImageUrl: string | null | undefined) => (id: string, reaction: string) =>
 		set(state => ({
 			messageMap: {

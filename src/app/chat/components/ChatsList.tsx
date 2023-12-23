@@ -1,21 +1,21 @@
 'use client';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
-import { MainContext } from '@/app/chat/providers/MainProvider';
 import { Box } from '@mui/material';
 import { ChatListItem } from '@/app/chat/components/ChatListItem';
 import { ChatsListDeleteButton, ChatsListHeader, DeleteIcon } from '@/app/chat/[chatId]/styled';
 import { deleteChats } from '@/actions/deleteChats';
 import { sendDeleteUserChats } from '@/utils/sendDeleteUserChats';
 import { CHATS_LIST } from '@/constants';
+import { useStore } from '@/store';
 
 export const ChatsList = () => {
 	const { user } = useUser();
 	const userId = user?.id as string;
 
 	const { push } = useRouter();
-	const { chatList } = useContext(MainContext);
+	const { chatList } = useStore();
 
 	const [isDeleteMode, setIsDeleteMode] = useState<boolean>(false);
 	const [deletedChatIds, setDeletedChatIds] = useState<string[]>([]);
@@ -49,7 +49,7 @@ export const ChatsList = () => {
 				)}
 			</ChatsListHeader>
 			<Box>
-				{chatList.map(({ chatId, members, messages }) => {
+				{chatList.map(({ chatId, members }) => {
 					const [interlocutor] = members.filter(member => member.userId !== userId);
 					return (
 						<ChatListItem

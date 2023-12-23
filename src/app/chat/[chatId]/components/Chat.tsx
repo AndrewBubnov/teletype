@@ -12,7 +12,6 @@ import { ContextMenu } from '@/app/chat/[chatId]/components/ContextMenu';
 import { MessageInput } from '@/app/chat/[chatId]/components/MessageInput';
 import { ScrollToBottomButton } from '@/app/chat/[chatId]/components/ScrollToBottomButton';
 import { ChatProps, Message } from '@/types';
-import { useStore } from '@/store';
 
 export const Chat = ({ chat }: ChatProps) => {
 	const {
@@ -35,7 +34,6 @@ export const Chat = ({ chat }: ChatProps) => {
 		setMessageParams(messageParams);
 		setMenuActiveId(type === 'open' ? id : '');
 	};
-	console.log('render');
 
 	const closeMenuHandler = useCallback(() => setMenuActiveId(''), []);
 

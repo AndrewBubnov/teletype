@@ -1,46 +1,8 @@
-import {
-	Dispatch,
-	HTMLAttributes,
-	MutableRefObject,
-	PointerEvent,
-	ReactNode,
-	SetStateAction,
-	SyntheticEvent,
-} from 'react';
+import { Dispatch, HTMLAttributes, MutableRefObject, PointerEvent, SetStateAction, SyntheticEvent } from 'react';
 import { ImageProps } from 'next/image';
 import { ButtonProps } from '@mui/material';
 
-export interface MainProviderProps {
-	children: ReactNode;
-	userEmails: string[];
-	userId: string;
-	userChats: UserChat[];
-}
-
 export type MessageMap = Record<string, Message[]>;
-
-export interface ChatProviderProps {
-	children: ReactNode;
-	messageMap: MessageMap;
-	updateIsReadMap: (chatId: string) => (id: string) => Promise<void>;
-	addReactionMap: (
-		chatId: string,
-		authorImageUrl: string | null | undefined
-	) => (id: string, reaction: string) => void;
-}
-
-export type ChatContextProps = Omit<ChatProviderProps, 'children'>;
-
-interface MainContext extends MainProviderProps {
-	chatList: UserChat[];
-}
-
-export interface SocketContextProps {
-	activeUsers: string[];
-	chatVisitorStatus: ChatVisitorStatus;
-}
-
-export type MainContextProps = Omit<MainContext, 'children' | 'userChats' | 'userId'>;
 
 export enum MessageType {
 	COMMON = 'COMMON',
@@ -249,11 +211,15 @@ export interface ImageMessageProps {
 }
 
 export interface Store {
+	messageMap: MessageMap;
+	chatList: UserChat[];
 	activeUsers: string[];
+	userEmails: string[];
 	setActiveUsers(arg: string[]): void;
+	setUserEmails(arg: string[]): void;
+	setChatList(arg: UserChat[]): void;
 	chatVisitorStatus: ChatVisitorStatus;
 	setChatVisitorStatus(arg: ChatVisitorStatus): void;
-	messageMap: MessageMap;
 	setMessageMap(arg: MessageMap): void;
 	addMessageToMessageMap(arg: Message): void;
 	updateMessageInMessageMap(args: EditMessageClient): void;
@@ -263,3 +229,5 @@ export interface Store {
 		authorImageUrl: string | null | undefined
 	) => (id: string, reaction: string) => void;
 }
+
+export type Subscription<T> = (fn: (arg: T) => void) => void;

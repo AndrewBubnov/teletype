@@ -1,7 +1,7 @@
 'use client';
-import { useWebsockets } from '@/app/hooks/useWebsockets';
+import { useAddSubscriptions } from '@/app/hooks/useAddSubscriptions';
 
 export const ClientSource = () => {
-	useWebsockets();
+	useAddSubscriptions();
 	return null;
 };

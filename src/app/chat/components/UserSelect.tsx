@@ -1,17 +1,18 @@
 'use client';
-import { SyntheticEvent, useContext, useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { StyledInput } from '@/app/chat/styled';
 import { Autocomplete } from '@mui/material';
-import { MainContext } from '@/app/chat/providers/MainProvider';
 import { getUserIdByEmail } from '@/actions/getUserIdByEmail';
 import { onCreateChat } from '@/app/chat/utils/onCreateChat';
+import { useStore } from '@/store';
+import { createRoom } from '@/utils/createRoom';
 
 export const UserSelect = () => {
 	const { user } = useUser();
 	const userId = user?.id as string;
 
-	const { userEmails } = useContext(MainContext);
+	const { userEmails } = useStore();
 	const [userEmail, setUserEmail] = useState<string | null>(null);
 	const changeHandler = async (evt: SyntheticEvent<Element, Event>, value: string | null) => {
 		setUserEmail(value);
@@ -19,6 +20,7 @@ export const UserSelect = () => {
 		setUserEmail(null);
 		if (!userId || !id) return;
 		await onCreateChat(userId, id);
+		createRoom(userId, id);
 	};
 
 	return (
