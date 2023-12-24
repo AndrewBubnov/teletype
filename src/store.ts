@@ -3,16 +3,16 @@ import { ChatVisitorStatus, Message, MessageMap, Store, UserChat } from '@/types
 import { updateMessageIsRead } from '@/actions/updateMessageIsRead';
 
 export const useStore = create<Store>(set => ({
+	messageMap: {},
 	activeUsers: [],
 	chatList: [],
 	userEmails: [],
-	setActiveUsers: (updated: string[]) => set({ activeUsers: updated }),
-	setUserEmails: (updated: string[]) => set({ activeUsers: updated }),
-	setChatList: (updated: UserChat[]) => set({ chatList: updated }),
 	chatVisitorStatus: {},
-	setChatVisitorStatus: (updated: ChatVisitorStatus) => set({ chatVisitorStatus: updated }),
-	messageMap: {},
 	setMessageMap: (updated: MessageMap) => set({ messageMap: updated }),
+	setActiveUsers: (updated: string[]) => set({ activeUsers: updated }),
+	setUserEmails: (updated: string[]) => set({ userEmails: updated }),
+	setChatList: (updated: UserChat[]) => set({ chatList: updated }),
+	setChatVisitorStatus: (updated: ChatVisitorStatus) => set({ chatVisitorStatus: updated }),
 	addMessageToMessageMap: (message: Message) =>
 		set(state => {
 			if (!message.chatId) return { messageMap: state.messageMap };
