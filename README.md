@@ -11,6 +11,8 @@ Teletype is a real-time chat application built with Next.js 14, Prisma ORM, Atla
 - **Atlas MongoDB:** A cloud-hosted MongoDB service for scalable and secure database storage.
 
 - **Socket.io:** A library that enables real-time, bidirectional, and event-based communication.
+  
+- **Zustand:** A small, fast, and scalable state management library for React.
 
 - **Material UI:** A React UI framework that provides a set of high-quality React components.
 
