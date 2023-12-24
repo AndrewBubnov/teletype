@@ -3,7 +3,7 @@ import { MessageMap, UserChat } from '@/types';
 import { useStore } from '@/store';
 import { useEffect } from 'react';
 import { createRooms } from '@/app/chat/utils/createRooms';
-import { initUserChat } from '@/utils/initUserChat';
+import { initUserChats } from '@/utils/initUserChats';
 import { sendJoin } from '@/utils/sendJoin';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
 import { clearActiveUsers, updateActiveUsers } from '@/utils/updateActiveUsers';
@@ -43,7 +43,7 @@ export const Subscriber = ({
 	useEffect(() => {
 		setUserEmails(userEmails);
 		setChatList(userChats);
-		initUserChat(userChats);
+		initUserChats(userChats);
 		sendJoin(userId);
 		const map: MessageMap = userChats.reduce((acc, cur) => {
 			acc[cur.chatId] = cur.messages;
