@@ -22,7 +22,20 @@ export const timeUnitDuration = {
 	second: 60,
 };
 
-export const reactions = ['1f600', '1f606', '1f923', '1f61c', '1f644', '1f9d0', '1f641', '1f4af', '1f4a5', '1f44d'];
+export const reactions = [
+	'1f44d',
+	'1f600',
+	'1f606',
+	'1f923',
+	'1f61c',
+	'1f644',
+	'1f9d0',
+	'1f641',
+	'1F621',
+	'1f4af',
+	'1f4a5',
+	'1F525',
+];
 
 export const MAX_MESSAGE_WIDTH_RATIO = 5 / 6;
 export const DEFAULT_IMAGE_WIDTH = 350;
