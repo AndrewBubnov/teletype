@@ -22,20 +22,14 @@ export const timeUnitDuration = {
 	second: 60,
 };
 
-export const reactions = [
-	'1f600',
-	'1f606',
-	'1f923',
-	'1f609',
-	'1f61c',
-	'1f644',
-	'1f9d0',
-	'1f641',
-	'1f4af',
-	'1f4a5',
-	'1f626',
-	'1f44d',
-];
+export const reactions = ['1f600', '1f606', '1f923', '1f61c', '1f644', '1f9d0', '1f641', '1f4af', '1f4a5', '1f44d'];
 
-export const MAX_MESSAGE_WIDTH = 5 / 6;
+export const MAX_MESSAGE_WIDTH_RATIO = 5 / 6;
 export const DEFAULT_IMAGE_WIDTH = 350;
+export const DIALOG_MARGINS = 64;
+export const TEXT_AREA_STYLE = {
+	'width': '100%',
+	'background': 'rgba(255,255,255, 0.05)',
+	'color': 'lightgray',
+	'--Textarea-focusedHighlight': 'lightgray !important',
+};

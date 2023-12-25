@@ -1,7 +1,7 @@
 'use client';
 import { styled } from '@mui/material/styles';
 import Image, { ImageProps } from 'next/image';
-import { Box, Button, Checkbox, DialogContentText, IconButton, FormLabel, BoxProps } from '@mui/material';
+import { Box, Button, Checkbox, DialogContentText, IconButton, FormLabel, BoxProps, Dialog } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ReplyIcon from '@mui/icons-material/ReplyOutlined';
@@ -18,13 +18,13 @@ import {
 	RepliedMessageTextProps,
 	StyledButtonProps,
 } from '@/types';
-import { MAX_MESSAGE_WIDTH } from '@/app/chat/[chatId]/constants';
+import { MAX_MESSAGE_WIDTH_RATIO } from '@/app/chat/[chatId]/constants';
 
 export const ChatWrapper = styled(Box)`
 	padding: 1rem;
 	overflow-y: auto;
 	overflow-x: hidden;
-	height: 80vh;
+	height: 72vh;
 	margin-top: 1rem;
 
 	&::-webkit-scrollbar {
@@ -100,13 +100,29 @@ export const UnreadNumberIconWrapper = styled(Box)`
 	margin-top: -0.5rem;
 `;
 
+export const StartDecorator = styled(Box)`
+	display: flex;
+	flex: 1;
+	justify-content: space-between;
+`;
+
+export const EndDecorator = styled(Box)`
+	display: flex;
+	flex: auto;
+	gap: 0.5rem;
+	align-items: flex-end;
+	padding-top: 0.25rem;
+	border-top: 1px solid;
+	border-color: lightgray;
+`;
+
 export const UnreadNumberIcon = styled(DownIcon)`
 	fill: darkgreen;
 	margin-top: 3px;
 `;
 
 export const UploadFileIcon = styled(AttachFileIcon)`
-	margin-right: 1rem;
+	fill: lightgray;
 `;
 export const RepliedMessageAuthor = styled(Box)`
 	flex: 1;
@@ -118,11 +134,27 @@ export const RepliedMessageAuthor = styled(Box)`
 	border-top-right-radius: 4px;
 	padding: 0 0.5rem;
 `;
+export const ImageIconsWrapper = styled(Box)`
+	display: flex;
+	justify-content: space-between;
+	width: 12rem;
+	margin-left: auto;
+`;
+
+export const ImageIconsInnerWrapper = styled(Box)`
+	display: flex;
+	justify-content: space-between;
+	width: 8rem;
+	margin-left: auto;
+`;
 export const ReplyToContainer = styled(Box)`
 	background: palegreen;
 	border-radius: 0.25rem;
 	padding: 0.25rem;
 	margin-bottom: 0.5rem;
+`;
+export const PreviewImageDialog = styled(Dialog)`
+	position: relative;
 `;
 export const ReplyToAuthor = styled(Box)`
 	font-size: 0.7rem;
@@ -212,7 +244,7 @@ export const MessageItem = styled(
 	)
 )`
 	position: relative;
-	max-width: ${({ fullWidth }) => (fullWidth ? 'unset' : `${MAX_MESSAGE_WIDTH * 100}%`)};
+	max-width: ${({ fullWidth }) => (fullWidth ? 'unset' : `${MAX_MESSAGE_WIDTH_RATIO * 100}%`)};
 	width: ${({ fullWidth }) => (fullWidth ? '100%' : 'unset')};
 	padding: ${({ singlePadding }) => (singlePadding ? '0 0 0.5rem 0' : '0.5rem')};
 	margin-top: ${({ withOffset }) => (withOffset ? '0.5rem' : 0)};
@@ -261,6 +293,10 @@ export const ReactionWrapper = styled(Box)`
 
 export const ReactionAuthorImage = styled((props: ImageProps) => <Image width={16} height={16} {...props} />)`
 	border-radius: 50%;
+	object-fit: cover;
+`;
+export const PreviewImage = styled((props: ImageProps) => <Image fill {...props} alt="preview" />)`
+	object-fit: cover;
 `;
 
 export const StyledImage = styled(Image)`
@@ -307,11 +343,6 @@ export const MenuCard = styled(Box)`
 	@media (max-width: 600px) {
 		width: 60%;
 	}
-`;
-export const EmojiWrapper = styled(Box)`
-	position: absolute;
-	bottom: 60px;
-	right: 0.5rem;
 `;
 
 export const StyledButton = styled(({ textColor, ...props }: StyledButtonProps) => <Button {...props} />)`
@@ -377,6 +408,9 @@ export const ChatsListDeleteButton = styled(IconButton)`
 export const DeleteIcon = styled(DeleteOutlineIcon)`
 	fill: #fff;
 `;
+export const StyledDeleteIcon = styled(DeleteOutlineIcon)`
+	fill: lightgray;
+`;
 export const MenuDeleteIcon = styled(DeleteOutlineIcon)`
 	fill: #1a1a1a;
 `;
@@ -419,10 +453,12 @@ export const ElapsedTimeWrapper = styled(({ color, ...props }: ElapsedTimeWrappe
 
 export const SendButton = styled(Button)`
 	text-transform: none;
+	background-color: rgba(255, 255, 255, 0.25);
+
 	border: 1px solid lightgray;
 
 	& .MuiButton-endIcon {
-		margin: 0;
+		margin: 0 0 0 0.25rem;
 	}
 `;
 
@@ -442,5 +478,4 @@ export const PreviewWrapper = styled(Box)`
 	height: 3.5rem;
 	overflow: hidden;
 	border-radius: 4px;
-	border: 1px solid lightgray;
 `;

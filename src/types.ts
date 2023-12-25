@@ -1,4 +1,12 @@
-import { Dispatch, HTMLAttributes, MutableRefObject, PointerEvent, SetStateAction, SyntheticEvent } from 'react';
+import {
+	ChangeEvent,
+	Dispatch,
+	HTMLAttributes,
+	MutableRefObject,
+	PointerEvent,
+	SetStateAction,
+	SyntheticEvent,
+} from 'react';
 import { ImageProps } from 'next/image';
 import { ButtonProps } from '@mui/material';
 
@@ -231,3 +239,17 @@ export interface Store {
 }
 
 export type Subscription<T> = (fn: (arg: T) => void) => void;
+
+export interface ImagePreviewModalProps {
+	open: boolean;
+	onClose(): void;
+	src: string;
+	width: number;
+}
+export interface TextAreaEndDecoratorProps {
+	onSelectFile(event: ChangeEvent<HTMLInputElement>): void;
+	messageImageUrl: string;
+	openPreviewModal(): void;
+	onDropImageUrl(): void;
+	onSubmit(): Promise<void>;
+}

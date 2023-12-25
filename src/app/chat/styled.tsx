@@ -35,30 +35,6 @@ export const StyledCheckbox = styled(Checkbox)`
 		color: #fff;
 	}
 `;
-
-export const StyledInput = styled(TextField)({
-	'& label': {
-		color: 'lightgray',
-	},
-	'& label.Mui-focused': {
-		color: '#fff',
-	},
-	'& .MuiOutlinedInput-root': {
-		'color': '#fff',
-		'& fieldset': {
-			borderColor: 'lightgray',
-		},
-		'&:hover fieldset': {
-			borderColor: '#fff',
-		},
-		'&.Mui-focused fieldset': {
-			borderColor: '#fff',
-		},
-		'.MuiSvgIcon-root': {
-			fill: 'lightgray',
-		},
-	},
-});
 export const Wrapper = styled(Box)({
 	padding: '0.5rem',
 });
@@ -139,3 +115,27 @@ export const UserNameWrapper = styled(Box)(() => ({
 	justifyContent: 'space-between',
 	maxWidth: '85%',
 }));
+
+export const StyledInput = styled(TextField)({
+	'& label': {
+		color: 'lightgray',
+	},
+	'& label.Mui-focused': {
+		color: '#fff',
+	},
+	'& .MuiOutlinedInput-root': {
+		'color': '#fff',
+		'& fieldset': {
+			borderColor: 'lightgray',
+		},
+		'&:hover fieldset': {
+			borderColor: '#fff',
+		},
+		'&.Mui-focused fieldset': {
+			borderColor: '#fff',
+		},
+		'.MuiSvgIcon-root': {
+			fill: 'lightgray',
+		},
+	},
+});

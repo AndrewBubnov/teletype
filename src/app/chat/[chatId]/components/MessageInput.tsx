@@ -1,23 +1,16 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useLayoutEffect, useRef, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
-import Image from 'next/image';
-import { EmojiClickData } from 'emoji-picker-react';
+import { Textarea } from '@mui/joy';
 import { RepliedMessageBox } from '@/app/chat/[chatId]/components/RepliedMessageBox';
-import {
-	PreviewWrapper,
-	SendButton,
-	SendMessageFormWrapper,
-	SendMessageIcon,
-	SendWrapper,
-} from '@/app/chat/[chatId]/styled';
-import { StyledInput } from '@/app/chat/styled';
-import { InputAdornment } from '@mui/material';
-import { Emoji } from '@/app/chat/[chatId]/components/Emoji';
+import { SendMessageFormWrapper, SendWrapper } from '@/app/chat/[chatId]/styled';
 import { addMessageToChat } from '@/actions/addMessageToChat';
 import { sendMessageToServer } from '@/utils/sendMessageToServer';
 import { fileInputHelper } from '@/app/chat/[chatId]/utils/fileInputHelper';
-import { FileUploadInput } from '@/app/chat/[chatId]/components/FileUploadInput';
+import { DIALOG_MARGINS, TEXT_AREA_STYLE } from '@/app/chat/[chatId]/constants';
+import { ImagePreviewModal } from '@/app/chat/[chatId]/components/ImagePreviewModal';
 import { MessageInputProps, MessageType } from '@/types';
+import { TextAreaEndDecorator } from '@/app/chat/[chatId]/components/TextAreaEndDecorator';
+import { TextAreaStartDecorator } from '@/app/chat/[chatId]/components/TextAreaStartDecorator';
 
 export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMessage }: MessageInputProps) => {
 	const { user } = useUser();
@@ -26,8 +19,17 @@ export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMes
 	const [messageImageUrl, setMessageImageUrl] = useState<string>('');
 	const [messageText, setMessageText] = useState<string>('');
 	const [emoji, setEmoji] = useState<string>('');
+	const [isImagePreviewModalOpen, setIsImagePreviewModalOpen] = useState<boolean>(false);
 
-	const textChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => setMessageText(evt.target.value);
+	const ref = useRef<HTMLDivElement>(null);
+	const widthRef = useRef<number>(0);
+
+	useLayoutEffect(() => {
+		if (!ref.current) return;
+		widthRef.current = ref.current.clientWidth - DIALOG_MARGINS;
+	}, []);
+
+	const textChangeHandler = (evt: ChangeEvent<HTMLTextAreaElement>) => setMessageText(evt.target.value);
 
 	const resetState = () => {
 		setMessageText('');
@@ -51,9 +53,9 @@ export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMes
 		resetState();
 	};
 
-	const emojiHandler = (data: EmojiClickData) => {
-		setMessageText(prevState => `${prevState} ${data.emoji}`);
-		setEmoji(prevState => `${prevState} ${data.emoji}`);
+	const emojiHandler = (reaction: string) => () => {
+		setMessageText(prevState => `${prevState} ${String.fromCodePoint(parseInt(reaction, 16))}`);
+		setEmoji(prevState => `${prevState} ${String.fromCodePoint(parseInt(reaction, 16))}`);
 	};
 	const dropReplyHandler = () => setRepliedMessage(null);
 
@@ -63,30 +65,35 @@ export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMes
 
 	const dropMessageImageUrl = () => setMessageImageUrl('');
 
-	return (
-		<SendMessageFormWrapper>
+	return isImagePreviewModalOpen ? (
+		<ImagePreviewModal
+			src={messageImageUrl}
+			onClose={() => setIsImagePreviewModalOpen(false)}
+			open={isImagePreviewModalOpen}
+			width={widthRef.current}
+		/>
+	) : (
+		<SendMessageFormWrapper ref={ref}>
 			<RepliedMessageBox message={repliedMessage} authorName={authorName} onDropMessage={dropReplyHandler} />
 			<SendWrapper>
-				<StyledInput
-					fullWidth
+				<Textarea
+					placeholder="Type in here…"
 					value={messageText}
 					onChange={textChangeHandler}
-					label="Type here.."
-					InputProps={{
-						endAdornment: (
-							<InputAdornment position="end">
-								<FileUploadInput onChange={selectFileHandler} />
-								<Emoji onAddEmoji={emojiHandler} />
-							</InputAdornment>
-						),
-					}}
+					minRows={1}
+					maxRows={2}
+					startDecorator={<TextAreaStartDecorator emojiHandler={emojiHandler} />}
+					endDecorator={
+						<TextAreaEndDecorator
+							messageImageUrl={messageImageUrl}
+							onDropImageUrl={dropMessageImageUrl}
+							openPreviewModal={() => setIsImagePreviewModalOpen(true)}
+							onSelectFile={selectFileHandler}
+							onSubmit={submitHandler}
+						/>
+					}
+					sx={TEXT_AREA_STYLE}
 				/>
-				{messageImageUrl ? (
-					<PreviewWrapper onClick={dropMessageImageUrl}>
-						<Image src={messageImageUrl} alt="preview" fill />
-					</PreviewWrapper>
-				) : null}
-				<SendButton onClick={submitHandler} endIcon={<SendMessageIcon />} />
 			</SendWrapper>
 		</SendMessageFormWrapper>
 	);
