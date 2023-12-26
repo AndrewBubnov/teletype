@@ -1,4 +1,5 @@
 import { ChangeEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useStore } from '@/store';
 import { useUser } from '@clerk/nextjs';
 import { Textarea } from '@mui/joy';
 import { RepliedMessageBox } from '@/app/chat/[chatId]/components/RepliedMessageBox';
@@ -10,10 +11,9 @@ import { ImagePreviewModal } from '@/app/chat/[chatId]/components/ImagePreviewMo
 import { TextAreaEndDecorator } from '@/app/chat/[chatId]/components/TextAreaEndDecorator';
 import { TextAreaStartDecorator } from '@/app/chat/[chatId]/components/TextAreaStartDecorator';
 import { updateMessage } from '@/actions/updateMessage';
+import { sendEditMessage } from '@/utils/sendEditMessage';
 import { DIALOG_MARGINS, MAX_FILE_SIZE, TEXT_AREA_STYLE } from '@/app/chat/[chatId]/constants';
 import { MessageInputProps, MessageType } from '@/types';
-import { sendEditMessage } from '@/utils/sendEditMessage';
-import { useStore } from '@/store';
 
 export const MessageInput = ({
 	chatId,
