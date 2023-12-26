@@ -34,11 +34,11 @@ Teletype is a real-time chat application built with Next.js 14, Prisma ORM, Atla
 
 - **Image Exchange**: Users can seamlessly exchange images within chats. An icon for expanding an image to fullscreen is located in the bottom right corner of the image, and a corresponding icon allows users to reduce the image back to its original size.
 
-- **Image Previews**: When selecting an image from the device's memory before sending it, a preview appears next to the send button.
+- **Image Previews**: When selecting an image from the device's memory before sending it, a preview appears next to the send button. The maximum size for uploaded images is limited to 700KB.
 
 - **Emoji Support:** Users can now include emojis in their messages, either along with text or as standalone emoji messages.
 
-- **Message Context Menu:** Click or tap on a message reveals a context menu for that specific message. Users can also reply to specific messages. In a reply, the original author, the first line of its content for text messages, and the timestamp of its sending are displayed. Clicking or tapping on the area displaying the replied message smoothly scrolls the screen to that message.
+- **Message Context Menu:** Click or tap on a message reveals a context menu for that specific message. For the message author, there is an option to edit the message. Users can also reply to specific messages. In a reply, the original author, the first line of its content for text messages, and the timestamp of its sending are displayed. Clicking or tapping on the area displaying the replied message smoothly scrolls the screen to that message.
 
 - **Message Reactions:** From the context menu, users can react to messages by adding emoji reactions. The message will display the reaction and the avatar of the user who added the reaction.
 
@@ -50,7 +50,9 @@ Teletype is a real-time chat application built with Next.js 14, Prisma ORM, Atla
 
 - **Multiple Chat Selection:** Users can long-press on a chat to enter multi-select mode, enabling them to delete multiple chats simultaneously.
   
--  **Authentication:** Users can sign in using their Google accounts or with a username and password via Clerk JS.
+- **Error Notification System:** The application includes a global error notification system to inform users about errors.
+  
+- **Authentication:** Users can sign in using their Google accounts or with a username and password via Clerk JS.
 
 ## Contributions
 
