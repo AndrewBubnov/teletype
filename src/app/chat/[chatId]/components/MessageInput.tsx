@@ -30,7 +30,7 @@ export const MessageInput = ({
 
 	const [messageImageUrl, setMessageImageUrl] = useState<string>('');
 	const [messageText, setMessageText] = useState<string>('');
-	const [emoji, setEmoji] = useState<string>('');
+	const [emojis, setEmojis] = useState<string>('');
 	const [isImagePreviewModalOpen, setIsImagePreviewModalOpen] = useState<boolean>(false);
 
 	const ref = useRef<HTMLDivElement>(null);
@@ -45,20 +45,24 @@ export const MessageInput = ({
 		if (!editedMessage) return;
 		setMessageImageUrl(editedMessage.imageUrl || '');
 		setMessageText(editedMessage.text || '');
+		if (editedMessage.type === MessageType.EMOJI) setEmojis(editedMessage.text || '');
 	}, [editedMessage]);
 
-	const textChangeHandler = (evt: ChangeEvent<HTMLTextAreaElement>) => setMessageText(evt.target.value);
+	const textChangeHandler = (evt: ChangeEvent<HTMLTextAreaElement>) => {
+		setMessageText(evt.target.value);
+		if (editedMessage?.type === MessageType.EMOJI) setEmojis(evt.target.value);
+	};
 
 	const resetState = () => {
 		setMessageText('');
 		setMessageImageUrl('');
-		setEmoji('');
+		setEmojis('');
 		setRepliedMessage(null);
 		setEditedMessage(null);
 	};
 
 	const submitHandler = async () => {
-		const type = messageText && emoji && messageText === emoji ? MessageType.EMOJI : MessageType.COMMON;
+		const type = messageText && emojis && messageText === emojis ? MessageType.EMOJI : MessageType.COMMON;
 		const commonArgs = {
 			chatId,
 			authorId: userId,
@@ -86,8 +90,9 @@ export const MessageInput = ({
 	};
 
 	const emojiHandler = (reaction: string) => () => {
-		setMessageText(prevState => `${prevState} ${String.fromCodePoint(parseInt(reaction, 16))}`);
-		setEmoji(prevState => `${prevState} ${String.fromCodePoint(parseInt(reaction, 16))}`);
+		const nextEmoji = String.fromCodePoint(parseInt(reaction, 16));
+		setMessageText(prevState => `${prevState} ${nextEmoji}`);
+		setEmojis(prevState => `${prevState} ${nextEmoji}`);
 	};
 	const dropReplyHandler = () => setRepliedMessage(null);
 
@@ -95,7 +100,7 @@ export const MessageInput = ({
 
 	const selectFileHandler = (event: ChangeEvent<HTMLInputElement>) => {
 		if ((event.target.files?.[0].size || 0) > MAX_FILE_SIZE) {
-			setErrorMessage('Max file size of 500Kb exceeded');
+			setErrorMessage('Max file size of 700Kb exceeded');
 			event.target.value = '';
 			return;
 		}
