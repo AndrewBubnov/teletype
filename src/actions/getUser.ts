@@ -33,6 +33,5 @@ export const getUser = async () => {
 		};
 	}
 
-	const { chatIds } = existingUser;
-	return { ...existingUser, chatIds };
+	return existingUser;
 };

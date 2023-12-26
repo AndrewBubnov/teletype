@@ -2,6 +2,7 @@
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 import { Box, BoxProps, Checkbox, TextField, Typography } from '@mui/material';
+import PersonIcon from '@mui/icons-material/PersonOutlineOutlined';
 import { ChatListItemInnerWrapperProps, UserPhotoImageProps, UserPhotoStubProps } from '@/types';
 
 export const UserPhotoImage = styled(({ isActive = false, size = 50, ...props }: UserPhotoImageProps) => (
@@ -114,6 +115,11 @@ export const UserNameWrapper = styled(Box)(() => ({
 	alignItems: 'center',
 	justifyContent: 'space-between',
 	maxWidth: '85%',
+}));
+
+export const ProfileIcon = styled(PersonIcon)(() => ({
+	fill: 'lightgray',
+	marginRight: '1rem',
 }));
 
 export const StyledInput = styled(TextField)({

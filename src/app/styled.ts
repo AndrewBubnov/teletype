@@ -1,6 +1,6 @@
 'use client';
 import { styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
 
 export const HeroContainer = styled(Box)(() => ({
@@ -32,4 +32,8 @@ export const LogLink = styled(Link)(() => ({
 	'&:hover': {
 		color: '#fff',
 	},
+}));
+
+export const StyledTypography = styled(Typography)(() => ({
+	fontSize: '1.5rem',
 }));

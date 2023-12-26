@@ -96,15 +96,13 @@ export const MessageInput = ({
 	};
 	const dropReplyHandler = () => setRepliedMessage(null);
 
-	const createPreview = (imgUrl: string) => setMessageImageUrl(imgUrl);
-
 	const selectFileHandler = (event: ChangeEvent<HTMLInputElement>) => {
 		if ((event.target.files?.[0].size || 0) > MAX_FILE_SIZE) {
 			setErrorMessage('Max file size of 700Kb exceeded');
 			event.target.value = '';
 			return;
 		}
-		fileInputHelper(event, createPreview);
+		fileInputHelper(event, (imgUrl: string) => setMessageImageUrl(imgUrl));
 	};
 
 	const dropMessageImageUrl = () => setMessageImageUrl('');

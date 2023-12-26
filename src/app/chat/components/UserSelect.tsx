@@ -33,7 +33,7 @@ export const UserSelect = () => {
 			onChange={changeHandler}
 			options={userEmails}
 			isOptionEqualToValue={(option: string, value: string) => option === value || !value}
-			renderInput={params => <StyledInput {...params} sx={{ width: '80%' }} label="Search" />}
+			renderInput={params => <StyledInput {...params} sx={{ width: '75%' }} label="Search" />}
 		/>
 	);
 };

@@ -1,5 +1,5 @@
 import { auth } from '@clerk/nextjs';
-import { HeroContainer, LogLink, LogLinkWrapper } from '@/app/styled';
+import { HeroContainer, LogLink, LogLinkWrapper, StyledTypography } from '@/app/styled';
 import { Typography } from '@mui/material';
 
 export default function Home() {
@@ -9,7 +9,7 @@ export default function Home() {
 
 	return (
 		<HeroContainer>
-			<Typography sx={{ fontSize: '1.5rem' }}>Please register or sign in to continue</Typography>
+			<StyledTypography>Please register or sign in to continue</StyledTypography>
 			<LogLinkWrapper>
 				<LogLink href="/sign-in">Sign in</LogLink>
 				<LogLink href="/sign-up">Sign up</LogLink>

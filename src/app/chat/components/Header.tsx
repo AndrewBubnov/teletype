@@ -1,5 +1,6 @@
 import { auth, UserButton } from '@clerk/nextjs';
-import { HeaderContainer, UserButtonWrapper } from '@/app/chat/styled';
+import Link from 'next/link';
+import { HeaderContainer, ProfileIcon, UserButtonWrapper } from '@/app/chat/styled';
 
 export const Header = () => {
 	const { userId } = auth();
@@ -10,6 +11,9 @@ export const Header = () => {
 					<UserButton afterSignOutUrl="/" />
 				</UserButtonWrapper>
 			) : null}
+			<Link href={'/profile'}>
+				<ProfileIcon />
+			</Link>
 		</HeaderContainer>
 	);
 };
