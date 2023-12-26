@@ -1,4 +1,4 @@
-import { ChangeEvent, useLayoutEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { Textarea } from '@mui/joy';
 import { RepliedMessageBox } from '@/app/chat/[chatId]/components/RepliedMessageBox';
@@ -6,15 +6,27 @@ import { SendMessageFormWrapper, SendWrapper } from '@/app/chat/[chatId]/styled'
 import { addMessageToChat } from '@/actions/addMessageToChat';
 import { sendMessageToServer } from '@/utils/sendMessageToServer';
 import { fileInputHelper } from '@/app/chat/[chatId]/utils/fileInputHelper';
-import { DIALOG_MARGINS, TEXT_AREA_STYLE } from '@/app/chat/[chatId]/constants';
 import { ImagePreviewModal } from '@/app/chat/[chatId]/components/ImagePreviewModal';
-import { MessageInputProps, MessageType } from '@/types';
 import { TextAreaEndDecorator } from '@/app/chat/[chatId]/components/TextAreaEndDecorator';
 import { TextAreaStartDecorator } from '@/app/chat/[chatId]/components/TextAreaStartDecorator';
+import { updateMessage } from '@/actions/updateMessage';
+import { DIALOG_MARGINS, MAX_FILE_SIZE, TEXT_AREA_STYLE } from '@/app/chat/[chatId]/constants';
+import { MessageInputProps, MessageType } from '@/types';
+import { sendEditMessage } from '@/utils/sendEditMessage';
+import { useStore } from '@/store';
 
-export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMessage }: MessageInputProps) => {
+export const MessageInput = ({
+	chatId,
+	authorName,
+	repliedMessage,
+	editedMessage,
+	setEditedMessage,
+	setRepliedMessage,
+}: MessageInputProps) => {
 	const { user } = useUser();
 	const userId = user?.id as string;
+
+	const setErrorMessage = useStore(state => state.setErrorMessage);
 
 	const [messageImageUrl, setMessageImageUrl] = useState<string>('');
 	const [messageText, setMessageText] = useState<string>('');
@@ -29,6 +41,12 @@ export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMes
 		widthRef.current = ref.current.clientWidth - DIALOG_MARGINS;
 	}, []);
 
+	useEffect(() => {
+		if (!editedMessage) return;
+		setMessageImageUrl(editedMessage.imageUrl || '');
+		setMessageText(editedMessage.text || '');
+	}, [editedMessage]);
+
 	const textChangeHandler = (evt: ChangeEvent<HTMLTextAreaElement>) => setMessageText(evt.target.value);
 
 	const resetState = () => {
@@ -36,11 +54,12 @@ export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMes
 		setMessageImageUrl('');
 		setEmoji('');
 		setRepliedMessage(null);
+		setEditedMessage(null);
 	};
 
 	const submitHandler = async () => {
 		const type = messageText && emoji && messageText === emoji ? MessageType.EMOJI : MessageType.COMMON;
-		const message = await addMessageToChat({
+		const commonArgs = {
 			chatId,
 			authorId: userId,
 			authorName,
@@ -48,8 +67,21 @@ export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMes
 			messageText,
 			messageImageUrl,
 			replyToId: repliedMessage?.id,
-		});
-		if (message) sendMessageToServer(message, chatId);
+		};
+		const message = editedMessage
+			? await updateMessage({
+					...commonArgs,
+					id: editedMessage.id,
+				})
+			: await addMessageToChat(commonArgs);
+		if (message && editedMessage)
+			sendEditMessage({
+				messageId: message.id,
+				message,
+				roomId: chatId,
+				authorOnly: false,
+			});
+		if (message && !editedMessage) sendMessageToServer(message, chatId);
 		resetState();
 	};
 
@@ -61,9 +93,21 @@ export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMes
 
 	const createPreview = (imgUrl: string) => setMessageImageUrl(imgUrl);
 
-	const selectFileHandler = (event: ChangeEvent<HTMLInputElement>) => fileInputHelper(event, createPreview);
+	const selectFileHandler = (event: ChangeEvent<HTMLInputElement>) => {
+		if ((event.target.files?.[0].size || 0) > MAX_FILE_SIZE) {
+			setErrorMessage('Max file size of 500Kb exceeded');
+			event.target.value = '';
+			return;
+		}
+		fileInputHelper(event, createPreview);
+	};
 
 	const dropMessageImageUrl = () => setMessageImageUrl('');
+
+	const openPreviewModalHandler = () => {
+		if (!messageImageUrl) return;
+		setIsImagePreviewModalOpen(true);
+	};
 
 	return isImagePreviewModalOpen ? (
 		<ImagePreviewModal
@@ -87,7 +131,7 @@ export const MessageInput = ({ chatId, authorName, repliedMessage, setRepliedMes
 						<TextAreaEndDecorator
 							messageImageUrl={messageImageUrl}
 							onDropImageUrl={dropMessageImageUrl}
-							openPreviewModal={() => setIsImagePreviewModalOpen(true)}
+							openPreviewModal={openPreviewModalHandler}
 							onSelectFile={selectFileHandler}
 							onSubmit={submitHandler}
 						/>

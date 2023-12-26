@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import { auth, ClerkProvider } from '@clerk/nextjs';
 import { Fetcher } from '@/app/chat/[chatId]/components/Fetcher';
 import './globals.css';
+import { ToastProvider } from '@/app/chat/components/ToastProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 			<html lang="en">
 				<body className={inter.className}>
 					{userId && <Fetcher />}
+					<ToastProvider />
 					{children}
 				</body>
 			</html>

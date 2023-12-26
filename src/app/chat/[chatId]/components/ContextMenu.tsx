@@ -1,6 +1,13 @@
 import { SyntheticEvent, useLayoutEffect, useRef, useState } from 'react';
 import { Box, Grow, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import { Backdrop, MenuCard, MenuDeleteIcon, MenuReplyIcon, ReactionsWrapper } from '@/app/chat/[chatId]/styled';
+import {
+	Backdrop,
+	EditIcon,
+	MenuCard,
+	MenuDeleteIcon,
+	MenuReplyIcon,
+	ReactionsWrapper,
+} from '@/app/chat/[chatId]/styled';
 import getBoundingClientRect from '@popperjs/core/lib/dom-utils/getBoundingClientRect';
 import { reactions } from '@/app/chat/[chatId]/constants';
 import { sendEditMessage } from '@/utils/sendEditMessage';
@@ -16,7 +23,9 @@ export const ContextMenu = ({
 	initMenuParams,
 	menuTop,
 	onReplyMessage,
+	onEditMessage,
 	interlocutorName,
+	isAuthor,
 }: ContextMenuProps) => {
 	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
@@ -67,6 +76,16 @@ export const ContextMenu = ({
 									<ListItemText primary="Delete" />
 								</ListItemButton>
 							</ListItem>
+							{isAuthor ? (
+								<ListItem disablePadding>
+									<ListItemButton onMouseDown={onEditMessage} onTouchStart={onEditMessage}>
+										<ListItemIcon>
+											<EditIcon />
+										</ListItemIcon>
+										<ListItemText primary="Edit" />
+									</ListItemButton>
+								</ListItem>
+							) : null}
 							<ListItem disablePadding onMouseDown={onReplyMessage} onTouchStart={onReplyMessage}>
 								<ListItemButton>
 									<ListItemIcon>

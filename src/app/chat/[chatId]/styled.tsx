@@ -1,9 +1,20 @@
 'use client';
 import { styled } from '@mui/material/styles';
 import Image, { ImageProps } from 'next/image';
-import { Box, Button, Checkbox, DialogContentText, IconButton, FormLabel, BoxProps, Dialog } from '@mui/material';
+import {
+	Box,
+	Button,
+	Checkbox,
+	DialogContentText,
+	IconButton,
+	FormLabel,
+	BoxProps,
+	Dialog,
+	Alert,
+} from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import ReplyIcon from '@mui/icons-material/ReplyOutlined';
 import DownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
@@ -19,6 +30,7 @@ import {
 	StyledButtonProps,
 } from '@/types';
 import { MAX_MESSAGE_WIDTH_RATIO } from '@/app/chat/[chatId]/constants';
+import MuiAlert from '@mui/material/Alert';
 
 export const ChatWrapper = styled(Box)`
 	padding: 1rem;
@@ -407,6 +419,9 @@ export const ChatsListDeleteButton = styled(IconButton)`
 `;
 export const DeleteIcon = styled(DeleteOutlineIcon)`
 	fill: #fff;
+`;
+export const EditIcon = styled(ModeEditIcon)`
+	fill: #1a1a1a;
 `;
 export const StyledDeleteIcon = styled(DeleteOutlineIcon)`
 	fill: lightgray;

@@ -20,12 +20,14 @@ export const Chat = ({ chat }: ChatProps) => {
 		interlocutorName,
 		interlocutorImageUrl,
 		chatId,
+		authorId,
 		interlocutorId,
 		authorName,
 		unreadNumber,
 		updateIsRead,
 	} = useChat(chat);
 	const [repliedMessage, setRepliedMessage] = useState<Message | null>(null);
+	const [editedMessage, setEditedMessage] = useState<Message | null>(null);
 	const [menuActiveId, setMenuActiveId] = useState<string>('');
 
 	const { menuTop, setMessageParams, containerRef, initMenuParams } = useMenuTransition(menuActiveId);
@@ -55,6 +57,11 @@ export const Chat = ({ chat }: ChatProps) => {
 	const onReplyMessage = useCallback(() => {
 		const message = getMessage();
 		if (message) setRepliedMessage(message);
+	}, [getMessage]);
+
+	const onEditMessage = useCallback(() => {
+		const message = getMessage();
+		if (message) setEditedMessage(message);
 	}, [getMessage]);
 
 	const scrollToLastHandler = () => {
@@ -94,11 +101,13 @@ export const Chat = ({ chat }: ChatProps) => {
 						closeContextMenu={closeMenuHandler}
 						initMenuParams={initMenuParams}
 						onReplyMessage={onReplyMessage}
+						onEditMessage={onEditMessage}
 						menuTop={menuTop}
 						menuActiveId={menuActiveId}
 						onAddReaction={addReactionHandler}
 						chatId={chatId}
 						interlocutorName={interlocutorName}
+						isAuthor={messageList.find(el => el.id === menuActiveId)?.authorId === authorId}
 					/>
 				)}
 				{unreadNumber ? (
@@ -110,6 +119,8 @@ export const Chat = ({ chat }: ChatProps) => {
 				authorName={authorName}
 				repliedMessage={repliedMessage}
 				setRepliedMessage={setRepliedMessage}
+				editedMessage={editedMessage}
+				setEditedMessage={setEditedMessage}
 			/>
 		</Box>
 	);

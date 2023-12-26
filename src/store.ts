@@ -8,11 +8,13 @@ export const useStore = create<Store>(set => ({
 	chatList: [],
 	userEmails: [],
 	chatVisitorStatus: {},
+	errorMessage: '',
 	setMessageMap: (updated: MessageMap) => set({ messageMap: updated }),
 	setActiveUsers: (updated: string[]) => set({ activeUsers: updated }),
 	setUserEmails: (updated: string[]) => set({ userEmails: updated }),
 	setChatList: (updated: UserChat[]) => set({ chatList: updated }),
 	setChatVisitorStatus: (updated: ChatVisitorStatus) => set({ chatVisitorStatus: updated }),
+	setErrorMessage: (text: string) => set({ errorMessage: text }),
 	addMessageToMessageMap: (message: Message) =>
 		set(state => {
 			if (!message.chatId) return { messageMap: state.messageMap };

@@ -1,8 +1,6 @@
 'use server';
 import { prisma } from '@/db';
-import { AddMessageToChat, Message, MessageType } from '@/types';
-import { revalidatePath } from 'next/cache';
-import { CHATS_LIST } from '@/constants';
+import { AddMessageToChat, Message } from '@/types';
 
 export async function addMessageToChat({
 	chatId,
@@ -39,8 +37,6 @@ export async function addMessageToChat({
 		},
 		select: { messageIds: true },
 	});
-	revalidatePath(CHATS_LIST);
-	revalidatePath(`${CHATS_LIST}/${chatId}`);
 
 	return createdMessage;
 }

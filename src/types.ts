@@ -146,6 +146,10 @@ export interface AddMessageToChat {
 	replyToId?: string;
 }
 
+export interface UpdateMessage extends AddMessageToChat {
+	id: string;
+}
+
 export interface EditMessageClient {
 	messageId: string;
 	message: Message | null;
@@ -182,7 +186,9 @@ export interface ContextMenuProps {
 	closeContextMenu(): void;
 	initMenuParams: MutableRefObject<DOMRect | null>;
 	onReplyMessage(): void;
+	onEditMessage(): void;
 	menuTop: number;
+	isAuthor: boolean;
 }
 
 export interface ChatHeaderProps {
@@ -209,6 +215,8 @@ export interface MessageInputProps {
 	authorName: string;
 	repliedMessage: Message | null;
 	setRepliedMessage: Dispatch<SetStateAction<Message | null>>;
+	editedMessage: Message | null;
+	setEditedMessage: Dispatch<SetStateAction<Message | null>>;
 }
 
 export interface ImageMessageProps {
@@ -223,9 +231,11 @@ export interface Store {
 	chatList: UserChat[];
 	activeUsers: string[];
 	userEmails: string[];
+	errorMessage: string;
 	setActiveUsers(arg: string[]): void;
 	setUserEmails(arg: string[]): void;
 	setChatList(arg: UserChat[]): void;
+	setErrorMessage(arg: string): void;
 	chatVisitorStatus: ChatVisitorStatus;
 	setChatVisitorStatus(arg: ChatVisitorStatus): void;
 	setMessageMap(arg: MessageMap): void;
@@ -252,4 +262,10 @@ export interface TextAreaEndDecoratorProps {
 	openPreviewModal(): void;
 	onDropImageUrl(): void;
 	onSubmit(): Promise<void>;
+}
+
+export interface ErrorToastProps {
+	open: boolean;
+	onClose(): void;
+	text: string;
 }
