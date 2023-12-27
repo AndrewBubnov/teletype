@@ -1,5 +1,4 @@
 import { Area } from 'react-easy-crop';
-import { MAX_IMAGE_SIZE } from '@/app/profile/constants';
 
 const createImage = (url: string): Promise<HTMLImageElement> =>
 	new Promise((resolve, reject) => {
@@ -33,8 +32,8 @@ export const getCroppedImg = async (imageSrc: string | null, pixelCrop: Area, ro
 
 	const { width: bBoxWidth, height: bBoxHeight } = rotateSize(image.width, image.height, rotation);
 
-	canvas.width = Math.min(bBoxWidth, MAX_IMAGE_SIZE);
-	canvas.height = Math.min(bBoxHeight, MAX_IMAGE_SIZE);
+	canvas.width = bBoxWidth;
+	canvas.height = bBoxHeight;
 
 	ctx.translate(bBoxWidth / 2, bBoxHeight / 2);
 	ctx.rotate(rotRad);
@@ -49,5 +48,5 @@ export const getCroppedImg = async (imageSrc: string | null, pixelCrop: Area, ro
 
 	ctx.putImageData(data, 0, 0);
 
-	return canvas.toDataURL();
+	return canvas.toDataURL('image/jpeg', 0.8);
 };

@@ -14,6 +14,7 @@ import { updateMessage } from '@/actions/updateMessage';
 import { sendEditMessage } from '@/utils/sendEditMessage';
 import { DIALOG_MARGINS, MAX_FILE_SIZE, TEXT_AREA_STYLE } from '@/app/chat/[chatId]/constants';
 import { MessageInputProps, MessageType } from '@/types';
+import { UPLOAD_FILE_ERROR_MESSAGE } from '@/app/profile/constants';
 
 export const MessageInput = ({
 	chatId,
@@ -98,7 +99,7 @@ export const MessageInput = ({
 
 	const selectFileHandler = (event: ChangeEvent<HTMLInputElement>) => {
 		if ((event.target.files?.[0].size || 0) > MAX_FILE_SIZE) {
-			setErrorMessage('Max file size of 700Kb exceeded');
+			setErrorMessage(UPLOAD_FILE_ERROR_MESSAGE);
 			event.target.value = '';
 			return;
 		}
