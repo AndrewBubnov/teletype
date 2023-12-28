@@ -1,7 +1,6 @@
 'use client';
-import { MessageMap, UserChat } from '@/types';
-import { useStore } from '@/store';
 import { useEffect } from 'react';
+import { useStore } from '@/store';
 import { createRooms } from '@/app/chat/utils/createRooms';
 import { initUserChats } from '@/utils/initUserChats';
 import { sendJoin } from '@/utils/sendJoin';
@@ -11,6 +10,7 @@ import { addClientMessage, clearAddClientMessage } from '@/utils/addClientMessag
 import { clearUpdateClientMessage, updateClientMessage } from '@/utils/updateClientMessage';
 import { clearUpdateChatList, updateChatList } from '@/utils/updateChatList';
 import { clearUpdateVisitorStatus, updateVisitorStatus } from '@/utils/updateVisitorStatus';
+import { MessageMap, UserChat } from '@/types';
 
 export const Subscriber = ({
 	userChats,
