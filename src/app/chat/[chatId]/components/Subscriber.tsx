@@ -10,6 +10,7 @@ import { clearActiveUsers, updateActiveUsers } from '@/utils/updateActiveUsers';
 import { addClientMessage, clearAddClientMessage } from '@/utils/addClientMessage';
 import { clearUpdateClientMessage, updateClientMessage } from '@/utils/updateClientMessage';
 import { clearUpdateChatList, updateChatList } from '@/utils/updateChatList';
+import { clearUpdateVisitorStatus, updateVisitorStatus } from '@/utils/updateVisitorStatus';
 
 export const Subscriber = ({
 	userChats,
@@ -28,12 +29,14 @@ export const Subscriber = ({
 		setChatList,
 		setUserEmails,
 		chatList,
+		setChatVisitorStatus,
 	} = useStore(state => ({
 		setActiveUsers: state.setActiveUsers,
 		chatList: state.chatList,
 		setMessageMap: state.setMessageMap,
 		setChatList: state.setChatList,
 		setUserEmails: state.setUserEmails,
+		setChatVisitorStatus: state.setChatVisitorStatus,
 		addMessageToMessageMap: state.addMessageToMessageMap,
 		updateMessageInMessageMap: state.updateMessageInMessageMap,
 	}));
@@ -59,6 +62,8 @@ export const Subscriber = ({
 	useSubscribe(updateMessageInMessageMap, updateClientMessage, clearUpdateClientMessage);
 
 	useSubscribe(setChatList, updateChatList, clearUpdateChatList);
+
+	useSubscribe(setChatVisitorStatus, updateVisitorStatus, clearUpdateVisitorStatus);
 
 	return null;
 };
