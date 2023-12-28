@@ -1,19 +1,16 @@
-import { auth, UserButton } from '@clerk/nextjs';
-import Link from 'next/link';
-import { HeaderContainer, ProfileIcon, UserButtonWrapper } from '@/app/chat/styled';
+import { Drawer } from '@/app/chat/components/Drawer';
+import { UserImage } from '@/app/chat/components/UserImage';
 
-export const Header = () => {
-	const { userId } = auth();
-	return (
-		<HeaderContainer>
-			{userId ? (
-				<UserButtonWrapper>
-					<UserButton afterSignOutUrl="/" />
-				</UserButtonWrapper>
-			) : null}
-			<Link href={'/profile'}>
-				<ProfileIcon />
-			</Link>
-		</HeaderContainer>
-	);
-};
+export const Header = () => (
+	<div
+		style={{
+			display: 'flex',
+			justifyContent: 'space-between',
+			alignItems: 'center',
+			padding: '1.5rem 1rem 0 0.5rem',
+		}}
+	>
+		<Drawer />
+		<UserImage />
+	</div>
+);

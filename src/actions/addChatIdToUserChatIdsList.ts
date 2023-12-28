@@ -1,7 +1,7 @@
 'use server';
 import { prisma } from '@/db';
 import { revalidatePath } from 'next/cache';
-import { CHATS_LIST } from '@/constants';
+import { CHAT_LIST } from '@/constants';
 
 export const addChatIdToUserChatIdsList = async (userId: string, chatId: string) => {
 	const user = await prisma.user.findUnique({
@@ -19,5 +19,5 @@ export const addChatIdToUserChatIdsList = async (userId: string, chatId: string)
 		data: { chatIds: updatedChatIds },
 	});
 
-	revalidatePath(CHATS_LIST);
+	revalidatePath(CHAT_LIST);
 };

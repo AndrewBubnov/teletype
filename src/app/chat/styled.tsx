@@ -1,9 +1,13 @@
 'use client';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
-import { Box, BoxProps, Checkbox, TextField, Typography } from '@mui/material';
+import { Box, BoxProps, Checkbox, List, ListItem, TextField, Typography } from '@mui/material';
 import PersonIcon from '@mui/icons-material/PersonOutlineOutlined';
+import SearchMuiIcon from '@mui/icons-material/Search';
+import LogoutMuiIcon from '@mui/icons-material/Logout';
+import Menu from '@mui/icons-material/Menu';
 import { ChatListItemInnerWrapperProps, UserPhotoImageProps, UserPhotoStubProps } from '@/types';
+import Link from 'next/link';
 
 export const UserPhotoImage = styled(({ isActive = false, size = 50, ...props }: UserPhotoImageProps) => (
 	<Image width={size} height={size} {...props} alt={props.alt} quality={100} />
@@ -15,12 +19,12 @@ export const UserPhotoImage = styled(({ isActive = false, size = 50, ...props }:
 	border: ${({ isActive }) => (isActive ? '3px solid green' : 'none')};
 `;
 
-export const UserPhotoStub = styled(({ isActive, ...props }: UserPhotoStubProps) => <Box {...props} />)`
+export const UserPhotoStub = styled(({ isActive, size = 50, ...props }: UserPhotoStubProps) => <Box {...props} />)`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 50px;
-	height: 50px;
+	width: ${({ size }) => `${size}px`};
+	height: ${({ size }) => `${size}px`};
 	background: #708090ff;
 	color: #fff;
 	border-radius: 50%;
@@ -117,12 +121,66 @@ export const UserNameWrapper = styled(Box)(() => ({
 	maxWidth: '85%',
 }));
 
+export const DrawerInnerWrapper = styled(Box)(() => ({
+	height: '100%',
+	background: '#333333FF',
+	padding: '1rem',
+	color: 'lightgray',
+}));
+
+export const NewChatMenuWrapper = styled(Box)(() => ({
+	width: '100%',
+}));
+
+export const FlexCenterWrapper = styled(Box)(() => ({
+	display: 'flex',
+	alignItems: 'center',
+}));
+
+export const NewChatMenuInnerWrapper = styled(Box)(() => ({
+	display: 'flex',
+	alignItems: 'center',
+	marginBottom: '0.5rem',
+}));
+
+export const DrawerList = styled(List)(() => ({
+	marginTop: '3rem',
+}));
+
+export const DrawerListItem = styled(ListItem)(() => ({
+	padding: '1rem 0',
+	borderBottom: '1px solid #636363',
+}));
+
 export const ProfileIcon = styled(PersonIcon)(() => ({
 	fill: 'lightgray',
 	marginRight: '1rem',
 }));
 
+export const SearchIcon = styled(SearchMuiIcon)(() => ({
+	fill: 'lightgray',
+	marginRight: '1rem',
+}));
+export const MenuIcon = styled(Menu)(() => ({
+	fill: 'lightgray',
+	width: '2rem',
+	height: '2rem',
+}));
+
+export const LogoutIcon = styled(LogoutMuiIcon)(() => ({
+	fill: 'lightgray',
+	marginRight: '1rem',
+}));
+
+export const StyledLink = styled(Link)(() => ({
+	display: 'flex',
+	alignItems: 'center',
+	color: 'lightgray',
+	textDecoration: 'none',
+}));
+
 export const StyledInput = styled(TextField)({
+	'width': '100%',
 	'& label': {
 		color: 'lightgray',
 	},

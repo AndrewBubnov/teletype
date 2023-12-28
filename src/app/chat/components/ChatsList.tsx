@@ -7,7 +7,7 @@ import { ChatListItem } from '@/app/chat/components/ChatListItem';
 import { ChatsListDeleteButton, ChatsListHeader, DeleteIcon } from '@/app/chat/[chatId]/styled';
 import { deleteChats } from '@/actions/deleteChats';
 import { sendDeleteUserChats } from '@/utils/sendDeleteUserChats';
-import { CHATS_LIST } from '@/constants';
+import { CHAT_LIST } from '@/constants';
 import { useStore } from '@/store';
 
 export const ChatsList = () => {
@@ -20,7 +20,7 @@ export const ChatsList = () => {
 	const [isDeleteMode, setIsDeleteMode] = useState<boolean>(false);
 	const [deletedChatIds, setDeletedChatIds] = useState<string[]>([]);
 
-	const setActiveChat = (chatId: string) => () => push(`${CHATS_LIST}/${chatId}`);
+	const setActiveChat = (chatId: string) => () => push(`${CHAT_LIST}/${chatId}`);
 
 	const toggleMode = (chatId: string) => () => {
 		if (!isDeleteMode) setDeletedChatIds(prevState => [...prevState, chatId]);

@@ -7,5 +7,6 @@ export const Fetcher = async () => {
 	const user = await getUser();
 	const userChats = await getUserChats(user.chatIds);
 	const userEmails = await getAllUserEmails();
+
 	return <Subscriber userChats={userChats} userEmails={userEmails} userId={user.userId} />;
 };

@@ -10,7 +10,7 @@ import { IconButton, Typography } from '@mui/material';
 import { UserPhotoImage } from '@/app/chat/styled';
 import { ElapsedTime } from '@/app/chat/[chatId]/components/ElapsedTime';
 import { getInterlocutorState } from '@/app/chat/[chatId]/utils/getInterlocutorState';
-import { CHATS_LIST } from '@/constants';
+import { CHAT_LIST } from '@/constants';
 import { ChatHeaderProps, VisitorStatus } from '@/types';
 import { useStore } from '@/store';
 
@@ -20,7 +20,7 @@ const ChatHeaderComponent = ({ chatId, interlocutorId, interlocutorName, interlo
 		activeUsers: state.activeUsers,
 	}));
 	const { push } = useRouter();
-	const redirectToChatPage = () => push(CHATS_LIST);
+	const redirectToChatPage = () => push(CHAT_LIST);
 
 	const interlocutorState = useMemo(
 		() =>
@@ -32,6 +32,7 @@ const ChatHeaderComponent = ({ chatId, interlocutorId, interlocutorName, interlo
 			}),
 		[activeUsers, chatVisitorStatus, chatId, interlocutorId]
 	);
+
 	return (
 		<ChatHeaderWrapper>
 			<CenterHorizontalWrapper>

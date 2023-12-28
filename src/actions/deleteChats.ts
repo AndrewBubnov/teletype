@@ -1,7 +1,7 @@
 'use server';
 import { prisma } from '@/db';
 import { revalidatePath } from 'next/cache';
-import { CHATS_LIST } from '@/constants';
+import { CHAT_LIST } from '@/constants';
 
 export const deleteChats = async (idsArray: string[]) => {
 	if (!idsArray.length) return;
@@ -11,5 +11,5 @@ export const deleteChats = async (idsArray: string[]) => {
 	await prisma.chat.deleteMany({
 		where: { chatId: { in: idsArray } },
 	});
-	revalidatePath(CHATS_LIST);
+	revalidatePath(CHAT_LIST);
 };

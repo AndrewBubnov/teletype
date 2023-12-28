@@ -38,7 +38,7 @@ export const reactions = [
 ];
 
 export const MAX_MESSAGE_WIDTH_RATIO = 5 / 6;
-export const MAX_FILE_SIZE = 700_000;
+export const MAX_FILE_SIZE = 900_000;
 export const DEFAULT_IMAGE_WIDTH = 350;
 export const DIALOG_MARGINS = 64;
 export const TEXT_AREA_STYLE = {

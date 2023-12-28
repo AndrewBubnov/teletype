@@ -27,7 +27,7 @@ import {
 	StyledTypography,
 } from '@/app/profile/styled';
 import { useRouter } from 'next/navigation';
-import { CHATS_LIST } from '@/constants';
+import { CHAT_LIST } from '@/constants';
 import { User } from '@/types';
 
 export const Profile = ({ user }: { user: User }) => {
@@ -63,7 +63,7 @@ export const Profile = ({ user }: { user: User }) => {
 
 	const usernameHandler = (evt: ChangeEvent<HTMLInputElement>) => setUsername(evt.target.value);
 
-	const redirectToChatList = () => push(CHATS_LIST);
+	const redirectToChatList = () => push(CHAT_LIST);
 
 	const submitHandler = async () => {
 		const croppedImage = await getCroppedImg(imageUrl, croppedAreaPixels, rotation);
