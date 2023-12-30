@@ -46,6 +46,8 @@ Teletype is a real-time chat application built with Next.js 14, Prisma ORM, Atla
   
 - **Message Persistence:** Messages for users not in the current chat are stored in the database and removed after they enter the chat and read the messages. Messages are deleted due to the usage of the free Atlas plan with limited storage.
 
+- **Profile Editing Page:** Users can edit their profile by clicking the button in the drawer, opened by pressing the "Menu" button. On this page, users can edit their username and profile photo (zoom, rotate, crop photo).
+
 - **Responsive Design:** Teletype has an adaptive design, making it suitable for use on both desktop and mobile devices.
 
 - **Multiple Chat Selection:** Users can long-press on a chat to enter multi-select mode, enabling them to delete multiple chats simultaneously.
