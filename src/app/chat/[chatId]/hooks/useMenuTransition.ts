@@ -23,7 +23,7 @@ export const useMenuTransition = (menuActiveId: string) => {
 		const containerHeight = containerParams.current?.height || 0;
 		const relativeTop = messageTop - containerTop;
 		setMenuTop(Math.min(Math.max(0, relativeTop - (menuHeight - messageHeight) / 2), containerHeight - menuHeight));
-	}, [menuActiveId]);
+	}, [menuActiveId, messageParams?.top, messageParams?.height]);
 
 	return { menuTop, setMessageParams, containerRef, initMenuParams };
 };
