@@ -116,6 +116,16 @@ export const StartDecorator = styled(Box)`
 	display: flex;
 	flex: 1;
 	justify-content: space-between;
+
+	@media (min-width: 600px) {
+		justify-content: flex-start;
+	}
+`;
+
+export const ReactionContainer = styled(Box)`
+	@media (min-width: 600px) {
+		margin-right: 0.5rem;
+	}
 `;
 
 export const EndDecorator = styled(Box)`
