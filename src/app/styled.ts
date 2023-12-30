@@ -21,18 +21,6 @@ export const LogLinkWrapper = styled(Box)(() => ({
 		width: '80%',
 	},
 }));
-export const LogLink = styled(Link)(() => ({
-	'fontSize': '1.5rem',
-	'textDecoration': 'none',
-	'padding': '10px 20px',
-	'background': 'steelblue',
-	'transition': 'color .3s',
-	'borderRadius': 4,
-	'color': 'lightgray',
-	'&:hover': {
-		color: '#fff',
-	},
-}));
 
 export const StyledTypography = styled(Typography)(() => ({
 	fontSize: '1.5rem',

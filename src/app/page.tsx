@@ -1,6 +1,7 @@
 import { auth } from '@clerk/nextjs';
-import { HeroContainer, LogLink, LogLinkWrapper, StyledTypography } from '@/app/styled';
-import { Typography } from '@mui/material';
+import { HeroContainer, LogLinkWrapper, StyledTypography } from '@/app/styled';
+import { Button } from '@mui/joy';
+import Link from 'next/link';
 
 export default function Home() {
 	const userId = auth().userId as string;
@@ -11,8 +12,12 @@ export default function Home() {
 		<HeroContainer>
 			<StyledTypography>Please register or sign in to continue</StyledTypography>
 			<LogLinkWrapper>
-				<LogLink href="/sign-in">Sign in</LogLink>
-				<LogLink href="/sign-up">Sign up</LogLink>
+				<Link href="/sign-in">
+					<Button>Sign in</Button>
+				</Link>
+				<Link href="/sign-up">
+					<Button>Sign up</Button>
+				</Link>
 			</LogLinkWrapper>
 		</HeroContainer>
 	);
