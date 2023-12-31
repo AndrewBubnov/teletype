@@ -25,10 +25,8 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 
 		const observer = new IntersectionObserver(
 			([entry]) => {
-				if (entry.isIntersecting) {
-					updateIsRead(entry.target.id);
-					observer.disconnect();
-				}
+				if (entry.isIntersecting) observer.disconnect();
+				if (entry.isIntersecting && updateIsRead) updateIsRead(entry.target.id);
 			},
 			{ rootMargin: '0px', threshold: 1 }
 		);

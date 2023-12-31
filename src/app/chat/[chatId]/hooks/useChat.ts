@@ -41,7 +41,7 @@ export const useChat = (chat: UserChat) => {
 
 	const unreadNumber = messageList.filter(el => !el.isRead && el.authorId !== userId).length;
 
-	const updateIsRead = updateIsReadMap(chatId, userId);
+	const updateIsRead = updateIsReadMap(chatId);
 
 	const addReaction = addReactionMap(chatId, authorImageUrl);
 
@@ -56,5 +56,6 @@ export const useChat = (chat: UserChat) => {
 		authorName,
 		unreadNumber,
 		updateIsRead,
+		userId,
 	};
 };

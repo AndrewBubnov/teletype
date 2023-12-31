@@ -44,10 +44,10 @@ export const useStore = create<Store>(set => ({
 				},
 			};
 		}),
-	updateIsReadMap: (chatId: string, userId: string) => async (id: string) => {
+	updateIsReadMap: (chatId: string) => async (id: string) => {
 		await updateMessageIsRead(id);
 		return set(state => {
-			const predicate = (el: Message): boolean => el.id === id && el.authorId !== userId;
+			const predicate = (el: Message): boolean => el.id === id;
 			const message = state.messageMap[chatId].find(predicate);
 			if (message && !message?.isRead) {
 				return {

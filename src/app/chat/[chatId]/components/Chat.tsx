@@ -25,6 +25,7 @@ export const Chat = ({ chat }: ChatProps) => {
 		authorName,
 		unreadNumber,
 		updateIsRead,
+		userId,
 	} = useChat(chat);
 	const [repliedMessage, setRepliedMessage] = useState<Message | null>(null);
 	const [editedMessage, setEditedMessage] = useState<Message | null>(null);
@@ -91,7 +92,7 @@ export const Chat = ({ chat }: ChatProps) => {
 								message={message}
 								repliedMessage={repliedMessage}
 								onContextMenuToggle={contextMenuToggleHandler(message.id)}
-								updateIsRead={updateIsRead}
+								updateIsRead={message.authorId !== userId ? updateIsRead : null}
 							/>
 						);
 					})}
