@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { ChatVisitorStatus, Message, MessageMap, Store, UserChat } from '@/types';
-import { updateMessageIsRead } from '@/actions/updateMessageIsRead';
+import { sendChangeMessageIsRead } from '@/utils/sendChangeMessageIsRead';
+import { sendAddReaction } from '@/utils/sendAddReaction';
 
 export const useStore = create<Store>(set => ({
 	messageMap: {},
@@ -45,7 +46,7 @@ export const useStore = create<Store>(set => ({
 			};
 		}),
 	updateIsReadMap: (chatId: string) => async (id: string) => {
-		await updateMessageIsRead(id);
+		sendChangeMessageIsRead({ messageId: id, chatId });
 		return set(state => {
 			const predicate = (el: Message): boolean => el.id === id;
 			const message = state.messageMap[chatId].find(predicate);
@@ -60,16 +61,23 @@ export const useStore = create<Store>(set => ({
 			return state;
 		});
 	},
-	addReactionMap: (chatId: string, authorImageUrl: string | null | undefined) => (id: string, reaction: string) =>
-		set(state => ({
-			messageMap: {
-				...state.messageMap,
-				[chatId]: state.messageMap[chatId].map(message => {
-					if (message.id === id) {
-						return { ...message, reaction, reactionAuthorImageUrl: reaction ? authorImageUrl : null };
-					}
-					return message;
-				}),
-			},
-		})),
+	addReactionMap:
+		(chatId: string, authorImageUrl: string | null | undefined) => (messageId: string, reaction: string) => {
+			sendAddReaction({ chatId, messageId, reaction, authorImageUrl });
+			set(state => ({
+				messageMap: {
+					...state.messageMap,
+					[chatId]: state.messageMap[chatId].map(message => {
+						if (message.id === messageId) {
+							return {
+								...message,
+								reaction,
+								reactionAuthorImageUrl: reaction ? authorImageUrl : undefined,
+							};
+						}
+						return message;
+					}),
+				},
+			}));
+		},
 }));

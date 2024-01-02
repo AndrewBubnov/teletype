@@ -10,7 +10,8 @@ import { addClientMessage, clearAddClientMessage } from '@/utils/addClientMessag
 import { clearUpdateClientMessage, updateClientMessage } from '@/utils/updateClientMessage';
 import { clearUpdateChatList, updateChatList } from '@/utils/updateChatList';
 import { clearUpdateVisitorStatus, updateVisitorStatus } from '@/utils/updateVisitorStatus';
-import { MessageMap, UserChat } from '@/types';
+import { clearMessageMap, createMessageMap } from '@/utils/createMessageMap';
+import { UserChat } from '@/types';
 
 export const Subscriber = ({
 	userChats,
@@ -48,12 +49,9 @@ export const Subscriber = ({
 		setChatList(userChats);
 		initUserChats(userChats);
 		sendJoin(userId);
-		const map: MessageMap = userChats.reduce((acc, cur) => {
-			acc[cur.chatId] = cur.messages;
-			return acc;
-		}, {} as MessageMap);
-		setMessageMap(map);
 	}, [setMessageMap, setChatList, setUserEmails, userEmails, userChats, userId]);
+
+	useSubscribe(setMessageMap, createMessageMap, clearMessageMap);
 
 	useSubscribe(setActiveUsers, updateActiveUsers, clearActiveUsers);
 

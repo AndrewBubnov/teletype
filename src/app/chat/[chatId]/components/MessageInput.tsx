@@ -4,17 +4,16 @@ import { useUser } from '@clerk/nextjs';
 import { Textarea } from '@mui/joy';
 import { RepliedMessageBox } from '@/app/chat/[chatId]/components/RepliedMessageBox';
 import { SendMessageFormWrapper, SendWrapper } from '@/app/chat/[chatId]/styled';
-import { addMessageToChat } from '@/actions/addMessageToChat';
 import { sendMessageToServer } from '@/utils/sendMessageToServer';
 import { fileInputHelper } from '@/app/chat/[chatId]/utils/fileInputHelper';
 import { ImagePreviewModal } from '@/app/chat/[chatId]/components/ImagePreviewModal';
 import { TextAreaEndDecorator } from '@/app/chat/[chatId]/components/TextAreaEndDecorator';
 import { TextAreaStartDecorator } from '@/app/chat/[chatId]/components/TextAreaStartDecorator';
-import { updateMessage } from '@/actions/updateMessage';
 import { sendEditMessage } from '@/utils/sendEditMessage';
 import { DIALOG_MARGINS, MAX_FILE_SIZE, TEXT_AREA_STYLE } from '@/app/chat/[chatId]/constants';
-import { MessageInputProps, MessageType } from '@/types';
+import { Message, MessageInputProps, MessageType } from '@/types';
 import { UPLOAD_FILE_ERROR_MESSAGE } from '@/app/profile/constants';
+import { nanoid } from 'nanoid';
 
 export const MessageInput = ({
 	chatId,
@@ -64,21 +63,19 @@ export const MessageInput = ({
 
 	const submitHandler = async () => {
 		const type = messageText && emojis && messageText === emojis ? MessageType.EMOJI : MessageType.COMMON;
-		const commonArgs = {
+		const id = nanoid();
+		const message: Message = {
+			id,
 			chatId,
 			authorId: userId,
 			authorName,
-			messageType: type,
-			messageText,
-			messageImageUrl,
+			type,
+			text: messageText,
+			imageUrl: messageImageUrl,
 			replyToId: repliedMessage?.id,
+			isRead: false,
+			date: new Date(),
 		};
-		const message = editedMessage
-			? await updateMessage({
-					...commonArgs,
-					id: editedMessage.id,
-				})
-			: await addMessageToChat(commonArgs);
 		if (message && editedMessage)
 			sendEditMessage({
 				messageId: message.id,

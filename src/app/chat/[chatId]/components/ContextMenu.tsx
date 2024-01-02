@@ -11,7 +11,6 @@ import {
 import getBoundingClientRect from '@popperjs/core/lib/dom-utils/getBoundingClientRect';
 import { reactions } from '@/app/chat/[chatId]/constants';
 import { sendEditMessage } from '@/utils/sendEditMessage';
-import { deleteSingleMessage } from '@/actions/deleteSingleMessage';
 import { ConfirmDialog } from '@/app/chat/[chatId]/components/ConfirmDialog';
 import { ContextMenuProps } from '@/types';
 
@@ -51,7 +50,6 @@ export const ContextMenu = ({
 			authorOnly: !informBoth,
 		};
 		sendEditMessage(editMessageParams);
-		if (informBoth) await deleteSingleMessage(menuActiveId, chatId);
 		cancelDeleteHandler();
 		closeContextMenu();
 	};

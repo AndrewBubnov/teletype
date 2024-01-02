@@ -23,13 +23,12 @@ export interface ServerMessage {
 	authorId: string;
 	authorName: string;
 	type: MessageType;
-	chatId: string | null;
-	chat?: Chat;
-	text: string | null;
-	imageUrl: string | null;
-	reaction: string | null;
+	chatId: string;
+	text?: string;
+	imageUrl?: string | null;
+	reaction?: string;
 	reactionAuthorImageUrl?: string | null;
-	replyToId: string | null;
+	replyToId?: string;
 }
 
 export interface Message extends ServerMessage {
@@ -40,12 +39,10 @@ export type Chat = {
 	id: string;
 	chatId: string;
 	memberIds: string[];
-	messageIds: string[];
 };
 
 export interface UserChat extends Chat {
 	members: User[];
-	messages: Message[];
 }
 
 export type User = {
@@ -136,20 +133,6 @@ export type SingleMessageProps = {
 	onContextMenuToggle(type: 'open' | 'close', middle?: DOMRect): void;
 	updateIsRead: ((arg: string) => Promise<void>) | null;
 };
-
-export interface AddMessageToChat {
-	chatId: string;
-	authorId: string;
-	authorName: string;
-	messageType: MessageType;
-	messageText?: string;
-	messageImageUrl?: string;
-	replyToId?: string;
-}
-
-export interface UpdateMessage extends AddMessageToChat {
-	id: string;
-}
 
 export interface EditMessageClient {
 	messageId: string;
@@ -269,4 +252,11 @@ export interface ErrorToastProps {
 	open: boolean;
 	onClose(): void;
 	text: string;
+}
+
+export interface SendAddReactionArgs {
+	chatId: string;
+	messageId: string;
+	reaction: string;
+	authorImageUrl?: string | null;
 }

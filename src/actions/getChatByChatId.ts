@@ -10,13 +10,5 @@ export const getChatByChatId = async (chatId: string): Promise<UserChat | undefi
 	if (!chat) return;
 	const members = (await Promise.all(chat.memberIds.map(id => getUserByUserId(id)))) as User[];
 
-	const messages = (await prisma.message.findMany({
-		where: { id: { in: chat.messageIds } },
-	})) as Message[];
-
-	return {
-		...chat,
-		messages,
-		members,
-	};
+	return { ...chat, members };
 };

@@ -1,5 +1,4 @@
 import { useAspectRatio } from '@/app/chat/[chatId]/hooks/useAspectRatio';
-import { SyntheticEvent, useState } from 'react';
 import {
 	BasicImageWrapper,
 	StyledCloseFullWidthIcon,

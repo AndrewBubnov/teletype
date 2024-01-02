@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useStore } from '@/store';
 import { useUser } from '@clerk/nextjs';
 import { sendChangeVisitorStatus } from '@/utils/sendChangeVisitorStatus';
-import { deleteReadMessages } from '@/actions/deleteReadMessages';
 import { UserChat, VisitorStatus } from '@/types';
+import { sendDeleteReadMessages } from '@/utils/sendDeleteReadMessages';
 
 export const useChat = (chat: UserChat) => {
 	const { user } = useUser();
@@ -27,7 +27,7 @@ export const useChat = (chat: UserChat) => {
 	const messageList = messageMap[chatId] || [];
 
 	useEffect(() => {
-		deleteReadMessages(chatId).then();
+		sendDeleteReadMessages(chatId);
 	}, [chatId]);
 
 	useEffect(() => {
@@ -54,6 +54,7 @@ export const useChat = (chat: UserChat) => {
 		authorId,
 		interlocutorId,
 		authorName,
+		authorImageUrl,
 		unreadNumber,
 		updateIsRead,
 		userId,

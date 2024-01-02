@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getAspectRatio } from '@/app/chat/[chatId]/utils/getAspectRatio';
 
-export const useAspectRatio = (url: string | null) => {
+export const useAspectRatio = (url: string | null | undefined) => {
 	const [aspectRatio, setAspectRatio] = useState<number>(1);
 
 	useEffect(() => {

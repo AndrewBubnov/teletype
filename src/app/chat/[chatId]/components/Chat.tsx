@@ -6,7 +6,6 @@ import { ChatWrapper, CoverWrapper } from '@/app/chat/[chatId]/styled';
 import { Box } from '@mui/material';
 import { ChatHeader } from '@/app/chat/[chatId]/components/ChatHeader';
 import { SingleMessage } from '@/app/chat/[chatId]/components/SingleMessage';
-import { addReactionToMessage } from '@/actions/addReactionToMessage';
 import { sendEditMessage } from '@/utils/sendEditMessage';
 import { ContextMenu } from '@/app/chat/[chatId]/components/ContextMenu';
 import { MessageInput } from '@/app/chat/[chatId]/components/MessageInput';
@@ -21,6 +20,7 @@ export const Chat = ({ chat }: ChatProps) => {
 		interlocutorImageUrl,
 		chatId,
 		authorId,
+		authorImageUrl,
 		interlocutorId,
 		authorName,
 		unreadNumber,
@@ -48,11 +48,14 @@ export const Chat = ({ chat }: ChatProps) => {
 			if (!message) return;
 			const reaction = message.reaction === reactionString ? '' : reactionString;
 			addReaction(message.id, reaction);
-			const updated = (await addReactionToMessage(message.id, reaction)) || message;
-			sendEditMessage({ messageId: message.id, message: { ...updated, isRead: true }, roomId: chatId });
+			sendEditMessage({
+				messageId: message.id,
+				message: { ...message, reaction, reactionAuthorImageUrl: authorImageUrl },
+				roomId: chatId,
+			});
 			closeMenuHandler();
 		},
-		[addReaction, chatId, closeMenuHandler, getMessage]
+		[addReaction, chatId, closeMenuHandler, getMessage, authorImageUrl]
 	);
 
 	const onReplyMessage = useCallback(() => {
