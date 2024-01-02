@@ -19,16 +19,11 @@ import { updateUserDetails } from '@/actions/updateUser';
 
 import { MAX_FILE_SIZE } from '@/app/chat/[chatId]/constants';
 import { fileInputHelper } from '@/app/chat/[chatId]/utils/fileInputHelper';
-import {
-	ButtonsWrapper,
-	ControlsWrapper,
-	LoaderWrapper,
-	LoadingIndicator,
-	StyledTypography,
-} from '@/app/profile/styled';
+import { ButtonsWrapper, ControlsWrapper, StyledTypography } from '@/app/profile/styled';
 import { useRouter } from 'next/navigation';
 import { CHAT_LIST } from '@/constants';
 import { User } from '@/types';
+import { LoaderWrapper, LoadingIndicator } from '@/app/shared/styled';
 
 export const Profile = ({ user }: { user: User }) => {
 	const { push } = useRouter();

@@ -245,6 +245,7 @@ export interface TextAreaEndDecoratorProps {
 	messageImageUrl: string;
 	openPreviewModal(): void;
 	onDropImageUrl(): void;
+	onCameraStart(): void;
 	onSubmit(): Promise<void>;
 }
 

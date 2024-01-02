@@ -14,6 +14,7 @@ import { DIALOG_MARGINS, MAX_FILE_SIZE, TEXT_AREA_STYLE } from '@/app/chat/[chat
 import { Message, MessageInputProps, MessageType } from '@/types';
 import { UPLOAD_FILE_ERROR_MESSAGE } from '@/app/profile/constants';
 import { nanoid } from 'nanoid';
+import { PhotoModal } from '@/app/chat/[chatId]/components/PhotoModal';
 
 export const MessageInput = ({
 	chatId,
@@ -32,6 +33,7 @@ export const MessageInput = ({
 	const [messageText, setMessageText] = useState<string>('');
 	const [emojis, setEmojis] = useState<string>('');
 	const [isImagePreviewModalOpen, setIsImagePreviewModalOpen] = useState<boolean>(false);
+	const [isCameraOn, setIsCameraOn] = useState<boolean>(false);
 
 	const ref = useRef<HTMLDivElement>(null);
 	const widthRef = useRef<number>(0);
@@ -110,6 +112,8 @@ export const MessageInput = ({
 		setIsImagePreviewModalOpen(true);
 	};
 
+	if (isCameraOn) return <PhotoModal open={isCameraOn} onClose={() => setIsCameraOn(false)} />;
+
 	return isImagePreviewModalOpen ? (
 		<ImagePreviewModal
 			src={messageImageUrl}
@@ -134,6 +138,7 @@ export const MessageInput = ({
 							onDropImageUrl={dropMessageImageUrl}
 							openPreviewModal={openPreviewModalHandler}
 							onSelectFile={selectFileHandler}
+							onCameraStart={() => setIsCameraOn(true)}
 							onSubmit={submitHandler}
 						/>
 					}

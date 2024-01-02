@@ -1,19 +1,10 @@
 'use client';
 import { styled } from '@mui/material/styles';
 import Image, { ImageProps } from 'next/image';
-import {
-	Box,
-	Button,
-	Checkbox,
-	DialogContentText,
-	IconButton,
-	FormLabel,
-	BoxProps,
-	Dialog,
-	Alert,
-} from '@mui/material';
+import { Box, Button, Checkbox, DialogContentText, IconButton, FormLabel, BoxProps, Dialog } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCameraOutlined';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import ReplyIcon from '@mui/icons-material/ReplyOutlined';
 import DownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -159,15 +150,30 @@ export const RepliedMessageAuthor = styled(Box)`
 export const ImageIconsWrapper = styled(Box)`
 	display: flex;
 	justify-content: space-between;
-	width: 12rem;
+	width: 16rem;
 	margin-left: auto;
 `;
 
 export const ImageIconsInnerWrapper = styled(Box)`
 	display: flex;
 	justify-content: space-between;
-	width: 8rem;
+	width: 12rem;
 	margin-left: auto;
+`;
+
+export const VideoWrapper = styled(Box)`
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 4rem;
+	align-items: center;
+	overflow: hidden;
+`;
+export const TakePhoto = styled(Box)`
+	width: 4rem;
+	height: 4rem;
+	border: 0.25rem solid #fff;
+	border-radius: 50%;
 `;
 export const ReplyToContainer = styled(Box)`
 	background: palegreen;
@@ -434,6 +440,9 @@ export const EditIcon = styled(ModeEditIcon)`
 	fill: #1a1a1a;
 `;
 export const StyledDeleteIcon = styled(DeleteOutlineIcon)`
+	fill: lightgray;
+`;
+export const CameraIcon = styled(PhotoCameraIcon)`
 	fill: lightgray;
 `;
 export const MenuDeleteIcon = styled(DeleteOutlineIcon)`

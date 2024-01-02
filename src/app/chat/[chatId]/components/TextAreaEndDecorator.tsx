@@ -1,4 +1,5 @@
 import {
+	CameraIcon,
 	EndDecorator,
 	ImageIconsInnerWrapper,
 	ImageIconsWrapper,
@@ -18,6 +19,7 @@ export const TextAreaEndDecorator = ({
 	onDropImageUrl,
 	onSelectFile,
 	onSubmit,
+	onCameraStart,
 }: TextAreaEndDecoratorProps) => (
 	<EndDecorator>
 		<PreviewWrapper onClick={openPreviewModal}>
@@ -31,6 +33,9 @@ export const TextAreaEndDecorator = ({
 			) : null}
 			<ImageIconsInnerWrapper>
 				<FileUploadInput onChange={onSelectFile} />
+				<IconButton onClick={onCameraStart}>
+					<CameraIcon />
+				</IconButton>
 				<SendButton onClick={onSubmit} endIcon={<SendMessageIcon />} />
 			</ImageIconsInnerWrapper>
 		</ImageIconsWrapper>
