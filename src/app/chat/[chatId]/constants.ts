@@ -47,3 +47,5 @@ export const TEXT_AREA_STYLE = {
 	'color': 'lightgray',
 	'--Textarea-focusedHighlight': 'lightgray !important',
 };
+
+export const PHOTO_PAPER_PROPS = { style: { background: 'transparent', boxShadow: 'none' } };

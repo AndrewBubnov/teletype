@@ -9,6 +9,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import ReplyIcon from '@mui/icons-material/ReplyOutlined';
 import DownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import CloseMUIIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
@@ -19,9 +20,9 @@ import {
 	MessageItemBottomProps,
 	RepliedMessageTextProps,
 	StyledButtonProps,
+	VideoWrapperProps,
 } from '@/types';
 import { MAX_MESSAGE_WIDTH_RATIO } from '@/app/chat/[chatId]/constants';
-import MuiAlert from '@mui/material/Alert';
 
 export const ChatWrapper = styled(Box)`
 	padding: 1rem;
@@ -161,13 +162,14 @@ export const ImageIconsInnerWrapper = styled(Box)`
 	margin-left: auto;
 `;
 
-export const VideoWrapper = styled(Box)`
+export const VideoWrapper = styled(({ isStreamed, ...props }: VideoWrapperProps) => <Box {...props} />)`
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	gap: 4rem;
+	opacity: ${({ isStreamed }) => (isStreamed ? 1 : 0)};
 	align-items: center;
 	overflow: hidden;
+	transition: opacity 0.5s;
 `;
 export const TakePhoto = styled(Box)`
 	width: 4rem;
@@ -258,9 +260,29 @@ const MessageWrapper = styled(Box)`
 	display: flex;
 	padding: 1rem 0;
 `;
+
+export const PhotoDialog = styled(Dialog)`
+	& .MuiBackdrop-root {
+		background-color: #1a1a1a;
+	}
+`;
+
+export const Video = styled('video')`
+	transform: rotateY(180deg);
+	margin-top: 1rem;
+	margin-bottom: 4rem;
+`;
+
+export const Canvas = styled('canvas')`
+	display: none;
+`;
 export const AuthorMessageWrapper = styled(MessageWrapper)`
 	position: relative;
 	flex-direction: row-reverse;
+`;
+
+export const NoPaddingIconButton = styled(IconButton)`
+	padding: 0;
 `;
 export const InterlocutorMessageWrapper = styled(MessageWrapper)`
 	position: relative;
@@ -306,6 +328,12 @@ export const MessageItemBottom = styled(({ multipleChild, withOffset, ...props }
 export const TimeWrapper = styled(Box)`
 	font-size: 0.6rem;
 	color: rgba(0, 210, 170, 0.8);
+`;
+
+export const PhotoCloseWrapper = styled(Box)`
+	display: flex;
+	flex-direction: row-reverse;
+	width: 100%;
 `;
 
 export const ReactionWrapper = styled(Box)`
@@ -441,6 +469,11 @@ export const EditIcon = styled(ModeEditIcon)`
 `;
 export const StyledDeleteIcon = styled(DeleteOutlineIcon)`
 	fill: lightgray;
+`;
+export const CloseIcon = styled(CloseMUIIcon)`
+	fill: lightgray;
+	width: 2rem;
+	height: 2rem;
 `;
 export const CameraIcon = styled(PhotoCameraIcon)`
 	fill: lightgray;

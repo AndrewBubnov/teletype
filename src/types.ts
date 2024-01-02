@@ -8,7 +8,8 @@ import {
 	SyntheticEvent,
 } from 'react';
 import { ImageProps } from 'next/image';
-import { ButtonProps } from '@mui/material';
+import { BoxProps, ButtonProps } from '@mui/material';
+import { CameraMode } from '@/app/chat/[chatId]/components/CameraMode';
 
 export type MessageMap = Record<string, Message[]>;
 
@@ -260,4 +261,14 @@ export interface SendAddReactionArgs {
 	messageId: string;
 	reaction: string;
 	authorImageUrl?: string | null;
+}
+
+export interface CameraModeProps {
+	open: boolean;
+	onClose(evt?: {}, reason?: 'backdropClick' | 'escapeKeyDown'): void;
+	onTakePhoto(arg: string): void;
+}
+
+export interface VideoWrapperProps extends BoxProps {
+	isStreamed: boolean;
 }

@@ -14,7 +14,7 @@ import { DIALOG_MARGINS, MAX_FILE_SIZE, TEXT_AREA_STYLE } from '@/app/chat/[chat
 import { Message, MessageInputProps, MessageType } from '@/types';
 import { UPLOAD_FILE_ERROR_MESSAGE } from '@/app/profile/constants';
 import { nanoid } from 'nanoid';
-import { PhotoModal } from '@/app/chat/[chatId]/components/PhotoModal';
+import { CameraMode } from '@/app/chat/[chatId]/components/CameraMode';
 
 export const MessageInput = ({
 	chatId,
@@ -65,9 +65,8 @@ export const MessageInput = ({
 
 	const submitHandler = async () => {
 		const type = messageText && emojis && messageText === emojis ? MessageType.EMOJI : MessageType.COMMON;
-		const id = nanoid();
 		const message: Message = {
-			id,
+			id: nanoid(),
 			chatId,
 			authorId: userId,
 			authorName,
@@ -112,7 +111,13 @@ export const MessageInput = ({
 		setIsImagePreviewModalOpen(true);
 	};
 
-	if (isCameraOn) return <PhotoModal open={isCameraOn} onClose={() => setIsCameraOn(false)} />;
+	const closePhotoModalHandler = (_?: {}, reason?: string) => {
+		if (reason !== 'backdropClick') setIsCameraOn(false);
+	};
+
+	if (isCameraOn) {
+		return <CameraMode open={isCameraOn} onClose={closePhotoModalHandler} onTakePhoto={setMessageImageUrl} />;
+	}
 
 	return isImagePreviewModalOpen ? (
 		<ImagePreviewModal

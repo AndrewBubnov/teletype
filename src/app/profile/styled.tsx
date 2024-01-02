@@ -17,3 +17,9 @@ export const ButtonsWrapper = styled(Box)(() => ({
 export const StyledTypography = styled(Typography)(() => ({
 	textAlign: 'center',
 }));
+export const LoaderWrapper = styled(Box)(() => ({
+	display: 'flex',
+	justifyContent: 'center',
+	alignItems: 'center',
+	height: '70vh',
+}));
