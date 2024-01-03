@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useStore } from '@/store';
 import { useUser } from '@clerk/nextjs';
 import { Textarea } from '@mui/joy';
@@ -34,14 +34,6 @@ export const MessageInput = ({
 	const [emojis, setEmojis] = useState<string>('');
 	const [isImagePreviewModalOpen, setIsImagePreviewModalOpen] = useState<boolean>(false);
 	const [isCameraOn, setIsCameraOn] = useState<boolean>(false);
-
-	const ref = useRef<HTMLDivElement>(null);
-	const widthRef = useRef<number>(0);
-
-	useLayoutEffect(() => {
-		if (!ref.current) return;
-		widthRef.current = ref.current.clientWidth - DIALOG_MARGINS;
-	}, []);
 
 	useEffect(() => {
 		if (!editedMessage) return;
@@ -124,10 +116,10 @@ export const MessageInput = ({
 			src={messageImageUrl}
 			onClose={() => setIsImagePreviewModalOpen(false)}
 			open={isImagePreviewModalOpen}
-			width={widthRef.current}
+			width={window.innerWidth - DIALOG_MARGINS}
 		/>
 	) : (
-		<SendMessageFormWrapper ref={ref}>
+		<SendMessageFormWrapper>
 			<RepliedMessageBox message={repliedMessage} authorName={authorName} onDropMessage={dropReplyHandler} />
 			<SendWrapper>
 				<Textarea
