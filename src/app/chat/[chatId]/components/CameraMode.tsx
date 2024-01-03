@@ -16,7 +16,7 @@ import { PHOTO_PAPER_PROPS } from '@/app/chat/[chatId]/constants';
 import { CameraModeProps } from '@/types';
 
 export const CameraMode = ({ open, onClose, onTakePhoto }: CameraModeProps) => {
-	const setErrorMessage = useStore(state => state.setErrorMessage);
+	const setToast = useStore(state => state.setToast);
 
 	const [isStreamed, setIsStreamed] = useState(false);
 	const [width, setWidth] = useState(0);
@@ -63,9 +63,9 @@ export const CameraMode = ({ open, onClose, onTakePhoto }: CameraModeProps) => {
 				});
 			})
 			.catch(error => {
-				if (error instanceof Error) setErrorMessage(error.message);
+				if (error instanceof Error) setToast({ text: error.message, type: 'error' });
 			});
-	}, [constraints, setErrorMessage]);
+	}, [constraints, setToast]);
 
 	const photoHandler = () => {
 		const canvas = canvasRef.current;

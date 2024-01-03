@@ -209,16 +209,20 @@ export interface ImageMessageProps {
 	width?: number;
 }
 
+type ToastSeverityType = 'error' | 'warning' | 'info' | 'success';
+
+export type Toast = { text: string; type: ToastSeverityType } | null;
+
 export interface Store {
 	messageMap: MessageMap;
 	chatList: UserChat[];
 	activeUsers: string[];
 	userEmails: string[];
-	errorMessage: string;
+	toast: Toast;
 	setActiveUsers(arg: string[]): void;
 	setUserEmails(arg: string[]): void;
 	setChatList(arg: UserChat[]): void;
-	setErrorMessage(arg: string): void;
+	setToast(arg: Toast): void;
 	chatVisitorStatus: ChatVisitorStatus;
 	setChatVisitorStatus(arg: ChatVisitorStatus): void;
 	setMessageMap(arg: MessageMap): void;
@@ -236,12 +240,12 @@ export type Subscription<T> = (fn: (arg: T) => void) => void;
 export interface ImagePreviewModalProps {
 	open: boolean;
 	onClose(): void;
-	src: string;
+	src: string | null;
 	width: number;
 }
 export interface TextAreaEndDecoratorProps {
 	onSelectFile(event: ChangeEvent<HTMLInputElement>): void;
-	messageImageUrl: string;
+	messageImageUrl: string | null;
 	openPreviewModal(): void;
 	onDropImageUrl(): void;
 	onCameraStart(): void;
@@ -251,7 +255,7 @@ export interface TextAreaEndDecoratorProps {
 export interface ErrorToastProps {
 	open: boolean;
 	onClose(): void;
-	text: string;
+	context: Toast;
 }
 
 export interface SendAddReactionArgs {

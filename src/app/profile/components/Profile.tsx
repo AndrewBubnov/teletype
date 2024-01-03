@@ -1,29 +1,20 @@
 'use client';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { useStore } from '@/store';
+import { useFileUpload } from '@/app/shared/hooks/useFileUpload';
 import Cropper, { Area } from 'react-easy-crop';
 import { Box, FormLabel, Slider } from '@mui/material';
 import { Button } from '@mui/joy';
-import {
-	CONTAINER_STYLE,
-	CROP_AREA_STYLE,
-	INPUT_STYLE,
-	PROFILE_SLIDER_MIDDLE,
-	UPLOAD_FILE_ERROR_MESSAGE,
-} from '@/app/profile/constants';
+import { CONTAINER_STYLE, CROP_AREA_STYLE, INPUT_STYLE, PROFILE_SLIDER_MIDDLE } from '@/app/profile/constants';
 import { getZoomFromSliderData } from '@/app/profile/utils/getZoomFromSliderData';
 import { getCroppedImg } from '@/app/profile/utils/getCroppedImg';
 import { getRotationFromSliderValue } from '@/app/profile/utils/getRotationFromSliderValue';
 import { StyledInput } from '@/app/chat/styled';
 import { updateUserDetails } from '@/actions/updateUser';
-
-import { MAX_FILE_SIZE } from '@/app/chat/[chatId]/constants';
-import { fileInputHelper } from '@/app/chat/[chatId]/utils/fileInputHelper';
 import { ButtonsWrapper, ControlsWrapper, LoaderWrapper, StyledTypography } from '@/app/profile/styled';
 import { useRouter } from 'next/navigation';
+import { LoadingIndicator } from '@/app/shared/styled';
 import { CHAT_LIST } from '@/constants';
 import { User } from '@/types';
-import { LoadingIndicator } from '@/app/shared/styled';
 
 export const Profile = ({ user }: { user: User }) => {
 	const { push } = useRouter();
@@ -34,13 +25,12 @@ export const Profile = ({ user }: { user: User }) => {
 	const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>({} as Area);
 	const [zoomSliderValue, setZoomSliderValue] = useState(PROFILE_SLIDER_MIDDLE);
 	const [rotationSliderValue, setRotationSliderValue] = useState(PROFILE_SLIDER_MIDDLE);
-	const [imageUrl, setImageUrl] = useState(user.imageUrl);
 	const [username, setUsername] = useState(user.username || user.email);
 	const [opacity, setOpacity] = useState(0);
 
-	const ref = useRef<HTMLLabelElement>(null);
+	const { imageUrl, setImageUrl, dropImageUrl: dropUploadingHandler, selectFileHandler } = useFileUpload();
 
-	const setErrorMessage = useStore(state => state.setErrorMessage);
+	const ref = useRef<HTMLLabelElement>(null);
 
 	useEffect(() => {
 		setZoom(getZoomFromSliderData(zoomSliderValue));
@@ -67,18 +57,7 @@ export const Profile = ({ user }: { user: User }) => {
 		redirectToChatList();
 	};
 
-	const selectFileHandler = (event: ChangeEvent<HTMLInputElement>) => {
-		if ((event.target.files?.[0].size || 0) > MAX_FILE_SIZE) {
-			setErrorMessage(UPLOAD_FILE_ERROR_MESSAGE);
-			event.target.value = '';
-			return;
-		}
-		fileInputHelper(event, (imgUrl: string) => setImageUrl(imgUrl));
-	};
-
 	const uploadHandler = () => ref.current?.click();
-
-	const dropUploadingHandler = () => setImageUrl(user.imageUrl);
 
 	const deleteImageHandler = () => setImageUrl(null);
 

@@ -15,8 +15,9 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) 
 	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export const ErrorToast = ({ open, onClose, text }: ErrorToastProps) => {
-	const handleClose = (event?: SyntheticEvent | Event, reason?: string) => {
+export const Toast = ({ open, onClose, context }: ErrorToastProps) => {
+	if (!context) return null;
+	const handleClose = (_?: SyntheticEvent | Event, reason?: string) => {
 		if (reason !== 'clickaway') onClose();
 	};
 
@@ -31,8 +32,8 @@ export const ErrorToast = ({ open, onClose, text }: ErrorToastProps) => {
 				horizontal: 'right',
 			}}
 		>
-			<Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-				{text}
+			<Alert onClose={handleClose} severity={context.type} sx={{ width: '100%' }}>
+				{context.text}
 			</Alert>
 		</Snackbar>
 	);

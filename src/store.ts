@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { ChatVisitorStatus, Message, MessageMap, Store, UserChat } from '@/types';
+import { ChatVisitorStatus, Message, MessageMap, Store, Toast, UserChat } from '@/types';
 import { sendChangeMessageIsRead } from '@/utils/sendChangeMessageIsRead';
 import { sendAddReaction } from '@/utils/sendAddReaction';
 
@@ -9,13 +9,13 @@ export const useStore = create<Store>(set => ({
 	chatList: [],
 	userEmails: [],
 	chatVisitorStatus: {},
-	errorMessage: '',
+	toast: null,
 	setMessageMap: (updated: MessageMap) => set({ messageMap: updated }),
 	setActiveUsers: (updated: string[]) => set({ activeUsers: updated }),
 	setUserEmails: (updated: string[]) => set({ userEmails: updated }),
 	setChatList: (updated: UserChat[]) => set({ chatList: updated }),
 	setChatVisitorStatus: (updated: ChatVisitorStatus) => set({ chatVisitorStatus: updated }),
-	setErrorMessage: (text: string) => set({ errorMessage: text }),
+	setToast: (toast: Toast) => set({ toast }),
 	addMessageToMessageMap: (message: Message) =>
 		set(state => {
 			if (!message.chatId) return { messageMap: state.messageMap };

@@ -5,6 +5,7 @@ import { MOBILE_WIDTH } from '@/app/chat/[chatId]/constants';
 import { ImagePreviewModalProps } from '@/types';
 export const ImagePreviewModal = ({ src, open, onClose, width }: ImagePreviewModalProps) => {
 	const aspectRatio = useAspectRatio(src);
+	if (!src) return null;
 	return (
 		<PreviewImageDialog
 			fullWidth

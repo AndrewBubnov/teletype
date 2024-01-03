@@ -1,20 +1,18 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useStore } from '@/store';
 import { useUser } from '@clerk/nextjs';
 import { Textarea } from '@mui/joy';
 import { nanoid } from 'nanoid';
 import { RepliedMessageBox } from '@/app/chat/[chatId]/components/RepliedMessageBox';
 import { SendMessageFormWrapper, SendWrapper } from '@/app/chat/[chatId]/styled';
 import { sendMessageToServer } from '@/utils/sendMessageToServer';
-import { fileInputHelper } from '@/app/chat/[chatId]/utils/fileInputHelper';
 import { ImagePreviewModal } from '@/app/chat/[chatId]/components/ImagePreviewModal';
 import { TextAreaEndDecorator } from '@/app/chat/[chatId]/components/TextAreaEndDecorator';
 import { TextAreaStartDecorator } from '@/app/chat/[chatId]/components/TextAreaStartDecorator';
 import { sendEditMessage } from '@/utils/sendEditMessage';
-import { DIALOG_MARGINS, MAX_FILE_SIZE, TEXT_AREA_STYLE } from '@/app/chat/[chatId]/constants';
+import { DIALOG_MARGINS, TEXT_AREA_STYLE } from '@/app/chat/[chatId]/constants';
 import { Message, MessageInputProps, MessageType } from '@/types';
-import { UPLOAD_FILE_ERROR_MESSAGE } from '@/app/profile/constants';
 import { CameraMode } from '@/app/chat/[chatId]/components/CameraMode';
+import { useFileUpload } from '@/app/shared/hooks/useFileUpload';
 
 export const MessageInput = ({
 	chatId,
@@ -27,20 +25,24 @@ export const MessageInput = ({
 	const { user } = useUser();
 	const userId = user?.id as string;
 
-	const setErrorMessage = useStore(state => state.setErrorMessage);
-
-	const [messageImageUrl, setMessageImageUrl] = useState<string>('');
 	const [messageText, setMessageText] = useState<string>('');
 	const [emojis, setEmojis] = useState<string>('');
 	const [isImagePreviewModalOpen, setIsImagePreviewModalOpen] = useState<boolean>(false);
 	const [isCameraOn, setIsCameraOn] = useState<boolean>(false);
+
+	const {
+		imageUrl: messageImageUrl,
+		setImageUrl: setMessageImageUrl,
+		dropImageUrl: dropMessageImageUrl,
+		selectFileHandler,
+	} = useFileUpload();
 
 	useEffect(() => {
 		if (!editedMessage) return;
 		setMessageImageUrl(editedMessage.imageUrl || '');
 		setMessageText(editedMessage.text || '');
 		if (editedMessage.type === MessageType.EMOJI) setEmojis(editedMessage.text || '');
-	}, [editedMessage]);
+	}, [setMessageImageUrl, editedMessage]);
 
 	const textChangeHandler = (evt: ChangeEvent<HTMLTextAreaElement>) => {
 		setMessageText(evt.target.value);
@@ -86,17 +88,6 @@ export const MessageInput = ({
 		setEmojis(prevState => `${prevState} ${nextEmoji}`);
 	};
 	const dropReplyHandler = () => setRepliedMessage(null);
-
-	const selectFileHandler = (event: ChangeEvent<HTMLInputElement>) => {
-		if ((event.target.files?.[0].size || 0) > MAX_FILE_SIZE) {
-			setErrorMessage(UPLOAD_FILE_ERROR_MESSAGE);
-			event.target.value = '';
-			return;
-		}
-		fileInputHelper(event, (imgUrl: string) => setMessageImageUrl(imgUrl));
-	};
-
-	const dropMessageImageUrl = () => setMessageImageUrl('');
 
 	const openPreviewModalHandler = () => {
 		if (!messageImageUrl) return;

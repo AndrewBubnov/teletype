@@ -1,13 +1,13 @@
 'use client';
 import { useStore } from '@/store';
 import { useEffect } from 'react';
-import { ErrorToast } from '@/app/chat/[chatId]/components/ErrorToast';
+import { Toast } from '@/app/chat/[chatId]/components/Toast';
 
 export const ToastProvider = () => {
-	const { errorMessage, setErrorMessage } = useStore(state => ({
-		errorMessage: state.errorMessage,
-		setErrorMessage: state.setErrorMessage,
+	const { toast, setToast } = useStore(state => ({
+		toast: state.toast,
+		setToast: state.setToast,
 	}));
 
-	return <ErrorToast open={!!errorMessage} onClose={() => setErrorMessage('')} text={errorMessage} />;
+	return <Toast open={!!toast} onClose={() => setToast(null)} context={toast} />;
 };
