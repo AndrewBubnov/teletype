@@ -1,3 +1,3 @@
-export const getDialogPaperProps = (width: number, aspectRatio: number) => ({
-	style: { height: width / aspectRatio, transform: 'translateY(-50%)' },
+export const getDialogPaperProps = (width: number, aspectRatio: number, raised: boolean) => ({
+	style: { height: width / aspectRatio, ...(raised ? { transform: 'translateY(-25%)' } : {}) },
 });

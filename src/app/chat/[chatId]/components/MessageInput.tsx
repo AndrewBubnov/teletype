@@ -2,6 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useStore } from '@/store';
 import { useUser } from '@clerk/nextjs';
 import { Textarea } from '@mui/joy';
+import { nanoid } from 'nanoid';
 import { RepliedMessageBox } from '@/app/chat/[chatId]/components/RepliedMessageBox';
 import { SendMessageFormWrapper, SendWrapper } from '@/app/chat/[chatId]/styled';
 import { sendMessageToServer } from '@/utils/sendMessageToServer';
@@ -13,7 +14,6 @@ import { sendEditMessage } from '@/utils/sendEditMessage';
 import { DIALOG_MARGINS, MAX_FILE_SIZE, TEXT_AREA_STYLE } from '@/app/chat/[chatId]/constants';
 import { Message, MessageInputProps, MessageType } from '@/types';
 import { UPLOAD_FILE_ERROR_MESSAGE } from '@/app/profile/constants';
-import { nanoid } from 'nanoid';
 import { CameraMode } from '@/app/chat/[chatId]/components/CameraMode';
 
 export const MessageInput = ({
