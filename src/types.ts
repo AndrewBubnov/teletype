@@ -9,7 +9,6 @@ import {
 } from 'react';
 import { ImageProps } from 'next/image';
 import { BoxProps, ButtonProps } from '@mui/material';
-import { CameraMode } from '@/app/chat/[chatId]/components/CameraMode';
 
 export type MessageMap = Record<string, Message[]>;
 
@@ -66,7 +65,6 @@ export interface ActiveChatProps {
 
 export interface MessageBoxProps extends HTMLAttributes<HTMLDivElement> {
 	isAuthoredByUser: boolean;
-	fullWidth?: boolean;
 	transparent?: boolean;
 	singlePadding?: boolean;
 	withOffset?: boolean;

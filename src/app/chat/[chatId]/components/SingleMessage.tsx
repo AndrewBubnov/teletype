@@ -54,13 +54,8 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 
 	if (message.type === MessageType.COMMON) {
 		return (
-			<Container ref={containerRef} id={message.id} style={{ height: isImageEnlarged ? '100%' : 'unset' }}>
-				<MessageItem
-					singlePadding={!repliedMessage}
-					isAuthoredByUser={isAuthoredByUser}
-					fullWidth={isImageEnlarged}
-					onClick={onPress}
-				>
+			<Container ref={containerRef} id={message.id}>
+				<MessageItem singlePadding={!repliedMessage} isAuthoredByUser={isAuthoredByUser} onClick={onPress}>
 					<ReplyTo message={repliedMessage} />
 					{message.imageUrl && (
 						<ImageMessage

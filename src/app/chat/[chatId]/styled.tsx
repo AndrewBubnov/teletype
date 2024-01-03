@@ -289,13 +289,8 @@ export const InterlocutorMessageWrapper = styled(MessageWrapper)`
 	flex-direction: row;
 `;
 export const MessageItem = styled(
-	({ isAuthoredByUser, singlePadding, withOffset, fullWidth, transparent, ...props }: MessageBoxProps) => (
-		<Box {...props} />
-	)
+	({ isAuthoredByUser, singlePadding, withOffset, transparent, ...props }: MessageBoxProps) => <Box {...props} />
 )`
-	position: relative;
-	max-width: ${({ fullWidth }) => (fullWidth ? 'unset' : `${MAX_MESSAGE_WIDTH_RATIO * 100}%`)};
-	width: ${({ fullWidth }) => (fullWidth ? '100%' : 'unset')};
 	padding: ${({ singlePadding }) => (singlePadding ? '0 0 0.5rem 0' : '0.5rem')};
 	margin-top: ${({ withOffset }) => (withOffset ? '0.5rem' : 0)};
 	background: ${({ isAuthoredByUser, transparent }) => {
@@ -359,6 +354,7 @@ export const StyledImage = styled(Image)`
 	display: block;
 	object-fit: cover;
 	border-radius: 0.25rem;
+	width: 100%;
 `;
 
 export const StyledImageButton = styled(IconButton)`
@@ -369,9 +365,10 @@ export const StyledImageButton = styled(IconButton)`
 	padding: 6px;
 `;
 
-export const BasicImageWrapper = styled(Box)`
+export const ImageWrapper = styled(Box)`
 	position: relative;
 `;
+
 export const StyledFullWidthIcon = styled(OpenInFullIcon)`
 	width: 0.7em;
 	height: 0.7em;

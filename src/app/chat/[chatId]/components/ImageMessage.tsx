@@ -1,12 +1,12 @@
 import { useAspectRatio } from '@/app/chat/[chatId]/hooks/useAspectRatio';
 import {
-	BasicImageWrapper,
+	ImageWrapper,
 	StyledCloseFullWidthIcon,
 	StyledFullWidthIcon,
 	StyledImage,
 	StyledImageButton,
 } from '@/app/chat/[chatId]/styled';
-import { DEFAULT_IMAGE_WIDTH, MAX_MESSAGE_WIDTH_RATIO } from '@/app/chat/[chatId]/constants';
+import { DEFAULT_IMAGE_WIDTH, ENLARGE_RATIO, MAX_MESSAGE_WIDTH_RATIO } from '@/app/chat/[chatId]/constants';
 import { ImageMessageProps } from '@/types';
 
 export const ImageMessage = ({
@@ -20,18 +20,24 @@ export const ImageMessage = ({
 	if (!message.imageUrl) return null;
 
 	if (isEnlarged) {
+		const enlargedImageHeight = window.innerHeight * ENLARGE_RATIO;
 		return (
-			<>
-				<StyledImage src={message.imageUrl} fill alt="" />
+			<ImageWrapper>
+				<StyledImage
+					src={message.imageUrl}
+					width={aspectRatio * enlargedImageHeight}
+					height={enlargedImageHeight}
+					alt=""
+				/>
 				<StyledImageButton onClick={onEnlargeToggle}>
 					<StyledCloseFullWidthIcon />
 				</StyledImageButton>
-			</>
+			</ImageWrapper>
 		);
 	}
 
 	return (
-		<BasicImageWrapper>
+		<ImageWrapper>
 			<StyledImage
 				src={message.imageUrl}
 				width={width * MAX_MESSAGE_WIDTH_RATIO}
@@ -41,6 +47,6 @@ export const ImageMessage = ({
 			<StyledImageButton onClick={onEnlargeToggle}>
 				<StyledFullWidthIcon />
 			</StyledImageButton>
-		</BasicImageWrapper>
+		</ImageWrapper>
 	);
 };
