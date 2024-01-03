@@ -10,6 +10,7 @@ import ReplyIcon from '@mui/icons-material/ReplyOutlined';
 import DownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import CloseMUIIcon from '@mui/icons-material/Close';
+import CameraSwitchMUIIcon from '@mui/icons-material/Cameraswitch';
 import SendIcon from '@mui/icons-material/Send';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
@@ -325,9 +326,10 @@ export const TimeWrapper = styled(Box)`
 	color: rgba(0, 210, 170, 0.8);
 `;
 
-export const PhotoCloseWrapper = styled(Box)`
+export const PhotoTopIconsWrapper = styled(Box)`
 	display: flex;
 	flex-direction: row-reverse;
+	justify-content: space-between;
 	width: 100%;
 `;
 
@@ -466,6 +468,11 @@ export const EditIcon = styled(ModeEditIcon)`
 `;
 export const StyledDeleteIcon = styled(DeleteOutlineIcon)`
 	fill: lightgray;
+`;
+export const CameraSwitchIcon = styled(CameraSwitchMUIIcon)`
+	fill: lightgray;
+	width: 2rem;
+	height: 2rem;
 `;
 export const CloseIcon = styled(CloseMUIIcon)`
 	fill: lightgray;
