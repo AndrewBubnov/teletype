@@ -4,14 +4,14 @@ import { LoadingIndicator } from '@/app/shared/styled';
 import {
 	Video,
 	PhotoDialog,
-	TakePhoto,
 	VideoWrapper,
 	Canvas,
-	PhotoTopIconsWrapper,
+	PhotoIconsWrapper,
 	CloseIcon,
 	NoPaddingIconButton,
 	CameraSwitchIcon,
 } from '@/app/chat/[chatId]/styled';
+import { getVideoDevices } from '@/app/chat/[chatId]/utils/getVideoDevices';
 import { PHOTO_PAPER_PROPS } from '@/app/chat/[chatId]/constants';
 import { CameraModeProps } from '@/types';
 
@@ -22,6 +22,7 @@ export const CameraMode = ({ open, onClose, onTakePhoto }: CameraModeProps) => {
 	const [width, setWidth] = useState(0);
 	const [height, setHeight] = useState(0);
 	const [deviceIds, setDeviceIds] = useState<string[]>([]);
+	const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
 
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -39,10 +40,7 @@ export const CameraMode = ({ open, onClose, onTakePhoto }: CameraModeProps) => {
 	);
 
 	useEffect(() => {
-		navigator.mediaDevices.enumerateDevices().then(devices => {
-			const videoDevices = devices.filter(device => device.kind === 'videoinput').map(el => el.deviceId);
-			setDeviceIds(videoDevices);
-		});
+		navigator.mediaDevices.enumerateDevices().then(devices => setDeviceIds(getVideoDevices(devices)));
 	}, []);
 
 	useEffect(() => {
@@ -51,6 +49,7 @@ export const CameraMode = ({ open, onClose, onTakePhoto }: CameraModeProps) => {
 			.then(stream => {
 				const video = videoRef.current;
 				if (!video) return;
+				setVideoStream(stream);
 				const handler = () => {
 					setWidth(video.videoWidth);
 					setHeight(video.videoHeight);
@@ -83,6 +82,9 @@ export const CameraMode = ({ open, onClose, onTakePhoto }: CameraModeProps) => {
 	};
 
 	const switchCameraHandler = () => {
+		if (videoStream) {
+			videoStream.getTracks().forEach(track => track.stop());
+		}
 		const [first, second] = deviceIds;
 		setDeviceIds([second, first]);
 	};
@@ -91,7 +93,8 @@ export const CameraMode = ({ open, onClose, onTakePhoto }: CameraModeProps) => {
 		<PhotoDialog fullWidth onClose={onClose} open={open} PaperProps={PHOTO_PAPER_PROPS}>
 			{isStreamed ? null : <LoadingIndicator />}
 			<VideoWrapper isStreamed={isStreamed}>
-				<PhotoTopIconsWrapper>
+				<Video ref={videoRef} onClick={photoHandler} />
+				<PhotoIconsWrapper>
 					<NoPaddingIconButton onClick={onClose}>
 						<CloseIcon />
 					</NoPaddingIconButton>
@@ -100,9 +103,7 @@ export const CameraMode = ({ open, onClose, onTakePhoto }: CameraModeProps) => {
 							<CameraSwitchIcon />
 						</NoPaddingIconButton>
 					) : null}
-				</PhotoTopIconsWrapper>
-				<Video ref={videoRef} />
-				<TakePhoto onClick={photoHandler} />
+				</PhotoIconsWrapper>
 			</VideoWrapper>
 			<Canvas ref={canvasRef} />
 		</PhotoDialog>

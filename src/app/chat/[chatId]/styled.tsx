@@ -172,12 +172,6 @@ export const VideoWrapper = styled(({ isStreamed, ...props }: VideoWrapperProps)
 	overflow: hidden;
 	transition: opacity 0.5s;
 `;
-export const TakePhoto = styled(Box)`
-	width: 4rem;
-	height: 4rem;
-	border: 0.25rem solid #fff;
-	border-radius: 50%;
-`;
 export const ReplyToContainer = styled(Box)`
 	background: palegreen;
 	border-radius: 0.25rem;
@@ -270,8 +264,7 @@ export const PhotoDialog = styled(Dialog)`
 
 export const Video = styled('video')`
 	transform: rotateY(180deg);
-	margin-top: 1rem;
-	margin-bottom: 4rem;
+	margin-bottom: 2rem;
 `;
 
 export const Canvas = styled('canvas')`
@@ -326,7 +319,7 @@ export const TimeWrapper = styled(Box)`
 	color: rgba(0, 210, 170, 0.8);
 `;
 
-export const PhotoTopIconsWrapper = styled(Box)`
+export const PhotoIconsWrapper = styled(Box)`
 	display: flex;
 	flex-direction: row-reverse;
 	justify-content: space-between;
