@@ -45,7 +45,7 @@ export const useStore = create<Store>(set => ({
 				},
 			};
 		}),
-	updateIsReadMap: (chatId: string) => async (id: string) => {
+	updateIsReadMap: (chatId: string) => (id: string) => {
 		sendChangeMessageIsRead({ messageId: id, chatId });
 		return set(state => {
 			const predicate = (el: Message): boolean => el.id === id;

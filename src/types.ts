@@ -132,7 +132,7 @@ export type SingleMessageProps = {
 	message: Message;
 	repliedMessage?: Message | null;
 	onContextMenuToggle(type: 'open' | 'close', middle?: DOMRect): void;
-	updateIsRead: ((arg: string) => Promise<void>) | null;
+	updateIsRead: ((arg: string) => void) | null;
 };
 
 export interface EditMessageClient {
@@ -226,7 +226,7 @@ export interface Store {
 	setMessageMap(arg: MessageMap): void;
 	addMessageToMessageMap(arg: Message): void;
 	updateMessageInMessageMap(args: EditMessageClient): void;
-	updateIsReadMap: (chatId: string) => (id: string) => Promise<void>;
+	updateIsReadMap: (chatId: string) => (id: string) => void;
 	addReactionMap: (
 		chatId: string,
 		authorImageUrl: string | null | undefined
