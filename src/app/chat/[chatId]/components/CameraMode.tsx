@@ -30,12 +30,16 @@ export const CameraMode = ({ open, onClose, onTakePhoto }: CameraModeProps) => {
 			.then(stream => {
 				const video = videoRef.current;
 				if (!video) return;
-				video.addEventListener('canplay', () => {
+				const handler = () => {
 					setWidth(video.videoWidth);
 					setHeight(video.videoHeight);
-				});
+				};
+				video.addEventListener('canplay', handler);
 				video.srcObject = stream;
-				video.play().then(() => setIsStreamed(true));
+				video.play().then(() => {
+					setIsStreamed(true);
+					video.removeEventListener('canplay', handler);
+				});
 			})
 			.catch(error => {
 				if (error instanceof Error) setErrorMessage(error.message);
