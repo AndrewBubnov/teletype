@@ -274,3 +274,10 @@ export interface CameraModeProps {
 export interface VideoWrapperProps extends BoxProps {
 	isStreamed: boolean;
 }
+
+export interface ConfirmDialogProps {
+	open: boolean;
+	onCancel(): void;
+	onConfirm: (arg: boolean) => () => void;
+	interlocutorName: string;
+}

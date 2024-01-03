@@ -40,17 +40,16 @@ export const ContextMenu = ({
 		setDialogOpen(true);
 	};
 
-	const cancelDeleteHandler = () => setDialogOpen(false);
+	const closeDialogHandler = () => setDialogOpen(false);
 
-	const deleteMessageHandler = (informBoth: boolean) => async () => {
-		const editMessageParams = {
+	const deleteMessageHandler = (informBoth: boolean) => () => {
+		sendEditMessage({
 			messageId: menuActiveId,
 			message: null,
 			roomId: chatId,
 			authorOnly: !informBoth,
-		};
-		sendEditMessage(editMessageParams);
-		cancelDeleteHandler();
+		});
+		closeDialogHandler();
 		closeContextMenu();
 	};
 	return (
@@ -98,7 +97,7 @@ export const ContextMenu = ({
 			</Backdrop>
 			<ConfirmDialog
 				open={dialogOpen}
-				onCancel={cancelDeleteHandler}
+				onCancel={closeDialogHandler}
 				onConfirm={deleteMessageHandler}
 				interlocutorName={interlocutorName}
 			/>

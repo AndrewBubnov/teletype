@@ -1,13 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { StyledBlackCheckbox, StyledButton, StyledDialogContentText } from '@/app/chat/[chatId]/styled';
-
-interface ConfirmDialogProps {
-	open: boolean;
-	onCancel(): void;
-	onConfirm: (arg: boolean) => () => void;
-	interlocutorName: string;
-}
+import { ConfirmDialogProps } from '@/types';
 
 export const ConfirmDialog = ({ open, onCancel, onConfirm, interlocutorName }: ConfirmDialogProps) => {
 	const [deleteBoth, setDeleteBoth] = useState(false);
