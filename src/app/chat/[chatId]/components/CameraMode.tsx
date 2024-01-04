@@ -23,7 +23,7 @@ export const CameraMode = ({ open, onClose, onTakePhoto }: CameraModeProps) => {
 		<PhotoDialog fullWidth onClose={onClose} open={open} PaperProps={PHOTO_PAPER_PROPS}>
 			{isStreaming ? null : <LoadingIndicator />}
 			<VideoWrapper isStreaming={isStreaming}>
-				<video ref={videoRef} />
+				<video muted playsInline autoPlay ref={videoRef} />
 				<PhotoIconsWrapper>
 					<PhotoIconButton onClick={onClose}>
 						<CloseIcon />
