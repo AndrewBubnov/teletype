@@ -151,14 +151,14 @@ export const RepliedMessageAuthor = styled(Box)`
 export const ImageIconsWrapper = styled(Box)`
 	display: flex;
 	justify-content: space-between;
-	width: 15.5rem;
+	width: 15rem;
 	margin-left: auto;
 `;
 
 export const ImageIconsInnerWrapper = styled(Box)`
 	display: flex;
 	justify-content: space-between;
-	width: 11.5rem;
+	width: 11rem;
 	margin-left: auto;
 `;
 
@@ -314,10 +314,11 @@ export const TimeWrapper = styled(Box)`
 
 export const PhotoIconsWrapper = styled(Box)`
 	position: absolute;
-	bottom: 0;
+	bottom: 1%;
 	display: flex;
 	flex-direction: row-reverse;
 	justify-content: space-between;
+	padding: 0 1%;
 	width: 100%;
 `;
 
