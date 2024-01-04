@@ -9,6 +9,8 @@ import {
 	CloseIcon,
 	PhotoIconButton,
 	CameraSwitchIcon,
+	TakePhotoIcon,
+	SwitchCameraIconWrapper,
 } from '@/app/chat/[chatId]/styled';
 import { getVideoDevices } from '@/app/chat/[chatId]/utils/getVideoDevices';
 import { PHOTO_PAPER_PROPS } from '@/app/chat/[chatId]/constants';
@@ -106,16 +108,21 @@ export const CameraMode = ({ open, onClose, onTakePhoto }: CameraModeProps) => {
 		<PhotoDialog fullWidth onClose={onClose} open={open} PaperProps={PHOTO_PAPER_PROPS}>
 			{isStreamed ? null : <LoadingIndicator />}
 			<VideoWrapper isStreamed={isStreamed}>
-				<video ref={videoRef} onClick={photoHandler} />
+				<video ref={videoRef} />
 				<PhotoIconsWrapper>
 					<PhotoIconButton onClick={onClose}>
 						<CloseIcon />
 					</PhotoIconButton>
-					{deviceIds.length > 1 ? (
-						<PhotoIconButton onClick={switchCameraHandler}>
-							<CameraSwitchIcon />
-						</PhotoIconButton>
-					) : null}
+					<PhotoIconButton onClick={onClose}>
+						<TakePhotoIcon onClick={photoHandler} />
+					</PhotoIconButton>
+					<SwitchCameraIconWrapper>
+						{deviceIds.length > 1 ? (
+							<PhotoIconButton onClick={switchCameraHandler}>
+								<CameraSwitchIcon />
+							</PhotoIconButton>
+						) : null}
+					</SwitchCameraIconWrapper>
 				</PhotoIconsWrapper>
 			</VideoWrapper>
 			<Canvas ref={canvasRef} />

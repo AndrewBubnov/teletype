@@ -10,6 +10,7 @@ import ReplyIcon from '@mui/icons-material/ReplyOutlined';
 import DownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import CloseMUIIcon from '@mui/icons-material/Close';
+import CameraMUIIcon from '@mui/icons-material/CameraOutlined';
 import CameraSwitchMUIIcon from '@mui/icons-material/Cameraswitch';
 import SendIcon from '@mui/icons-material/Send';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
@@ -269,7 +270,13 @@ export const AuthorMessageWrapper = styled(MessageWrapper)`
 `;
 
 export const PhotoIconButton = styled(IconButton)`
-	background-color: rgba(26, 26, 26, 0.3);
+	background-color: rgba(26, 26, 26, 0.25);
+	width: 2.5rem;
+	height: 2.5rem;
+`;
+export const SwitchCameraIconWrapper = styled(IconButton)`
+	width: 2.5rem;
+	height: 2.5rem;
 `;
 export const InterlocutorMessageWrapper = styled(MessageWrapper)`
 	position: relative;
@@ -318,8 +325,8 @@ export const PhotoIconsWrapper = styled(Box)`
 	display: flex;
 	flex-direction: row-reverse;
 	justify-content: space-between;
-	padding: 0 1%;
-	width: 100%;
+	margin: 0 auto;
+	width: 98%;
 `;
 
 export const ReactionWrapper = styled(Box)`
@@ -456,6 +463,9 @@ export const EditIcon = styled(ModeEditIcon)`
 	fill: #1a1a1a;
 `;
 export const StyledDeleteIcon = styled(DeleteOutlineIcon)`
+	fill: lightgray;
+`;
+export const TakePhotoIcon = styled(CameraMUIIcon)`
 	fill: lightgray;
 `;
 export const CameraSwitchIcon = styled(CameraSwitchMUIIcon)`
