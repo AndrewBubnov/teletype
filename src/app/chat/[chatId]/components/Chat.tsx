@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useChat } from '@/app/chat/[chatId]/hooks/useChat';
 import { useMenuTransition } from '@/app/chat/[chatId]/hooks/useMenuTransition';
 import { ChatWrapper, CoverWrapper } from '@/app/chat/[chatId]/styled';
@@ -40,33 +40,40 @@ export const Chat = ({ chat }: ChatProps) => {
 
 	const closeMenuHandler = useCallback(() => setMenuActiveId(''), []);
 
-	const getMessage = useCallback(() => messageList.find(el => el.id === menuActiveId), [menuActiveId, messageList]);
+	const activeMessage = useMemo(() => messageList.find(el => el.id === menuActiveId), [menuActiveId, messageList]);
 
 	const addReactionHandler = useCallback(
 		async (reactionString: string) => {
-			const message = getMessage();
-			if (!message) return;
-			const reaction = message.reaction === reactionString ? '' : reactionString;
-			addReaction(message.id, reaction);
+			if (!activeMessage) return;
+			const reaction = activeMessage.reaction === reactionString ? '' : reactionString;
+			addReaction(activeMessage.id, reaction);
 			sendEditMessage({
-				messageId: message.id,
-				message: { ...message, reaction, reactionAuthorImageUrl: authorImageUrl },
+				messageId: activeMessage.id,
+				message: { ...activeMessage, reaction, reactionAuthorImageUrl: authorImageUrl },
 				roomId: chatId,
 			});
 			closeMenuHandler();
 		},
-		[addReaction, chatId, closeMenuHandler, getMessage, authorImageUrl]
+		[addReaction, chatId, closeMenuHandler, activeMessage, authorImageUrl]
 	);
 
 	const onReplyMessage = useCallback(() => {
-		const message = getMessage();
-		if (message) setRepliedMessage(message);
-	}, [getMessage]);
+		if (activeMessage) setRepliedMessage(activeMessage);
+	}, [activeMessage]);
 
 	const onEditMessage = useCallback(() => {
-		const message = getMessage();
-		if (message) setEditedMessage(message);
-	}, [getMessage]);
+		if (activeMessage) setEditedMessage(activeMessage);
+	}, [activeMessage]);
+
+	const onDownLoadImage = useCallback(() => {
+		if (!activeMessage) return;
+		if (activeMessage.imageUrl) {
+			const link = document.createElement('a');
+			link.download = 'image.jpg';
+			link.href = activeMessage.imageUrl;
+			link.click();
+		}
+	}, [activeMessage]);
 
 	const scrollToLastHandler = () => {
 		const id = messageList.at(-1)?.id;
@@ -100,7 +107,7 @@ export const Chat = ({ chat }: ChatProps) => {
 						);
 					})}
 				</ChatWrapper>
-				{!!menuActiveId && (
+				{!!activeMessage && (
 					<ContextMenu
 						closeContextMenu={closeMenuHandler}
 						initMenuParams={initMenuParams}
@@ -111,7 +118,8 @@ export const Chat = ({ chat }: ChatProps) => {
 						onAddReaction={addReactionHandler}
 						chatId={chatId}
 						interlocutorName={interlocutorName}
-						isAuthor={messageList.find(el => el.id === menuActiveId)?.authorId === authorId}
+						onDownLoadImage={activeMessage.imageUrl ? onDownLoadImage : null}
+						isAuthor={activeMessage.authorId === authorId}
 					/>
 				)}
 				{unreadNumber ? (

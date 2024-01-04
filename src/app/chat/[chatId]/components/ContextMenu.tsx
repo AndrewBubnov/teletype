@@ -2,6 +2,7 @@ import { SyntheticEvent, useLayoutEffect, useRef, useState } from 'react';
 import { Box, Grow, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import {
 	Backdrop,
+	DownloadIcon,
 	EditIcon,
 	MenuCard,
 	MenuDeleteIcon,
@@ -24,6 +25,7 @@ export const ContextMenu = ({
 	onReplyMessage,
 	onEditMessage,
 	interlocutorName,
+	onDownLoadImage,
 	isAuthor,
 }: ContextMenuProps) => {
 	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
@@ -57,13 +59,15 @@ export const ContextMenu = ({
 			<Backdrop onClick={closeContextMenu}>
 				<Grow in style={{ transformOrigin: '0 0 0' }}>
 					<MenuCard ref={ref} style={{ transform: `translateY(${menuTop}px)` }}>
-						<ReactionsWrapper>
-							{reactions.map(reaction => (
-								<Box key={reaction} onClick={() => onAddReaction(reaction)}>
-									{String.fromCodePoint(parseInt(reaction, 16))}
-								</Box>
-							))}
-						</ReactionsWrapper>
+						{!isAuthor ? (
+							<ReactionsWrapper>
+								{reactions.map(reaction => (
+									<Box key={reaction} onClick={() => onAddReaction(reaction)}>
+										{String.fromCodePoint(parseInt(reaction, 16))}
+									</Box>
+								))}
+							</ReactionsWrapper>
+						) : null}
 						<List>
 							<ListItem disablePadding>
 								<ListItemButton onMouseDown={onDeleteMessage} onTouchStart={onDeleteMessage}>
@@ -91,6 +95,16 @@ export const ContextMenu = ({
 									<ListItemText primary="Reply" />
 								</ListItemButton>
 							</ListItem>
+							{onDownLoadImage ? (
+								<ListItem disablePadding onMouseDown={onDownLoadImage} onTouchStart={onDownLoadImage}>
+									<ListItemButton>
+										<ListItemIcon>
+											<DownloadIcon />
+										</ListItemIcon>
+										<ListItemText primary="Download" />
+									</ListItemButton>
+								</ListItem>
+							) : null}
 						</List>
 					</MenuCard>
 				</Grow>

@@ -170,6 +170,7 @@ export interface ContextMenuProps {
 	initMenuParams: MutableRefObject<DOMRect | null>;
 	onReplyMessage(): void;
 	onEditMessage(): void;
+	onDownLoadImage: null | (() => void);
 	menuTop: number;
 	isAuthor: boolean;
 }

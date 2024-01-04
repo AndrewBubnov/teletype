@@ -4,6 +4,7 @@ import Image, { ImageProps } from 'next/image';
 import { Box, Button, Checkbox, DialogContentText, IconButton, FormLabel, BoxProps, Dialog } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import FileDownloadIcon from '@mui/icons-material/FileDownloadOutlined';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCameraOutlined';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import ReplyIcon from '@mui/icons-material/ReplyOutlined';
@@ -460,6 +461,10 @@ export const DeleteIcon = styled(DeleteOutlineIcon)`
 	fill: #fff;
 `;
 export const EditIcon = styled(ModeEditIcon)`
+	fill: #1a1a1a;
+`;
+
+export const DownloadIcon = styled(FileDownloadIcon)`
 	fill: #1a1a1a;
 `;
 export const StyledDeleteIcon = styled(DeleteOutlineIcon)`
