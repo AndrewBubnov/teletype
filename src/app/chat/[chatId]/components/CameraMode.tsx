@@ -44,27 +44,43 @@ export const CameraMode = ({ open, onClose, onTakePhoto }: CameraModeProps) => {
 	}, []);
 
 	useEffect(() => {
+		let canceled = false;
 		navigator.mediaDevices
 			.getUserMedia(constraints)
 			.then(stream => {
+				if (canceled) return;
 				const video = videoRef.current;
+
 				if (!video) return;
+
 				setVideoStream(stream);
 				const handler = () => {
 					setWidth(video.videoWidth);
 					setHeight(video.videoHeight);
-				};
-				video.addEventListener('canplay', handler);
-				video.srcObject = stream;
-				video.play().then(() => {
-					setIsStreamed(true);
+					video.play().then(() => {
+						setIsStreamed(true);
+					});
 					video.removeEventListener('canplay', handler);
-				});
+				};
+
+				video.addEventListener('canplay', handler);
+
+				video.srcObject = stream;
 			})
 			.catch(error => {
 				if (error instanceof Error) setToast({ text: error.message, type: 'error' });
 			});
+		return () => {
+			canceled = true;
+		};
 	}, [constraints, setToast]);
+
+	useEffect(
+		() => () => {
+			if (videoStream) videoStream.getTracks().forEach(track => track.stop());
+		},
+		[videoStream]
+	);
 
 	const photoHandler = () => {
 		const canvas = canvasRef.current;
@@ -82,9 +98,7 @@ export const CameraMode = ({ open, onClose, onTakePhoto }: CameraModeProps) => {
 	};
 
 	const switchCameraHandler = () => {
-		if (videoStream) {
-			videoStream.getTracks().forEach(track => track.stop());
-		}
+		if (videoStream) videoStream.getTracks().forEach(track => track.stop());
 		const [first, second] = deviceIds;
 		setDeviceIds([second, first]);
 	};
