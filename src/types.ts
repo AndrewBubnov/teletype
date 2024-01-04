@@ -272,7 +272,7 @@ export interface CameraModeProps {
 }
 
 export interface VideoWrapperProps extends BoxProps {
-	isStreamed: boolean;
+	isStreaming: boolean;
 }
 
 export interface ConfirmDialogProps {

@@ -163,11 +163,11 @@ export const ImageIconsInnerWrapper = styled(Box)`
 	margin-left: auto;
 `;
 
-export const VideoWrapper = styled(({ isStreamed, ...props }: VideoWrapperProps) => <Box {...props} />)`
+export const VideoWrapper = styled(({ isStreaming, ...props }: VideoWrapperProps) => <Box {...props} />)`
 	position: relative;
 	display: flex;
 	justify-content: center;
-	opacity: ${({ isStreamed }) => (isStreamed ? 1 : 0)};
+	opacity: ${({ isStreaming }) => (isStreaming ? 1 : 0)};
 	overflow: hidden;
 	transition: opacity 0.5s;
 `;
