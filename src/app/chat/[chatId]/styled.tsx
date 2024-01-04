@@ -23,7 +23,6 @@ import {
 	StyledButtonProps,
 	VideoWrapperProps,
 } from '@/types';
-import { MAX_MESSAGE_WIDTH_RATIO } from '@/app/chat/[chatId]/constants';
 
 export const ChatWrapper = styled(Box)`
 	padding: 1rem;
@@ -152,23 +151,22 @@ export const RepliedMessageAuthor = styled(Box)`
 export const ImageIconsWrapper = styled(Box)`
 	display: flex;
 	justify-content: space-between;
-	width: 16rem;
+	width: 15.5rem;
 	margin-left: auto;
 `;
 
 export const ImageIconsInnerWrapper = styled(Box)`
 	display: flex;
 	justify-content: space-between;
-	width: 12rem;
+	width: 11.5rem;
 	margin-left: auto;
 `;
 
 export const VideoWrapper = styled(({ isStreamed, ...props }: VideoWrapperProps) => <Box {...props} />)`
 	position: relative;
 	display: flex;
-	flex-direction: column;
+	justify-content: center;
 	opacity: ${({ isStreamed }) => (isStreamed ? 1 : 0)};
-	align-items: center;
 	overflow: hidden;
 	transition: opacity 0.5s;
 `;
@@ -262,11 +260,6 @@ export const PhotoDialog = styled(Dialog)`
 	}
 `;
 
-export const Video = styled('video')`
-	transform: rotateY(180deg);
-	margin-bottom: 2rem;
-`;
-
 export const Canvas = styled('canvas')`
 	display: none;
 `;
@@ -275,8 +268,8 @@ export const AuthorMessageWrapper = styled(MessageWrapper)`
 	flex-direction: row-reverse;
 `;
 
-export const NoPaddingIconButton = styled(IconButton)`
-	padding: 0;
+export const PhotoIconButton = styled(IconButton)`
+	background-color: rgba(26, 26, 26, 0.3);
 `;
 export const InterlocutorMessageWrapper = styled(MessageWrapper)`
 	position: relative;
@@ -320,6 +313,8 @@ export const TimeWrapper = styled(Box)`
 `;
 
 export const PhotoIconsWrapper = styled(Box)`
+	position: absolute;
+	bottom: 0;
 	display: flex;
 	flex-direction: row-reverse;
 	justify-content: space-between;

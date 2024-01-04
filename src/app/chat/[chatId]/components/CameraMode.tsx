@@ -2,13 +2,12 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from '@/store';
 import { LoadingIndicator } from '@/app/shared/styled';
 import {
-	Video,
 	PhotoDialog,
 	VideoWrapper,
 	Canvas,
 	PhotoIconsWrapper,
 	CloseIcon,
-	NoPaddingIconButton,
+	PhotoIconButton,
 	CameraSwitchIcon,
 } from '@/app/chat/[chatId]/styled';
 import { getVideoDevices } from '@/app/chat/[chatId]/utils/getVideoDevices';
@@ -107,15 +106,15 @@ export const CameraMode = ({ open, onClose, onTakePhoto }: CameraModeProps) => {
 		<PhotoDialog fullWidth onClose={onClose} open={open} PaperProps={PHOTO_PAPER_PROPS}>
 			{isStreamed ? null : <LoadingIndicator />}
 			<VideoWrapper isStreamed={isStreamed}>
-				<Video ref={videoRef} onClick={photoHandler} />
+				<video ref={videoRef} onClick={photoHandler} />
 				<PhotoIconsWrapper>
-					<NoPaddingIconButton onClick={onClose}>
+					<PhotoIconButton onClick={onClose}>
 						<CloseIcon />
-					</NoPaddingIconButton>
+					</PhotoIconButton>
 					{deviceIds.length > 1 ? (
-						<NoPaddingIconButton onClick={switchCameraHandler}>
+						<PhotoIconButton onClick={switchCameraHandler}>
 							<CameraSwitchIcon />
-						</NoPaddingIconButton>
+						</PhotoIconButton>
 					) : null}
 				</PhotoIconsWrapper>
 			</VideoWrapper>
