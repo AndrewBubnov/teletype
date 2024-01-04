@@ -73,6 +73,7 @@ export const Chat = ({ chat }: ChatProps) => {
 			link.href = activeMessage.imageUrl;
 			link.click();
 		}
+		setMenuActiveId('');
 	}, [activeMessage]);
 
 	const scrollToLastHandler = () => {
