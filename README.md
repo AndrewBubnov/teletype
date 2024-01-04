@@ -36,7 +36,9 @@ Please explore the live demo, an auto-deploy from the master branch: [teletype](
 
 - **Image Exchange**: Users can seamlessly exchange images within chats. An icon for expanding an image to fullscreen is located in the bottom right corner of the image, and a corresponding icon allows users to reduce the image back to its original size.
 
-- **Image Previews**: When selecting an image from the device's memory before sending it, a preview appears next to the send button. The maximum size for uploaded images is limited to 700KB.
+- **Image Previews**: When selecting an image from the device's memory before sending it, a preview appears next to the send button. The maximum size for uploaded images is limited to 900KB.
+  
+- **Photo Capture and Sending**: Users can capture photos by clicking on the camera icon, and they can seamlessly send the captured photos as messages. For mobile devices, users have the capability to switch between the main and front-facing cameras.
 
 - **Emoji Support:** Users can now include emojis in their messages, either along with text or as standalone emoji messages.
 
