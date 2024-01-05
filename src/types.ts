@@ -19,7 +19,7 @@ export enum MessageType {
 
 export interface ServerMessage {
 	id: string;
-	date: Date;
+	createdAt: Date;
 	authorId: string;
 	authorName: string;
 	type: MessageType;

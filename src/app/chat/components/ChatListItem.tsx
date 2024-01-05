@@ -63,7 +63,7 @@ export const ChatListItem = ({
 					</UserNameWrapper>
 					{lastMessage && !isDeleteMode ? (
 						<ChatListItemDateWrapper>
-							{new Intl.DateTimeFormat('en-US', options).format(new Date(lastMessage.date))}
+							{new Intl.DateTimeFormat('en-US', options).format(new Date(lastMessage.createdAt))}
 						</ChatListItemDateWrapper>
 					) : null}
 				</UserWrapper>

@@ -69,7 +69,7 @@ export const MessageInput = ({
 			imageUrl: messageImageUrl,
 			replyToId: repliedMessage?.id,
 			isRead: false,
-			date: new Date(),
+			createdAt: new Date(),
 		};
 		if (message && editedMessage)
 			sendEditMessage({

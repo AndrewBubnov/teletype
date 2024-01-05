@@ -25,7 +25,7 @@ export const RepliedMessageBox = ({ message, onDropMessage, authorName }: Replie
 					<RepliedMessageInner>{authorName}</RepliedMessageInner>
 				</RepliedMessageAuthorInner>
 				<RepliedTimeContainer>
-					<Box>{new Intl.DateTimeFormat('en-US', options).format(new Date(message.date))}</Box>
+					<Box>{new Intl.DateTimeFormat('en-US', options).format(new Date(message.createdAt))}</Box>
 				</RepliedTimeContainer>
 			</RepliedMessageAuthor>
 			<RepliedMessageText isMultiple={!!message.text && !!message.imageUrl}>

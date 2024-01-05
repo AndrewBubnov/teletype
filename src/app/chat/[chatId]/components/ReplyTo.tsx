@@ -32,7 +32,7 @@ export const ReplyTo = ({ message }: { message?: Message | null }) => {
 			</ReplyToWrapper>
 			<ReplyToDateWrapper>
 				<ReplyToDate>
-					{message.date && new Intl.DateTimeFormat('en-US', options).format(new Date(message.date))}
+					{message.createdAt && new Intl.DateTimeFormat('en-US', options).format(new Date(message.createdAt))}
 				</ReplyToDate>
 			</ReplyToDateWrapper>
 		</ReplyToContainer>

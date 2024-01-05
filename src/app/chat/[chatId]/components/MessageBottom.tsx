@@ -12,6 +12,6 @@ export const MessageBottom = ({ message, withOffset }: { message: Message; withO
 				)}
 			</ReactionWrapper>
 		)}
-		<TimeWrapper>{new Intl.DateTimeFormat('en-US', options).format(new Date(message.date))}</TimeWrapper>
+		<TimeWrapper>{new Intl.DateTimeFormat('en-US', options).format(new Date(message.createdAt))}</TimeWrapper>
 	</MessageItemBottom>
 );
