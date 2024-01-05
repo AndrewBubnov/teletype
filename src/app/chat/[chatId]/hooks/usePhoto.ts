@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from '@/store';
-import { getVideoDevices } from '@/app/chat/[chatId]/utils/getVideoDevices';
+import { FacingMode } from '@/types';
 
 export const usePhoto = (
 	onTakePhoto: (arg: string) => void,
@@ -11,7 +11,7 @@ export const usePhoto = (
 	const [isStreaming, setIsStreaming] = useState(false);
 	const [width, setWidth] = useState(0);
 	const [height, setHeight] = useState(0);
-	const [deviceIds, setDeviceIds] = useState<string[]>([]);
+	const [facingMode, setFacingMode] = useState<FacingMode>(FacingMode.USER);
 	const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
 
 	const videoRef = useRef<HTMLVideoElement>(null);
@@ -19,21 +19,13 @@ export const usePhoto = (
 
 	const constraints = useMemo(
 		() => ({
-			video: {
-				deviceId: {
-					exact: deviceIds[0],
-				},
-			},
+			video: { facingMode: { exact: facingMode } },
 			audio: false,
 		}),
-		[deviceIds]
+		[facingMode]
 	);
 
-	const isMultipleDevices = deviceIds.length > 1;
-
-	useEffect(() => {
-		navigator.mediaDevices.enumerateDevices().then(devices => setDeviceIds(getVideoDevices(devices)));
-	}, []);
+	const isMultipleDevices = useMemo(() => window.matchMedia('(max-width: 767px)').matches, []);
 
 	useEffect(() => {
 		let canceled = false;
@@ -91,8 +83,7 @@ export const usePhoto = (
 
 	const switchCameraHandler = () => {
 		if (videoStream) videoStream.getTracks().forEach(track => track.stop());
-		const [first, second] = deviceIds;
-		setDeviceIds([second, first]);
+		setFacingMode(prevState => (prevState === FacingMode.USER ? FacingMode.ENVIRONMENT : FacingMode.USER));
 	};
 
 	return { photoHandler, switchCameraHandler, videoRef, canvasRef, isStreaming, isMultipleDevices };

@@ -281,3 +281,8 @@ export interface ConfirmDialogProps {
 	onConfirm: (arg: boolean) => void;
 	interlocutorName: string;
 }
+
+export enum FacingMode {
+	USER = 'user',
+	ENVIRONMENT = 'environment',
+}
