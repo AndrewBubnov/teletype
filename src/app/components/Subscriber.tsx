@@ -45,6 +45,15 @@ export const Subscriber = ({
 	useEffect(() => createRooms(chatList, userId), [chatList, userId]);
 
 	useEffect(() => {
+		const handler = () => {
+			if (document.visibilityState === 'visible') sendJoin(userId);
+		};
+		document.addEventListener('visibilitychange', handler);
+
+		return () => document.removeEventListener('visibilitychange', handler);
+	}, [userId]);
+
+	useEffect(() => {
 		setUserEmails(userEmails);
 		setChatList(userChats);
 		initUserChats(userChats);

@@ -6,7 +6,7 @@ import {
 } from '@/app/chat/[chatId]/styled';
 import { ScrollToBottomButtonProps } from '@/types';
 
-export const ScrollToBottomButton = ({ unreadNumber, onPress }: ScrollToBottomButtonProps) => (
+export const UnreadMessages = ({ unreadNumber, onPress }: ScrollToBottomButtonProps) => (
 	<UnreadNumberButton onTouchStart={onPress} onMouseDown={onPress}>
 		<UnreadNumber>{unreadNumber}</UnreadNumber>
 		<UnreadNumberIconWrapper>

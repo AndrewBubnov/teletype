@@ -88,19 +88,20 @@ export const UnreadNumber = styled(Box)`
 	align-items: center;
 	font-size: 0.8rem;
 	font-weight: 500;
-	width: 1.2rem;
-	height: 1.2rem;
+	min-width: 1.8rem;
+	height: 1.8rem;
+	padding: 0.2rem;
 	background: darkgreen;
 	color: #fff;
-	border-radius: 50%;
+	border-radius: 0.9rem;
 	z-index: 10;
 `;
 export const UnreadNumberIconWrapper = styled(Box)`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 1.5rem;
-	height: 1.5rem;
+	width: 2.5rem;
+	height: 2.5rem;
 	background: #fff;
 	border-radius: 50%;
 	margin-top: -0.5rem;
@@ -438,7 +439,7 @@ export const ReactionsWrapper = styled(Box)`
 
 export const StyledBlackCheckbox = styled(Checkbox)`
 	color: #1a1a1a;
-	padding-left: 0;
+	margin-left: -0.75rem;
 
 	&.Mui-checked {
 		color: #1a1a1a;

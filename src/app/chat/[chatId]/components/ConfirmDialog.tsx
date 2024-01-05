@@ -26,7 +26,7 @@ export const ConfirmDialog = ({ open, onCancel, onConfirm, interlocutorName }: C
 				<DialogContentText>Are you sure you want to delete this message?</DialogContentText>
 				<StyledDialogContentText>
 					<StyledBlackCheckbox checked={deleteBoth} onChange={changeHandler} />
-					Also delete for {interlocutorName}
+					also delete for {interlocutorName}
 				</StyledDialogContentText>
 			</DialogContent>
 			<DialogActions>

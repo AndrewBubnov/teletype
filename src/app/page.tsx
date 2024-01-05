@@ -10,13 +10,13 @@ export default function Home() {
 
 	return (
 		<HeroContainer>
-			<StyledTypography>Please register or sign in to continue</StyledTypography>
+			<StyledTypography>Teletype</StyledTypography>
 			<LogLinkWrapper>
 				<Link href="/sign-in">
-					<Button>Sign in</Button>
+					<Button size="lg">Sign in</Button>
 				</Link>
 				<Link href="/sign-up">
-					<Button>Sign up</Button>
+					<Button size="lg">Sign up</Button>
 				</Link>
 			</LogLinkWrapper>
 		</HeroContainer>

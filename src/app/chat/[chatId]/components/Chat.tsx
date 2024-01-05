@@ -9,7 +9,7 @@ import { SingleMessage } from '@/app/chat/[chatId]/components/SingleMessage';
 import { sendEditMessage } from '@/utils/sendEditMessage';
 import { ContextMenu } from '@/app/chat/[chatId]/components/ContextMenu';
 import { MessageInput } from '@/app/chat/[chatId]/components/MessageInput';
-import { ScrollToBottomButton } from '@/app/chat/[chatId]/components/ScrollToBottomButton';
+import { UnreadMessages } from '@/app/chat/[chatId]/components/UnreadMessages';
 import { ChatProps, Message } from '@/types';
 
 export const Chat = ({ chat }: ChatProps) => {
@@ -135,9 +135,7 @@ export const Chat = ({ chat }: ChatProps) => {
 						isAuthor={activeMessage.authorId === authorId}
 					/>
 				)}
-				{unreadNumber ? (
-					<ScrollToBottomButton unreadNumber={unreadNumber} onPress={scrollToLastHandler} />
-				) : null}
+				{unreadNumber ? <UnreadMessages unreadNumber={unreadNumber} onPress={scrollToLastHandler} /> : null}
 			</CoverWrapper>
 			<MessageInput
 				chatId={chatId}

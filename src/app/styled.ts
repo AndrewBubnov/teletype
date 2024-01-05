@@ -8,9 +8,10 @@ export const HeroContainer = styled(Box)(() => ({
 	flexDirection: 'column',
 	justifyContent: 'center',
 	alignItems: 'center',
-	gap: '3rem',
+	gap: '8rem',
 	width: '100%',
 	height: '100%',
+	marginTop: '-3rem',
 }));
 export const LogLinkWrapper = styled(Box)(() => ({
 	'display': 'flex',
@@ -23,5 +24,6 @@ export const LogLinkWrapper = styled(Box)(() => ({
 }));
 
 export const StyledTypography = styled(Typography)(() => ({
-	fontSize: '1.5rem',
+	fontSize: '2.5rem',
+	textAlign: 'center',
 }));

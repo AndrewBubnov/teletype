@@ -3,7 +3,6 @@ import { useStore } from '@/store';
 import { useUser } from '@clerk/nextjs';
 import { sendChangeVisitorStatus } from '@/utils/sendChangeVisitorStatus';
 import { UserChat, VisitorStatus } from '@/types';
-import { sendDeleteReadMessages } from '@/utils/sendDeleteReadMessages';
 
 export const useChat = (chat: UserChat) => {
 	const { user } = useUser();
@@ -25,10 +24,6 @@ export const useChat = (chat: UserChat) => {
 	}));
 
 	const messageList = messageMap[chatId] || [];
-
-	useEffect(() => {
-		sendDeleteReadMessages(chatId);
-	}, [chatId]);
 
 	useEffect(() => {
 		const rest = { chatId, userId };
