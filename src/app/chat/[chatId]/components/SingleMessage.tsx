@@ -28,7 +28,7 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 				if (entry.isIntersecting) observer.disconnect();
 				if (entry.isIntersecting && updateIsRead) updateIsRead(entry.target.id);
 			},
-			{ rootMargin: '0px', threshold: 1 }
+			{ rootMargin: '0px', threshold: 0.75 }
 		);
 		observer.observe(containerRef.current);
 		return () => observer.disconnect();
