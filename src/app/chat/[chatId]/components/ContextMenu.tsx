@@ -10,20 +10,18 @@ import {
 	ReactionsWrapper,
 } from '@/app/chat/[chatId]/styled';
 import getBoundingClientRect from '@popperjs/core/lib/dom-utils/getBoundingClientRect';
-import { reactions } from '@/app/chat/[chatId]/constants';
-import { sendEditMessage } from '@/utils/sendEditMessage';
 import { ConfirmDialog } from '@/app/chat/[chatId]/components/ConfirmDialog';
+import { reactions } from '@/app/chat/[chatId]/constants';
 import { ContextMenuProps } from '@/types';
 
 export const ContextMenu = ({
-	menuActiveId,
-	chatId,
 	onAddReaction,
 	onCloseMenu,
 	initMenuParams,
 	menuTop,
 	onReplyMessage,
 	onEditMessage,
+	onDeleteMessage,
 	interlocutorName,
 	onDownLoadImage,
 	isAuthor,
@@ -37,23 +35,13 @@ export const ContextMenu = ({
 		initMenuParams.current = getBoundingClientRect(ref.current) as DOMRect;
 	}, [initMenuParams]);
 
-	const onDeleteMessage = (evt: SyntheticEvent) => {
+	const deleteMessageHandler = (evt: SyntheticEvent) => {
 		evt.stopPropagation();
 		setDialogOpen(true);
 	};
 
 	const closeDialogHandler = () => setDialogOpen(false);
 
-	const deleteMessageHandler = (informBoth: boolean) => () => {
-		sendEditMessage({
-			messageId: menuActiveId,
-			message: null,
-			roomId: chatId,
-			authorOnly: !informBoth,
-		});
-		closeDialogHandler();
-		onCloseMenu();
-	};
 	return (
 		<>
 			<Backdrop onClick={onCloseMenu}>
@@ -70,7 +58,7 @@ export const ContextMenu = ({
 						) : null}
 						<List>
 							<ListItem disablePadding>
-								<ListItemButton onMouseDown={onDeleteMessage} onTouchStart={onDeleteMessage}>
+								<ListItemButton onMouseDown={deleteMessageHandler} onTouchStart={deleteMessageHandler}>
 									<ListItemIcon>
 										<MenuDeleteIcon />
 									</ListItemIcon>
@@ -112,7 +100,7 @@ export const ContextMenu = ({
 			<ConfirmDialog
 				open={dialogOpen}
 				onCancel={closeDialogHandler}
-				onConfirm={deleteMessageHandler}
+				onConfirm={onDeleteMessage}
 				interlocutorName={interlocutorName}
 			/>
 		</>

@@ -57,6 +57,19 @@ export const Chat = ({ chat }: ChatProps) => {
 		[addReaction, chatId, closeMenuHandler, activeMessage, authorImageUrl]
 	);
 
+	const onDeleteMessage = useCallback(
+		(informBoth: boolean) => {
+			sendEditMessage({
+				messageId: menuActiveId,
+				message: null,
+				roomId: chatId,
+				authorOnly: !informBoth,
+			});
+			setMenuActiveId('');
+		},
+		[menuActiveId, chatId]
+	);
+
 	const onReplyMessage = useCallback(() => {
 		if (activeMessage) setRepliedMessage(activeMessage);
 	}, [activeMessage]);
@@ -111,15 +124,14 @@ export const Chat = ({ chat }: ChatProps) => {
 				{!!activeMessage && (
 					<ContextMenu
 						onCloseMenu={closeMenuHandler}
-						initMenuParams={initMenuParams}
 						onReplyMessage={onReplyMessage}
 						onEditMessage={onEditMessage}
-						menuTop={menuTop}
-						menuActiveId={menuActiveId}
+						onDeleteMessage={onDeleteMessage}
 						onAddReaction={addReactionHandler}
-						chatId={chatId}
-						interlocutorName={interlocutorName}
 						onDownLoadImage={activeMessage.imageUrl ? onDownLoadImage : null}
+						menuTop={menuTop}
+						initMenuParams={initMenuParams}
+						interlocutorName={interlocutorName}
 						isAuthor={activeMessage.authorId === authorId}
 					/>
 				)}

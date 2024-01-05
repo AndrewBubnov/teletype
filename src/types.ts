@@ -162,14 +162,13 @@ export interface UseLongPress {
 }
 
 export interface ContextMenuProps {
-	chatId: string;
 	interlocutorName: string;
-	menuActiveId: string;
 	onAddReaction(arg: string): void;
 	onCloseMenu(): void;
 	initMenuParams: MutableRefObject<DOMRect | null>;
 	onReplyMessage(): void;
 	onEditMessage(): void;
+	onDeleteMessage(arg: boolean): void;
 	onDownLoadImage: null | (() => void);
 	menuTop: number;
 	isAuthor: boolean;
@@ -279,6 +278,6 @@ export interface VideoWrapperProps extends BoxProps {
 export interface ConfirmDialogProps {
 	open: boolean;
 	onCancel(): void;
-	onConfirm: (arg: boolean) => () => void;
+	onConfirm: (arg: boolean) => void;
 	interlocutorName: string;
 }

@@ -10,6 +10,10 @@ export const ConfirmDialog = ({ open, onCancel, onConfirm, interlocutorName }: C
 	const backdropPressHandler = () => {
 		if (!enter) onCancel();
 	};
+	const deleteHandler = () => {
+		onConfirm(deleteBoth);
+		onCancel();
+	};
 	return (
 		<Dialog
 			open={open}
@@ -29,7 +33,7 @@ export const ConfirmDialog = ({ open, onCancel, onConfirm, interlocutorName }: C
 				<StyledButton size="small" variant="text" onClick={onCancel}>
 					Cancel
 				</StyledButton>
-				<StyledButton size="small" variant="text" onClick={onConfirm(deleteBoth)} textColor="red">
+				<StyledButton size="small" variant="text" onClick={deleteHandler} textColor="red">
 					Delete
 				</StyledButton>
 			</DialogActions>
