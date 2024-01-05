@@ -166,7 +166,7 @@ export interface ContextMenuProps {
 	interlocutorName: string;
 	menuActiveId: string;
 	onAddReaction(arg: string): void;
-	closeContextMenu(): void;
+	onCloseMenu(): void;
 	initMenuParams: MutableRefObject<DOMRect | null>;
 	onReplyMessage(): void;
 	onEditMessage(): void;

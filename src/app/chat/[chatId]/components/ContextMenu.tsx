@@ -19,7 +19,7 @@ export const ContextMenu = ({
 	menuActiveId,
 	chatId,
 	onAddReaction,
-	closeContextMenu,
+	onCloseMenu,
 	initMenuParams,
 	menuTop,
 	onReplyMessage,
@@ -52,11 +52,11 @@ export const ContextMenu = ({
 			authorOnly: !informBoth,
 		});
 		closeDialogHandler();
-		closeContextMenu();
+		onCloseMenu();
 	};
 	return (
 		<>
-			<Backdrop onClick={closeContextMenu}>
+			<Backdrop onClick={onCloseMenu}>
 				<Grow in style={{ transformOrigin: '0 0 0' }}>
 					<MenuCard ref={ref} style={{ transform: `translateY(${menuTop}px)` }}>
 						{!isAuthor ? (

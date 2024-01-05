@@ -110,7 +110,7 @@ export const Chat = ({ chat }: ChatProps) => {
 				</ChatWrapper>
 				{!!activeMessage && (
 					<ContextMenu
-						closeContextMenu={closeMenuHandler}
+						onCloseMenu={closeMenuHandler}
 						initMenuParams={initMenuParams}
 						onReplyMessage={onReplyMessage}
 						onEditMessage={onEditMessage}
