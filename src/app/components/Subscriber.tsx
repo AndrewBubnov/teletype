@@ -48,6 +48,7 @@ export const Subscriber = ({
 		setUserEmails(userEmails);
 		setChatList(userChats);
 		initUserChats(userChats);
+		console.log('user chats initiated');
 		sendJoin(userId);
 	}, [setChatList, setUserEmails, userEmails, userChats, userId]);
 
