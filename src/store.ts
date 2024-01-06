@@ -1,7 +1,8 @@
 import { create } from 'zustand';
-import { ChatVisitorStatus, Message, MessageMap, Store, Toast, UserChat } from '@/types';
 import { sendChangeMessageIsRead } from '@/utils/sendChangeMessageIsRead';
 import { sendAddReaction } from '@/utils/sendAddReaction';
+import sound from './assets/audio/sound.wav';
+import { ChatVisitorStatus, Message, MessageMap, Store, Toast, UserChat } from '@/types';
 
 export const useStore = create<Store>(set => ({
 	messageMap: {},
@@ -19,13 +20,16 @@ export const useStore = create<Store>(set => ({
 	addMessageToMessageMap: (message: Message) =>
 		set(state => {
 			if (!message.chatId) return { messageMap: state.messageMap };
-			if (state.messageMap[message.chatId])
+			const audio = new Audio(sound);
+			audio.play().then();
+			if (state.messageMap[message.chatId]) {
 				return {
 					messageMap: {
 						...state.messageMap,
 						[message.chatId]: [...state.messageMap[message.chatId], message],
 					},
 				};
+			}
 			return { messageMap: { ...state.messageMap, [message.chatId]: [message] } };
 		}),
 	updateMessageInMessageMap: ({ message, messageId, roomId: chatId }) =>
