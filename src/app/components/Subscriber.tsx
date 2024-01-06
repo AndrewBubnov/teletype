@@ -10,8 +10,8 @@ import { addClientMessage, clearAddClientMessage } from '@/utils/addClientMessag
 import { clearUpdateClientMessage, updateClientMessage } from '@/utils/updateClientMessage';
 import { clearUpdateChatList, updateChatList } from '@/utils/updateChatList';
 import { clearUpdateVisitorStatus, updateVisitorStatus } from '@/utils/updateVisitorStatus';
-import { clearMessageMap, createMessageMap } from '@/utils/createMessageMap';
-import { UserChat } from '@/types';
+import { MessageMap, UserChat } from '@/types';
+import { ws } from '@/ws';
 
 export const Subscriber = ({
 	userChats,
@@ -48,11 +48,22 @@ export const Subscriber = ({
 		setUserEmails(userEmails);
 		setChatList(userChats);
 		initUserChats(userChats);
-		console.log('user chats initiated');
 		sendJoin(userId);
 	}, [setChatList, setUserEmails, userEmails, userChats, userId]);
 
-	useSubscribe(setMessageMap, createMessageMap, clearMessageMap);
+	useEffect(() => {
+		ws.on('get-messages-map', (messageMap: MessageMap) => {
+			console.log({ messageMap });
+			setMessageMap(messageMap);
+		});
+		return () => {
+			ws.off('get-messages-map', (messageMap: MessageMap) => {
+				setMessageMap(messageMap);
+			});
+		};
+	}, [setMessageMap]);
+
+	// useSubscribe(setMessageMap, createMessageMap, clearMessageMap);
 
 	useSubscribe(setActiveUsers, updateActiveUsers, clearActiveUsers);
 
