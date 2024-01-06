@@ -42,14 +42,20 @@ export const Subscriber = ({
 		updateMessageInMessageMap: state.updateMessageInMessageMap,
 	}));
 
+	useEffect(() => {
+		initUserChats(userChats);
+	}, [userChats]);
+
+	useEffect(() => {
+		sendJoin(userId);
+	}, [userId]);
+
 	useEffect(() => createRooms(chatList, userId), [chatList, userId]);
 
 	useEffect(() => {
 		setUserEmails(userEmails);
 		setChatList(userChats);
-		initUserChats(userChats);
-		sendJoin(userId);
-	}, [setChatList, setUserEmails, userEmails, userChats, userId]);
+	}, [setChatList, setUserEmails, userEmails, userChats]);
 
 	useSubscribe(setMessageMap, createMessageMap, clearMessageMap);
 
