@@ -10,10 +10,7 @@ export const useStore = create<Store>(set => ({
 	userEmails: [],
 	chatVisitorStatus: {},
 	toast: null,
-	setMessageMap: (updated: MessageMap) => {
-		console.log(JSON.stringify(updated, null, 2));
-		set({ messageMap: updated });
-	},
+	setMessageMap: (updated: MessageMap) => set({ messageMap: updated }),
 	setActiveUsers: (updated: string[]) => set({ activeUsers: updated }),
 	setUserEmails: (updated: string[]) => set({ userEmails: updated }),
 	setChatList: (updated: UserChat[]) => set({ chatList: updated }),
