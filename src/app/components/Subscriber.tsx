@@ -2,7 +2,6 @@
 import { useEffect } from 'react';
 import { useStore } from '@/store';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
-import { usePing } from '@/app/hooks/usePing';
 import { createRooms } from '@/app/chat/utils/createRooms';
 import { initUserChats } from '@/utils/initUserChats';
 import { sendJoin } from '@/utils/sendJoin';
@@ -42,8 +41,6 @@ export const Subscriber = ({
 		addMessageToMessageMap: state.addMessageToMessageMap,
 		updateMessageInMessageMap: state.updateMessageInMessageMap,
 	}));
-
-	usePing();
 
 	useEffect(() => createRooms(chatList, userId), [chatList, userId]);
 

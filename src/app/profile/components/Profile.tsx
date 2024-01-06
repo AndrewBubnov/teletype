@@ -1,5 +1,6 @@
 'use client';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useFileUpload } from '@/app/shared/hooks/useFileUpload';
 import Cropper, { Area } from 'react-easy-crop';
 import { Box, FormLabel, Slider } from '@mui/material';
@@ -11,7 +12,6 @@ import { getRotationFromSliderValue } from '@/app/profile/utils/getRotationFromS
 import { StyledInput } from '@/app/chat/styled';
 import { updateUserDetails } from '@/actions/updateUser';
 import { ButtonsWrapper, ControlsWrapper, LoaderWrapper, StyledTypography } from '@/app/profile/styled';
-import { useRouter } from 'next/navigation';
 import { LoadingIndicator } from '@/app/shared/styled';
 import { CHAT_LIST } from '@/constants';
 import { User } from '@/types';
@@ -70,7 +70,7 @@ export const Profile = ({ user }: { user: User }) => {
 			)}
 			<Cropper
 				style={{ containerStyle: { ...CONTAINER_STYLE, opacity }, cropAreaStyle: CROP_AREA_STYLE }}
-				image={imageUrl || undefined}
+				image={user.imageUrl || undefined}
 				crop={crop}
 				zoom={zoom}
 				rotation={rotation}
