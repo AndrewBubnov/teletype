@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { sendPing } from '@/utils/sendPing';
 
-const UNSLEEP_DELAY = 60_000 * 9;
+const UNSLEEP_DELAY = 60_000 * 4;
 
 export const useUnSleep = () => {
 	useEffect(() => {
