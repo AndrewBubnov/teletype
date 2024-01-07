@@ -46,6 +46,7 @@ export const MessageInput = ({
 
 	const textChangeHandler = (evt: ChangeEvent<HTMLTextAreaElement>) => {
 		setMessageText(evt.target.value);
+		if (emojis) setEmojis(evt.target.value);
 		if (editedMessage?.type === MessageType.EMOJI) setEmojis(evt.target.value);
 	};
 
@@ -58,6 +59,7 @@ export const MessageInput = ({
 	};
 
 	const submitHandler = async () => {
+		if (!messageText && !messageImageUrl) return;
 		const type = messageText && emojis && messageText === emojis ? MessageType.EMOJI : MessageType.COMMON;
 		const message: Message = {
 			id: nanoid(),
@@ -71,13 +73,15 @@ export const MessageInput = ({
 			isRead: false,
 			createdAt: new Date(),
 		};
-		if (message && editedMessage)
+		if (message && editedMessage) {
+			console.log({ message });
 			sendEditMessage({
-				messageId: message.id,
+				messageId: editedMessage.id,
 				message,
 				roomId: chatId,
 				authorOnly: false,
 			});
+		}
 		if (message && !editedMessage) sendMessageToServer(message, chatId);
 		resetState();
 	};
