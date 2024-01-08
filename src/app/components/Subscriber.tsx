@@ -12,7 +12,6 @@ import { clearUpdateClientMessage, updateClientMessage } from '@/utils/updateCli
 import { clearUpdateChatList, updateChatList } from '@/utils/updateChatList';
 import { clearUpdateVisitorStatus, updateVisitorStatus } from '@/utils/updateVisitorStatus';
 import { UserChat } from '@/types';
-import { useUnSleep } from '@/app/hooks/useUnSleep';
 
 export const Subscriber = ({
 	userChats,
@@ -69,8 +68,6 @@ export const Subscriber = ({
 	useSubscribe(setChatList, updateChatList, clearUpdateChatList);
 
 	useSubscribe(setChatVisitorStatus, updateVisitorStatus, clearUpdateVisitorStatus);
-
-	useUnSleep();
 
 	return null;
 };
