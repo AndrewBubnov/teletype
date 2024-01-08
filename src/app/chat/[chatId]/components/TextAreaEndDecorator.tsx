@@ -36,7 +36,7 @@ export const TextAreaEndDecorator = ({
 				<IconButton onClick={onCameraStart}>
 					<CameraIcon />
 				</IconButton>
-				<SendButton onClick={onSubmit} endIcon={<SendMessageIcon />} />
+				<SendButton type="submit" onClick={onSubmit} endIcon={<SendMessageIcon />} />
 			</ImageIconsInnerWrapper>
 		</ImageIconsWrapper>
 	</EndDecorator>

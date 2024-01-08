@@ -64,6 +64,7 @@ export const ChatListItemUsername = styled(Typography)({
 	textOverflow: 'ellipsis',
 	whiteSpace: 'nowrap',
 	overflow: 'hidden',
+	userSelect: 'none',
 });
 export const HeaderContainer = styled(Box)(() => ({
 	position: 'fixed',

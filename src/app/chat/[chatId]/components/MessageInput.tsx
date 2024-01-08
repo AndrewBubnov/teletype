@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { Textarea } from '@mui/joy';
 import { RepliedMessageBox } from '@/app/chat/[chatId]/components/RepliedMessageBox';
-import { SendMessageFormWrapper, SendWrapper } from '@/app/chat/[chatId]/styled';
+import { SendMessageFormWrapper } from '@/app/chat/[chatId]/styled';
 import { sendMessageToServer } from '@/utils/sendMessageToServer';
 import { ImagePreviewModal } from '@/app/chat/[chatId]/components/ImagePreviewModal';
 import { TextAreaEndDecorator } from '@/app/chat/[chatId]/components/TextAreaEndDecorator';
@@ -112,27 +112,25 @@ export const MessageInput = ({
 	) : (
 		<SendMessageFormWrapper>
 			<RepliedMessageBox message={repliedMessage} authorName={authorName} onDropMessage={dropReplyHandler} />
-			<SendWrapper>
-				<Textarea
-					placeholder="Type in here…"
-					value={messageText}
-					onChange={textChangeHandler}
-					minRows={1}
-					maxRows={2}
-					startDecorator={<TextAreaStartDecorator emojiHandler={emojiHandler} />}
-					endDecorator={
-						<TextAreaEndDecorator
-							messageImageUrl={messageImageUrl}
-							onDropImageUrl={dropMessageImageUrl}
-							openPreviewModal={openPreviewModalHandler}
-							onSelectFile={selectFileHandler}
-							onCameraStart={() => setIsCameraOn(true)}
-							onSubmit={submitHandler}
-						/>
-					}
-					sx={TEXT_AREA_STYLE}
-				/>
-			</SendWrapper>
+			<Textarea
+				placeholder="Type in here…"
+				value={messageText}
+				onChange={textChangeHandler}
+				minRows={1}
+				maxRows={2}
+				startDecorator={<TextAreaStartDecorator emojiHandler={emojiHandler} />}
+				endDecorator={
+					<TextAreaEndDecorator
+						messageImageUrl={messageImageUrl}
+						onDropImageUrl={dropMessageImageUrl}
+						openPreviewModal={openPreviewModalHandler}
+						onSelectFile={selectFileHandler}
+						onCameraStart={() => setIsCameraOn(true)}
+						onSubmit={submitHandler}
+					/>
+				}
+				sx={TEXT_AREA_STYLE}
+			/>
 		</SendMessageFormWrapper>
 	);
 };

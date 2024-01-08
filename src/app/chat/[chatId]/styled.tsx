@@ -540,11 +540,6 @@ export const SendButton = styled(Button)`
 	}
 `;
 
-export const SendWrapper = styled(Box)`
-	display: flex;
-	gap: 0.25rem;
-`;
-
 export const SendMessageIcon = styled(SendIcon)`
 	fill: lightgray;
 `;
