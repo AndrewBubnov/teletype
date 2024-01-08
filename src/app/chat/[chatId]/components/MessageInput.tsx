@@ -74,7 +74,6 @@ export const MessageInput = ({
 			createdAt: new Date(),
 		};
 		if (message && editedMessage) {
-			console.log({ message });
 			sendEditMessage({
 				messageId: editedMessage.id,
 				message,
