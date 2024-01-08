@@ -35,6 +35,8 @@ export interface Message extends ServerMessage {
 	isRead: boolean;
 }
 
+export type MessageDraft = Omit<Message, 'id' | 'createdAt'>;
+
 export type Chat = {
 	id: string;
 	chatId: string;

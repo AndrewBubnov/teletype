@@ -49,7 +49,6 @@ export const useChat = (chat: UserChat) => {
 		authorId,
 		interlocutorId,
 		authorName,
-		authorImageUrl,
 		unreadNumber,
 		updateIsRead,
 		userId,

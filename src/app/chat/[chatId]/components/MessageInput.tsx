@@ -1,7 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { Textarea } from '@mui/joy';
-import { nanoid } from 'nanoid';
 import { RepliedMessageBox } from '@/app/chat/[chatId]/components/RepliedMessageBox';
 import { SendMessageFormWrapper, SendWrapper } from '@/app/chat/[chatId]/styled';
 import { sendMessageToServer } from '@/utils/sendMessageToServer';
@@ -9,10 +8,10 @@ import { ImagePreviewModal } from '@/app/chat/[chatId]/components/ImagePreviewMo
 import { TextAreaEndDecorator } from '@/app/chat/[chatId]/components/TextAreaEndDecorator';
 import { TextAreaStartDecorator } from '@/app/chat/[chatId]/components/TextAreaStartDecorator';
 import { sendEditMessage } from '@/utils/sendEditMessage';
-import { DIALOG_MARGINS, TEXT_AREA_STYLE } from '@/app/chat/[chatId]/constants';
-import { Message, MessageInputProps, MessageType } from '@/types';
 import { CameraMode } from '@/app/chat/[chatId]/components/CameraMode';
 import { useFileUpload } from '@/app/shared/hooks/useFileUpload';
+import { DIALOG_MARGINS, TEXT_AREA_STYLE } from '@/app/chat/[chatId]/constants';
+import { MessageDraft, MessageInputProps, MessageType } from '@/types';
 
 export const MessageInput = ({
 	chatId,
@@ -61,8 +60,7 @@ export const MessageInput = ({
 	const submitHandler = async () => {
 		if (!messageText && !messageImageUrl) return;
 		const type = messageText && emojis && messageText === emojis ? MessageType.EMOJI : MessageType.COMMON;
-		const message: Message = {
-			id: nanoid(),
+		const message: MessageDraft = {
 			chatId,
 			authorId: userId,
 			authorName,
@@ -71,12 +69,11 @@ export const MessageInput = ({
 			imageUrl: messageImageUrl,
 			replyToId: repliedMessage?.id,
 			isRead: false,
-			createdAt: new Date(),
 		};
 		if (message && editedMessage) {
 			sendEditMessage({
 				messageId: editedMessage.id,
-				message,
+				message: { ...message, id: editedMessage.id, createdAt: editedMessage.createdAt },
 				roomId: chatId,
 				authorOnly: false,
 			});

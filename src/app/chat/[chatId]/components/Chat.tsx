@@ -20,7 +20,6 @@ export const Chat = ({ chat }: ChatProps) => {
 		interlocutorImageUrl,
 		chatId,
 		authorId,
-		authorImageUrl,
 		interlocutorId,
 		authorName,
 		unreadNumber,
@@ -47,14 +46,9 @@ export const Chat = ({ chat }: ChatProps) => {
 			if (!activeMessage) return;
 			const reaction = activeMessage.reaction === reactionString ? '' : reactionString;
 			addReaction(activeMessage.id, reaction);
-			sendEditMessage({
-				messageId: activeMessage.id,
-				message: { ...activeMessage, reaction, reactionAuthorImageUrl: authorImageUrl },
-				roomId: chatId,
-			});
 			closeMenuHandler();
 		},
-		[addReaction, chatId, closeMenuHandler, activeMessage, authorImageUrl]
+		[addReaction, closeMenuHandler, activeMessage]
 	);
 
 	const onDeleteMessage = useCallback(
