@@ -66,15 +66,6 @@ export const ChatListItemUsername = styled(Typography)({
 	overflow: 'hidden',
 	userSelect: 'none',
 });
-export const HeaderContainer = styled(Box)(() => ({
-	position: 'fixed',
-	display: 'flex',
-	flexDirection: 'row-reverse',
-	alignItems: 'center',
-	width: '100%',
-	height: '3.5rem',
-	padding: '0px 1rem',
-}));
 
 export const ChatListItemDateWrapper = styled(Box)(() => ({
 	fontSize: '0.7rem',
@@ -109,11 +100,6 @@ export const ChatUnreadMessages = styled(Box)(() => ({
 	color: '#ffffff',
 	fontSize: '0.8rem',
 	fontWeight: 600,
-}));
-export const UserButtonWrapper = styled(Box)(() => ({
-	width: '2rem',
-	height: '2rem',
-	marginRight: '0.5rem',
 }));
 export const UserNameWrapper = styled(Box)(() => ({
 	display: 'flex',
