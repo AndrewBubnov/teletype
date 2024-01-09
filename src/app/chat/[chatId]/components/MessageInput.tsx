@@ -11,7 +11,9 @@ import { sendEditMessage } from '@/utils/sendEditMessage';
 import { CameraMode } from '@/app/chat/[chatId]/components/CameraMode';
 import { useFileUpload } from '@/app/shared/hooks/useFileUpload';
 import { DIALOG_MARGINS, TEXT_AREA_STYLE } from '@/app/chat/[chatId]/constants';
-import { MessageDraft, MessageInputProps, MessageType } from '@/types';
+import { createMessage } from '@/actions/createMessage';
+import { Message, MessageInputProps, MessageType } from '@/types';
+import { updateMessage } from '@/actions/updateMessage';
 
 export const MessageInput = ({
 	chatId,
@@ -60,7 +62,7 @@ export const MessageInput = ({
 	const submitHandler = async () => {
 		if (!messageText && !messageImageUrl) return;
 		const type = messageText && emojis && messageText === emojis ? MessageType.EMOJI : MessageType.COMMON;
-		const message: MessageDraft = {
+		const message = await createMessage({
 			chatId,
 			authorId: userId,
 			authorName,
@@ -68,12 +70,12 @@ export const MessageInput = ({
 			text: messageText,
 			imageUrl: messageImageUrl,
 			replyToId: repliedMessage?.id,
-			isRead: false,
-		};
+		});
 		if (message && editedMessage) {
+			const updated = (await updateMessage(message.id, message)) as Message;
 			sendEditMessage({
 				messageId: editedMessage.id,
-				message: { ...message, id: editedMessage.id, createdAt: editedMessage.createdAt },
+				message: updated,
 				roomId: chatId,
 				authorOnly: false,
 			});

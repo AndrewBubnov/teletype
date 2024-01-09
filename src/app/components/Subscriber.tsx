@@ -5,23 +5,14 @@ import { useSubscribe } from '@/app/hooks/useSubscribe';
 import { createRooms } from '@/app/chat/utils/createRooms';
 import { initUserChats } from '@/utils/initUserChats';
 import { sendJoin } from '@/utils/sendJoin';
-import { createMessageMap, clearMessageMap } from '@/utils/createMessageMap';
 import { clearActiveUsers, updateActiveUsers } from '@/utils/updateActiveUsers';
 import { addClientMessage, clearAddClientMessage } from '@/utils/addClientMessage';
 import { clearUpdateClientMessage, updateClientMessage } from '@/utils/updateClientMessage';
 import { clearUpdateChatList, updateChatList } from '@/utils/updateChatList';
 import { clearUpdateVisitorStatus, updateVisitorStatus } from '@/utils/updateVisitorStatus';
-import { UserChat } from '@/types';
+import { SubscriberProps } from '@/types';
 
-export const Subscriber = ({
-	userChats,
-	userEmails,
-	userId,
-}: {
-	userChats: UserChat[];
-	userEmails: string[];
-	userId: string;
-}) => {
+export const Subscriber = ({ userChats, userEmails, userId, messageMap }: SubscriberProps) => {
 	const {
 		setActiveUsers,
 		setMessageMap,
@@ -53,11 +44,13 @@ export const Subscriber = ({
 	useEffect(() => createRooms(chatList, userId), [chatList, userId]);
 
 	useEffect(() => {
+		setMessageMap(messageMap);
+	}, [setMessageMap, messageMap]);
+
+	useEffect(() => {
 		setUserEmails(userEmails);
 		setChatList(userChats);
 	}, [setChatList, setUserEmails, userEmails, userChats]);
-
-	useSubscribe(setMessageMap, createMessageMap, clearMessageMap);
 
 	useSubscribe(setActiveUsers, updateActiveUsers, clearActiveUsers);
 

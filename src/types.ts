@@ -35,8 +35,6 @@ export interface Message extends ServerMessage {
 	isRead: boolean;
 }
 
-export type MessageDraft = Omit<Message, 'id' | 'createdAt'>;
-
 export type Chat = {
 	id: string;
 	chatId: string;
@@ -230,11 +228,11 @@ export interface Store {
 	setMessageMap(arg: MessageMap): void;
 	addMessageToMessageMap(arg: Message): void;
 	updateMessageInMessageMap(args: EditMessageClient): void;
-	updateIsReadMap: (chatId: string) => (id: string) => void;
+	updateIsReadMap: (chatId: string) => (id: string) => Promise<void>;
 	addReactionMap: (
 		chatId: string,
 		authorImageUrl: string | null | undefined
-	) => (id: string, reaction: string) => void;
+	) => (id: string, reaction: string) => Promise<void>;
 }
 
 export type Subscription<T> = (fn: (arg: T) => void) => void;
@@ -263,8 +261,7 @@ export interface ErrorToastProps {
 export interface SendAddReactionArgs {
 	chatId: string;
 	messageId: string;
-	reaction: string;
-	authorImageUrl?: string | null;
+	message: Message;
 }
 
 export interface CameraModeProps {
@@ -287,4 +284,27 @@ export interface ConfirmDialogProps {
 export enum FacingMode {
 	USER = 'user',
 	ENVIRONMENT = 'environment',
+}
+
+export interface SubscriberProps {
+	userChats: UserChat[];
+	userEmails: string[];
+	userId: string;
+	messageMap: Record<string, Message[]>;
+}
+
+export interface CreateMessage {
+	chatId: string;
+	authorId: string;
+	authorName: string;
+	type: MessageType;
+	text?: string;
+	imageUrl?: string | null;
+	replyToId?: string;
+}
+
+export interface AddReaction {
+	messageId: string;
+	reaction: string;
+	authorImageUrl?: string | null;
 }

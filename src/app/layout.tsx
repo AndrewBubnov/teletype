@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google';
 import { auth, ClerkProvider } from '@clerk/nextjs';
 import { Fetcher } from '@/app/components/Fetcher';
 import './globals.css';
-import { ToastProvider } from '@/app/chat/components/ToastProvider';
+import { ToastProvider } from '@/app/components/ToastProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
