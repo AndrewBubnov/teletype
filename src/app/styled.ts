@@ -13,17 +13,34 @@ export const HeroContainer = styled(Box)(() => ({
 	height: '100%',
 	marginTop: '-3rem',
 }));
-export const LogLinkWrapper = styled(Box)(() => ({
-	'display': 'flex',
-	'alignItems': 'center',
-	'justifyContent': 'space-between',
-	'width': '40%',
-	'@media (max-width: 600px)': {
-		width: '80%',
-	},
-}));
+export const LogLinkWrapper = styled(Box)`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 40%;
+	opacity: 0;
+	animation: enter 2s 0.8s forwards;
+	@keyframes enter {
+		to {
+			opacity: 1;
+		}
+	}
+	@media (max-width: 600px) {
+		width: 80%;
+	}
+`;
 
 export const StyledTypography = styled(Typography)(() => ({
-	fontSize: '2.5rem',
+	fontSize: '3.5rem',
+	fontWeight: 900,
 	textAlign: 'center',
+	backgroundImage: 'linear-gradient(45deg, red, blue)',
+	backgroundClip: 'text',
+	color: 'transparent',
+}));
+
+export const Author = styled(Typography)(() => ({
+	position: 'fixed',
+	bottom: '3%',
+	right: '5%',
 }));
