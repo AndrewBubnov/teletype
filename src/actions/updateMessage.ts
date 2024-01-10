@@ -2,7 +2,7 @@
 import { prisma } from '@/db';
 import { Message } from '@/types';
 
-export const updateMessage = async (messageId: string, message: Message) => {
+export const updateMessage = async (messageId: string, message: Message | null) => {
 	const existing = prisma.message.findUnique({ where: { id: messageId } });
 
 	if (!existing) return;

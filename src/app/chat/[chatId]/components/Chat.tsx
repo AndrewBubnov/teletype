@@ -11,6 +11,7 @@ import { ContextMenu } from '@/app/chat/[chatId]/components/ContextMenu';
 import { MessageInput } from '@/app/chat/[chatId]/components/MessageInput';
 import { UnreadMessages } from '@/app/chat/[chatId]/components/UnreadMessages';
 import { ChatProps, Message } from '@/types';
+import { updateMessage } from '@/actions/updateMessage';
 
 export const Chat = ({ chat }: ChatProps) => {
 	const {
@@ -45,20 +46,21 @@ export const Chat = ({ chat }: ChatProps) => {
 		async (reactionString: string) => {
 			if (!activeMessage) return;
 			const reaction = activeMessage.reaction === reactionString ? '' : reactionString;
-			addReaction(activeMessage.id, reaction);
+			await addReaction(activeMessage.id, reaction);
 			closeMenuHandler();
 		},
 		[addReaction, closeMenuHandler, activeMessage]
 	);
 
 	const onDeleteMessage = useCallback(
-		(informBoth: boolean) => {
+		async (informBoth: boolean) => {
 			sendEditMessage({
 				messageId: menuActiveId,
 				message: null,
 				roomId: chatId,
 				authorOnly: !informBoth,
 			});
+			await updateMessage(menuActiveId, null);
 			setMenuActiveId('');
 		},
 		[menuActiveId, chatId]
