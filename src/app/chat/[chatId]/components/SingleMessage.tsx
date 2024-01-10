@@ -10,9 +10,9 @@ import { EmojiMessage } from '@/app/chat/[chatId]/components/EmojiMessage';
 import { ReplyTo } from '@/app/chat/[chatId]/components/ReplyTo';
 import { ImageMessage } from '@/app/chat/[chatId]/components/ImageMessage';
 import { MessageBottom } from '@/app/chat/[chatId]/components/MessageBottom';
-import { MessageType, SingleMessageProps } from '@/types';
 import { LinkMessagePart } from '@/app/chat/[chatId]/components/LinkMessagePart';
 import { urlRegex } from '@/app/chat/[chatId]/constants';
+import { MessageType, SingleMessageProps } from '@/types';
 
 export const SingleMessage = ({
 	message,
