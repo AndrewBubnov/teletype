@@ -1,4 +1,4 @@
-import { Fragment, SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import {
 	AuthorMessageWrapper,
@@ -11,6 +11,8 @@ import { ReplyTo } from '@/app/chat/[chatId]/components/ReplyTo';
 import { ImageMessage } from '@/app/chat/[chatId]/components/ImageMessage';
 import { MessageBottom } from '@/app/chat/[chatId]/components/MessageBottom';
 import { MessageType, SingleMessageProps } from '@/types';
+import { LinkMessagePart } from '@/app/chat/[chatId]/components/LinkMessagePart';
+import { urlRegex } from '@/app/chat/[chatId]/constants';
 
 export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, updateIsRead }: SingleMessageProps) => {
 	const { user } = useUser();
@@ -52,40 +54,22 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 		onContextMenuToggle('open', params);
 	};
 
-	const text = useMemo(() => {
-		const urlRegex = /\b(?:https?|http|www)\:\/\/[^\s/$.?#].[^\s]*/gi;
-		const links = (message.text || '').match(urlRegex);
+	const messageText = useMemo(() => {
+		const text = message.text || '';
+		const links = text.match(urlRegex);
 
-		if (!links) return message.text;
+		if (!links) return text;
 
-		const parts = (message.text || '').split(/(\b(?:https?|http|www)\:\/\/[^\s/$.?#].[^\s]*)/);
-		console.log({ links, parts });
-
-		return parts.map((part, index) => {
-			if (index && links[index - 1]) {
-				return (
-					<Fragment key={index}>
-						<br />
-						<a
-							href={links[index - 1]}
-							target="_blank"
-							rel="noopener noreferrer"
-							style={{ color: 'lightgray' }}
-						>
-							{links[index - 1]}
-						</a>
-						<br />
-					</Fragment>
-				);
-			}
-			return <span key={index}>{part}</span>;
+		return text.split(/\s+/).map((part, index) => {
+			if (links.includes(part)) return <LinkMessagePart key={index} href={part} />;
+			return <span key={index}>{part}&nbsp;</span>;
 		});
 	}, [message.text]);
 
 	if (message.type === MessageType.COMMON) {
 		return (
-			<Container ref={containerRef} id={message.id}>
-				<MessageItem singlePadding={!repliedMessage} isAuthoredByUser={isAuthoredByUser} onClick={onPress}>
+			<Container ref={containerRef} id={message.id} onClick={onPress}>
+				<MessageItem singlePadding={!repliedMessage} isAuthoredByUser={isAuthoredByUser}>
 					<ReplyTo message={repliedMessage} />
 					{message.imageUrl && (
 						<ImageMessage
@@ -97,7 +81,7 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 					)}
 					{message.text && (
 						<InnerMessageItem withPadding={!repliedMessage} isAuthoredByUser={isAuthoredByUser}>
-							{text}
+							{messageText}
 						</InnerMessageItem>
 					)}
 					<MessageBottom message={message} withOffset={!repliedMessage} />

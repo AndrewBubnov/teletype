@@ -552,3 +552,6 @@ export const PreviewWrapper = styled(Box)`
 	overflow: hidden;
 	border-radius: 4px;
 `;
+export const StyledLink = styled('a')`
+	color: lightgray;
+`;
