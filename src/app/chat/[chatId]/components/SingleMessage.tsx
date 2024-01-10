@@ -1,4 +1,4 @@
-import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { Fragment, SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import {
 	AuthorMessageWrapper,
@@ -52,6 +52,36 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 		onContextMenuToggle('open', params);
 	};
 
+	const text = useMemo(() => {
+		const urlRegex = /\b(?:https?|http|www)\:\/\/[^\s/$.?#].[^\s]*/gi;
+		const links = (message.text || '').match(urlRegex);
+
+		if (!links) return message.text;
+
+		const parts = (message.text || '').split(/(\b(?:https?|http|www)\:\/\/[^\s/$.?#].[^\s]*)/);
+		console.log({ links, parts });
+
+		return parts.map((part, index) => {
+			if (index && links[index - 1]) {
+				return (
+					<Fragment key={index}>
+						<br />
+						<a
+							href={links[index - 1]}
+							target="_blank"
+							rel="noopener noreferrer"
+							style={{ color: 'lightgray' }}
+						>
+							{links[index - 1]}
+						</a>
+						<br />
+					</Fragment>
+				);
+			}
+			return <span key={index}>{part}</span>;
+		});
+	}, [message.text]);
+
 	if (message.type === MessageType.COMMON) {
 		return (
 			<Container ref={containerRef} id={message.id}>
@@ -67,7 +97,7 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 					)}
 					{message.text && (
 						<InnerMessageItem withPadding={!repliedMessage} isAuthoredByUser={isAuthoredByUser}>
-							{message.text}
+							{text}
 						</InnerMessageItem>
 					)}
 					<MessageBottom message={message} withOffset={!repliedMessage} />
