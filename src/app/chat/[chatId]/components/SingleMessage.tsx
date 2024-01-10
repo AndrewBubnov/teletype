@@ -12,7 +12,13 @@ import { ImageMessage } from '@/app/chat/[chatId]/components/ImageMessage';
 import { MessageBottom } from '@/app/chat/[chatId]/components/MessageBottom';
 import { MessageType, SingleMessageProps } from '@/types';
 
-export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, updateIsRead }: SingleMessageProps) => {
+export const SingleMessage = ({
+	message,
+	onContextMenuToggle,
+	repliedMessage,
+	updateIsRead,
+	isScrolledTo,
+}: SingleMessageProps) => {
 	const { user } = useUser();
 	const [isImageEnlarged, setIsImageEnlarged] = useState<boolean>(false);
 
@@ -28,16 +34,16 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 				if (entry.isIntersecting) observer.disconnect();
 				if (entry.isIntersecting && updateIsRead) updateIsRead(entry.target.id);
 			},
-			{ rootMargin: '0px', threshold: 0.75 }
+			{ rootMargin: '0px', threshold: 0.5 }
 		);
 		observer.observe(containerRef.current);
 		return () => observer.disconnect();
 	}, [message.isRead, updateIsRead]);
 
 	useEffect(() => {
-		if (isAuthoredByUser || isImageEnlarged)
+		if (isScrolledTo || isImageEnlarged)
 			containerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-	}, [isAuthoredByUser, isImageEnlarged]);
+	}, [isScrolledTo, isImageEnlarged]);
 
 	const Container = isAuthoredByUser ? AuthorMessageWrapper : InterlocutorMessageWrapper;
 

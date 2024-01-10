@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useChat } from '@/app/chat/[chatId]/hooks/useChat';
 import { useMenuTransition } from '@/app/chat/[chatId]/hooks/useMenuTransition';
 import { ChatWrapper, CoverWrapper } from '@/app/chat/[chatId]/styled';
@@ -32,6 +32,14 @@ export const Chat = ({ chat }: ChatProps) => {
 	const [menuActiveId, setMenuActiveId] = useState<string>('');
 
 	const { menuTop, setMessageParams, containerRef, initMenuParams } = useMenuTransition(menuActiveId);
+
+	const unreadRef = useRef(unreadNumber);
+
+	useEffect(() => {
+		if (!unreadNumber) {
+			unreadRef.current = 0;
+		}
+	}, [unreadNumber]);
 
 	const contextMenuToggleHandler = (id: string) => (type: 'open' | 'close', messageParams: DOMRect) => {
 		setMessageParams(messageParams);
@@ -102,7 +110,7 @@ export const Chat = ({ chat }: ChatProps) => {
 			/>
 			<CoverWrapper>
 				<ChatWrapper ref={containerRef}>
-					{messageList.map(message => {
+					{messageList.map((message, index, { length }) => {
 						const repliedMessage = message.replyToId
 							? messageList.find(el => el.id === message.replyToId)
 							: null;
@@ -111,6 +119,7 @@ export const Chat = ({ chat }: ChatProps) => {
 								key={message.id}
 								message={message}
 								repliedMessage={repliedMessage}
+								isScrolledTo={index === length - 1 - unreadRef.current}
 								onContextMenuToggle={contextMenuToggleHandler(message.id)}
 								updateIsRead={message.authorId !== userId ? updateIsRead : null}
 							/>

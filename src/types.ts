@@ -133,6 +133,7 @@ export type SingleMessageProps = {
 	repliedMessage?: Message | null;
 	onContextMenuToggle(type: 'open' | 'close', middle?: DOMRect): void;
 	updateIsRead: ((arg: string) => void) | null;
+	isScrolledTo: boolean;
 };
 
 export interface EditMessageClient {
