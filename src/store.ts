@@ -1,9 +1,8 @@
 import { create } from 'zustand';
 import { sendAddReaction } from '@/utils/sendAddReaction';
-import sound from './assets/audio/sound.wav';
-import { ChatVisitorStatus, Message, MessageMap, Store, Toast, UserChat } from '@/types';
 import { updateMessageIsRead } from '@/actions/updateMessageIsRead';
 import { addReaction } from '@/actions/addReaction';
+import { ChatVisitorStatus, Message, MessageMap, Store, Toast, UserChat } from '@/types';
 
 export const useStore = create<Store>(set => ({
 	messageMap: {},
@@ -21,8 +20,6 @@ export const useStore = create<Store>(set => ({
 	addMessageToMessageMap: (message: Message) =>
 		set(state => {
 			if (!message.chatId) return { messageMap: state.messageMap };
-			const audio = new Audio(sound);
-			audio.play().then();
 			if (state.messageMap[message.chatId]) {
 				return {
 					messageMap: {
@@ -70,7 +67,6 @@ export const useStore = create<Store>(set => ({
 		(chatId: string, authorImageUrl: string | null | undefined) => async (messageId: string, reaction: string) => {
 			const message = await addReaction({ messageId, reaction, authorImageUrl });
 			if (message) sendAddReaction({ chatId, messageId, message });
-
 			set(state => ({
 				messageMap: {
 					...state.messageMap,

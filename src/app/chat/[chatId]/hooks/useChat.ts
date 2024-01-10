@@ -3,6 +3,7 @@ import { useStore } from '@/store';
 import { useUser } from '@clerk/nextjs';
 import { sendChangeVisitorStatus } from '@/utils/sendChangeVisitorStatus';
 import { UserChat, VisitorStatus } from '@/types';
+import { usePlaySound } from '@/app/chat/[chatId]/hooks/usePlaySound';
 
 export const useChat = (chat: UserChat) => {
 	const { user } = useUser();
@@ -23,6 +24,8 @@ export const useChat = (chat: UserChat) => {
 		addReactionMap: state.addReactionMap,
 	}));
 
+	const playSound = usePlaySound();
+
 	useEffect(() => {
 		const rest = { chatId, userId };
 		sendChangeVisitorStatus({ status: VisitorStatus.IN, ...rest });
@@ -33,6 +36,8 @@ export const useChat = (chat: UserChat) => {
 	}, [chatId, userId]);
 
 	const messageList = useMemo(() => messageMap[chatId] || [], [chatId, messageMap]);
+
+	useEffect(() => playSound(messageList.at(-1)!), [messageList]);
 
 	const unreadNumber = useMemo(() => {
 		if (!userId) return 0;
