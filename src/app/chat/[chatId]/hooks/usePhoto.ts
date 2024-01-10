@@ -86,5 +86,5 @@ export const usePhoto = (
 		setFacingMode(prevState => (prevState === FacingMode.USER ? FacingMode.ENVIRONMENT : FacingMode.USER));
 	};
 
-	return { photoHandler, switchCameraHandler, videoRef, canvasRef, isStreaming, isMultipleDevices };
+	return { photoHandler, switchCameraHandler, videoRef, canvasRef, isStreaming, isMultipleDevices, facingMode };
 };

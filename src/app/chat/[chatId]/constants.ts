@@ -51,3 +51,5 @@ export const TEXT_AREA_STYLE = {
 };
 
 export const PHOTO_PAPER_PROPS = { style: { background: 'transparent', boxShadow: 'none' } };
+
+export const urlRegex = /\b(?:https?|http|www)\:\/\/[^\s/$.?#].[^\s]*/gi;

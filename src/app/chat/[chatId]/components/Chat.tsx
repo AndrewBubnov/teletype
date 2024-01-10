@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useChat } from '@/app/chat/[chatId]/hooks/useChat';
 import { useMenuTransition } from '@/app/chat/[chatId]/hooks/useMenuTransition';
 import { ChatWrapper, CoverWrapper } from '@/app/chat/[chatId]/styled';
@@ -11,6 +11,7 @@ import { ContextMenu } from '@/app/chat/[chatId]/components/ContextMenu';
 import { MessageInput } from '@/app/chat/[chatId]/components/MessageInput';
 import { UnreadMessages } from '@/app/chat/[chatId]/components/UnreadMessages';
 import { ChatProps, Message } from '@/types';
+import { updateMessage } from '@/actions/updateMessage';
 
 export const Chat = ({ chat }: ChatProps) => {
 	const {
@@ -20,7 +21,6 @@ export const Chat = ({ chat }: ChatProps) => {
 		interlocutorImageUrl,
 		chatId,
 		authorId,
-		authorImageUrl,
 		interlocutorId,
 		authorName,
 		unreadNumber,
@@ -32,6 +32,14 @@ export const Chat = ({ chat }: ChatProps) => {
 	const [menuActiveId, setMenuActiveId] = useState<string>('');
 
 	const { menuTop, setMessageParams, containerRef, initMenuParams } = useMenuTransition(menuActiveId);
+
+	const unreadRef = useRef(unreadNumber);
+
+	useEffect(() => {
+		if (!unreadNumber) {
+			unreadRef.current = 0;
+		}
+	}, [unreadNumber]);
 
 	const contextMenuToggleHandler = (id: string) => (type: 'open' | 'close', messageParams: DOMRect) => {
 		setMessageParams(messageParams);
@@ -46,25 +54,21 @@ export const Chat = ({ chat }: ChatProps) => {
 		async (reactionString: string) => {
 			if (!activeMessage) return;
 			const reaction = activeMessage.reaction === reactionString ? '' : reactionString;
-			addReaction(activeMessage.id, reaction);
-			sendEditMessage({
-				messageId: activeMessage.id,
-				message: { ...activeMessage, reaction, reactionAuthorImageUrl: authorImageUrl },
-				roomId: chatId,
-			});
+			await addReaction(activeMessage.id, reaction);
 			closeMenuHandler();
 		},
-		[addReaction, chatId, closeMenuHandler, activeMessage, authorImageUrl]
+		[addReaction, closeMenuHandler, activeMessage]
 	);
 
 	const onDeleteMessage = useCallback(
-		(informBoth: boolean) => {
+		async (informBoth: boolean) => {
 			sendEditMessage({
 				messageId: menuActiveId,
 				message: null,
 				roomId: chatId,
 				authorOnly: !informBoth,
 			});
+			await updateMessage(menuActiveId, null);
 			setMenuActiveId('');
 		},
 		[menuActiveId, chatId]
@@ -106,7 +110,7 @@ export const Chat = ({ chat }: ChatProps) => {
 			/>
 			<CoverWrapper>
 				<ChatWrapper ref={containerRef}>
-					{messageList.map(message => {
+					{messageList.map((message, index, { length }) => {
 						const repliedMessage = message.replyToId
 							? messageList.find(el => el.id === message.replyToId)
 							: null;
@@ -115,6 +119,7 @@ export const Chat = ({ chat }: ChatProps) => {
 								key={message.id}
 								message={message}
 								repliedMessage={repliedMessage}
+								isScrolledTo={index === length - 1 - unreadRef.current}
 								onContextMenuToggle={contextMenuToggleHandler(message.id)}
 								updateIsRead={message.authorId !== userId ? updateIsRead : null}
 							/>

@@ -287,6 +287,7 @@ export const InterlocutorMessageWrapper = styled(MessageWrapper)`
 export const MessageItem = styled(
 	({ isAuthoredByUser, singlePadding, withOffset, transparent, ...props }: MessageBoxProps) => <Box {...props} />
 )`
+	max-width: 83%;
 	padding: ${({ singlePadding }) => (singlePadding ? '0 0 0.5rem 0' : '0.5rem')};
 	margin-top: ${({ withOffset }) => (withOffset ? '0.5rem' : 0)};
 	background: ${({ isAuthoredByUser, transparent }) => {
@@ -303,6 +304,7 @@ export const InnerMessageItem = styled(({ isAuthoredByUser, withPadding, ...prop
 	margin-top: 0.5rem;
 	max-width: 100%;
 	border-radius: 0.25rem;
+	word-break: break-word;
 `;
 
 export const MessageItemBottom = styled(({ multipleChild, withOffset, ...props }: MessageItemBottomProps) => (
@@ -538,11 +540,6 @@ export const SendButton = styled(Button)`
 	}
 `;
 
-export const SendWrapper = styled(Box)`
-	display: flex;
-	gap: 0.25rem;
-`;
-
 export const SendMessageIcon = styled(SendIcon)`
 	fill: lightgray;
 `;
@@ -554,4 +551,7 @@ export const PreviewWrapper = styled(Box)`
 	height: 3.5rem;
 	overflow: hidden;
 	border-radius: 4px;
+`;
+export const StyledLink = styled('a')`
+	color: lightgray;
 `;

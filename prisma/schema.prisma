@@ -12,6 +12,21 @@ enum MessageType {
   EMOJI
 }
 
+model Message {
+  id                     String      @id @default(uuid()) @map("_id")
+  createdAt              DateTime    @default(now())
+  authorId               String
+  authorName             String
+  type                   MessageType
+  chatId                 String
+  isRead                 Boolean     @default(false)
+  replyToId              String?
+  text                   String?
+  imageUrl               String?
+  reaction               String?
+  reactionAuthorImageUrl String?
+}
+
 model Chat {
   id          String    @id @default(uuid()) @map("_id")
   chatId      String    @unique

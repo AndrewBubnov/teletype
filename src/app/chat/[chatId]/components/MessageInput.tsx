@@ -1,18 +1,19 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { Textarea } from '@mui/joy';
-import { nanoid } from 'nanoid';
 import { RepliedMessageBox } from '@/app/chat/[chatId]/components/RepliedMessageBox';
-import { SendMessageFormWrapper, SendWrapper } from '@/app/chat/[chatId]/styled';
+import { SendMessageFormWrapper } from '@/app/chat/[chatId]/styled';
 import { sendMessageToServer } from '@/utils/sendMessageToServer';
 import { ImagePreviewModal } from '@/app/chat/[chatId]/components/ImagePreviewModal';
 import { TextAreaEndDecorator } from '@/app/chat/[chatId]/components/TextAreaEndDecorator';
 import { TextAreaStartDecorator } from '@/app/chat/[chatId]/components/TextAreaStartDecorator';
 import { sendEditMessage } from '@/utils/sendEditMessage';
-import { DIALOG_MARGINS, TEXT_AREA_STYLE } from '@/app/chat/[chatId]/constants';
-import { Message, MessageInputProps, MessageType } from '@/types';
 import { CameraMode } from '@/app/chat/[chatId]/components/CameraMode';
 import { useFileUpload } from '@/app/shared/hooks/useFileUpload';
+import { DIALOG_MARGINS, TEXT_AREA_STYLE } from '@/app/chat/[chatId]/constants';
+import { createMessage } from '@/actions/createMessage';
+import { Message, MessageInputProps, MessageType } from '@/types';
+import { updateMessage } from '@/actions/updateMessage';
 
 export const MessageInput = ({
 	chatId,
@@ -46,6 +47,7 @@ export const MessageInput = ({
 
 	const textChangeHandler = (evt: ChangeEvent<HTMLTextAreaElement>) => {
 		setMessageText(evt.target.value);
+		if (emojis) setEmojis(evt.target.value);
 		if (editedMessage?.type === MessageType.EMOJI) setEmojis(evt.target.value);
 	};
 
@@ -58,27 +60,38 @@ export const MessageInput = ({
 	};
 
 	const submitHandler = async () => {
+		if (!messageText && !messageImageUrl) return;
 		const type = messageText && emojis && messageText === emojis ? MessageType.EMOJI : MessageType.COMMON;
-		const message: Message = {
-			id: nanoid(),
-			chatId,
-			authorId: userId,
-			authorName,
-			type,
-			text: messageText,
-			imageUrl: messageImageUrl,
-			replyToId: repliedMessage?.id,
-			isRead: false,
-			createdAt: new Date(),
-		};
-		if (message && editedMessage)
+
+		if (editedMessage) {
+			const updated = {
+				chatId,
+				authorId: userId,
+				authorName,
+				type,
+				text: messageText,
+				imageUrl: messageImageUrl,
+				replyToId: repliedMessage?.id,
+			};
+			const saved = (await updateMessage(editedMessage.id, updated)) as Message;
 			sendEditMessage({
-				messageId: message.id,
-				message,
+				messageId: editedMessage.id,
+				message: saved,
 				roomId: chatId,
 				authorOnly: false,
 			});
-		if (message && !editedMessage) sendMessageToServer(message, chatId);
+		} else {
+			const message = await createMessage({
+				chatId,
+				authorId: userId,
+				authorName,
+				type,
+				text: messageText,
+				imageUrl: messageImageUrl,
+				replyToId: repliedMessage?.id,
+			});
+			if (message) sendMessageToServer(message, chatId);
+		}
 		resetState();
 	};
 
@@ -112,27 +125,25 @@ export const MessageInput = ({
 	) : (
 		<SendMessageFormWrapper>
 			<RepliedMessageBox message={repliedMessage} authorName={authorName} onDropMessage={dropReplyHandler} />
-			<SendWrapper>
-				<Textarea
-					placeholder="Type in here…"
-					value={messageText}
-					onChange={textChangeHandler}
-					minRows={1}
-					maxRows={2}
-					startDecorator={<TextAreaStartDecorator emojiHandler={emojiHandler} />}
-					endDecorator={
-						<TextAreaEndDecorator
-							messageImageUrl={messageImageUrl}
-							onDropImageUrl={dropMessageImageUrl}
-							openPreviewModal={openPreviewModalHandler}
-							onSelectFile={selectFileHandler}
-							onCameraStart={() => setIsCameraOn(true)}
-							onSubmit={submitHandler}
-						/>
-					}
-					sx={TEXT_AREA_STYLE}
-				/>
-			</SendWrapper>
+			<Textarea
+				placeholder="Type in here…"
+				value={messageText}
+				onChange={textChangeHandler}
+				minRows={1}
+				maxRows={2}
+				startDecorator={<TextAreaStartDecorator emojiHandler={emojiHandler} />}
+				endDecorator={
+					<TextAreaEndDecorator
+						messageImageUrl={messageImageUrl}
+						onDropImageUrl={dropMessageImageUrl}
+						openPreviewModal={openPreviewModalHandler}
+						onSelectFile={selectFileHandler}
+						onCameraStart={() => setIsCameraOn(true)}
+						onSubmit={submitHandler}
+					/>
+				}
+				sx={TEXT_AREA_STYLE}
+			/>
 		</SendMessageFormWrapper>
 	);
 };

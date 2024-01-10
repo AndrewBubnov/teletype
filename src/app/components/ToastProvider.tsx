@@ -1,7 +1,6 @@
 'use client';
 import { useStore } from '@/store';
-import { useEffect } from 'react';
-import { Toast } from '@/app/chat/[chatId]/components/Toast';
+import { Toast } from '@/app/components/Toast';
 
 export const ToastProvider = () => {
 	const { toast, setToast } = useStore(state => ({

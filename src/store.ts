@@ -1,8 +1,9 @@
 import { create } from 'zustand';
-import { sendChangeMessageIsRead } from '@/utils/sendChangeMessageIsRead';
 import { sendAddReaction } from '@/utils/sendAddReaction';
 import sound from './assets/audio/sound.wav';
 import { ChatVisitorStatus, Message, MessageMap, Store, Toast, UserChat } from '@/types';
+import { updateMessageIsRead } from '@/actions/updateMessageIsRead';
+import { addReaction } from '@/actions/addReaction';
 
 export const useStore = create<Store>(set => ({
 	messageMap: {},
@@ -49,8 +50,8 @@ export const useStore = create<Store>(set => ({
 				},
 			};
 		}),
-	updateIsReadMap: (chatId: string) => (id: string) => {
-		sendChangeMessageIsRead({ messageId: id, chatId });
+	updateIsReadMap: (chatId: string) => async (id: string) => {
+		await updateMessageIsRead(id);
 		return set(state => {
 			const predicate = (el: Message): boolean => el.id === id;
 			const message = state.messageMap[chatId].find(predicate);
@@ -66,8 +67,10 @@ export const useStore = create<Store>(set => ({
 		});
 	},
 	addReactionMap:
-		(chatId: string, authorImageUrl: string | null | undefined) => (messageId: string, reaction: string) => {
-			sendAddReaction({ chatId, messageId, reaction, authorImageUrl });
+		(chatId: string, authorImageUrl: string | null | undefined) => async (messageId: string, reaction: string) => {
+			const message = await addReaction({ messageId, reaction, authorImageUrl });
+			if (message) sendAddReaction({ chatId, messageId, message });
+
 			set(state => ({
 				messageMap: {
 					...state.messageMap,

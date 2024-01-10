@@ -1,4 +1,4 @@
-import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import {
 	AuthorMessageWrapper,
@@ -10,9 +10,17 @@ import { EmojiMessage } from '@/app/chat/[chatId]/components/EmojiMessage';
 import { ReplyTo } from '@/app/chat/[chatId]/components/ReplyTo';
 import { ImageMessage } from '@/app/chat/[chatId]/components/ImageMessage';
 import { MessageBottom } from '@/app/chat/[chatId]/components/MessageBottom';
+import { LinkMessagePart } from '@/app/chat/[chatId]/components/LinkMessagePart';
+import { urlRegex } from '@/app/chat/[chatId]/constants';
 import { MessageType, SingleMessageProps } from '@/types';
 
-export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, updateIsRead }: SingleMessageProps) => {
+export const SingleMessage = ({
+	message,
+	onContextMenuToggle,
+	repliedMessage,
+	updateIsRead,
+	isScrolledTo,
+}: SingleMessageProps) => {
 	const { user } = useUser();
 	const [isImageEnlarged, setIsImageEnlarged] = useState<boolean>(false);
 
@@ -28,16 +36,16 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 				if (entry.isIntersecting) observer.disconnect();
 				if (entry.isIntersecting && updateIsRead) updateIsRead(entry.target.id);
 			},
-			{ rootMargin: '0px', threshold: 0.75 }
+			{ rootMargin: '0px', threshold: 0.5 }
 		);
 		observer.observe(containerRef.current);
 		return () => observer.disconnect();
 	}, [message.isRead, updateIsRead]);
 
 	useEffect(() => {
-		if (isAuthoredByUser || isImageEnlarged)
+		if (isScrolledTo || isImageEnlarged)
 			containerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-	}, [isAuthoredByUser, isImageEnlarged]);
+	}, [isScrolledTo, isImageEnlarged]);
 
 	const Container = isAuthoredByUser ? AuthorMessageWrapper : InterlocutorMessageWrapper;
 
@@ -52,10 +60,22 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 		onContextMenuToggle('open', params);
 	};
 
+	const messageText = useMemo(() => {
+		const text = message.text || '';
+		const links = text.match(urlRegex);
+
+		if (!links) return text;
+
+		return text.split(/\s+/).map((part, index) => {
+			if (links.includes(part)) return <LinkMessagePart key={index} href={part} />;
+			return <span key={index}>{part}&nbsp;</span>;
+		});
+	}, [message.text]);
+
 	if (message.type === MessageType.COMMON) {
 		return (
-			<Container ref={containerRef} id={message.id}>
-				<MessageItem singlePadding={!repliedMessage} isAuthoredByUser={isAuthoredByUser} onClick={onPress}>
+			<Container ref={containerRef} id={message.id} onClick={onPress}>
+				<MessageItem singlePadding={!repliedMessage} isAuthoredByUser={isAuthoredByUser}>
 					<ReplyTo message={repliedMessage} />
 					{message.imageUrl && (
 						<ImageMessage
@@ -67,7 +87,7 @@ export const SingleMessage = ({ message, onContextMenuToggle, repliedMessage, up
 					)}
 					{message.text && (
 						<InnerMessageItem withPadding={!repliedMessage} isAuthoredByUser={isAuthoredByUser}>
-							{message.text}
+							{messageText}
 						</InnerMessageItem>
 					)}
 					<MessageBottom message={message} withOffset={!repliedMessage} />

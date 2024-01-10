@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useStore } from '@/store';
 import { useUser } from '@clerk/nextjs';
 import { sendChangeVisitorStatus } from '@/utils/sendChangeVisitorStatus';
@@ -23,8 +23,6 @@ export const useChat = (chat: UserChat) => {
 		addReactionMap: state.addReactionMap,
 	}));
 
-	const messageList = messageMap[chatId] || [];
-
 	useEffect(() => {
 		const rest = { chatId, userId };
 		sendChangeVisitorStatus({ status: VisitorStatus.IN, ...rest });
@@ -34,7 +32,12 @@ export const useChat = (chat: UserChat) => {
 		};
 	}, [chatId, userId]);
 
-	const unreadNumber = messageList.filter(el => !el.isRead && el.authorId !== userId).length;
+	const messageList = useMemo(() => messageMap[chatId] || [], [chatId, messageMap]);
+
+	const unreadNumber = useMemo(() => {
+		if (!userId) return 0;
+		return messageList.filter(el => !el.isRead && el.authorId !== userId).length;
+	}, [userId, messageList]);
 
 	const updateIsRead = updateIsReadMap(chatId);
 
@@ -49,7 +52,6 @@ export const useChat = (chat: UserChat) => {
 		authorId,
 		interlocutorId,
 		authorName,
-		authorImageUrl,
 		unreadNumber,
 		updateIsRead,
 		userId,
