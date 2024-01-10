@@ -62,25 +62,36 @@ export const MessageInput = ({
 	const submitHandler = async () => {
 		if (!messageText && !messageImageUrl) return;
 		const type = messageText && emojis && messageText === emojis ? MessageType.EMOJI : MessageType.COMMON;
-		const message = await createMessage({
-			chatId,
-			authorId: userId,
-			authorName,
-			type,
-			text: messageText,
-			imageUrl: messageImageUrl,
-			replyToId: repliedMessage?.id,
-		});
-		if (message && editedMessage) {
-			const updated = (await updateMessage(message.id, message)) as Message;
+
+		if (editedMessage) {
+			const updated = {
+				chatId,
+				authorId: userId,
+				authorName,
+				type,
+				text: messageText,
+				imageUrl: messageImageUrl,
+				replyToId: repliedMessage?.id,
+			};
+			const saved = (await updateMessage(editedMessage.id, updated)) as Message;
 			sendEditMessage({
 				messageId: editedMessage.id,
-				message: updated,
+				message: saved,
 				roomId: chatId,
 				authorOnly: false,
 			});
+		} else {
+			const message = await createMessage({
+				chatId,
+				authorId: userId,
+				authorName,
+				type,
+				text: messageText,
+				imageUrl: messageImageUrl,
+				replyToId: repliedMessage?.id,
+			});
+			if (message) sendMessageToServer(message, chatId);
 		}
-		if (message && !editedMessage) sendMessageToServer(message, chatId);
 		resetState();
 	};
 
