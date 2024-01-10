@@ -30,14 +30,24 @@ export const LogLinkWrapper = styled(Box)`
 	}
 `;
 
-export const StyledTypography = styled(Typography)(() => ({
-	fontSize: '3.5rem',
-	fontWeight: 900,
-	textAlign: 'center',
-	backgroundImage: 'linear-gradient(45deg, red, blue)',
-	backgroundClip: 'text',
-	color: 'transparent',
-}));
+export const StyledTypography = styled(Typography)`
+	font-size: 4rem;
+	font-weight: 900;
+	text-align: center;
+	background-image: linear-gradient(45deg, blue, red, yellow);
+	background-clip: text;
+	background-size: 200% auto;
+	color: transparent;
+	animation: move 7s infinite;
+	@keyframes move {
+		50% {
+			background-position: 100% 50%;
+		}
+		100% {
+			background-position: 0 50%;
+		}
+	}
+`;
 
 export const Author = styled(Typography)(() => ({
 	position: 'fixed',
