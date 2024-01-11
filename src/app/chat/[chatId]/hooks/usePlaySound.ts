@@ -1,7 +1,8 @@
+'use client';
 import { useEffect, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { Message } from '@/types';
-import sound from '@/assets/audio/sound.wav';
+import sound from '@/assets/audio/deleteMessageSound.wav';
 
 const audio = new Audio(sound);
 
