@@ -10,8 +10,8 @@ import { sendEditMessage } from '@/utils/sendEditMessage';
 import { ContextMenu } from '@/app/chat/[chatId]/components/ContextMenu';
 import { MessageInput } from '@/app/chat/[chatId]/components/MessageInput';
 import { UnreadMessages } from '@/app/chat/[chatId]/components/UnreadMessages';
+import { deleteMessage } from '@/actions/deleteMessage';
 import { ChatProps, Message } from '@/types';
-import { updateMessage } from '@/actions/updateMessage';
 
 export const Chat = ({ chat }: ChatProps) => {
 	const {
@@ -62,16 +62,24 @@ export const Chat = ({ chat }: ChatProps) => {
 
 	const onDeleteMessage = useCallback(
 		async (informBoth: boolean) => {
-			sendEditMessage({
-				messageId: menuActiveId,
-				message: null,
-				roomId: chatId,
-				authorOnly: !informBoth,
-			});
-			await updateMessage(menuActiveId, null);
+			const updated = await deleteMessage(menuActiveId, [userId, ...(informBoth ? [interlocutorId] : [])]);
+
+			if (informBoth) {
+				sendEditMessage({
+					messageId: menuActiveId,
+					message: null,
+					roomId: chatId,
+				});
+			} else if (updated) {
+				sendEditMessage({
+					messageId: menuActiveId,
+					message: updated,
+					roomId: chatId,
+				});
+			}
 			setMenuActiveId('');
 		},
-		[menuActiveId, chatId]
+		[menuActiveId, chatId, userId, interlocutorId]
 	);
 
 	const onReplyMessage = useCallback(() => {
@@ -110,21 +118,23 @@ export const Chat = ({ chat }: ChatProps) => {
 			/>
 			<CoverWrapper>
 				<ChatWrapper ref={containerRef}>
-					{messageList.map((message, index, { length }) => {
-						const repliedMessage = message.replyToId
-							? messageList.find(el => el.id === message.replyToId)
-							: null;
-						return (
-							<SingleMessage
-								key={message.id}
-								message={message}
-								repliedMessage={repliedMessage}
-								isScrolledTo={index === length - 1 - unreadRef.current}
-								onContextMenuToggle={contextMenuToggleHandler(message.id)}
-								updateIsRead={message.authorId !== userId ? updateIsRead : null}
-							/>
-						);
-					})}
+					{messageList
+						.filter(el => !el.hidden.includes(userId))
+						.map((message, index, { length }) => {
+							const repliedMessage = message.replyToId
+								? messageList.find(el => el.id === message.replyToId)
+								: null;
+							return (
+								<SingleMessage
+									key={message.id}
+									message={message}
+									repliedMessage={repliedMessage}
+									isScrolledTo={index === length - 1 - unreadRef.current}
+									onContextMenuToggle={contextMenuToggleHandler(message.id)}
+									updateIsRead={message.authorId !== userId ? updateIsRead : null}
+								/>
+							);
+						})}
 				</ChatWrapper>
 				{!!activeMessage && (
 					<ContextMenu

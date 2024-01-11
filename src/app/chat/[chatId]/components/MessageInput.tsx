@@ -78,7 +78,6 @@ export const MessageInput = ({
 				messageId: editedMessage.id,
 				message: saved,
 				roomId: chatId,
-				authorOnly: false,
 			});
 		} else {
 			const message = await createMessage({

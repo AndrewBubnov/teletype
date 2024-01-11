@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import { sendAddReaction } from '@/utils/sendAddReaction';
 import { updateMessageIsRead } from '@/actions/updateMessageIsRead';
-import { ChatVisitorStatus, Message, MessageMap, Store, Toast, UserChat } from '@/types';
 import { addReaction } from '@/actions/addReaction';
+import { ChatVisitorStatus, Message, MessageMap, Store, Toast, UserChat } from '@/types';
 
 export const useStore = create<Store>(set => ({
 	messageMap: {},

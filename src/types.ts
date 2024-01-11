@@ -17,13 +17,15 @@ export enum MessageType {
 	EMOJI = 'EMOJI',
 }
 
-export interface ServerMessage {
+export interface Message {
 	id: string;
 	createdAt: Date;
 	authorId: string;
 	authorName: string;
 	type: MessageType;
 	chatId: string;
+	isRead: boolean;
+	hidden: string[];
 	text?: string;
 	imageUrl?: string | null;
 	reaction?: string;
@@ -31,11 +33,7 @@ export interface ServerMessage {
 	replyToId?: string;
 }
 
-export interface Message extends ServerMessage {
-	isRead: boolean;
-}
-
-export type MessageDraft = Omit<Message, 'id' | 'createdAt'>;
+export type MessageDraft = Omit<Message, 'id' | 'createdAt' | 'hidden'>;
 
 export type Chat = {
 	id: string;
@@ -140,9 +138,6 @@ export interface EditMessageClient {
 	messageId: string;
 	message: Message | null;
 	roomId: string;
-}
-export interface EditMessageServer extends EditMessageClient {
-	authorOnly?: boolean;
 }
 
 export interface StyledButtonProps extends ButtonProps {

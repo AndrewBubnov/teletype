@@ -1,5 +1,5 @@
 import { ws } from '@/ws';
-import { EditMessageServer, Message } from '@/types';
+import { EditMessageClient } from '@/types';
 
-export const sendEditMessage = ({ messageId, message, roomId, authorOnly }: EditMessageServer) =>
-	ws.emit('edit-message-to-server', { messageId, message, roomId, authorOnly });
+export const sendEditMessage = ({ messageId, message, roomId }: EditMessageClient) =>
+	ws.emit('edit-message-to-server', { messageId, message, roomId });
