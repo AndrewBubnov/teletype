@@ -22,6 +22,7 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap }: Subscr
 		setUserEmails,
 		chatList,
 		setChatVisitorStatus,
+		setUserId,
 	} = useStore(state => ({
 		setActiveUsers: state.setActiveUsers,
 		chatList: state.chatList,
@@ -31,6 +32,7 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap }: Subscr
 		setChatVisitorStatus: state.setChatVisitorStatus,
 		addMessageToMessageMap: state.addMessageToMessageMap,
 		updateMessageInMessageMap: state.updateMessageInMessageMap,
+		setUserId: state.setUserId,
 	}));
 
 	useEffect(() => {
@@ -51,6 +53,10 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap }: Subscr
 		setUserEmails(userEmails);
 		setChatList(userChats);
 	}, [setChatList, setUserEmails, userEmails, userChats]);
+
+	useEffect(() => {
+		setUserId(userId);
+	}, [setUserId, userId]);
 
 	useSubscribe(setActiveUsers, updateActiveUsers, clearActiveUsers);
 

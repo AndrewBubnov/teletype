@@ -2,23 +2,26 @@ import { create } from 'zustand';
 import { sendAddReaction } from '@/utils/sendAddReaction';
 import { updateMessageIsRead } from '@/actions/updateMessageIsRead';
 import { addReaction } from '@/actions/addReaction';
+import { playAddMessageSound, playDeleteMessageSound } from '@/utils/playSound';
 import { ChatVisitorStatus, Message, MessageMap, Store, Toast, UserChat } from '@/types';
 
-export const useStore = create<Store>(set => ({
+export const useStore = create<Store>((set, getState) => ({
 	messageMap: {},
 	activeUsers: [],
 	chatList: [],
 	userEmails: [],
 	chatVisitorStatus: {},
 	toast: null,
+	userId: '',
 	setMessageMap: (updated: MessageMap) => set({ messageMap: updated }),
 	setActiveUsers: (updated: string[]) => set({ activeUsers: updated }),
 	setUserEmails: (updated: string[]) => set({ userEmails: updated }),
 	setChatList: (updated: UserChat[]) => set({ chatList: updated }),
 	setChatVisitorStatus: (updated: ChatVisitorStatus) => set({ chatVisitorStatus: updated }),
 	setToast: (toast: Toast) => set({ toast }),
-	addMessageToMessageMap: (message: Message) =>
-		set(state => {
+	addMessageToMessageMap: (message: Message) => {
+		playAddMessageSound(message, getState().userId);
+		return set(state => {
 			if (!message.chatId) return { messageMap: state.messageMap };
 			if (state.messageMap[message.chatId]) {
 				return {
@@ -29,10 +32,12 @@ export const useStore = create<Store>(set => ({
 				};
 			}
 			return { messageMap: { ...state.messageMap, [message.chatId]: [message] } };
-		}),
+		});
+	},
 	updateMessageInMessageMap: ({ message, messageId, roomId: chatId }) =>
 		set(state => {
 			if (!message) {
+				playDeleteMessageSound();
 				return {
 					messageMap: {
 						...state.messageMap,
@@ -83,4 +88,5 @@ export const useStore = create<Store>(set => ({
 				},
 			}));
 		},
+	setUserId: (userId: string) => set({ userId }),
 }));
