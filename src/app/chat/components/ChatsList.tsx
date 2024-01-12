@@ -22,7 +22,7 @@ export const ChatsList = () => {
 
 	useEffect(() => {
 		if (!selectedChatIds.length) setIsSelectMode(false);
-	}, [isSelectMode, selectedChatIds.length]);
+	}, [selectedChatIds.length]);
 
 	const chatPressHandler = (chatId: string) => () => {
 		if (!isSelectMode) {
