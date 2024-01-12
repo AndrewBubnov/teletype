@@ -32,7 +32,7 @@ export const Chat = ({ chat }: ChatProps) => {
 	const [editedMessage, setEditedMessage] = useState<Message | null>(null);
 	const [menuActiveId, setMenuActiveId] = useState<string>('');
 
-	const { menuTop, setMessageParams, containerRef, initMenuParams } = useMenuTransition(menuActiveId);
+	const { menuTop, setMessageParams, containerRef, initMenuParams } = useMenuTransition(menuActiveId, userId);
 
 	const unreadRef = useRef(unreadNumber);
 

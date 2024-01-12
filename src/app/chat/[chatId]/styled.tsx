@@ -59,6 +59,16 @@ export const ChatWrapper = styled(Box)`
 		border-radius: 6px;
 		background-clip: padding-box;
 	}
+
+	@media (max-width: 600px) {
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
+		&::-webkit-scrollbar-track {
+			display: none;
+		}
+	}
 `;
 
 export const CoverWrapper = styled(Box)`
