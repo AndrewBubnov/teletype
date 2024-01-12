@@ -65,6 +65,7 @@ export interface ActiveChatProps {
 
 export interface MessageBoxProps extends HTMLAttributes<HTMLDivElement> {
 	isAuthoredByUser: boolean;
+	fullWidth?: boolean;
 	transparent?: boolean;
 	singlePadding?: boolean;
 	withOffset?: boolean;

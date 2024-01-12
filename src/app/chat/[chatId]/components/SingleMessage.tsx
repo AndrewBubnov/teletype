@@ -1,11 +1,6 @@
 import { SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
-import {
-	AuthorMessageWrapper,
-	InnerMessageItem,
-	InterlocutorMessageWrapper,
-	MessageItem,
-} from '@/app/chat/[chatId]/styled';
+import { InnerMessageItem, MessageItem, MessageWrapper } from '@/app/chat/[chatId]/styled';
 import { EmojiMessage } from '@/app/chat/[chatId]/components/EmojiMessage';
 import { ReplyTo } from '@/app/chat/[chatId]/components/ReplyTo';
 import { ImageMessage } from '@/app/chat/[chatId]/components/ImageMessage';
@@ -47,8 +42,6 @@ export const SingleMessage = ({
 			containerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 	}, [isScrolledTo, isImageEnlarged]);
 
-	const Container = isAuthoredByUser ? AuthorMessageWrapper : InterlocutorMessageWrapper;
-
 	const toggleEnlargeHandler = (evt: SyntheticEvent) => {
 		evt.stopPropagation();
 		setIsImageEnlarged(prevState => !prevState);
@@ -74,8 +67,12 @@ export const SingleMessage = ({
 
 	if (message.type === MessageType.COMMON) {
 		return (
-			<Container ref={containerRef} id={message.id} onClick={onPress}>
-				<MessageItem singlePadding={!repliedMessage} isAuthoredByUser={isAuthoredByUser}>
+			<MessageWrapper ref={containerRef} id={message.id} onClick={onPress}>
+				<MessageItem
+					singlePadding={!repliedMessage}
+					isAuthoredByUser={isAuthoredByUser}
+					fullWidth={isImageEnlarged}
+				>
 					<ReplyTo message={repliedMessage} />
 					{message.imageUrl && (
 						<ImageMessage
@@ -92,18 +89,18 @@ export const SingleMessage = ({
 					)}
 					<MessageBottom message={message} withOffset={!repliedMessage} />
 				</MessageItem>
-			</Container>
+			</MessageWrapper>
 		);
 	}
 
 	return (
-		<Container ref={containerRef} id={message.id}>
+		<MessageWrapper ref={containerRef} id={message.id}>
 			<EmojiMessage
 				isAuthoredByUser={isAuthoredByUser}
 				onPress={onPress}
 				message={message}
 				repliedMessage={repliedMessage}
 			/>
-		</Container>
+		</MessageWrapper>
 	);
 };

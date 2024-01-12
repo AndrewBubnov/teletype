@@ -252,7 +252,8 @@ export const Backdrop = styled(Box)`
 	inset: 0;
 	background: rgba(0, 0, 0, 0.3);
 `;
-const MessageWrapper = styled(Box)`
+export const MessageWrapper = styled(Box)`
+	position: relative;
 	display: flex;
 	padding: 1rem 0;
 `;
@@ -266,10 +267,6 @@ export const PhotoDialog = styled(Dialog)`
 export const Canvas = styled('canvas')`
 	display: none;
 `;
-export const AuthorMessageWrapper = styled(MessageWrapper)`
-	position: relative;
-	flex-direction: row-reverse;
-`;
 
 export const PhotoIconButton = styled(IconButton)`
 	background-color: rgba(26, 26, 26, 0.25);
@@ -280,16 +277,16 @@ export const SwitchCameraIconWrapper = styled(IconButton)`
 	width: 2.5rem;
 	height: 2.5rem;
 `;
-export const InterlocutorMessageWrapper = styled(MessageWrapper)`
-	position: relative;
-	flex-direction: row;
-`;
 export const MessageItem = styled(
-	({ isAuthoredByUser, singlePadding, withOffset, transparent, ...props }: MessageBoxProps) => <Box {...props} />
+	({ isAuthoredByUser, singlePadding, withOffset, transparent, fullWidth = false, ...props }: MessageBoxProps) => (
+		<Box {...props} />
+	)
 )`
-	max-width: 83%;
+	max-width: ${({ fullWidth }) => (fullWidth ? '100%' : '83%')};
 	padding: ${({ singlePadding }) => (singlePadding ? '0 0 0.5rem 0' : '0.5rem')};
 	margin-top: ${({ withOffset }) => (withOffset ? '0.5rem' : 0)};
+	margin-left: ${({ isAuthoredByUser }) => (isAuthoredByUser ? 'auto' : 0)};
+	margin-right: ${({ isAuthoredByUser }) => (isAuthoredByUser ? 0 : 'auto')};
 	background: ${({ isAuthoredByUser, transparent }) => {
 		if (transparent) return 'transparent';
 		return isAuthoredByUser ? '#4682b499' : '#70809080';
