@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useChat } from '@/app/chat/[chatId]/hooks/useChat';
 import { useMenuTransition } from '@/app/chat/[chatId]/hooks/useMenuTransition';
 import { ChatWrapper, CoverWrapper } from '@/app/chat/[chatId]/styled';
-import { LoaderWrapper, LoadingIndicator } from '@/app/shared/styled';
+import { FullScreenLoader } from '@/app/shared/components/FullScreenLoader';
 import { Box } from '@mui/material';
 import { ChatHeader } from '@/app/chat/[chatId]/components/ChatHeader';
 import { SingleMessage } from '@/app/chat/[chatId]/components/SingleMessage';
@@ -13,6 +13,7 @@ import { MessageInput } from '@/app/chat/[chatId]/components/MessageInput';
 import { UnreadMessages } from '@/app/chat/[chatId]/components/UnreadMessages';
 import { deleteMessage } from '@/actions/deleteMessage';
 import { ChatProps, Message } from '@/types';
+
 export const Chat = ({ chat }: ChatProps) => {
 	const {
 		messageList,
@@ -108,12 +109,7 @@ export const Chat = ({ chat }: ChatProps) => {
 		node?.scrollIntoView({ behavior: 'smooth' });
 	}, [messageList]);
 
-	if (!userId)
-		return (
-			<LoaderWrapper>
-				<LoadingIndicator />
-			</LoaderWrapper>
-		);
+	if (!userId) return <FullScreenLoader />;
 
 	return (
 		<Box>

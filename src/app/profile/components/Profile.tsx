@@ -5,15 +5,15 @@ import { useFileUpload } from '@/app/shared/hooks/useFileUpload';
 import Cropper, { Area } from 'react-easy-crop';
 import { Box, FormLabel, Slider } from '@mui/material';
 import { Button } from '@mui/joy';
-import { CONTAINER_STYLE, CROP_AREA_STYLE, INPUT_STYLE, PROFILE_SLIDER_MIDDLE } from '@/app/profile/constants';
 import { getZoomFromSliderData } from '@/app/profile/utils/getZoomFromSliderData';
 import { getCroppedImg } from '@/app/profile/utils/getCroppedImg';
 import { getRotationFromSliderValue } from '@/app/profile/utils/getRotationFromSliderValue';
 import { StyledInput } from '@/app/chat/styled';
-import { updateUserDetails } from '@/actions/updateUser';
+import { FullScreenLoader } from '@/app/shared/components/FullScreenLoader';
 import { ButtonsWrapper, ControlsWrapper, StyledTypography } from '@/app/profile/styled';
-import { LoaderWrapper, LoadingIndicator } from '@/app/shared/styled';
+import { updateUserDetails } from '@/actions/updateUser';
 import { CHAT_LIST } from '@/constants';
+import { CONTAINER_STYLE, CROP_AREA_STYLE, INPUT_STYLE, PROFILE_SLIDER_MIDDLE } from '@/app/profile/constants';
 import { User } from '@/types';
 
 export const Profile = ({ user }: { user: User }) => {
@@ -63,11 +63,7 @@ export const Profile = ({ user }: { user: User }) => {
 
 	return (
 		<Box>
-			{opacity ? null : (
-				<LoaderWrapper>
-					<LoadingIndicator />
-				</LoaderWrapper>
-			)}
+			{opacity ? null : <FullScreenLoader />}
 			<Cropper
 				style={{ containerStyle: { ...CONTAINER_STYLE, opacity }, cropAreaStyle: CROP_AREA_STYLE }}
 				image={user.imageUrl || undefined}
@@ -105,7 +101,7 @@ export const Profile = ({ user }: { user: User }) => {
 				<StyledInput value={username} onChange={usernameHandler} sx={INPUT_STYLE} />
 				<ButtonsWrapper>
 					<Button onClick={submitHandler}>Update</Button>
-					<Button onClick={redirectToChatList}>Back to chat list</Button>
+					<Button onClick={redirectToChatList}>Back</Button>
 				</ButtonsWrapper>
 			</ControlsWrapper>
 		</Box>
