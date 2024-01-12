@@ -11,6 +11,7 @@ export const useStore = create<Store>(set => ({
 	userEmails: [],
 	chatVisitorStatus: {},
 	toast: null,
+	userId: '',
 	setMessageMap: (updated: MessageMap) => set({ messageMap: updated }),
 	setActiveUsers: (updated: string[]) => set({ activeUsers: updated }),
 	setUserEmails: (updated: string[]) => set({ userEmails: updated }),
@@ -83,4 +84,5 @@ export const useStore = create<Store>(set => ({
 				},
 			}));
 		},
+	setUserId: (userId: string) => set({ userId }),
 }));

@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { useStore } from '@/store';
-import { useUser } from '@clerk/nextjs';
 import { useLongPress } from '@/app/chat/[chatId]/hooks/useLongPress';
 import {
 	ChatListItemWrapper,
@@ -28,12 +27,10 @@ export const ChatListItem = ({
 	onCheckboxToggle,
 	isChecked,
 }: ChatListItemProps) => {
-	const { user } = useUser();
-	const userId = user?.id as string;
-
-	const { messageMap, activeUsers } = useStore(state => ({
+	const { messageMap, activeUsers, userId } = useStore(state => ({
 		messageMap: state.messageMap,
 		activeUsers: state.activeUsers,
+		userId: state.userId,
 	}));
 
 	const messageList = messageMap[chatId] || [];

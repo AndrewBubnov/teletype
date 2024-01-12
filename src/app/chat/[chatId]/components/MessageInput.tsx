@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useUser } from '@clerk/nextjs';
+import { useStore } from '@/store';
 import { Textarea } from '@mui/joy';
 import { RepliedMessageBox } from '@/app/chat/[chatId]/components/RepliedMessageBox';
 import { SendMessageFormWrapper } from '@/app/chat/[chatId]/styled';
@@ -12,8 +12,8 @@ import { CameraMode } from '@/app/chat/[chatId]/components/CameraMode';
 import { useFileUpload } from '@/app/shared/hooks/useFileUpload';
 import { DIALOG_MARGINS, TEXT_AREA_STYLE } from '@/app/chat/[chatId]/constants';
 import { createMessage } from '@/actions/createMessage';
-import { Message, MessageInputProps, MessageType } from '@/types';
 import { updateMessage } from '@/actions/updateMessage';
+import { Message, MessageInputProps, MessageType } from '@/types';
 
 export const MessageInput = ({
 	chatId,
@@ -23,8 +23,7 @@ export const MessageInput = ({
 	setEditedMessage,
 	setRepliedMessage,
 }: MessageInputProps) => {
-	const { user } = useUser();
-	const userId = user?.id as string;
+	const userId = useStore(state => state.userId);
 
 	const [messageText, setMessageText] = useState<string>('');
 	const [emojis, setEmojis] = useState<string>('');

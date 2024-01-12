@@ -1,7 +1,6 @@
 'use client';
 import { SyntheticEvent, useState } from 'react';
 import { useStore } from '@/store';
-import { useUser } from '@clerk/nextjs';
 import { StyledInput } from '@/app/chat/styled';
 import { Autocomplete } from '@mui/material';
 import { getUserIdByEmail } from '@/actions/getUserIdByEmail';
@@ -9,10 +8,10 @@ import { onCreateChat } from '@/app/chat/utils/onCreateChat';
 import { createRoom } from '@/utils/createRoom';
 
 export const UserSelect = ({ canOpen }: { canOpen: boolean }) => {
-	const { user } = useUser();
-	const userId = user?.id as string;
-
-	const { userEmails } = useStore();
+	const { userEmails, userId } = useStore(state => ({
+		userEmails: state.userEmails,
+		userId: state.userId,
+	}));
 
 	const [userEmail, setUserEmail] = useState<string | null>(null);
 	const [open, setOpen] = useState<boolean>(false);

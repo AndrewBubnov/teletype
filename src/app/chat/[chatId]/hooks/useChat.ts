@@ -1,12 +1,15 @@
 import { useEffect, useMemo } from 'react';
 import { useStore } from '@/store';
-import { useUser } from '@clerk/nextjs';
 import { sendChangeVisitorStatus } from '@/utils/sendChangeVisitorStatus';
 import { UserChat, VisitorStatus } from '@/types';
 
 export const useChat = (chat: UserChat) => {
-	const { user } = useUser();
-	const userId = user?.id as string;
+	const { messageMap, updateIsReadMap, addReactionMap, userId } = useStore(state => ({
+		messageMap: state.messageMap,
+		updateIsReadMap: state.updateIsReadMap,
+		addReactionMap: state.addReactionMap,
+		userId: state.userId,
+	}));
 	const { members, chatId } = chat;
 	const author = members.find(user => user.userId === userId);
 	const interlocutor = members.find(user => user.userId !== userId);
@@ -16,12 +19,6 @@ export const useChat = (chat: UserChat) => {
 	const authorName = author?.username || author?.email || '';
 	const authorImageUrl = author?.imageUrl;
 	const interlocutorImageUrl = interlocutor?.imageUrl;
-
-	const { messageMap, updateIsReadMap, addReactionMap } = useStore(state => ({
-		messageMap: state.messageMap,
-		updateIsReadMap: state.updateIsReadMap,
-		addReactionMap: state.addReactionMap,
-	}));
 
 	useEffect(() => {
 		const rest = { chatId, userId };

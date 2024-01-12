@@ -219,6 +219,7 @@ export interface Store {
 	activeUsers: string[];
 	userEmails: string[];
 	toast: Toast;
+	userId: string;
 	setActiveUsers(arg: string[]): void;
 	setUserEmails(arg: string[]): void;
 	setChatList(arg: UserChat[]): void;
@@ -233,6 +234,7 @@ export interface Store {
 		chatId: string,
 		authorImageUrl: string | null | undefined
 	) => (id: string, reaction: string) => Promise<void>;
+	setUserId(arg: string): void;
 }
 
 export type Subscription<T> = (fn: (arg: T) => void) => void;
