@@ -134,9 +134,9 @@ export const Chat = ({ chat }: ChatProps) => {
 							return (
 								<SingleMessage
 									key={message.id}
-									userId={userId}
 									message={message}
 									repliedMessage={repliedMessage}
+									isAuthoredByUser={message.authorId === userId}
 									isScrolledTo={index === length - 1 - unreadRef.current}
 									onContextMenuToggle={contextMenuToggleHandler(message.id)}
 									updateIsRead={message.authorId !== userId ? updateIsRead : null}

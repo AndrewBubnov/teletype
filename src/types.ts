@@ -128,12 +128,12 @@ export interface GetInterlocutorState {
 }
 
 export type SingleMessageProps = {
-	userId: string;
 	message: Message;
 	repliedMessage?: Message | null;
 	onContextMenuToggle(type: 'open' | 'close', middle?: DOMRect): void;
 	updateIsRead: ((arg: string) => void) | null;
 	isScrolledTo: boolean;
+	isAuthoredByUser: boolean;
 };
 
 export interface EditMessageClient {

@@ -14,7 +14,7 @@ export const SingleMessage = ({
 	repliedMessage,
 	updateIsRead,
 	isScrolledTo,
-	userId,
+	isAuthoredByUser,
 }: SingleMessageProps) => {
 	const [isImageEnlarged, setIsImageEnlarged] = useState<boolean>(false);
 
@@ -50,8 +50,6 @@ export const SingleMessage = ({
 			return <span key={index}>{part}&nbsp;</span>;
 		});
 	}, [message.text]);
-
-	const isAuthoredByUser = message.authorId === userId;
 
 	const toggleEnlargeHandler = (evt: SyntheticEvent) => {
 		evt.stopPropagation();
