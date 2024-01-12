@@ -11,8 +11,8 @@ import { getCroppedImg } from '@/app/profile/utils/getCroppedImg';
 import { getRotationFromSliderValue } from '@/app/profile/utils/getRotationFromSliderValue';
 import { StyledInput } from '@/app/chat/styled';
 import { updateUserDetails } from '@/actions/updateUser';
-import { ButtonsWrapper, ControlsWrapper, LoaderWrapper, StyledTypography } from '@/app/profile/styled';
-import { LoadingIndicator } from '@/app/shared/styled';
+import { ButtonsWrapper, ControlsWrapper, StyledTypography } from '@/app/profile/styled';
+import { LoaderWrapper, LoadingIndicator } from '@/app/shared/styled';
 import { CHAT_LIST } from '@/constants';
 import { User } from '@/types';
 

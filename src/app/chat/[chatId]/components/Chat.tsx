@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useChat } from '@/app/chat/[chatId]/hooks/useChat';
 import { useMenuTransition } from '@/app/chat/[chatId]/hooks/useMenuTransition';
 import { ChatWrapper, CoverWrapper } from '@/app/chat/[chatId]/styled';
+import { LoaderWrapper, LoadingIndicator } from '@/app/shared/styled';
 import { Box } from '@mui/material';
 import { ChatHeader } from '@/app/chat/[chatId]/components/ChatHeader';
 import { SingleMessage } from '@/app/chat/[chatId]/components/SingleMessage';
@@ -12,7 +13,6 @@ import { MessageInput } from '@/app/chat/[chatId]/components/MessageInput';
 import { UnreadMessages } from '@/app/chat/[chatId]/components/UnreadMessages';
 import { deleteMessage } from '@/actions/deleteMessage';
 import { ChatProps, Message } from '@/types';
-
 export const Chat = ({ chat }: ChatProps) => {
 	const {
 		messageList,
@@ -101,12 +101,19 @@ export const Chat = ({ chat }: ChatProps) => {
 		setMenuActiveId('');
 	}, [activeMessage]);
 
-	const scrollToLastHandler = () => {
+	const scrollToLastHandler = useCallback(() => {
 		const id = messageList.at(-1)?.id;
 		if (!id) return;
 		const node = document.getElementById(id);
 		node?.scrollIntoView({ behavior: 'smooth' });
-	};
+	}, [messageList]);
+
+	if (!userId)
+		return (
+			<LoaderWrapper>
+				<LoadingIndicator />
+			</LoaderWrapper>
+		);
 
 	return (
 		<Box>
@@ -117,28 +124,26 @@ export const Chat = ({ chat }: ChatProps) => {
 				interlocutorId={interlocutorId}
 			/>
 			<CoverWrapper>
-				{userId && (
-					<ChatWrapper ref={containerRef}>
-						{messageList
-							.filter(el => !el.hidden.includes(userId))
-							.map((message, index, { length }) => {
-								const repliedMessage = message.replyToId
-									? messageList.find(el => el.id === message.replyToId)
-									: null;
-								return (
-									<SingleMessage
-										key={message.id}
-										userId={userId}
-										message={message}
-										repliedMessage={repliedMessage}
-										isScrolledTo={index === length - 1 - unreadRef.current}
-										onContextMenuToggle={contextMenuToggleHandler(message.id)}
-										updateIsRead={message.authorId !== userId ? updateIsRead : null}
-									/>
-								);
-							})}
-					</ChatWrapper>
-				)}
+				<ChatWrapper ref={containerRef}>
+					{messageList
+						.filter(el => !el.hidden.includes(userId))
+						.map((message, index, { length }) => {
+							const repliedMessage = message.replyToId
+								? messageList.find(el => el.id === message.replyToId)
+								: null;
+							return (
+								<SingleMessage
+									key={message.id}
+									userId={userId}
+									message={message}
+									repliedMessage={repliedMessage}
+									isScrolledTo={index === length - 1 - unreadRef.current}
+									onContextMenuToggle={contextMenuToggleHandler(message.id)}
+									updateIsRead={message.authorId !== userId ? updateIsRead : null}
+								/>
+							);
+						})}
+				</ChatWrapper>
 				{!!activeMessage && (
 					<ContextMenu
 						onCloseMenu={closeMenuHandler}

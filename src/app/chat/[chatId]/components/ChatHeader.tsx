@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import {
 	CenterHorizontalWrapper,
 	ChatHeaderWrapper,
+	ElapsedTimeStub,
 	ElapsedTimeWrapper,
 	StyledBackIcon,
 } from '@/app/chat/[chatId]/styled';
@@ -42,7 +43,7 @@ const ChatHeaderComponent = ({ chatId, interlocutorId, interlocutorName, interlo
 				{interlocutorImageUrl && <UserPhotoImage src={interlocutorImageUrl} alt={'photo'} size={30} />}
 				<Typography>{interlocutorName}</Typography>
 			</CenterHorizontalWrapper>
-			{interlocutorState && (
+			{interlocutorState ? (
 				<ElapsedTimeWrapper color={interlocutorState.color}>
 					{interlocutorState.status === VisitorStatus.IN ? (
 						interlocutorState.text
@@ -50,6 +51,8 @@ const ChatHeaderComponent = ({ chatId, interlocutorId, interlocutorName, interlo
 						<ElapsedTime prefix={interlocutorState.text} lastSeen={interlocutorState.data} />
 					)}
 				</ElapsedTimeWrapper>
+			) : (
+				<ElapsedTimeStub />
 			)}
 		</ChatHeaderWrapper>
 	);

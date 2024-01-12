@@ -80,7 +80,7 @@ export interface MessageItemBottomProps extends HTMLAttributes<HTMLDivElement> {
 	multipleChild: boolean;
 	withOffset?: boolean;
 }
-export interface ElapsedTimeWrapperProps extends HTMLAttributes<HTMLDivElement> {
+export interface ElapsedTimeWrapperProps extends HTMLAttributes<HTMLParagraphElement> {
 	color: string;
 }
 

@@ -18,3 +18,9 @@ export const LoadingIndicator = styled(Box)`
 		}
 	}
 `;
+export const LoaderWrapper = styled(Box)(() => ({
+	display: 'flex',
+	justifyContent: 'center',
+	alignItems: 'center',
+	height: '70vh',
+}));

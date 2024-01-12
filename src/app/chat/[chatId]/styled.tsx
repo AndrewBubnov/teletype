@@ -1,7 +1,17 @@
 'use client';
 import { styled } from '@mui/material/styles';
 import Image, { ImageProps } from 'next/image';
-import { Box, Button, Checkbox, DialogContentText, IconButton, FormLabel, BoxProps, Dialog } from '@mui/material';
+import {
+	Box,
+	Button,
+	Checkbox,
+	DialogContentText,
+	IconButton,
+	FormLabel,
+	BoxProps,
+	Dialog,
+	Typography,
+} from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import FileDownloadIcon from '@mui/icons-material/FileDownloadOutlined';
@@ -516,9 +526,18 @@ export const StyledBackIcon = styled(ArrowBackIcon)`
 	margin-left: -0.5rem;
 `;
 
-export const ElapsedTimeWrapper = styled(({ color, ...props }: ElapsedTimeWrapperProps) => <Box {...props} />)`
+export const ElapsedTimeWrapper = styled(({ color, ...props }: ElapsedTimeWrapperProps) => <Typography {...props} />)`
 	margin-left: 3rem;
 	color: ${({ color }) => color};
+
+	@media (max-width: 600px) {
+		margin-left: 0;
+		margin-top: 0.5rem;
+	}
+`;
+
+export const ElapsedTimeStub = styled(Box)`
+	height: 1.5rem;
 
 	@media (max-width: 600px) {
 		margin-left: 0;
