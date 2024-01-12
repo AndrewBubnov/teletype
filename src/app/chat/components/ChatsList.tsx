@@ -2,12 +2,12 @@
 import { useEffect, useState } from 'react';
 import { useStore } from '@/store';
 import { useRouter } from 'next/navigation';
-import { Box, IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { ChatListItem } from '@/app/chat/components/ChatListItem';
 import { deleteChats } from '@/actions/deleteChats';
 import { sendDeleteUserChats } from '@/utils/sendDeleteUserChats';
 import { DeleteIcon } from '@/app/shared/styled';
-import { ChatsListDeleteButton, ChatsListHeader, CloseIcon, SelectedCountWrapper } from '@/app/chat/styled';
+import { ChatHeaderStub, ChatListWrapper, CloseIcon, SelectedCountWrapper } from '@/app/chat/styled';
 import { CHAT_LIST } from '@/constants';
 
 export const ChatsList = () => {
@@ -49,37 +49,35 @@ export const ChatsList = () => {
 	const dropSelectMode = () => setSelectedChatIds([]);
 
 	return (
-		<>
-			<ChatsListHeader>
-				{isSelectMode && (
-					<>
-						<SelectedCountWrapper>
-							<IconButton onClick={dropSelectMode}>
-								<CloseIcon />
-							</IconButton>
-							{selectedChatIds.length}
-						</SelectedCountWrapper>
-						<ChatsListDeleteButton onClick={deleteChatsHandler}>
-							<DeleteIcon />
-						</ChatsListDeleteButton>
-					</>
-				)}
-			</ChatsListHeader>
-			<Box>
-				{chatList.map(({ chatId, members }) => {
-					const [interlocutor] = members.filter(member => member.userId !== userId);
-					return (
-						<ChatListItem
-							key={chatId}
-							chatId={chatId}
-							interlocutor={interlocutor}
-							onPress={chatPressHandler(chatId)}
-							onLongPress={chatLongPressHandler(chatId)}
-							isSelectMode={isSelectMode}
-						/>
-					);
-				})}
-			</Box>
-		</>
+		<ChatListWrapper isSelectMode={isSelectMode}>
+			{isSelectMode ? (
+				<>
+					<SelectedCountWrapper>
+						<IconButton onClick={dropSelectMode}>
+							<CloseIcon />
+						</IconButton>
+						{selectedChatIds.length}
+					</SelectedCountWrapper>
+					<IconButton onClick={deleteChatsHandler}>
+						<DeleteIcon />
+					</IconButton>
+				</>
+			) : (
+				<ChatHeaderStub />
+			)}
+			{chatList.map(({ chatId, members }) => {
+				const [interlocutor] = members.filter(member => member.userId !== userId);
+				return (
+					<ChatListItem
+						key={chatId}
+						chatId={chatId}
+						interlocutor={interlocutor}
+						onPress={chatPressHandler(chatId)}
+						onLongPress={chatLongPressHandler(chatId)}
+						isSelectMode={isSelectMode}
+					/>
+				);
+			})}
+		</ChatListWrapper>
 	);
 };

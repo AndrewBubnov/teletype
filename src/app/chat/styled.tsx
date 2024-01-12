@@ -7,7 +7,7 @@ import SearchMuiIcon from '@mui/icons-material/Search';
 import LogoutMuiIcon from '@mui/icons-material/Logout';
 import CloseMUIIcon from '@mui/icons-material/Close';
 import Menu from '@mui/icons-material/Menu';
-import { ChatListItemInnerWrapperProps, UserPhotoImageProps, UserPhotoStubProps } from '@/types';
+import { ChatListItemInnerWrapperProps, ChatListWrapperProps, UserPhotoImageProps, UserPhotoStubProps } from '@/types';
 import Link from 'next/link';
 
 export const UserPhotoImage = styled(({ isActive = false, size = 50, ...props }: UserPhotoImageProps) => (
@@ -44,6 +44,21 @@ export const StyledCheckbox = styled(Checkbox)`
 export const Wrapper = styled(Box)({
 	padding: '0.5rem',
 });
+
+export const ChatListWrapper = styled(({ isSelectMode, ...props }: ChatListWrapperProps) => <Box {...props} />)`
+	display: grid;
+	gap: 1rem;
+	grid-template-columns: ${({ isSelectMode }) => (isSelectMode ? 'auto 40px' : 'auto')};
+	grid-template-rows: auto 1fr;
+`;
+
+export const ChatHeaderStub = styled(Box)`
+	height: 2.5rem;
+`;
+
+export const StyledLabel = styled('label')`
+	display: contents;
+`;
 export const UserWrapper = styled(Box)({
 	display: 'flex',
 	justifyContent: 'space-between',
@@ -72,22 +87,13 @@ export const ChatListItemDateWrapper = styled(Box)(() => ({
 	fontSize: '0.7rem',
 }));
 
-export const ChatListItemWrapper = styled(Box)(() => ({
-	display: 'flex',
-	justifyContent: 'space-between',
-	alignItems: 'center',
-	padding: '0.5rem',
-	cursor: 'pointer',
-	marginBottom: '1rem',
-}));
-
 export const ChatListItemInnerWrapper = styled(({ isDeleteMode, ...props }: ChatListItemInnerWrapperProps) => (
 	<Box {...props} />
 ))`
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
-	width: ${({ isDeleteMode }) => (isDeleteMode ? 'calc(100% - 1em - 1rem)' : '100%')};
+	width: ${({ isDeleteMode }) => (isDeleteMode ? '80vw' : '95vw')};
 `;
 
 export const ChatUnreadMessages = styled(Box)(() => ({
@@ -195,21 +201,10 @@ export const StyledInput = styled(TextField)({
 		},
 	},
 });
-export const ChatsListHeader = styled(Box)`
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	margin: 1rem 0;
-	height: 1.5rem;
-`;
-
 export const SelectedCountWrapper = styled(Box)`
 	display: flex;
 	align-items: center;
 	gap: 0.25rem;
 	color: #fff;
 	margin-left: 0.8rem;
-`;
-export const ChatsListDeleteButton = styled(IconButton)`
-	padding: 9px;
 `;

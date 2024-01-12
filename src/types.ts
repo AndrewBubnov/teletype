@@ -307,3 +307,7 @@ export interface AddReaction {
 	reaction: string;
 	authorImageUrl?: string | null;
 }
+
+export interface ChatListWrapperProps extends BoxProps {
+	isSelectMode: boolean;
+}
