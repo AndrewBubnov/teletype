@@ -1,12 +1,13 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useStore } from '@/store';
 import { useRouter } from 'next/navigation';
-import { Box } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import { ChatListItem } from '@/app/chat/components/ChatListItem';
-import { ChatsListDeleteButton, ChatsListHeader, DeleteIcon } from '@/app/chat/[chatId]/styled';
 import { deleteChats } from '@/actions/deleteChats';
 import { sendDeleteUserChats } from '@/utils/sendDeleteUserChats';
+import { DeleteIcon } from '@/app/shared/styled';
+import { ChatsListDeleteButton, ChatsListHeader, CloseIcon, SelectedCountWrapper } from '@/app/chat/styled';
 import { CHAT_LIST } from '@/constants';
 
 export const ChatsList = () => {
@@ -16,35 +17,52 @@ export const ChatsList = () => {
 	}));
 
 	const { push } = useRouter();
-	const [isDeleteMode, setIsDeleteMode] = useState<boolean>(false);
-	const [deletedChatIds, setDeletedChatIds] = useState<string[]>([]);
+	const [isSelectMode, setIsSelectMode] = useState<boolean>(false);
+	const [selectedChatIds, setSelectedChatIds] = useState<string[]>([]);
 
-	const setActiveChat = (chatId: string) => () => push(`${CHAT_LIST}/${chatId}`);
+	useEffect(() => {
+		if (!selectedChatIds.length) setIsSelectMode(false);
+	}, [isSelectMode, selectedChatIds.length]);
 
-	const toggleMode = (chatId: string) => () => {
-		if (!isDeleteMode) setDeletedChatIds(prevState => [...prevState, chatId]);
-		setIsDeleteMode(prevState => !prevState);
+	const chatPressHandler = (chatId: string) => () => {
+		if (!isSelectMode) {
+			push(`${CHAT_LIST}/${chatId}`);
+		} else {
+			setSelectedChatIds(prevState => {
+				if (prevState.includes(chatId)) return prevState.filter(el => el !== chatId);
+				return [...prevState, chatId];
+			});
+		}
 	};
 
-	const deleteCheckboxHandler = (chatId: string) => () =>
-		setDeletedChatIds(prevState => {
-			if (prevState.includes(chatId)) return prevState.filter(el => el !== chatId);
-			return [...prevState, chatId];
-		});
+	const chatLongPressHandler = (chatId: string) => () => {
+		if (!isSelectMode) setSelectedChatIds([chatId]);
+		setIsSelectMode(prevState => !prevState);
+	};
 
 	const deleteChatsHandler = async () => {
-		setIsDeleteMode(false);
-		sendDeleteUserChats(deletedChatIds);
-		await deleteChats(deletedChatIds);
+		setIsSelectMode(false);
+		sendDeleteUserChats(selectedChatIds);
+		await deleteChats(selectedChatIds);
 	};
+
+	const dropSelectMode = () => setSelectedChatIds([]);
 
 	return (
 		<>
 			<ChatsListHeader>
-				{isDeleteMode && (
-					<ChatsListDeleteButton onClick={deleteChatsHandler}>
-						<DeleteIcon />
-					</ChatsListDeleteButton>
+				{isSelectMode && (
+					<>
+						<SelectedCountWrapper>
+							<IconButton onClick={dropSelectMode}>
+								<CloseIcon />
+							</IconButton>
+							{selectedChatIds.length}
+						</SelectedCountWrapper>
+						<ChatsListDeleteButton onClick={deleteChatsHandler}>
+							<DeleteIcon />
+						</ChatsListDeleteButton>
+					</>
 				)}
 			</ChatsListHeader>
 			<Box>
@@ -55,11 +73,9 @@ export const ChatsList = () => {
 							key={chatId}
 							chatId={chatId}
 							interlocutor={interlocutor}
-							onPress={setActiveChat(chatId)}
-							onLongPress={toggleMode(chatId)}
-							isDeleteMode={isDeleteMode}
-							onCheckboxToggle={deleteCheckboxHandler(chatId)}
-							isChecked={deletedChatIds.includes(chatId)}
+							onPress={chatPressHandler(chatId)}
+							onLongPress={chatLongPressHandler(chatId)}
+							isSelectMode={isSelectMode}
 						/>
 					);
 				})}

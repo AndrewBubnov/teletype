@@ -1,5 +1,6 @@
 import { styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 export const LoadingIndicator = styled(Box)`
 	width: 48px;
@@ -24,3 +25,6 @@ export const LoaderWrapper = styled(Box)(() => ({
 	alignItems: 'center',
 	height: '70vh',
 }));
+export const DeleteIcon = styled(DeleteOutlineIcon)`
+	fill: #fff;
+`;

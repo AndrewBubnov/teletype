@@ -1,10 +1,11 @@
 'use client';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
-import { Box, BoxProps, Checkbox, List, ListItem, TextField, Typography } from '@mui/material';
+import { Box, BoxProps, Checkbox, IconButton, List, ListItem, TextField, Typography } from '@mui/material';
 import PersonIcon from '@mui/icons-material/PersonOutlineOutlined';
 import SearchMuiIcon from '@mui/icons-material/Search';
 import LogoutMuiIcon from '@mui/icons-material/Logout';
+import CloseMUIIcon from '@mui/icons-material/Close';
 import Menu from '@mui/icons-material/Menu';
 import { ChatListItemInnerWrapperProps, UserPhotoImageProps, UserPhotoStubProps } from '@/types';
 import Link from 'next/link';
@@ -159,6 +160,10 @@ export const LogoutIcon = styled(LogoutMuiIcon)(() => ({
 	marginRight: '1rem',
 }));
 
+export const CloseIcon = styled(CloseMUIIcon)(() => ({
+	fill: 'lightgray',
+}));
+
 export const StyledLink = styled(Link)(() => ({
 	display: 'flex',
 	alignItems: 'center',
@@ -190,3 +195,21 @@ export const StyledInput = styled(TextField)({
 		},
 	},
 });
+export const ChatsListHeader = styled(Box)`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 1rem 0;
+	height: 1.5rem;
+`;
+
+export const SelectedCountWrapper = styled(Box)`
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	color: #fff;
+	margin-left: 0.8rem;
+`;
+export const ChatsListDeleteButton = styled(IconButton)`
+	padding: 9px;
+`;

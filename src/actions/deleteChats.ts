@@ -8,5 +8,8 @@ export const deleteChats = async (idsArray: string[]) => {
 	await prisma.chat.deleteMany({
 		where: { chatId: { in: idsArray } },
 	});
+	await prisma.message.deleteMany({
+		where: { chatId: { in: idsArray } },
+	});
 	revalidatePath(CHAT_LIST);
 };

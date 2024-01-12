@@ -91,13 +91,8 @@ export const SingleMessage = ({
 	}
 
 	return (
-		<MessageWrapper ref={containerRef} id={message.id}>
-			<EmojiMessage
-				isAuthoredByUser={isAuthoredByUser}
-				onPress={onPress}
-				message={message}
-				repliedMessage={repliedMessage}
-			/>
+		<MessageWrapper ref={containerRef} id={message.id} onClick={onPress}>
+			<EmojiMessage isAuthoredByUser={isAuthoredByUser} message={message} repliedMessage={repliedMessage} />
 		</MessageWrapper>
 	);
 };

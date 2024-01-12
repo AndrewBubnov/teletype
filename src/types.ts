@@ -102,9 +102,7 @@ export interface ChatListItemProps {
 	interlocutor: User;
 	onPress(): void;
 	onLongPress(): void;
-	isDeleteMode: boolean;
-	onCheckboxToggle(): void;
-	isChecked: boolean;
+	isSelectMode: boolean;
 }
 
 export enum VisitorStatus {
@@ -182,7 +180,6 @@ export interface ChatHeaderProps {
 }
 export interface MessageProps {
 	isAuthoredByUser: boolean;
-	onPress(): void;
 	message: Message;
 	repliedMessage?: Message | null;
 	width?: number;

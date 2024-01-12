@@ -3,13 +3,13 @@ import { styled } from '@mui/material/styles';
 import Image, { ImageProps } from 'next/image';
 import {
 	Box,
+	BoxProps,
 	Button,
 	Checkbox,
-	DialogContentText,
-	IconButton,
-	FormLabel,
-	BoxProps,
 	Dialog,
+	DialogContentText,
+	FormLabel,
+	IconButton,
 	Typography,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -20,8 +20,8 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import ReplyIcon from '@mui/icons-material/ReplyOutlined';
 import DownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import CloseMUIIcon from '@mui/icons-material/Close';
 import CameraMUIIcon from '@mui/icons-material/CameraOutlined';
+import CloseMUIIcon from '@mui/icons-material/Close';
 import CameraSwitchMUIIcon from '@mui/icons-material/Cameraswitch';
 import SendIcon from '@mui/icons-material/Send';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
@@ -465,20 +465,8 @@ export const StyledBlackCheckbox = styled(Checkbox)`
 	}
 `;
 
-export const ChatsListHeader = styled(Box)`
-	display: flex;
-	flex-direction: row-reverse;
-	margin-top: 1rem;
-	height: 1.5rem;
-`;
 export const StyledDialogContentText = styled(DialogContentText)`
 	color: #000;
-`;
-export const ChatsListDeleteButton = styled(IconButton)`
-	padding: 9px;
-`;
-export const DeleteIcon = styled(DeleteOutlineIcon)`
-	fill: #fff;
 `;
 export const EditIcon = styled(ModeEditIcon)`
 	fill: #1a1a1a;
@@ -494,11 +482,6 @@ export const TakePhotoIcon = styled(CameraMUIIcon)`
 	fill: lightgray;
 `;
 export const CameraSwitchIcon = styled(CameraSwitchMUIIcon)`
-	fill: lightgray;
-	width: 2rem;
-	height: 2rem;
-`;
-export const CloseIcon = styled(CloseMUIIcon)`
 	fill: lightgray;
 	width: 2rem;
 	height: 2rem;
@@ -580,4 +563,9 @@ export const PreviewWrapper = styled(Box)`
 `;
 export const StyledLink = styled('a')`
 	color: lightgray;
+`;
+export const CloseIcon = styled(CloseMUIIcon)`
+	fill: lightgray;
+	width: 2rem;
+	height: 2rem;
 `;

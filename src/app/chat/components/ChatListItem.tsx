@@ -18,15 +18,7 @@ import {
 import { options } from '@/app/chat/[chatId]/constants';
 import { ChatListItemProps } from '@/types';
 
-export const ChatListItem = ({
-	chatId,
-	interlocutor,
-	onPress,
-	onLongPress,
-	isDeleteMode,
-	onCheckboxToggle,
-	isChecked,
-}: ChatListItemProps) => {
+export const ChatListItem = ({ chatId, interlocutor, onPress, onLongPress, isSelectMode }: ChatListItemProps) => {
 	const { messageMap, activeUsers, userId } = useStore(state => ({
 		messageMap: state.messageMap,
 		activeUsers: state.activeUsers,
@@ -46,36 +38,40 @@ export const ChatListItem = ({
 
 	return (
 		<ChatListItemWrapper {...pressHandler}>
-			<ChatListItemInnerWrapper isDeleteMode={isDeleteMode}>
-				<UserWrapper>
-					<UserNameWrapper>
-						{interlocutor?.imageUrl ? (
-							<UserPhotoImage src={interlocutor?.imageUrl} alt="photo" isActive={isActive} />
-						) : (
-							<UserPhotoStub isActive={isActive}>
-								{interlocutor?.email.at(0)?.toUpperCase()}
-							</UserPhotoStub>
-						)}
-						<ChatListItemUsername>{interlocutor?.username || interlocutor?.email}</ChatListItemUsername>
-					</UserNameWrapper>
-					{lastMessage && !isDeleteMode ? (
-						<ChatListItemDateWrapper>
-							{new Intl.DateTimeFormat('en-US', options).format(new Date(lastMessage.createdAt))}
-						</ChatListItemDateWrapper>
-					) : null}
-				</UserWrapper>
-				{lastMessage ? (
+			<ChatListItemInnerWrapper isDeleteMode={isSelectMode}>
+				<label htmlFor={chatId}>
 					<UserWrapper>
-						<ChatListItemMessageText>
-							{lastMessage.text}
-							{lastMessage.text && lastMessage.imageUrl ? <Italic> + </Italic> : null}
-							{lastMessage.imageUrl ? <Italic>Image</Italic> : null}
-						</ChatListItemMessageText>
-						{unreadNumber && !isDeleteMode ? <ChatUnreadMessages>{unreadNumber}</ChatUnreadMessages> : null}
+						<UserNameWrapper>
+							{interlocutor?.imageUrl ? (
+								<UserPhotoImage src={interlocutor?.imageUrl} alt="photo" isActive={isActive} />
+							) : (
+								<UserPhotoStub isActive={isActive}>
+									{interlocutor?.email.at(0)?.toUpperCase()}
+								</UserPhotoStub>
+							)}
+							<ChatListItemUsername>{interlocutor?.username || interlocutor?.email}</ChatListItemUsername>
+						</UserNameWrapper>
+						{lastMessage && !isSelectMode ? (
+							<ChatListItemDateWrapper>
+								{new Intl.DateTimeFormat('en-US', options).format(new Date(lastMessage.createdAt))}
+							</ChatListItemDateWrapper>
+						) : null}
 					</UserWrapper>
-				) : null}
+					{lastMessage ? (
+						<UserWrapper>
+							<ChatListItemMessageText>
+								{lastMessage.text}
+								{lastMessage.text && lastMessage.imageUrl ? <Italic> + </Italic> : null}
+								{lastMessage.imageUrl ? <Italic>Image</Italic> : null}
+							</ChatListItemMessageText>
+							{unreadNumber && !isSelectMode ? (
+								<ChatUnreadMessages>{unreadNumber}</ChatUnreadMessages>
+							) : null}
+						</UserWrapper>
+					) : null}
+				</label>
 			</ChatListItemInnerWrapper>
-			{isDeleteMode ? <StyledCheckbox onChange={onCheckboxToggle} checked={isChecked} /> : null}
+			{isSelectMode ? <StyledCheckbox id={chatId} /> : null}
 		</ChatListItemWrapper>
 	);
 };
