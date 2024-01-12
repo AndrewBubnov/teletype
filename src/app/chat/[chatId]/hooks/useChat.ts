@@ -36,9 +36,9 @@ export const useChat = (chat: UserChat) => {
 		return messageList.filter(el => !el.isRead && el.authorId !== userId).length;
 	}, [userId, messageList]);
 
-	const updateIsRead = updateIsReadMap(chatId);
+	const updateIsRead = useMemo(() => updateIsReadMap(chatId), [chatId, updateIsReadMap]);
 
-	const addReaction = addReactionMap(chatId, authorImageUrl);
+	const addReaction = useMemo(() => addReactionMap(chatId, authorImageUrl), [addReactionMap, authorImageUrl, chatId]);
 
 	return {
 		messageList,
