@@ -117,25 +117,28 @@ export const Chat = ({ chat }: ChatProps) => {
 				interlocutorId={interlocutorId}
 			/>
 			<CoverWrapper>
-				<ChatWrapper ref={containerRef}>
-					{messageList
-						.filter(el => !el.hidden.includes(userId))
-						.map((message, index, { length }) => {
-							const repliedMessage = message.replyToId
-								? messageList.find(el => el.id === message.replyToId)
-								: null;
-							return (
-								<SingleMessage
-									key={message.id}
-									message={message}
-									repliedMessage={repliedMessage}
-									isScrolledTo={index === length - 1 - unreadRef.current}
-									onContextMenuToggle={contextMenuToggleHandler(message.id)}
-									updateIsRead={message.authorId !== userId ? updateIsRead : null}
-								/>
-							);
-						})}
-				</ChatWrapper>
+				{userId && (
+					<ChatWrapper ref={containerRef}>
+						{messageList
+							.filter(el => !el.hidden.includes(userId))
+							.map((message, index, { length }) => {
+								const repliedMessage = message.replyToId
+									? messageList.find(el => el.id === message.replyToId)
+									: null;
+								return (
+									<SingleMessage
+										key={message.id}
+										userId={userId}
+										message={message}
+										repliedMessage={repliedMessage}
+										isScrolledTo={index === length - 1 - unreadRef.current}
+										onContextMenuToggle={contextMenuToggleHandler(message.id)}
+										updateIsRead={message.authorId !== userId ? updateIsRead : null}
+									/>
+								);
+							})}
+					</ChatWrapper>
+				)}
 				{!!activeMessage && (
 					<ContextMenu
 						onCloseMenu={closeMenuHandler}

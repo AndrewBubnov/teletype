@@ -1,5 +1,4 @@
 import { SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react';
-import { useUser } from '@clerk/nextjs';
 import { InnerMessageItem, MessageItem, MessageWrapper } from '@/app/chat/[chatId]/styled';
 import { EmojiMessage } from '@/app/chat/[chatId]/components/EmojiMessage';
 import { ReplyTo } from '@/app/chat/[chatId]/components/ReplyTo';
@@ -15,13 +14,11 @@ export const SingleMessage = ({
 	repliedMessage,
 	updateIsRead,
 	isScrolledTo,
+	userId,
 }: SingleMessageProps) => {
-	const { user } = useUser();
 	const [isImageEnlarged, setIsImageEnlarged] = useState<boolean>(false);
 
 	const containerRef = useRef<HTMLDivElement | null>(null);
-
-	const isAuthoredByUser = message.authorId === user?.id;
 
 	useEffect(() => {
 		if (!containerRef.current || message.isRead) return;
@@ -42,17 +39,6 @@ export const SingleMessage = ({
 			containerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 	}, [isScrolledTo, isImageEnlarged]);
 
-	const toggleEnlargeHandler = (evt: SyntheticEvent) => {
-		evt.stopPropagation();
-		setIsImageEnlarged(prevState => !prevState);
-	};
-
-	const onPress = () => {
-		const params = containerRef.current?.getBoundingClientRect();
-		if (!params) return;
-		onContextMenuToggle('open', params);
-	};
-
 	const messageText = useMemo(() => {
 		const text = message.text || '';
 		const links = text.match(urlRegex);
@@ -64,6 +50,19 @@ export const SingleMessage = ({
 			return <span key={index}>{part}&nbsp;</span>;
 		});
 	}, [message.text]);
+
+	const isAuthoredByUser = message.authorId === userId;
+
+	const toggleEnlargeHandler = (evt: SyntheticEvent) => {
+		evt.stopPropagation();
+		setIsImageEnlarged(prevState => !prevState);
+	};
+
+	const onPress = () => {
+		const params = containerRef.current?.getBoundingClientRect();
+		if (!params) return;
+		onContextMenuToggle('open', params);
+	};
 
 	if (message.type === MessageType.COMMON) {
 		return (
