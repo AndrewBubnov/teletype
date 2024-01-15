@@ -1,5 +1,6 @@
 'use server';
 import { prisma } from '@/db';
+import { Message } from '@/types';
 
 export const updateMessageIsRead = async (messageId: string) => {
 	const message = await prisma.message.findUnique({ where: { id: messageId } });
@@ -7,5 +8,5 @@ export const updateMessageIsRead = async (messageId: string) => {
 	return prisma.message.update({
 		where: { id: messageId },
 		data: { isRead: true },
-	});
+	}) as Promise<Message>;
 };

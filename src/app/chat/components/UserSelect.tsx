@@ -7,7 +7,7 @@ import { getUserIdByEmail } from '@/actions/getUserIdByEmail';
 import { onCreateChat } from '@/app/chat/utils/onCreateChat';
 import { createRoom } from '@/utils/createRoom';
 
-export const UserSelect = ({ canOpen }: { canOpen: boolean }) => {
+export const UserSelect = ({ canOpen, closeDrawer }: { canOpen: boolean; closeDrawer(): void }) => {
 	const { userEmails, userId } = useStore(state => ({
 		userEmails: state.userEmails,
 		userId: state.userId,
@@ -23,6 +23,7 @@ export const UserSelect = ({ canOpen }: { canOpen: boolean }) => {
 		if (!userId || !id) return;
 		await onCreateChat(userId, id);
 		createRoom(userId, id);
+		closeDrawer();
 	};
 
 	const openHandler = () => {

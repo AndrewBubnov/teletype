@@ -3,6 +3,7 @@ import { sendAddReaction } from '@/utils/sendAddReaction';
 import { updateMessageIsRead } from '@/actions/updateMessageIsRead';
 import { addReaction } from '@/actions/addReaction';
 import { ChatVisitorStatus, Message, MessageMap, Store, Toast, UpdateMessageType, UserChat } from '@/types';
+import { sendEditMessage } from '@/utils/sendEditMessage';
 
 export const useStore = create<Store>(set => ({
 	messageMap: {},
@@ -52,7 +53,14 @@ export const useStore = create<Store>(set => ({
 			};
 		}),
 	updateIsReadMap: (chatId: string) => async (id: string) => {
-		await updateMessageIsRead(id);
+		const updated = await updateMessageIsRead(id);
+		if (updated) {
+			sendEditMessage({
+				updateData: { [id]: updated },
+				type: UpdateMessageType.EDIT,
+				roomId: chatId,
+			});
+		}
 		return set(state => {
 			const predicate = (el: Message): boolean => el.id === id;
 			const message = state.messageMap[chatId].find(predicate);

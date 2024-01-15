@@ -22,6 +22,7 @@ import DownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import CameraMUIIcon from '@mui/icons-material/CameraOutlined';
 import CheckMUIIcon from '@mui/icons-material/Check';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 import CloseMUIIcon from '@mui/icons-material/Close';
 import CameraSwitchMUIIcon from '@mui/icons-material/Cameraswitch';
 import SendIcon from '@mui/icons-material/Send';
@@ -352,6 +353,9 @@ export const MessageItemBottom = styled(({ multipleChild, withOffset, ...props }
 `;
 
 export const TimeWrapper = styled(Box)`
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
 	font-size: 0.6rem;
 	color: rgba(0, 210, 170, 0.8);
 `;
@@ -493,6 +497,16 @@ export const DownloadIcon = styled(FileDownloadIcon)`
 `;
 export const CheckIcon = styled(CheckMUIIcon)`
 	fill: #1a1a1a;
+`;
+export const SentIcon = styled(CheckMUIIcon)`
+	fill: rgba(0, 210, 170, 0.8);
+	font-size: 1rem;
+	margin-top: -2px;
+`;
+export const IsReadIcon = styled(DoneAllIcon)`
+	fill: rgba(0, 210, 170, 0.8);
+	font-size: 1rem;
+	margin-top: -2px;
 `;
 export const StyledDeleteIcon = styled(DeleteOutlineIcon)`
 	fill: lightgray;

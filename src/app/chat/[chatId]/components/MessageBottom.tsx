@@ -1,4 +1,11 @@
-import { MessageItemBottom, ReactionAuthorImage, ReactionWrapper, TimeWrapper } from '@/app/chat/[chatId]/styled';
+import {
+	IsReadIcon,
+	MessageItemBottom,
+	ReactionAuthorImage,
+	ReactionWrapper,
+	SentIcon,
+	TimeWrapper,
+} from '@/app/chat/[chatId]/styled';
 import { options } from '@/app/chat/[chatId]/constants';
 import { Message } from '@/types';
 
@@ -12,6 +19,9 @@ export const MessageBottom = ({ message, withOffset }: { message: Message; withO
 				)}
 			</ReactionWrapper>
 		)}
-		<TimeWrapper>{new Intl.DateTimeFormat('en-US', options).format(new Date(message.createdAt))}</TimeWrapper>
+		<TimeWrapper>
+			{new Intl.DateTimeFormat('en-US', options).format(new Date(message.createdAt))}
+			{message.isRead ? <IsReadIcon /> : <SentIcon />}
+		</TimeWrapper>
 	</MessageItemBottom>
 );

@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { IconButton, ListItemIcon, ListItemText } from '@mui/material';
 import { Drawer as MuiDrawer } from '@mui/joy';
@@ -24,6 +24,8 @@ export const Drawer = () => {
 	const { push } = useRouter();
 	const [open, setOpen] = useState(false);
 
+	const closeDrawer = useCallback(() => setOpen(false), []);
+
 	return (
 		<>
 			<IconButton onClick={() => setOpen(true)}>
@@ -44,7 +46,7 @@ export const Drawer = () => {
 									<SearchIcon />
 									<ListItemText primary="New chat" />
 								</NewChatMenuInnerWrapper>
-								<UserSelect canOpen={open} />
+								<UserSelect canOpen={open} closeDrawer={closeDrawer} />
 							</NewChatMenuWrapper>
 						</DrawerListItem>
 						<DrawerListItem disablePadding>
