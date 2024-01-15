@@ -40,7 +40,7 @@ export const Chat = ({ chat }: ChatProps) => {
 	const { menuTop, setMessageParams, containerRef, initMenuParams } = useMenuTransition(menuActiveId, userId);
 
 	const { selectedIds, isAllSelected, toggleAllSelected, addSelection, startSelection, dropSelectMode } = useSelect(
-		messageList.filter(el => !el.hidden?.includes(el.authorId))
+		messageList.filter(el => !el.isHidden?.includes(userId))
 	);
 
 	const { dialogOpen, deleteMessageHandler, closeDialogHandler } = useDeleteDialog();
@@ -81,10 +81,10 @@ export const Chat = ({ chat }: ChatProps) => {
 	const onDeleteMessage = useCallback(
 		async (informAll: boolean) => {
 			setMenuActiveId('');
-			const updated = await deleteOrHideMessages(isSelectMode ? selectedIds : [menuActiveId], [
-				userId,
-				...(informAll ? [interlocutorId] : []),
-			]);
+			const ids = isSelectMode ? selectedIds : [menuActiveId];
+			const type = informAll ? UpdateMessageType.DELETE : UpdateMessageType.EDIT;
+			const hideToId = type === UpdateMessageType.EDIT ? userId : null;
+			const updated = await deleteOrHideMessages(ids, type, hideToId);
 			const updateData = getUpdateData({ updated, informAll, selectedIds, menuActiveId, isSelectMode });
 			sendEditMessage({
 				updateData,
@@ -93,7 +93,7 @@ export const Chat = ({ chat }: ChatProps) => {
 			});
 			dropSelectMode();
 		},
-		[chatId, dropSelectMode, interlocutorId, isSelectMode, menuActiveId, selectedIds, userId]
+		[chatId, dropSelectMode, isSelectMode, menuActiveId, selectedIds, userId]
 	);
 
 	const onReplyMessage = useCallback(() => {
@@ -123,8 +123,6 @@ export const Chat = ({ chat }: ChatProps) => {
 	}, [messageList]);
 
 	if (!userId) return <FullScreenLoader />;
-	console.log(messageList.filter(el => !el.hidden.includes(userId)));
-	console.log(userId);
 
 	return (
 		<Box>
@@ -146,7 +144,7 @@ export const Chat = ({ chat }: ChatProps) => {
 				</SelectModeWrapper>
 				<ChatWrapper ref={containerRef}>
 					{messageList
-						.filter(el => !el.hidden.includes(userId))
+						.filter(el => !el.isHidden?.includes(userId))
 						.map((message, index, { length }) => {
 							const repliedMessage = message.replyToId
 								? messageList.find(el => el.id === message.replyToId)

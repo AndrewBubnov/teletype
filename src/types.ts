@@ -25,7 +25,7 @@ export interface Message {
 	type: MessageType;
 	chatId: string;
 	isRead: boolean;
-	hidden: string[];
+	isHidden?: string;
 	text?: string;
 	imageUrl?: string | null;
 	reaction?: string;
