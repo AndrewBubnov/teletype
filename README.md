@@ -36,9 +36,22 @@ Explore the live demo, an auto-deploy from the master branch: [Teletype](https:/
 
 - **Image Exchange**: Users can seamlessly exchange images within chats. An icon for expanding an image to fullscreen is located in the bottom right corner of the image, and a corresponding icon allows users to reduce the image back to its original size.
 
-- **Image Previews**: When selecting an image from the device's memory before sending it, a preview appears next to the send button. The maximum size for uploaded images is limited to 900KB.
+- **Image Previews**: When selecting an image from the device's memory before sending it, a preview appears next to the send button. The maximum size for uploaded images is limited to 1MB.
   
 - **Photo Capture and Sending**: Users can capture photos by clicking on the camera icon, and they can seamlessly send the captured photos as messages. For mobile devices, users have the capability to switch between the main and front-facing cameras.
+
+- **Message Context Menu**: Click or tap on a message reveals a context menu for that specific message. For the message author, there is an option to edit the message. Users can also reply to specific messages. In a reply, the original author, the first line of its content for text messages, and the timestamp of its sending are displayed. Clicking or tapping on the area displaying the replied message smoothly scrolls the screen to that message.
+  **Reactions** for Non-Author Users: Non-authors of messages can add emoji reactions to messages.
+Options for All Messages:
+  **Delete**: Allows users to delete the message. Deletion options include removal by the message sender only or by both chat participants.
+  **Select**: Activates multi-select mode for both chats and messages.
+  **Edit**: Enables users to edit their own messages.
+  **Reply**: Users can reply to specific messages.
+
+Options for Image Messages:
+  **Download**: Available for image and photo messages.
+
+- **Unified Chat and Message Selection**: Users can enter multi-select mode for both chats and messages. For chats, it is activated by long-pressing a chat, and for messages, users can choose the "Select" option from the context menu. In this mode, users can manually select individual chats/messages or use the "Select all" button to choose all chats/messages at once for deletion. Deletion options include removal by the message sender only or by both chat participants.
 
 - **Emoji Support:** Users can now include emojis in their messages, either along with text or as standalone emoji messages.
 
@@ -46,7 +59,7 @@ Explore the live demo, an auto-deploy from the master branch: [Teletype](https:/
 
 - **Message Reactions:** From the context menu, users can react to messages by adding emoji reactions. The message will display the reaction and the avatar of the user who added the reaction.
 
-- **Message Deletion:** Users can delete messages from the context menu. Deletion options include removal by the message sender only or by both chat participants.
+- **Message Deletion:** Users can delete messages from the context menu.
   
 - **Message Persistence:** Messages for users not in the current chat are stored in the database and removed after they enter the chat and read the messages. Messages are deleted due to the usage of the free Atlas plan with limited storage.
 
