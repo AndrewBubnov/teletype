@@ -1,27 +1,25 @@
 import { memo, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+import { useStore } from '@/store';
 import {
 	CenterHorizontalWrapper,
+	ChatHeaderLink,
 	ChatHeaderWrapper,
 	ElapsedTimeStub,
 	ElapsedTimeWrapper,
 	StyledBackIcon,
 } from '@/app/chat/[chatId]/styled';
-import { IconButton, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { UserPhotoImage } from '@/app/chat/styled';
 import { ElapsedTime } from '@/app/chat/[chatId]/components/ElapsedTime';
 import { getInterlocutorState } from '@/app/chat/[chatId]/utils/getInterlocutorState';
 import { CHAT_LIST } from '@/constants';
 import { ChatHeaderProps, VisitorStatus } from '@/types';
-import { useStore } from '@/store';
 
 const ChatHeaderComponent = ({ chatId, interlocutorId, interlocutorName, interlocutorImageUrl }: ChatHeaderProps) => {
 	const { chatVisitorStatus, activeUsers } = useStore(state => ({
 		chatVisitorStatus: state.chatVisitorStatus,
 		activeUsers: state.activeUsers,
 	}));
-	const { push } = useRouter();
-	const redirectToChatPage = () => push(CHAT_LIST);
 
 	const interlocutorState = useMemo(
 		() =>
@@ -36,13 +34,13 @@ const ChatHeaderComponent = ({ chatId, interlocutorId, interlocutorName, interlo
 
 	return (
 		<ChatHeaderWrapper>
-			<CenterHorizontalWrapper>
-				<IconButton onClick={redirectToChatPage}>
+			<ChatHeaderLink href={CHAT_LIST}>
+				<CenterHorizontalWrapper>
 					<StyledBackIcon />
-				</IconButton>
-				{interlocutorImageUrl && <UserPhotoImage src={interlocutorImageUrl} alt={'photo'} size={30} />}
-				<Typography>{interlocutorName}</Typography>
-			</CenterHorizontalWrapper>
+					{interlocutorImageUrl && <UserPhotoImage src={interlocutorImageUrl} alt={'photo'} size={30} />}
+					<Typography>{interlocutorName}</Typography>
+				</CenterHorizontalWrapper>
+			</ChatHeaderLink>
 			{interlocutorState ? (
 				<ElapsedTimeWrapper color={interlocutorState.color}>
 					{interlocutorState.status === VisitorStatus.IN ? (

@@ -137,12 +137,6 @@ export type SingleMessageProps = {
 	isSelectMode: boolean;
 };
 
-export interface EditMessageClient {
-	messageId: string;
-	message: Message | null;
-	roomId: string;
-}
-
 export interface StyledButtonProps extends ButtonProps {
 	textColor?: string;
 }
@@ -213,6 +207,19 @@ type ToastSeverityType = 'error' | 'warning' | 'info' | 'success';
 
 export type Toast = { text: string; type: ToastSeverityType } | null;
 
+export type UpdateData = Record<string, Message | null>;
+
+export enum UpdateMessageType {
+	EDIT = 'edit',
+	DELETE = 'delete',
+}
+
+export type UpdateMessage = {
+	updateData: Record<string, Message | null>;
+	type: UpdateMessageType;
+	roomId: string;
+};
+
 export interface Store {
 	messageMap: MessageMap;
 	chatList: UserChat[];
@@ -228,7 +235,7 @@ export interface Store {
 	setChatVisitorStatus(arg: ChatVisitorStatus): void;
 	setMessageMap(arg: MessageMap): void;
 	addMessageToMessageMap(arg: Message): void;
-	updateMessageInMessageMap(args: EditMessageClient): void;
+	updateMessageInMessageMap(args: UpdateMessage): void;
 	updateIsReadMap: (chatId: string) => (id: string) => Promise<void>;
 	addReactionMap: (
 		chatId: string,

@@ -13,7 +13,7 @@ import { useFileUpload } from '@/app/shared/hooks/useFileUpload';
 import { DIALOG_MARGINS, TEXT_AREA_STYLE } from '@/app/chat/[chatId]/constants';
 import { createMessage } from '@/actions/createMessage';
 import { updateMessage } from '@/actions/updateMessage';
-import { Message, MessageInputProps, MessageType } from '@/types';
+import { Message, MessageInputProps, MessageType, UpdateMessageType } from '@/types';
 
 export const MessageInput = ({
 	chatId,
@@ -74,8 +74,8 @@ export const MessageInput = ({
 			};
 			const saved = (await updateMessage(editedMessage.id, updated)) as Message;
 			sendEditMessage({
-				messageId: editedMessage.id,
-				message: saved,
+				updateData: { [editedMessage.id]: saved },
+				type: UpdateMessageType.EDIT,
 				roomId: chatId,
 			});
 		} else {

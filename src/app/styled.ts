@@ -1,7 +1,6 @@
 'use client';
 import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
-import Link from 'next/link';
 
 export const HeroContainer = styled(Box)(() => ({
 	display: 'flex',
@@ -54,3 +53,10 @@ export const Author = styled(Typography)(() => ({
 	bottom: '3%',
 	right: '5%',
 }));
+export const StyledLabel = styled('label')`
+	display: contents;
+
+	&:nth-of-type(1) > div {
+		padding-top: 0;
+	}
+`;

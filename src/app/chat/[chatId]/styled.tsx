@@ -36,6 +36,7 @@ import {
 	StyledButtonProps,
 	VideoWrapperProps,
 } from '@/types';
+import Link from 'next/link';
 
 export const ChatWrapper = styled(Box)`
 	padding: 0 1rem 1rem 1rem;
@@ -305,6 +306,12 @@ export const PhotoIconButton = styled(IconButton)`
 export const SwitchCameraIconWrapper = styled(IconButton)`
 	width: 2.5rem;
 	height: 2.5rem;
+`;
+
+export const ChatHeaderLink = styled(Link)`
+	text-decoration: none;
+	user-select: none;
+	color: lightgray;
 `;
 export const MessageItem = styled(
 	({ isAuthoredByUser, singlePadding, withOffset, transparent, fullWidth = false, ...props }: MessageBoxProps) => (

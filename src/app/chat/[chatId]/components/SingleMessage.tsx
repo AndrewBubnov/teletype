@@ -6,9 +6,9 @@ import { ImageMessage } from '@/app/chat/[chatId]/components/ImageMessage';
 import { MessageBottom } from '@/app/chat/[chatId]/components/MessageBottom';
 import { LinkMessagePart } from '@/app/chat/[chatId]/components/LinkMessagePart';
 import { StyledCheckbox } from '@/app/shared/styled';
-import { StyledLabel } from '@/app/chat/styled';
 import { urlRegex } from '@/app/chat/[chatId]/constants';
 import { MessageType, SingleMessageProps } from '@/types';
+import { StyledLabel } from '@/app/styled';
 
 export const SingleMessage = ({
 	message,
@@ -98,8 +98,11 @@ export const SingleMessage = ({
 	}
 
 	return (
-		<MessageWrapper ref={containerRef} id={message.id} onClick={onPress}>
-			<EmojiMessage isAuthoredByUser={isAuthoredByUser} message={message} repliedMessage={repliedMessage} />
-		</MessageWrapper>
+		<StyledLabel htmlFor={message.id}>
+			<MessageWrapper ref={containerRef} id={message.id} onClick={onPress}>
+				<EmojiMessage isAuthoredByUser={isAuthoredByUser} message={message} repliedMessage={repliedMessage} />
+				{isSelectMode ? <StyledCheckbox id={message.id} checked={isSelected} /> : null}
+			</MessageWrapper>
+		</StyledLabel>
 	);
 };

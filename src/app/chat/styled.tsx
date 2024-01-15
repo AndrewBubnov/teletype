@@ -44,9 +44,6 @@ export const ChatListWrapper = styled(({ isSelectMode, ...props }: ChatListWrapp
 	grid-template-rows: auto 1fr;
 `;
 
-export const StyledLabel = styled('label')`
-	display: contents;
-`;
 export const UserWrapper = styled(Box)({
 	display: 'flex',
 	justifyContent: 'space-between',

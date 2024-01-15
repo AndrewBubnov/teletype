@@ -12,11 +12,11 @@ import {
 	ChatListItemInnerWrapper,
 	ChatListItemDateWrapper,
 	Italic,
-	StyledLabel,
 } from '@/app/chat/styled';
 import { options } from '@/app/chat/[chatId]/constants';
 import { ChatListItemProps } from '@/types';
 import { StyledCheckbox } from '@/app/shared/styled';
+import { StyledLabel } from '@/app/styled';
 
 export const ChatListItem = ({
 	chatId,

@@ -12,11 +12,12 @@ import { sendEditMessage } from '@/utils/sendEditMessage';
 import { ContextMenu } from '@/app/chat/[chatId]/components/ContextMenu';
 import { MessageInput } from '@/app/chat/[chatId]/components/MessageInput';
 import { UnreadMessages } from '@/app/chat/[chatId]/components/UnreadMessages';
-import { deleteMessage } from '@/actions/deleteMessage';
+import { deleteOrHideMessages } from '@/actions/deleteOrHideMessages';
 import { SelectModeHeader } from '@/app/shared/components/SelectModeHeader';
 import { useDeleteDialog } from '@/app/chat/[chatId]/hooks/useDeleteDialog';
 import { ConfirmDialog } from '@/app/chat/[chatId]/components/ConfirmDialog';
-import { ChatProps, Message } from '@/types';
+import { getUpdateData } from '@/app/chat/[chatId]/utils/getUpdateData';
+import { ChatProps, Message, UpdateMessageType } from '@/types';
 
 export const Chat = ({ chat }: ChatProps) => {
 	const {
@@ -37,8 +38,11 @@ export const Chat = ({ chat }: ChatProps) => {
 	const [menuActiveId, setMenuActiveId] = useState<string>('');
 
 	const { menuTop, setMessageParams, containerRef, initMenuParams } = useMenuTransition(menuActiveId, userId);
-	const { selectedIds, isAllSelected, toggleAllSelected, addSelection, startSelection, dropSelectMode } =
-		useSelect(messageList);
+
+	const { selectedIds, isAllSelected, toggleAllSelected, addSelection, startSelection, dropSelectMode } = useSelect(
+		messageList.filter(el => !el.hidden?.includes(el.authorId))
+	);
+
 	const { dialogOpen, deleteMessageHandler, closeDialogHandler } = useDeleteDialog();
 
 	const unreadRef = useRef(unreadNumber);
@@ -75,25 +79,21 @@ export const Chat = ({ chat }: ChatProps) => {
 	);
 
 	const onDeleteMessage = useCallback(
-		async (informBoth: boolean) => {
-			const updated = await deleteMessage(menuActiveId, [userId, ...(informBoth ? [interlocutorId] : [])]);
-
-			if (informBoth) {
-				sendEditMessage({
-					messageId: menuActiveId,
-					message: null,
-					roomId: chatId,
-				});
-			} else if (updated) {
-				sendEditMessage({
-					messageId: menuActiveId,
-					message: updated,
-					roomId: chatId,
-				});
-			}
+		async (informAll: boolean) => {
 			setMenuActiveId('');
+			const updated = await deleteOrHideMessages(isSelectMode ? selectedIds : [menuActiveId], [
+				userId,
+				...(informAll ? [interlocutorId] : []),
+			]);
+			const updateData = getUpdateData({ updated, informAll, selectedIds, menuActiveId, isSelectMode });
+			sendEditMessage({
+				updateData,
+				type: informAll ? UpdateMessageType.DELETE : UpdateMessageType.EDIT,
+				roomId: chatId,
+			});
+			dropSelectMode();
 		},
-		[menuActiveId, chatId, userId, interlocutorId]
+		[chatId, dropSelectMode, interlocutorId, isSelectMode, menuActiveId, selectedIds, userId]
 	);
 
 	const onReplyMessage = useCallback(() => {
@@ -122,9 +122,9 @@ export const Chat = ({ chat }: ChatProps) => {
 		node?.scrollIntoView({ behavior: 'smooth' });
 	}, [messageList]);
 
-	const deleteSelectedHandler = useCallback(async () => {}, []);
-
 	if (!userId) return <FullScreenLoader />;
+	console.log(messageList.filter(el => !el.hidden.includes(userId)));
+	console.log(userId);
 
 	return (
 		<Box>

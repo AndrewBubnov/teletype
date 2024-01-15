@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { sendAddReaction } from '@/utils/sendAddReaction';
 import { updateMessageIsRead } from '@/actions/updateMessageIsRead';
 import { addReaction } from '@/actions/addReaction';
-import { ChatVisitorStatus, Message, MessageMap, Store, Toast, UserChat } from '@/types';
+import { ChatVisitorStatus, Message, MessageMap, Store, Toast, UpdateMessageType, UserChat } from '@/types';
 
 export const useStore = create<Store>(set => ({
 	messageMap: {},
@@ -30,20 +30,24 @@ export const useStore = create<Store>(set => ({
 				};
 			return { messageMap: { ...state.messageMap, [message.chatId]: [message] } };
 		}),
-	updateMessageInMessageMap: ({ message, messageId, roomId: chatId }) =>
+	updateMessageInMessageMap: ({ updateData, type, roomId: chatId }) =>
 		set(state => {
-			if (!message) {
+			if (type === UpdateMessageType.DELETE) {
+				const deletedIds = Object.keys(updateData);
 				return {
 					messageMap: {
 						...state.messageMap,
-						[chatId]: state.messageMap[chatId].filter(el => el.id !== messageId),
+						[chatId]: state.messageMap[chatId].filter(el => !deletedIds.includes(el.id)),
 					},
 				};
 			}
 			return {
 				messageMap: {
 					...state.messageMap,
-					[chatId]: state.messageMap[chatId].map(el => (el.id === messageId ? message : el)),
+					[chatId]: state.messageMap[chatId].map(el => {
+						if (updateData[el.id]) return updateData[el.id]!;
+						return el;
+					}),
 				},
 			};
 		}),
