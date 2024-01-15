@@ -41,15 +41,15 @@ Explore the live demo, an auto-deploy from the master branch: [Teletype](https:/
 - **Photo Capture and Sending**: Users can capture photos by clicking on the camera icon, and they can seamlessly send the captured photos as messages. For mobile devices, users have the capability to switch between the main and front-facing cameras.
 
 - **Message Context Menu**: Click or tap on a message reveals a context menu for that specific message. For the message author, there is an option to edit the message. Users can also reply to specific messages. In a reply, the original author, the first line of its content for text messages, and the timestamp of its sending are displayed. Clicking or tapping on the area displaying the replied message smoothly scrolls the screen to that message.
-  **Reactions** for Non-Author Users: Non-authors of messages can add emoji reactions to messages.
+   - **Reactions** for Non-Author Users: Non-authors of messages can add emoji reactions to messages.
 Options for All Messages:
-  **Delete**: Allows users to delete the message. Deletion options include removal by the message sender only or by both chat participants.
-  **Select**: Activates multi-select mode for both chats and messages.
-  **Edit**: Enables users to edit their own messages.
-  **Reply**: Users can reply to specific messages.
+   - **Delete**: Allows users to delete the message. Deletion options include removal by the message sender only or by both chat participants.
+   - **Select**: Activates multi-select mode for both chats and messages.
+   - **Edit**: Enables users to edit their own messages.
+   - **Reply**: Users can reply to specific messages.
 
 Options for Image Messages:
-  **Download**: Available for image and photo messages.
+   - **Download**: Available for image and photo messages.
 
 - **Unified Chat and Message Selection**: Users can enter multi-select mode for both chats and messages. For chats, it is activated by long-pressing a chat, and for messages, users can choose the "Select" option from the context menu. In this mode, users can manually select individual chats/messages or use the "Select all" button to choose all chats/messages at once for deletion. Deletion options include removal by the message sender only or by both chat participants.
 
