@@ -44,16 +44,14 @@ Explore the live demo, an auto-deploy from the master branch: [Teletype](https:/
   
    - **Reactions** for Non-Author Users: Non-authors of messages can add emoji reactions to messages.
      
-Options for All Messages:
+  Options for All Messages:
 
    - **Delete**: Allows users to delete the message. Deletion options include removal by the message sender only or by both chat participants.
    - **Select**: Activates multi-select mode for both chats and messages.
    - **Edit**: Enables users to edit their own messages.
    - **Reply**: Users can reply to specific messages.
 
-Options for Image Messages:
-
-   - **Download**: Available for image and photo messages.
+  Options for Image Messages: **Download**: Available for image and photo messages.
 
 - **Unified Chat and Message Selection**: Users can enter multi-select mode for both chats and messages. For chats, it is activated by long-pressing a chat, and for messages, users can choose the "Select" option from the context menu. In this mode, users can manually select individual chats/messages or use the "Select all" button to choose all chats/messages at once for deletion. Deletion options include removal by the message sender only or by both chat participants.
 
