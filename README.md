@@ -55,15 +55,11 @@ Explore the live demo, an auto-deploy from the master branch: [Teletype](https:/
 
 - **Unified Chat and Message Selection**: Users can enter multi-select mode for both chats and messages. For chats, it is activated by long-pressing a chat, and for messages, users can choose the "Select" option from the context menu. In this mode, users can manually select individual chats/messages or use the "Select all" button to choose all chats/messages at once for deletion. Deletion options include removal by the message sender only or by both chat participants.
 
+- **Read and Sent Message Indicators**: Messages feature indicators for sent and read status, updating in real-time.
+
 - **Emoji Support:** Users can now include emojis in their messages, either along with text or as standalone emoji messages.
-
-- **Message Context Menu:** Click or tap on a message reveals a context menu for that specific message. For the message author, there is an option to edit the message. Users can also reply to specific messages. In a reply, the original author, the first line of its content for text messages, and the timestamp of its sending are displayed. Clicking or tapping on the area displaying the replied message smoothly scrolls the screen to that message.
-
-- **Message Reactions:** From the context menu, users can react to messages by adding emoji reactions. The message will display the reaction and the avatar of the user who added the reaction.
-
-- **Message Deletion:** Users can delete messages from the context menu.
   
-- **Message Persistence:** Messages for users not in the current chat are stored in the database and removed after they enter the chat and read the messages. Messages are deleted due to the usage of the free Atlas plan with limited storage.
+- **Message Persistence:** Unread messages are stored in the database and removed after getting read and 3 days after creation. Messages are deleted due to the usage of the free Atlas plan with limited storage.
 
 - **Profile Editing Page:** Users can edit their profile by clicking the button in the drawer, opened by pressing the "Menu" button. On this page, users can edit their username and profile photo (zoom, rotate, crop photo).
 
