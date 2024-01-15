@@ -1,7 +1,7 @@
 'use client';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
-import { Box, BoxProps, Checkbox, IconButton, List, ListItem, TextField, Typography } from '@mui/material';
+import { Box, BoxProps, List, ListItem, TextField, Typography } from '@mui/material';
 import PersonIcon from '@mui/icons-material/PersonOutlineOutlined';
 import SearchMuiIcon from '@mui/icons-material/Search';
 import LogoutMuiIcon from '@mui/icons-material/Logout';
@@ -33,14 +33,6 @@ export const UserPhotoStub = styled(({ isActive, size = 50, ...props }: UserPhot
 	border: ${({ isActive }) => (isActive ? '3px solid green' : 'none')};
 `;
 
-export const StyledCheckbox = styled(Checkbox)`
-	color: #fff;
-	padding: 0;
-
-	&.Mui-checked {
-		color: #fff;
-	}
-`;
 export const Wrapper = styled(Box)({
 	padding: '0.5rem',
 });
@@ -50,10 +42,6 @@ export const ChatListWrapper = styled(({ isSelectMode, ...props }: ChatListWrapp
 	gap: 1rem;
 	grid-template-columns: ${({ isSelectMode }) => (isSelectMode ? 'auto 40px' : 'auto')};
 	grid-template-rows: auto 1fr;
-`;
-
-export const ChatHeaderStub = styled(Box)`
-	height: 2.5rem;
 `;
 
 export const StyledLabel = styled('label')`
@@ -167,7 +155,7 @@ export const LogoutIcon = styled(LogoutMuiIcon)(() => ({
 }));
 
 export const CloseIcon = styled(CloseMUIIcon)(() => ({
-	fill: 'lightgray',
+	fill: '#fff',
 }));
 
 export const StyledLink = styled(Link)(() => ({
@@ -201,10 +189,3 @@ export const StyledInput = styled(TextField)({
 		},
 	},
 });
-export const SelectedCountWrapper = styled(Box)`
-	display: flex;
-	align-items: center;
-	gap: 0.25rem;
-	color: #fff;
-	margin-left: 0.8rem;
-`;

@@ -2,8 +2,9 @@ import { ChangeEvent, useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { StyledBlackCheckbox, StyledButton, StyledDialogContentText } from '@/app/chat/[chatId]/styled';
 import { ConfirmDialogProps } from '@/types';
+import { DELETE_MULTIPLE_MESSAGE, DELETE_SINGLE_MESSAGE } from '@/app/chat/[chatId]/constants';
 
-export const ConfirmDialog = ({ open, onCancel, onConfirm, interlocutorName }: ConfirmDialogProps) => {
+export const ConfirmDialog = ({ open, onCancel, onConfirm, interlocutorName, isMultiple }: ConfirmDialogProps) => {
 	const [deleteBoth, setDeleteBoth] = useState(false);
 	const [enter, setEnter] = useState<boolean>(false);
 	const changeHandler = (event: ChangeEvent<HTMLInputElement>) => setDeleteBoth(event.target.checked);
@@ -14,6 +15,7 @@ export const ConfirmDialog = ({ open, onCancel, onConfirm, interlocutorName }: C
 		onConfirm(deleteBoth);
 		onCancel();
 	};
+
 	return (
 		<Dialog
 			open={open}
@@ -21,9 +23,9 @@ export const ConfirmDialog = ({ open, onCancel, onConfirm, interlocutorName }: C
 			onTransitionEnd={() => setEnter(false)}
 			onClose={backdropPressHandler}
 		>
-			<DialogTitle>Delete message</DialogTitle>
+			<DialogTitle>{`Delete message${isMultiple ? 's' : ''}`}</DialogTitle>
 			<DialogContent>
-				<DialogContentText>Are you sure you want to delete this message?</DialogContentText>
+				<DialogContentText>{isMultiple ? DELETE_MULTIPLE_MESSAGE : DELETE_SINGLE_MESSAGE}</DialogContentText>
 				<StyledDialogContentText>
 					<StyledBlackCheckbox checked={deleteBoth} onChange={changeHandler} />
 					also delete for {interlocutorName}

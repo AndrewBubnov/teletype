@@ -1,8 +1,9 @@
 'use client';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useChat } from '@/app/chat/[chatId]/hooks/useChat';
+import { useSelect } from '@/app/shared/hooks/useSelect';
 import { useMenuTransition } from '@/app/chat/[chatId]/hooks/useMenuTransition';
-import { ChatWrapper, CoverWrapper } from '@/app/chat/[chatId]/styled';
+import { ChatWrapper, CoverWrapper, SelectModeWrapper } from '@/app/chat/[chatId]/styled';
 import { FullScreenLoader } from '@/app/shared/components/FullScreenLoader';
 import { Box } from '@mui/material';
 import { ChatHeader } from '@/app/chat/[chatId]/components/ChatHeader';
@@ -12,6 +13,9 @@ import { ContextMenu } from '@/app/chat/[chatId]/components/ContextMenu';
 import { MessageInput } from '@/app/chat/[chatId]/components/MessageInput';
 import { UnreadMessages } from '@/app/chat/[chatId]/components/UnreadMessages';
 import { deleteMessage } from '@/actions/deleteMessage';
+import { SelectModeHeader } from '@/app/shared/components/SelectModeHeader';
+import { useDeleteDialog } from '@/app/chat/[chatId]/hooks/useDeleteDialog';
+import { ConfirmDialog } from '@/app/chat/[chatId]/components/ConfirmDialog';
 import { ChatProps, Message } from '@/types';
 
 export const Chat = ({ chat }: ChatProps) => {
@@ -33,8 +37,13 @@ export const Chat = ({ chat }: ChatProps) => {
 	const [menuActiveId, setMenuActiveId] = useState<string>('');
 
 	const { menuTop, setMessageParams, containerRef, initMenuParams } = useMenuTransition(menuActiveId, userId);
+	const { selectedIds, isAllSelected, toggleAllSelected, addSelection, startSelection, dropSelectMode } =
+		useSelect(messageList);
+	const { dialogOpen, deleteMessageHandler, closeDialogHandler } = useDeleteDialog();
 
 	const unreadRef = useRef(unreadNumber);
+
+	const isSelectMode = !!selectedIds.length;
 
 	useEffect(() => {
 		if (!unreadNumber) {
@@ -43,6 +52,10 @@ export const Chat = ({ chat }: ChatProps) => {
 	}, [unreadNumber]);
 
 	const contextMenuToggleHandler = (id: string) => (type: 'open' | 'close', messageParams: DOMRect) => {
+		if (isSelectMode) {
+			addSelection(id);
+			return;
+		}
 		setMessageParams(messageParams);
 		setMenuActiveId(type === 'open' ? id : '');
 	};
@@ -109,6 +122,8 @@ export const Chat = ({ chat }: ChatProps) => {
 		node?.scrollIntoView({ behavior: 'smooth' });
 	}, [messageList]);
 
+	const deleteSelectedHandler = useCallback(async () => {}, []);
+
 	if (!userId) return <FullScreenLoader />;
 
 	return (
@@ -120,6 +135,15 @@ export const Chat = ({ chat }: ChatProps) => {
 				interlocutorId={interlocutorId}
 			/>
 			<CoverWrapper>
+				<SelectModeWrapper>
+					<SelectModeHeader
+						dropSelectMode={dropSelectMode}
+						selectedNumber={selectedIds.length}
+						onDelete={deleteMessageHandler}
+						isAllSelected={isAllSelected}
+						toggleAllSelected={toggleAllSelected}
+					/>
+				</SelectModeWrapper>
 				<ChatWrapper ref={containerRef}>
 					{messageList
 						.filter(el => !el.hidden.includes(userId))
@@ -131,27 +155,29 @@ export const Chat = ({ chat }: ChatProps) => {
 								<SingleMessage
 									key={message.id}
 									message={message}
+									isSelectMode={isSelectMode}
 									repliedMessage={repliedMessage}
-									isAuthoredByUser={message.authorId === userId}
+									isSelected={selectedIds.includes(message.id)}
 									isScrolledTo={index === length - 1 - unreadRef.current}
 									onContextMenuToggle={contextMenuToggleHandler(message.id)}
 									updateIsRead={message.authorId !== userId ? updateIsRead : null}
+									isAuthoredByUser={isSelectMode ? false : message.authorId === userId}
 								/>
 							);
 						})}
 				</ChatWrapper>
 				{!!activeMessage && (
 					<ContextMenu
-						onCloseMenu={closeMenuHandler}
-						onReplyMessage={onReplyMessage}
-						onEditMessage={onEditMessage}
-						onDeleteMessage={onDeleteMessage}
-						onAddReaction={addReactionHandler}
-						onDownLoadImage={activeMessage.imageUrl ? onDownLoadImage : null}
 						menuTop={menuTop}
+						onEditMessage={onEditMessage}
+						onCloseMenu={closeMenuHandler}
 						initMenuParams={initMenuParams}
-						interlocutorName={interlocutorName}
+						onReplyMessage={onReplyMessage}
+						onAddReaction={addReactionHandler}
+						onDeleteMessage={deleteMessageHandler}
+						onSelect={startSelection(menuActiveId)}
 						isAuthor={activeMessage.authorId === authorId}
+						onDownLoadImage={activeMessage.imageUrl ? onDownLoadImage : null}
 					/>
 				)}
 				{unreadNumber ? <UnreadMessages unreadNumber={unreadNumber} onPress={scrollToLastHandler} /> : null}
@@ -163,6 +189,13 @@ export const Chat = ({ chat }: ChatProps) => {
 				setRepliedMessage={setRepliedMessage}
 				editedMessage={editedMessage}
 				setEditedMessage={setEditedMessage}
+			/>
+			<ConfirmDialog
+				open={dialogOpen}
+				isMultiple={selectedIds.length > 1}
+				onCancel={closeDialogHandler}
+				onConfirm={onDeleteMessage}
+				interlocutorName={interlocutorName}
 			/>
 		</Box>
 	);

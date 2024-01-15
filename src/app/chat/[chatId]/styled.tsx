@@ -21,6 +21,7 @@ import ReplyIcon from '@mui/icons-material/ReplyOutlined';
 import DownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import CameraMUIIcon from '@mui/icons-material/CameraOutlined';
+import CheckMUIIcon from '@mui/icons-material/Check';
 import CloseMUIIcon from '@mui/icons-material/Close';
 import CameraSwitchMUIIcon from '@mui/icons-material/Cameraswitch';
 import SendIcon from '@mui/icons-material/Send';
@@ -37,11 +38,10 @@ import {
 } from '@/types';
 
 export const ChatWrapper = styled(Box)`
-	padding: 1rem;
+	padding: 0 1rem 1rem 1rem;
 	overflow-y: auto;
 	overflow-x: hidden;
 	height: 72vh;
-	margin-top: 1rem;
 
 	&::-webkit-scrollbar {
 		width: 6px;
@@ -73,6 +73,14 @@ export const ChatWrapper = styled(Box)`
 
 export const CoverWrapper = styled(Box)`
 	position: relative;
+`;
+
+export const SelectModeWrapper = styled(Box)`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	padding-right: 0.5rem;
 `;
 export const UploadLabel = styled(FormLabel)`
 	margin-top: 0.5rem;
@@ -274,6 +282,7 @@ export const Backdrop = styled(Box)`
 `;
 export const MessageWrapper = styled(Box)`
 	position: relative;
+	user-select: none;
 	display: flex;
 	padding: 1rem 0;
 `;
@@ -473,6 +482,9 @@ export const EditIcon = styled(ModeEditIcon)`
 `;
 
 export const DownloadIcon = styled(FileDownloadIcon)`
+	fill: #1a1a1a;
+`;
+export const CheckIcon = styled(CheckMUIIcon)`
 	fill: #1a1a1a;
 `;
 export const StyledDeleteIcon = styled(DeleteOutlineIcon)`

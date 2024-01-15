@@ -3,13 +3,13 @@ import { prisma } from '@/db';
 import { revalidatePath } from 'next/cache';
 import { CHAT_LIST } from '@/constants';
 
-export const deleteChats = async (idsArray: string[]) => {
-	if (!idsArray.length) return;
+export const deleteChats = async (ids: string[], chatIds: string[]) => {
+	if (!ids.length) return;
 	await prisma.chat.deleteMany({
-		where: { chatId: { in: idsArray } },
+		where: { id: { in: ids } },
 	});
 	await prisma.message.deleteMany({
-		where: { chatId: { in: idsArray } },
+		where: { chatId: { in: chatIds } },
 	});
 	revalidatePath(CHAT_LIST);
 };

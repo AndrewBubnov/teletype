@@ -103,6 +103,7 @@ export interface ChatListItemProps {
 	onPress(): void;
 	onLongPress(): void;
 	isSelectMode: boolean;
+	isSelected: boolean;
 }
 
 export enum VisitorStatus {
@@ -132,6 +133,8 @@ export type SingleMessageProps = {
 	updateIsRead: ((arg: string) => void) | null;
 	isScrolledTo: boolean;
 	isAuthoredByUser: boolean;
+	isSelected: boolean;
+	isSelectMode: boolean;
 };
 
 export interface EditMessageClient {
@@ -160,13 +163,13 @@ export interface UseLongPress {
 }
 
 export interface ContextMenuProps {
-	interlocutorName: string;
 	onAddReaction(arg: string): void;
 	onCloseMenu(): void;
 	initMenuParams: MutableRefObject<DOMRect | null>;
 	onReplyMessage(): void;
 	onEditMessage(): void;
-	onDeleteMessage(arg: boolean): void;
+	onSelect(): void;
+	onDeleteMessage(evt: SyntheticEvent): void;
 	onDownLoadImage: null | (() => void);
 	menuTop: number;
 	isAuthor: boolean;
@@ -278,6 +281,7 @@ export interface ConfirmDialogProps {
 	onCancel(): void;
 	onConfirm: (arg: boolean) => void;
 	interlocutorName: string;
+	isMultiple: boolean;
 }
 
 export enum FacingMode {
@@ -310,4 +314,12 @@ export interface AddReaction {
 
 export interface ChatListWrapperProps extends BoxProps {
 	isSelectMode: boolean;
+}
+
+export interface SelectModeHeaderProps {
+	dropSelectMode(): void;
+	selectedNumber: number;
+	onDelete: (() => Promise<void>) | ((evt: SyntheticEvent) => void);
+	isAllSelected: boolean;
+	toggleAllSelected(): void;
 }

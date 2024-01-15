@@ -5,6 +5,8 @@ import { ReplyTo } from '@/app/chat/[chatId]/components/ReplyTo';
 import { ImageMessage } from '@/app/chat/[chatId]/components/ImageMessage';
 import { MessageBottom } from '@/app/chat/[chatId]/components/MessageBottom';
 import { LinkMessagePart } from '@/app/chat/[chatId]/components/LinkMessagePart';
+import { StyledCheckbox } from '@/app/shared/styled';
+import { StyledLabel } from '@/app/chat/styled';
 import { urlRegex } from '@/app/chat/[chatId]/constants';
 import { MessageType, SingleMessageProps } from '@/types';
 
@@ -15,6 +17,8 @@ export const SingleMessage = ({
 	updateIsRead,
 	isScrolledTo,
 	isAuthoredByUser,
+	isSelectMode,
+	isSelected,
 }: SingleMessageProps) => {
 	const [isImageEnlarged, setIsImageEnlarged] = useState<boolean>(false);
 
@@ -64,29 +68,32 @@ export const SingleMessage = ({
 
 	if (message.type === MessageType.COMMON) {
 		return (
-			<MessageWrapper ref={containerRef} id={message.id} onClick={onPress}>
-				<MessageItem
-					singlePadding={!repliedMessage}
-					isAuthoredByUser={isAuthoredByUser}
-					fullWidth={isImageEnlarged}
-				>
-					<ReplyTo message={repliedMessage} />
-					{message.imageUrl && (
-						<ImageMessage
-							message={message}
-							isEnlarged={isImageEnlarged}
-							onEnlargeToggle={toggleEnlargeHandler}
-							width={containerRef.current?.clientWidth}
-						/>
-					)}
-					{message.text && (
-						<InnerMessageItem withPadding={!repliedMessage} isAuthoredByUser={isAuthoredByUser}>
-							{messageText}
-						</InnerMessageItem>
-					)}
-					<MessageBottom message={message} withOffset={!repliedMessage} />
-				</MessageItem>
-			</MessageWrapper>
+			<StyledLabel htmlFor={message.id}>
+				<MessageWrapper ref={containerRef} id={message.id} onClick={onPress}>
+					<MessageItem
+						singlePadding={!repliedMessage}
+						isAuthoredByUser={isAuthoredByUser}
+						fullWidth={isImageEnlarged}
+					>
+						<ReplyTo message={repliedMessage} />
+						{message.imageUrl && (
+							<ImageMessage
+								message={message}
+								isEnlarged={isImageEnlarged}
+								onEnlargeToggle={toggleEnlargeHandler}
+								width={containerRef.current?.clientWidth}
+							/>
+						)}
+						{message.text && (
+							<InnerMessageItem withPadding={!repliedMessage} isAuthoredByUser={isAuthoredByUser}>
+								{messageText}
+							</InnerMessageItem>
+						)}
+						<MessageBottom message={message} withOffset={!repliedMessage} />
+					</MessageItem>
+					{isSelectMode ? <StyledCheckbox id={message.id} checked={isSelected} /> : null}
+				</MessageWrapper>
+			</StyledLabel>
 		);
 	}
 

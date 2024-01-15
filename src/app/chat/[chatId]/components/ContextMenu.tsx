@@ -1,7 +1,8 @@
-import { SyntheticEvent, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { Box, Grow, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import {
 	Backdrop,
+	CheckIcon,
 	DownloadIcon,
 	EditIcon,
 	MenuCard,
@@ -10,7 +11,6 @@ import {
 	ReactionsWrapper,
 } from '@/app/chat/[chatId]/styled';
 import getBoundingClientRect from '@popperjs/core/lib/dom-utils/getBoundingClientRect';
-import { ConfirmDialog } from '@/app/chat/[chatId]/components/ConfirmDialog';
 import { reactions } from '@/app/chat/[chatId]/constants';
 import { ContextMenuProps } from '@/types';
 
@@ -22,12 +22,10 @@ export const ContextMenu = ({
 	onReplyMessage,
 	onEditMessage,
 	onDeleteMessage,
-	interlocutorName,
+	onSelect,
 	onDownLoadImage,
 	isAuthor,
 }: ContextMenuProps) => {
-	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-
 	const ref = useRef();
 
 	useLayoutEffect(() => {
@@ -35,74 +33,67 @@ export const ContextMenu = ({
 		initMenuParams.current = getBoundingClientRect(ref.current) as DOMRect;
 	}, [initMenuParams]);
 
-	const deleteMessageHandler = (evt: SyntheticEvent) => {
-		evt.stopPropagation();
-		setDialogOpen(true);
-	};
-
-	const closeDialogHandler = () => setDialogOpen(false);
-
 	return (
-		<>
-			<Backdrop onClick={onCloseMenu}>
-				<Grow in style={{ transformOrigin: '0 0 0' }}>
-					<MenuCard ref={ref} style={{ transform: `translateY(${menuTop}px)` }}>
-						{!isAuthor ? (
-							<ReactionsWrapper>
-								{reactions.map(reaction => (
-									<Box key={reaction} onClick={() => onAddReaction(reaction)}>
-										{String.fromCodePoint(parseInt(reaction, 16))}
-									</Box>
-								))}
-							</ReactionsWrapper>
-						) : null}
-						<List>
+		<Backdrop onClick={onCloseMenu}>
+			<Grow in style={{ transformOrigin: '0 0 0' }}>
+				<MenuCard ref={ref} style={{ transform: `translateY(${menuTop}px)` }}>
+					{!isAuthor ? (
+						<ReactionsWrapper>
+							{reactions.map(reaction => (
+								<Box key={reaction} onClick={() => onAddReaction(reaction)}>
+									{String.fromCodePoint(parseInt(reaction, 16))}
+								</Box>
+							))}
+						</ReactionsWrapper>
+					) : null}
+					<List>
+						<ListItem disablePadding>
+							<ListItemButton onClick={onDeleteMessage}>
+								<ListItemIcon>
+									<MenuDeleteIcon />
+								</ListItemIcon>
+								<ListItemText primary="Delete" />
+							</ListItemButton>
+						</ListItem>
+						<ListItem disablePadding>
+							<ListItemButton onClick={onSelect}>
+								<ListItemIcon>
+									<CheckIcon />
+								</ListItemIcon>
+								<ListItemText primary="Select" />
+							</ListItemButton>
+						</ListItem>
+						{isAuthor ? (
 							<ListItem disablePadding>
-								<ListItemButton onMouseDown={deleteMessageHandler} onTouchStart={deleteMessageHandler}>
+								<ListItemButton onClick={onEditMessage}>
 									<ListItemIcon>
-										<MenuDeleteIcon />
+										<EditIcon />
 									</ListItemIcon>
-									<ListItemText primary="Delete" />
+									<ListItemText primary="Edit" />
 								</ListItemButton>
 							</ListItem>
-							{isAuthor ? (
-								<ListItem disablePadding>
-									<ListItemButton onMouseDown={onEditMessage} onTouchStart={onEditMessage}>
-										<ListItemIcon>
-											<EditIcon />
-										</ListItemIcon>
-										<ListItemText primary="Edit" />
-									</ListItemButton>
-								</ListItem>
-							) : null}
-							<ListItem disablePadding onMouseDown={onReplyMessage} onTouchStart={onReplyMessage}>
+						) : null}
+						<ListItem disablePadding onClick={onReplyMessage}>
+							<ListItemButton>
+								<ListItemIcon>
+									<MenuReplyIcon />
+								</ListItemIcon>
+								<ListItemText primary="Reply" />
+							</ListItemButton>
+						</ListItem>
+						{onDownLoadImage ? (
+							<ListItem disablePadding onClick={onDownLoadImage}>
 								<ListItemButton>
 									<ListItemIcon>
-										<MenuReplyIcon />
+										<DownloadIcon />
 									</ListItemIcon>
-									<ListItemText primary="Reply" />
+									<ListItemText primary="Download" />
 								</ListItemButton>
 							</ListItem>
-							{onDownLoadImage ? (
-								<ListItem disablePadding onMouseDown={onDownLoadImage} onTouchStart={onDownLoadImage}>
-									<ListItemButton>
-										<ListItemIcon>
-											<DownloadIcon />
-										</ListItemIcon>
-										<ListItemText primary="Download" />
-									</ListItemButton>
-								</ListItem>
-							) : null}
-						</List>
-					</MenuCard>
-				</Grow>
-			</Backdrop>
-			<ConfirmDialog
-				open={dialogOpen}
-				onCancel={closeDialogHandler}
-				onConfirm={onDeleteMessage}
-				interlocutorName={interlocutorName}
-			/>
-		</>
+						) : null}
+					</List>
+				</MenuCard>
+			</Grow>
+		</Backdrop>
 	);
 };

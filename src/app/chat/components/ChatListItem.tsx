@@ -3,7 +3,6 @@ import { useStore } from '@/store';
 import { useLongPress } from '@/app/chat/[chatId]/hooks/useLongPress';
 import {
 	ChatUnreadMessages,
-	StyledCheckbox,
 	ChatListItemMessageText,
 	UserPhotoImage,
 	UserPhotoStub,
@@ -17,8 +16,16 @@ import {
 } from '@/app/chat/styled';
 import { options } from '@/app/chat/[chatId]/constants';
 import { ChatListItemProps } from '@/types';
+import { StyledCheckbox } from '@/app/shared/styled';
 
-export const ChatListItem = ({ chatId, interlocutor, onPress, onLongPress, isSelectMode }: ChatListItemProps) => {
+export const ChatListItem = ({
+	chatId,
+	interlocutor,
+	onPress,
+	onLongPress,
+	isSelectMode,
+	isSelected,
+}: ChatListItemProps) => {
 	const { messageMap, activeUsers, userId } = useStore(state => ({
 		messageMap: state.messageMap,
 		activeUsers: state.activeUsers,
@@ -67,7 +74,7 @@ export const ChatListItem = ({ chatId, interlocutor, onPress, onLongPress, isSel
 					</UserWrapper>
 				) : null}
 			</ChatListItemInnerWrapper>
-			{isSelectMode ? <StyledCheckbox id={chatId} /> : null}
+			{isSelectMode ? <StyledCheckbox id={chatId} checked={isSelected} /> : null}
 		</StyledLabel>
 	);
 };
