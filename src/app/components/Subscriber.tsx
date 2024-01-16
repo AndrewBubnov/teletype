@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useStore } from '@/store';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
 import { createRooms } from '@/app/chat/utils/createRooms';
@@ -10,6 +10,8 @@ import { addClientMessage, clearAddClientMessage } from '@/utils/addClientMessag
 import { clearUpdateClientMessage, updateClientMessage } from '@/utils/updateClientMessage';
 import { clearUpdateChatList, updateChatList } from '@/utils/updateChatList';
 import { clearUpdateVisitorStatus, updateVisitorStatus } from '@/utils/updateVisitorStatus';
+import { clearUpdateConnectionError, updateConnectionError } from '@/utils/updateConnectionError';
+import { SERVER_CONNECTION_FAILED } from '@/app/constants';
 import { SubscriberProps } from '@/types';
 
 export const Subscriber = ({ userChats, userEmails, userId, messageMap }: SubscriberProps) => {
@@ -23,6 +25,7 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap }: Subscr
 		chatList,
 		setChatVisitorStatus,
 		setUserId,
+		setToast,
 	} = useStore(state => ({
 		setActiveUsers: state.setActiveUsers,
 		chatList: state.chatList,
@@ -33,6 +36,7 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap }: Subscr
 		addMessageToMessageMap: state.addMessageToMessageMap,
 		updateMessageInMessageMap: state.updateMessageInMessageMap,
 		setUserId: state.setUserId,
+		setToast: state.setToast,
 	}));
 
 	useEffect(() => {
@@ -58,6 +62,8 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap }: Subscr
 		setUserId(userId);
 	}, [setUserId, userId]);
 
+	const setErrorToast = useCallback(() => setToast({ text: SERVER_CONNECTION_FAILED, type: 'error' }), [setToast]);
+
 	useSubscribe(setActiveUsers, updateActiveUsers, clearActiveUsers);
 
 	useSubscribe(addMessageToMessageMap, addClientMessage, clearAddClientMessage);
@@ -67,6 +73,8 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap }: Subscr
 	useSubscribe(setChatList, updateChatList, clearUpdateChatList);
 
 	useSubscribe(setChatVisitorStatus, updateVisitorStatus, clearUpdateVisitorStatus);
+
+	useSubscribe(setErrorToast, updateConnectionError, clearUpdateConnectionError);
 
 	return null;
 };
