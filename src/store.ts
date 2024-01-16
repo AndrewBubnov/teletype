@@ -1,9 +1,8 @@
 import { create } from 'zustand';
-import { sendAddReaction } from '@/utils/sendAddReaction';
 import { updateMessageIsRead } from '@/actions/updateMessageIsRead';
 import { addReaction } from '@/actions/addReaction';
-import { ChatVisitorStatus, Message, MessageMap, Store, Toast, UpdateMessageType, UserChat } from '@/types';
 import { sendEditMessage } from '@/utils/sendEditMessage';
+import { ChatVisitorStatus, Message, MessageMap, Store, Toast, UpdateMessageType, UserChat } from '@/types';
 
 export const useStore = create<Store>(set => ({
 	messageMap: {},
@@ -78,7 +77,12 @@ export const useStore = create<Store>(set => ({
 	addReactionMap:
 		(chatId: string, authorImageUrl: string | null | undefined) => async (messageId: string, reaction: string) => {
 			const message = await addReaction({ messageId, reaction, authorImageUrl });
-			if (message) sendAddReaction({ chatId, messageId, message });
+			if (message)
+				sendEditMessage({
+					updateData: { [messageId]: message },
+					type: UpdateMessageType.EDIT,
+					roomId: chatId,
+				});
 
 			set(state => ({
 				messageMap: {
