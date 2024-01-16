@@ -1,8 +1,9 @@
 'use client';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useChat } from '@/app/chat/[chatId]/hooks/useChat';
 import { useSelect } from '@/app/shared/hooks/useSelect';
 import { useMenuTransition } from '@/app/chat/[chatId]/hooks/useMenuTransition';
+import { useScrolledTo } from '@/app/chat/[chatId]/hooks/useScrolledTo';
 import { ChatWrapper, CoverWrapper, SelectModeWrapper } from '@/app/chat/[chatId]/styled';
 import { FullScreenLoader } from '@/app/shared/components/FullScreenLoader';
 import { Box } from '@mui/material';
@@ -51,15 +52,9 @@ export const Chat = ({ chat }: ChatProps) => {
 
 	const { dialogOpen, deleteMessageHandler, closeDialogHandler } = useDeleteDialog();
 
-	const unreadRef = useRef(unreadNumber);
+	const scrolledTo = useScrolledTo(unreadNumber);
 
 	const isSelectMode = !!selectedIds.length;
-
-	useEffect(() => {
-		if (!unreadNumber) {
-			unreadRef.current = 0;
-		}
-	}, [unreadNumber]);
 
 	const contextMenuToggleHandler = (id: string) => (type: 'open' | 'close', messageParams: DOMRect) => {
 		if (isSelectMode) {
@@ -153,6 +148,7 @@ export const Chat = ({ chat }: ChatProps) => {
 						const repliedMessage = message.replyToId
 							? messageList.find(el => el.id === message.replyToId)
 							: null;
+						const isAuthoredByUser = isSelectMode ? false : message.authorId === userId;
 						return (
 							<SingleMessage
 								key={message.id}
@@ -160,10 +156,10 @@ export const Chat = ({ chat }: ChatProps) => {
 								isSelectMode={isSelectMode}
 								repliedMessage={repliedMessage}
 								isSelected={selectedIds.includes(message.id)}
-								isScrolledTo={index === length - 1 - unreadRef.current}
+								isScrolledTo={isAuthoredByUser && index === length - 1 - scrolledTo}
 								onContextMenuToggle={contextMenuToggleHandler(message.id)}
 								updateIsRead={message.authorId !== userId ? updateIsRead : null}
-								isAuthoredByUser={isSelectMode ? false : message.authorId === userId}
+								isAuthoredByUser={isAuthoredByUser}
 							/>
 						);
 					})}
