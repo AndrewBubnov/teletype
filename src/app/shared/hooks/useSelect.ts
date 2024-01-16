@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useLatest } from '@/app/chat/[chatId]/hooks/useLatest';
 
 export const useSelect = <T extends Record<'id', string>>(list: T[] = []) => {
-	const listRef = useLatest(list);
 	const [selectedIds, setSelectedIds] = useState<string[]>([]);
 	const [isAllSelected, setIsAllSelected] = useState<boolean>(selectedIds.length < list.length);
 	const startSelectionRef = useRef<string>('');
@@ -12,11 +10,9 @@ export const useSelect = <T extends Record<'id', string>>(list: T[] = []) => {
 	const toggleAllSelected = useCallback(
 		() =>
 			setSelectedIds(prevState =>
-				prevState.length === listRef.current.length
-					? [startSelectionRef.current]
-					: listRef.current.map(el => el.id)
+				prevState.length === list.length ? [startSelectionRef.current] : list.map(el => el.id)
 			),
-		[listRef]
+		[list]
 	);
 
 	const addSelection = useCallback(

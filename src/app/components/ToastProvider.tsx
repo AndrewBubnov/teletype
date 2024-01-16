@@ -1,9 +1,9 @@
 'use client';
-import { useStore } from '@/store';
+import { useCommonStore } from '@/store';
 import { Toast } from '@/app/components/Toast';
 
 export const ToastProvider = () => {
-	const { toast, setToast } = useStore(state => ({
+	const { toast, setToast } = useCommonStore(state => ({
 		toast: state.toast,
 		setToast: state.setToast,
 	}));

@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useStore } from '@/store';
+import { useCommonStore } from '@/store';
 import { FacingMode } from '@/types';
 
 export const usePhoto = (
 	onTakePhoto: (arg: string) => void,
 	onClose: (evt?: {}, reason?: 'backdropClick' | 'escapeKeyDown') => void
 ) => {
-	const setToast = useStore(state => state.setToast);
+	const setToast = useCommonStore(state => state.setToast);
 
 	const [isStreaming, setIsStreaming] = useState(false);
 	const [width, setWidth] = useState(0);

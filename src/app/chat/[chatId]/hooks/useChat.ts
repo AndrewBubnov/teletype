@@ -1,15 +1,16 @@
 import { useEffect, useMemo } from 'react';
-import { useStore } from '@/store';
+import { useCommonStore, useMessageStore } from '@/store';
 import { sendChangeVisitorStatus } from '@/utils/sendChangeVisitorStatus';
 import { UserChat, VisitorStatus } from '@/types';
 
 export const useChat = (chat: UserChat) => {
-	const { messageMap, updateIsRead, addReaction, userId } = useStore(state => ({
+	const { messageMap, updateIsRead, addReaction } = useMessageStore(state => ({
 		messageMap: state.messageMap,
 		updateIsRead: state.updateIsRead,
 		addReaction: state.addReaction,
-		userId: state.userId,
 	}));
+	const userId = useCommonStore(state => state.userId);
+
 	const { members, chatId } = chat;
 	const author = members.find(user => user.userId === userId);
 	const interlocutor = members.find(user => user.userId !== userId);

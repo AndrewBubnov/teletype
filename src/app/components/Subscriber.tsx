@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useEffect } from 'react';
-import { useStore } from '@/store';
+import { useMessageStore, useCommonStore } from '@/store';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
 import { createRooms } from '@/app/chat/utils/createRooms';
 import { initUserChats } from '@/utils/initUserChats';
@@ -15,29 +15,22 @@ import { SERVER_CONNECTION_FAILED } from '@/app/constants';
 import { SubscriberProps } from '@/types';
 
 export const Subscriber = ({ userChats, userEmails, userId, messageMap }: SubscriberProps) => {
-	const {
-		setActiveUsers,
-		setMessageMap,
-		addMessageToMessageMap,
-		updateMessageInMessageMap,
-		setChatList,
-		setUserEmails,
-		chatList,
-		setChatVisitorStatus,
-		setUserId,
-		setToast,
-	} = useStore(state => ({
-		setActiveUsers: state.setActiveUsers,
-		chatList: state.chatList,
+	const { setMessageMap, addMessageToMessageMap, updateMessageInMessageMap } = useMessageStore(state => ({
 		setMessageMap: state.setMessageMap,
-		setChatList: state.setChatList,
-		setUserEmails: state.setUserEmails,
-		setChatVisitorStatus: state.setChatVisitorStatus,
 		addMessageToMessageMap: state.addMessageToMessageMap,
 		updateMessageInMessageMap: state.updateMessageInMessageMap,
-		setUserId: state.setUserId,
-		setToast: state.setToast,
 	}));
+
+	const { setActiveUsers, setChatList, setUserEmails, chatList, setChatVisitorStatus, setUserId, setToast } =
+		useCommonStore(state => ({
+			setActiveUsers: state.setActiveUsers,
+			chatList: state.chatList,
+			setChatList: state.setChatList,
+			setUserEmails: state.setUserEmails,
+			setChatVisitorStatus: state.setChatVisitorStatus,
+			setUserId: state.setUserId,
+			setToast: state.setToast,
+		}));
 
 	useEffect(() => {
 		initUserChats(userChats);

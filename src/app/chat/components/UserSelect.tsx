@@ -1,6 +1,6 @@
 'use client';
 import { SyntheticEvent, useState } from 'react';
-import { useStore } from '@/store';
+import { useCommonStore } from '@/store';
 import { StyledInput } from '@/app/chat/styled';
 import { Autocomplete } from '@mui/material';
 import { getUserIdByEmail } from '@/actions/getUserIdByEmail';
@@ -8,7 +8,7 @@ import { onCreateChat } from '@/app/chat/utils/onCreateChat';
 import { createRoom } from '@/utils/createRoom';
 
 export const UserSelect = ({ canOpen, closeDrawer }: { canOpen: boolean; closeDrawer(): void }) => {
-	const { userEmails, userId } = useStore(state => ({
+	const { userEmails, userId } = useCommonStore(state => ({
 		userEmails: state.userEmails,
 		userId: state.userId,
 	}));

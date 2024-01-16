@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useStore } from '@/store';
+import { useCommonStore } from '@/store';
 import { Textarea } from '@mui/joy';
 import { RepliedMessageBox } from '@/app/chat/[chatId]/components/RepliedMessageBox';
 import { SendMessageFormWrapper } from '@/app/chat/[chatId]/styled';
@@ -23,7 +23,7 @@ export const MessageInput = ({
 	setEditedMessage,
 	setRepliedMessage,
 }: MessageInputProps) => {
-	const userId = useStore(state => state.userId);
+	const userId = useCommonStore(state => state.userId);
 
 	const [messageText, setMessageText] = useState<string>('');
 	const [emojis, setEmojis] = useState<string>('');

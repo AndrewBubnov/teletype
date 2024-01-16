@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useStore } from '@/store';
+import { useCommonStore, useMessageStore } from '@/store';
 import { useLongPress } from '@/app/chat/[chatId]/hooks/useLongPress';
 import {
 	ChatUnreadMessages,
@@ -26,11 +26,11 @@ export const ChatListItem = ({
 	isSelectMode,
 	isSelected,
 }: ChatListItemProps) => {
-	const { messageMap, activeUsers, userId } = useStore(state => ({
-		messageMap: state.messageMap,
+	const { activeUsers, userId } = useCommonStore(state => ({
 		activeUsers: state.activeUsers,
 		userId: state.userId,
 	}));
+	const messageMap = useMessageStore(state => state.messageMap);
 
 	const messageList = messageMap[chatId] || [];
 	const unreadNumber = messageList.filter(el => !el.isRead && el.authorId !== userId).length;

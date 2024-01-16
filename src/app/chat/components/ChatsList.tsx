@@ -1,5 +1,5 @@
 'use client';
-import { useStore } from '@/store';
+import { useCommonStore } from '@/store';
 import { useSelect } from '@/app/shared/hooks/useSelect';
 import { useRouter } from 'next/navigation';
 import { ChatListItem } from '@/app/chat/components/ChatListItem';
@@ -10,7 +10,7 @@ import { CHAT_LIST } from '@/constants';
 import { SelectModeHeader } from '@/app/shared/components/SelectModeHeader';
 
 export const ChatsList = () => {
-	const { chatList, userId } = useStore(state => ({
+	const { chatList, userId } = useCommonStore(state => ({
 		chatList: state.chatList,
 		userId: state.userId,
 	}));

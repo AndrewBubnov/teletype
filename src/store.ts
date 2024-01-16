@@ -2,22 +2,20 @@ import { create } from 'zustand';
 import { updateMessageIsRead } from '@/actions/updateMessageIsRead';
 import { addReaction } from '@/actions/addReaction';
 import { sendEditMessage } from '@/utils/sendEditMessage';
-import { ChatVisitorStatus, Message, MessageMap, Store, Toast, UpdateMessageType, UserChat } from '@/types';
+import {
+	ChatVisitorStatus,
+	CommonStore,
+	Message,
+	MessageMap,
+	MessageStore,
+	Toast,
+	UpdateMessageType,
+	UserChat,
+} from '@/types';
 
-export const useStore = create<Store>(set => ({
+export const useMessageStore = create<MessageStore>(set => ({
 	messageMap: {},
-	activeUsers: [],
-	chatList: [],
-	userEmails: [],
-	chatVisitorStatus: {},
-	toast: null,
-	userId: '',
 	setMessageMap: (updated: MessageMap) => set({ messageMap: updated }),
-	setActiveUsers: (updated: string[]) => set({ activeUsers: updated }),
-	setUserEmails: (updated: string[]) => set({ userEmails: updated }),
-	setChatList: (updated: UserChat[]) => set({ chatList: updated }),
-	setChatVisitorStatus: (updated: ChatVisitorStatus) => set({ chatVisitorStatus: updated }),
-	setToast: (toast: Toast) => set({ toast }),
 	addMessageToMessageMap: (message: Message) =>
 		set(state => {
 			if (!message.chatId) return { messageMap: state.messageMap };
@@ -101,5 +99,18 @@ export const useStore = create<Store>(set => ({
 			},
 		}));
 	},
+}));
+export const useCommonStore = create<CommonStore>(set => ({
+	activeUsers: [],
+	chatList: [],
+	userEmails: [],
+	chatVisitorStatus: {},
+	toast: null,
+	userId: '',
+	setActiveUsers: (updated: string[]) => set({ activeUsers: updated }),
+	setUserEmails: (updated: string[]) => set({ userEmails: updated }),
+	setChatList: (updated: UserChat[]) => set({ chatList: updated }),
+	setChatVisitorStatus: (updated: ChatVisitorStatus) => set({ chatVisitorStatus: updated }),
+	setToast: (toast: Toast) => set({ toast }),
 	setUserId: (userId: string) => set({ userId }),
 }));

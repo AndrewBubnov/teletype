@@ -220,8 +220,15 @@ export type UpdateMessage = {
 	roomId: string;
 };
 
-export interface Store {
+export interface MessageStore {
 	messageMap: MessageMap;
+	setMessageMap(arg: MessageMap): void;
+	addMessageToMessageMap(arg: Message): void;
+	updateMessageInMessageMap(args: UpdateMessage): void;
+	updateIsRead(message: Message): Promise<void>;
+	addReaction(message: Message, reaction: string, authorImageUrl: string | null | undefined): Promise<void>;
+}
+export interface CommonStore {
 	chatList: UserChat[];
 	activeUsers: string[];
 	userEmails: string[];
@@ -233,11 +240,6 @@ export interface Store {
 	setToast(arg: Toast): void;
 	chatVisitorStatus: ChatVisitorStatus;
 	setChatVisitorStatus(arg: ChatVisitorStatus): void;
-	setMessageMap(arg: MessageMap): void;
-	addMessageToMessageMap(arg: Message): void;
-	updateMessageInMessageMap(args: UpdateMessage): void;
-	updateIsRead(message: Message): Promise<void>;
-	addReaction(message: Message, reaction: string, authorImageUrl: string | null | undefined): Promise<void>;
 	setUserId(arg: string): void;
 }
 

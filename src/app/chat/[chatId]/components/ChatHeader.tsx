@@ -1,5 +1,5 @@
 import { memo, useMemo } from 'react';
-import { useStore } from '@/store';
+import { useCommonStore } from '@/store';
 import {
 	CenterHorizontalWrapper,
 	ChatHeaderLink,
@@ -16,7 +16,7 @@ import { CHAT_LIST } from '@/constants';
 import { ChatHeaderProps, VisitorStatus } from '@/types';
 
 const ChatHeaderComponent = ({ chatId, interlocutorId, interlocutorName, interlocutorImageUrl }: ChatHeaderProps) => {
-	const { chatVisitorStatus, activeUsers } = useStore(state => ({
+	const { chatVisitorStatus, activeUsers } = useCommonStore(state => ({
 		chatVisitorStatus: state.chatVisitorStatus,
 		activeUsers: state.activeUsers,
 	}));
