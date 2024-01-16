@@ -76,13 +76,13 @@ export const useMessageStore = create<MessageStore>(set => ({
 	addReaction: async (message: Message, reaction: string, authorImageUrl: string | null | undefined) => {
 		const { id: messageId, chatId } = message;
 		const updated = await addReaction({ messageId, reaction, authorImageUrl });
-		if (updated)
+		if (updated) {
 			sendEditMessage({
 				updateData: { [messageId]: updated },
 				type: UpdateMessageType.EDIT,
 				roomId: chatId,
 			});
-
+		}
 		set(state => ({
 			messageMap: {
 				...state.messageMap,
