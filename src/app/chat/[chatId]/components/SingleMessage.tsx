@@ -30,13 +30,13 @@ export const SingleMessage = ({
 		const observer = new IntersectionObserver(
 			([entry]) => {
 				if (entry.isIntersecting) observer.disconnect();
-				if (entry.isIntersecting && updateIsRead) updateIsRead(entry.target.id);
+				if (entry.isIntersecting && updateIsRead) updateIsRead(message);
 			},
 			{ rootMargin: '0px', threshold: 0.5 }
 		);
 		observer.observe(containerRef.current);
 		return () => observer.disconnect();
-	}, [message.isRead, updateIsRead]);
+	}, [message, updateIsRead]);
 
 	useEffect(() => {
 		if (isScrolledTo || isImageEnlarged)

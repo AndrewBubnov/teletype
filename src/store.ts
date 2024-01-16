@@ -51,7 +51,8 @@ export const useStore = create<Store>(set => ({
 				},
 			};
 		}),
-	updateIsReadMap: (chatId: string) => async (id: string) => {
+	updateIsRead: async (message: Message) => {
+		const { id, chatId } = message;
 		const updated = await updateMessageIsRead(id);
 		if (updated) {
 			sendEditMessage({
@@ -74,31 +75,31 @@ export const useStore = create<Store>(set => ({
 			return state;
 		});
 	},
-	addReactionMap:
-		(chatId: string, authorImageUrl: string | null | undefined) => async (messageId: string, reaction: string) => {
-			const message = await addReaction({ messageId, reaction, authorImageUrl });
-			if (message)
-				sendEditMessage({
-					updateData: { [messageId]: message },
-					type: UpdateMessageType.EDIT,
-					roomId: chatId,
-				});
+	addReaction: async (message: Message, reaction: string, authorImageUrl: string | null | undefined) => {
+		const { id: messageId, chatId } = message;
+		const updated = await addReaction({ messageId, reaction, authorImageUrl });
+		if (updated)
+			sendEditMessage({
+				updateData: { [messageId]: updated },
+				type: UpdateMessageType.EDIT,
+				roomId: chatId,
+			});
 
-			set(state => ({
-				messageMap: {
-					...state.messageMap,
-					[chatId]: state.messageMap[chatId].map(message => {
-						if (message.id === messageId) {
-							return {
-								...message,
-								reaction,
-								reactionAuthorImageUrl: reaction ? authorImageUrl : undefined,
-							};
-						}
-						return message;
-					}),
-				},
-			}));
-		},
+		set(state => ({
+			messageMap: {
+				...state.messageMap,
+				[chatId]: state.messageMap[chatId].map(message => {
+					if (message.id === messageId) {
+						return {
+							...message,
+							reaction,
+							reactionAuthorImageUrl: reaction ? authorImageUrl : undefined,
+						};
+					}
+					return message;
+				}),
+			},
+		}));
+	},
 	setUserId: (userId: string) => set({ userId }),
 }));

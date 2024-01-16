@@ -24,6 +24,7 @@ export const Chat = ({ chat }: ChatProps) => {
 		messageList,
 		addReaction,
 		interlocutorName,
+		authorImageUrl,
 		interlocutorImageUrl,
 		chatId,
 		authorId,
@@ -33,15 +34,20 @@ export const Chat = ({ chat }: ChatProps) => {
 		updateIsRead,
 		userId,
 	} = useChat(chat);
+
+	const shownMessageList = useMemo(
+		() => messageList.filter(el => !el.isHidden?.includes(userId)),
+		[messageList, userId]
+	);
+
 	const [repliedMessage, setRepliedMessage] = useState<Message | null>(null);
 	const [editedMessage, setEditedMessage] = useState<Message | null>(null);
 	const [menuActiveId, setMenuActiveId] = useState<string>('');
 
 	const { menuTop, setMessageParams, containerRef, initMenuParams } = useMenuTransition(menuActiveId, userId);
 
-	const { selectedIds, isAllSelected, toggleAllSelected, addSelection, startSelection, dropSelectMode } = useSelect(
-		messageList.filter(el => !el.isHidden?.includes(userId))
-	);
+	const { selectedIds, isAllSelected, toggleAllSelected, addSelection, startSelection, dropSelectMode } =
+		useSelect(shownMessageList);
 
 	const { dialogOpen, deleteMessageHandler, closeDialogHandler } = useDeleteDialog();
 
@@ -72,10 +78,10 @@ export const Chat = ({ chat }: ChatProps) => {
 		async (reactionString: string) => {
 			if (!activeMessage) return;
 			const reaction = activeMessage.reaction === reactionString ? '' : reactionString;
-			await addReaction(activeMessage.id, reaction);
+			await addReaction(activeMessage, reaction, authorImageUrl);
 			closeMenuHandler();
 		},
-		[addReaction, closeMenuHandler, activeMessage]
+		[activeMessage, addReaction, authorImageUrl, closeMenuHandler]
 	);
 
 	const onDeleteMessage = useCallback(
@@ -143,26 +149,24 @@ export const Chat = ({ chat }: ChatProps) => {
 					/>
 				</SelectModeWrapper>
 				<ChatWrapper ref={containerRef}>
-					{messageList
-						.filter(el => !el.isHidden?.includes(userId))
-						.map((message, index, { length }) => {
-							const repliedMessage = message.replyToId
-								? messageList.find(el => el.id === message.replyToId)
-								: null;
-							return (
-								<SingleMessage
-									key={message.id}
-									message={message}
-									isSelectMode={isSelectMode}
-									repliedMessage={repliedMessage}
-									isSelected={selectedIds.includes(message.id)}
-									isScrolledTo={index === length - 1 - unreadRef.current}
-									onContextMenuToggle={contextMenuToggleHandler(message.id)}
-									updateIsRead={message.authorId !== userId ? updateIsRead : null}
-									isAuthoredByUser={isSelectMode ? false : message.authorId === userId}
-								/>
-							);
-						})}
+					{shownMessageList.map((message, index, { length }) => {
+						const repliedMessage = message.replyToId
+							? messageList.find(el => el.id === message.replyToId)
+							: null;
+						return (
+							<SingleMessage
+								key={message.id}
+								message={message}
+								isSelectMode={isSelectMode}
+								repliedMessage={repliedMessage}
+								isSelected={selectedIds.includes(message.id)}
+								isScrolledTo={index === length - 1 - unreadRef.current}
+								onContextMenuToggle={contextMenuToggleHandler(message.id)}
+								updateIsRead={message.authorId !== userId ? updateIsRead : null}
+								isAuthoredByUser={isSelectMode ? false : message.authorId === userId}
+							/>
+						);
+					})}
 				</ChatWrapper>
 				{!!activeMessage && (
 					<ContextMenu

@@ -4,10 +4,10 @@ import { sendChangeVisitorStatus } from '@/utils/sendChangeVisitorStatus';
 import { UserChat, VisitorStatus } from '@/types';
 
 export const useChat = (chat: UserChat) => {
-	const { messageMap, updateIsReadMap, addReactionMap, userId } = useStore(state => ({
+	const { messageMap, updateIsRead, addReaction, userId } = useStore(state => ({
 		messageMap: state.messageMap,
-		updateIsReadMap: state.updateIsReadMap,
-		addReactionMap: state.addReactionMap,
+		updateIsRead: state.updateIsRead,
+		addReaction: state.addReaction,
 		userId: state.userId,
 	}));
 	const { members, chatId } = chat;
@@ -36,14 +36,11 @@ export const useChat = (chat: UserChat) => {
 		return messageList.filter(el => !el.isRead && el.authorId !== userId).length;
 	}, [userId, messageList]);
 
-	const updateIsRead = useMemo(() => updateIsReadMap(chatId), [chatId, updateIsReadMap]);
-
-	const addReaction = useMemo(() => addReactionMap(chatId, authorImageUrl), [addReactionMap, authorImageUrl, chatId]);
-
 	return {
 		messageList,
 		addReaction,
 		interlocutorName,
+		authorImageUrl,
 		interlocutorImageUrl,
 		chatId,
 		authorId,

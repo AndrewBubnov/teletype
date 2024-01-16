@@ -130,7 +130,7 @@ export type SingleMessageProps = {
 	message: Message;
 	repliedMessage?: Message | null;
 	onContextMenuToggle(type: 'open' | 'close', middle?: DOMRect): void;
-	updateIsRead: ((arg: string) => void) | null;
+	updateIsRead: ((arg: Message) => void) | null;
 	isScrolledTo: boolean;
 	isAuthoredByUser: boolean;
 	isSelected: boolean;
@@ -236,11 +236,8 @@ export interface Store {
 	setMessageMap(arg: MessageMap): void;
 	addMessageToMessageMap(arg: Message): void;
 	updateMessageInMessageMap(args: UpdateMessage): void;
-	updateIsReadMap: (chatId: string) => (id: string) => Promise<void>;
-	addReactionMap: (
-		chatId: string,
-		authorImageUrl: string | null | undefined
-	) => (id: string, reaction: string) => Promise<void>;
+	updateIsRead(message: Message): Promise<void>;
+	addReaction(message: Message, reaction: string, authorImageUrl: string | null | undefined): Promise<void>;
 	setUserId(arg: string): void;
 }
 
@@ -265,12 +262,6 @@ export interface ErrorToastProps {
 	open: boolean;
 	onClose(): void;
 	context: Toast;
-}
-
-export interface SendAddReactionArgs {
-	chatId: string;
-	messageId: string;
-	message: Message;
 }
 
 export interface CameraModeProps {
