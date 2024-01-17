@@ -1,4 +1,4 @@
-import { getUser } from '@/actions/getUser';
+import { getUser } from '@/prismaActions/getUser';
 import { UserPhotoImage, UserPhotoStub } from '@/app/chat/styled';
 import Link from 'next/link';
 import { PROFILE } from '@/constants';

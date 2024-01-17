@@ -74,8 +74,6 @@ export const ChatListItem = ({
 							{lastMessage.imageUrl ? (
 								<MicroPreviewImage src={lastMessage.imageUrl} alt="preview" />
 							) : null}
-
-							{lastMessage.text && lastMessage.imageUrl ? '+' : null}
 							<ChatListItemMessageText>{lastMessage.text}</ChatListItemMessageText>
 						</LastMessageWrapper>
 						{unreadNumber && !isSelectMode ? <ChatUnreadMessages>{unreadNumber}</ChatUnreadMessages> : null}

@@ -1,8 +1,8 @@
 'use server';
 import { prisma } from '@/db';
-import { addChatIdToUserChatIdsList } from '@/actions/addChatIdToUserChatIdsList';
+import { addChatIdToUserChatIdsList } from '@/prismaActions/addChatIdToUserChatIdsList';
 import { Message, User, UserChat } from '@/types';
-import { getUserByUserId } from '@/actions/getUserByUserId';
+import { getUserByUserId } from '@/prismaActions/getUserByUserId';
 
 export async function createChat(userAId: string, userBId: string): Promise<UserChat> {
 	const chatId = `${userAId}-${userBId}`;

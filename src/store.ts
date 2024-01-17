@@ -1,7 +1,7 @@
 import { create } from 'zustand';
-import { updateMessageIsRead } from '@/actions/updateMessageIsRead';
-import { addReaction } from '@/actions/addReaction';
-import { sendEditMessage } from '@/utils/sendEditMessage';
+import { updateMessageIsRead } from '@/prismaActions/updateMessageIsRead';
+import { addReaction } from '@/prismaActions/addReaction';
+import { sendEditMessage } from '@/webSocketActions/sendEditMessage';
 import {
 	ChatVisitorStatus,
 	CommonStore,

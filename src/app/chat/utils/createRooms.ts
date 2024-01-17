@@ -1,4 +1,4 @@
-import { createRoom } from '@/utils/createRoom';
+import { createRoom } from '@/webSocketActions/createRoom';
 import { Chat } from '@/types';
 
 export const createRooms = (userChats: Chat[], userId: string) =>

@@ -3,9 +3,9 @@ import { SyntheticEvent, useState } from 'react';
 import { useCommonStore } from '@/store';
 import { StyledInput } from '@/app/chat/styled';
 import { Autocomplete } from '@mui/material';
-import { getUserIdByEmail } from '@/actions/getUserIdByEmail';
+import { getUserIdByEmail } from '@/prismaActions/getUserIdByEmail';
 import { onCreateChat } from '@/app/chat/utils/onCreateChat';
-import { createRoom } from '@/utils/createRoom';
+import { createRoom } from '@/webSocketActions/createRoom';
 
 export const UserSelect = ({ canOpen, closeDrawer }: { canOpen: boolean; closeDrawer(): void }) => {
 	const { userEmails, userId } = useCommonStore(state => ({

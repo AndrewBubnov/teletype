@@ -3,16 +3,16 @@ import { useCommonStore } from '@/store';
 import { Textarea } from '@mui/joy';
 import { RepliedMessageBox } from '@/app/chat/[chatId]/components/RepliedMessageBox';
 import { SendMessageFormWrapper } from '@/app/chat/[chatId]/styled';
-import { sendMessageToServer } from '@/utils/sendMessageToServer';
+import { sendMessageToServer } from '@/webSocketActions/sendMessageToServer';
 import { ImagePreviewModal } from '@/app/chat/[chatId]/components/ImagePreviewModal';
 import { TextAreaEndDecorator } from '@/app/chat/[chatId]/components/TextAreaEndDecorator';
 import { TextAreaStartDecorator } from '@/app/chat/[chatId]/components/TextAreaStartDecorator';
-import { sendEditMessage } from '@/utils/sendEditMessage';
+import { sendEditMessage } from '@/webSocketActions/sendEditMessage';
 import { CameraMode } from '@/app/chat/[chatId]/components/CameraMode';
 import { useFileUpload } from '@/app/shared/hooks/useFileUpload';
 import { DIALOG_MARGINS, TEXT_AREA_STYLE } from '@/app/chat/[chatId]/constants';
-import { createMessage } from '@/actions/createMessage';
-import { updateMessage } from '@/actions/updateMessage';
+import { createMessage } from '@/prismaActions/createMessage';
+import { updateMessage } from '@/prismaActions/updateMessage';
 import { Message, MessageInputProps, MessageType, UpdateMessageType } from '@/types';
 
 export const MessageInput = ({

@@ -1,6 +1,6 @@
-import { createChat } from '@/actions/createChat';
-import { addUserChat } from '@/utils/addUserChat';
-import { sendChangeVisitorStatus } from '@/utils/sendChangeVisitorStatus';
+import { createChat } from '@/prismaActions/createChat';
+import { addUserChat } from '@/webSocketActions/addUserChat';
+import { sendChangeVisitorStatus } from '@/webSocketActions/sendChangeVisitorStatus';
 import { UserChat, VisitorStatus } from '@/types';
 
 export const onCreateChat = async (userId: string, connectedUserId: string) => {

@@ -1,5 +1,5 @@
 import { Chat } from '@/app/chat/[chatId]/components/Chat';
-import { getChatByChatId } from '@/actions/getChatByChatId';
+import { getChatByChatId } from '@/prismaActions/getChatByChatId';
 import { ActiveChatProps } from '@/types';
 
 export default async function ActiveChat({ params: { chatId } }: ActiveChatProps) {

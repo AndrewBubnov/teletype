@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useCommonStore, useMessageStore } from '@/store';
-import { sendChangeVisitorStatus } from '@/utils/sendChangeVisitorStatus';
+import { sendChangeVisitorStatus } from '@/webSocketActions/sendChangeVisitorStatus';
 import { UserChat, VisitorStatus } from '@/types';
 
 export const useChat = (chat: UserChat) => {

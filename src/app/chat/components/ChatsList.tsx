@@ -1,14 +1,14 @@
 'use client';
 import { useCommonStore } from '@/store';
-import { useSelect } from '@/app/shared/hooks/useSelect';
 import { useRouter } from 'next/navigation';
+import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
+import { deleteChats } from '@/prismaActions/deleteChats';
+import { useSelect } from '@/app/shared/hooks/useSelect';
 import { ChatListItem } from '@/app/chat/components/ChatListItem';
-import { deleteChats } from '@/actions/deleteChats';
-import { sendDeleteUserChats } from '@/utils/sendDeleteUserChats';
 import { ChatListWrapper } from '@/app/chat/styled';
-import { CHAT_LIST } from '@/constants';
 import { SelectModeHeader } from '@/app/shared/components/SelectModeHeader';
 
+import { CHAT_LIST } from '@/constants';
 export const ChatsList = () => {
 	const { chatList, userId } = useCommonStore(state => ({
 		chatList: state.chatList,

@@ -11,7 +11,7 @@ import { getRotationFromSliderValue } from '@/app/profile/utils/getRotationFromS
 import { StyledInput } from '@/app/chat/styled';
 import { FullScreenLoader } from '@/app/shared/components/FullScreenLoader';
 import { ButtonsWrapper, ControlsWrapper, StyledTypography } from '@/app/profile/styled';
-import { updateUserDetails } from '@/actions/updateUser';
+import { updateUserDetails } from '@/prismaActions/updateUser';
 import { CHAT_LIST } from '@/constants';
 import { CONTAINER_STYLE, CROP_AREA_STYLE, INPUT_STYLE, PROFILE_SLIDER_MIDDLE } from '@/app/profile/constants';
 import { User } from '@/types';

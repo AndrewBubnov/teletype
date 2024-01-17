@@ -1,4 +1,4 @@
-import { getUser } from '@/actions/getUser';
+import { getUser } from '@/prismaActions/getUser';
 import { Profile } from '@/app/profile/components/Profile';
 
 export default async function ProfilePage() {

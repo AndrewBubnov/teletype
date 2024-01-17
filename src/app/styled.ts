@@ -7,6 +7,7 @@ export const HeroContainer = styled(Box)(() => ({
 	flexDirection: 'column',
 	justifyContent: 'center',
 	alignItems: 'center',
+	color: 'lightgray',
 	gap: '8rem',
 	width: '100%',
 	height: '100%',

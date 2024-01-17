@@ -85,7 +85,7 @@ export const UserWrapper = styled(Box)({
 export const LastMessageWrapper = styled(Box)({
 	display: 'flex',
 	alignItems: 'center',
-	gap: '0.25rem',
+	gap: '0.5rem',
 	maxWidth: 'calc(100% - 1.5rem)',
 	paddingLeft: '0.75rem',
 });

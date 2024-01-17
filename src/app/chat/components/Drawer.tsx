@@ -5,6 +5,7 @@ import { IconButton, ListItemIcon, ListItemText } from '@mui/material';
 import { Drawer as MuiDrawer } from '@mui/joy';
 import { UserSelect } from '@/app/chat/components/UserSelect';
 import { SignOutButton } from '@clerk/nextjs';
+import { sendLogOut } from '@/webSocketActions/sendLogOut';
 import {
 	DrawerInnerWrapper,
 	DrawerList,
@@ -22,9 +23,15 @@ import { PROFILE } from '@/constants';
 
 export const Drawer = () => {
 	const { push } = useRouter();
+
 	const [open, setOpen] = useState(false);
 
 	const closeDrawer = useCallback(() => setOpen(false), []);
+
+	const onSignOut = useCallback(() => {
+		push('/');
+		sendLogOut();
+	}, [push]);
 
 	return (
 		<>
@@ -50,7 +57,7 @@ export const Drawer = () => {
 							</NewChatMenuWrapper>
 						</DrawerListItem>
 						<DrawerListItem disablePadding>
-							<SignOutButton signOutCallback={() => push('/')}>
+							<SignOutButton signOutCallback={onSignOut}>
 								<FlexCenterWrapper>
 									<ListItemIcon>
 										<LogoutIcon />

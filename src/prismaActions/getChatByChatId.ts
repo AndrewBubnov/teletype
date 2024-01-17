@@ -1,7 +1,7 @@
 'use server';
 import { prisma } from '@/db';
 import { Message, User, UserChat } from '@/types';
-import { getUserByUserId } from '@/actions/getUserByUserId';
+import { getUserByUserId } from '@/prismaActions/getUserByUserId';
 
 export const getChatByChatId = async (chatId: string): Promise<UserChat | undefined> => {
 	const chat = await prisma.chat.findUnique({

@@ -1,8 +1,8 @@
 'use server';
 import { prisma } from '@/db';
 import { currentUser } from '@clerk/nextjs';
-import { getUserChats } from '@/actions/getUserChats';
-import { getEmailsByIds } from '@/actions/getEmailsByIds';
+import { getUserChats } from '@/prismaActions/getUserChats';
+import { getEmailsByIds } from '@/prismaActions/getEmailsByIds';
 
 export const getAllUserEmails = async () => {
 	const user = await currentUser();
