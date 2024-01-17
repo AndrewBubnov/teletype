@@ -4,6 +4,8 @@ Teletype is a real-time chat application built with Next.js 14, Prisma ORM, Atla
 
 Explore the live demo, an auto-deploy from the master branch: [Teletype](https://teletype-sandy.vercel.app/)
 
+(please take into consideration that free cloud websocket server spins down after 15min of inactivity, so some functions can fail)
+
 ## Technologies Used
 
 - **Next.js 14:** A React framework for building web applications.
@@ -28,7 +30,7 @@ Explore the live demo, an auto-deploy from the master branch: [Teletype](https:/
   
 - **Chat List Display and Message Preview**: On the chat list page, the user sees the following information: user avatar, their current online/offline status (see Online Status Indicators), username or email address, time of the last message, the beginning of the last message (truncated with an ellipsis in a single line), and the count of unread messages. 
   
-- **Online Status Indicators:** In the chat list, users who are currently online are highlighted with a green circle around their avatars. Clerk JS account images are used as avatars by default.
+- **Online Status Indicators:** In the chat list, users who are currently online have a a pulsing green circle on their avatars. Clerk JS account images are used as avatars by default.
   
 - **Unread Message Indicator and Scrolling**: When a user enters a chat and there are unread messages that don't fit on the initial screen, they see a button indicating the number of such messages. This count dynamically changes as the user scrolls to these messages. Additionally, by clicking this button, the user is automatically scrolled to the last received message.
   
