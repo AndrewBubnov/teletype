@@ -55,6 +55,8 @@ Explore the live demo, an auto-deploy from the master branch: [Teletype](https:/
 
 - **Unified Chat and Message Selection**: Users can enter multi-select mode for both chats and messages. For chats, it is activated by long-pressing a chat, and for messages, users can choose the "Select" option from the context menu. In this mode, users can manually select individual chats/messages or use the "Select all" button to choose all chats/messages at once for deletion. Deletion options include removal by the message sender only or by both chat participants.
 
+- **Clickable Hyperlinks:** Links included in messages are presented as clickable hyperlinks, allowing users to easily navigate to external websites or specific content shared within the conversation.
+
 - **Read and Sent Message Indicators**: Messages feature indicators for sent and read status, updating in real-time.
 
 - **Emoji Support:** Users can now include emojis in their messages, either along with text or as standalone emoji messages.
