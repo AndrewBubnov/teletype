@@ -55,7 +55,6 @@ export type User = {
 };
 
 export interface UserPhotoStubProps extends HTMLAttributes<HTMLDivElement> {
-	isActive: boolean;
 	size?: number;
 }
 
@@ -93,7 +92,6 @@ export interface ChatProps {
 }
 
 export interface UserPhotoImageProps extends ImageProps {
-	isActive?: boolean;
 	size?: number;
 }
 

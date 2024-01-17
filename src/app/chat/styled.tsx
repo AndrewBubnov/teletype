@@ -1,6 +1,6 @@
 'use client';
 import { styled } from '@mui/material/styles';
-import Image from 'next/image';
+import Image, { ImageProps } from 'next/image';
 import { Box, BoxProps, List, ListItem, TextField, Typography } from '@mui/material';
 import PersonIcon from '@mui/icons-material/PersonOutlineOutlined';
 import SearchMuiIcon from '@mui/icons-material/Search';
@@ -10,17 +10,22 @@ import Menu from '@mui/icons-material/Menu';
 import { ChatListItemInnerWrapperProps, ChatListWrapperProps, UserPhotoImageProps, UserPhotoStubProps } from '@/types';
 import Link from 'next/link';
 
-export const UserPhotoImage = styled(({ isActive = false, size = 50, ...props }: UserPhotoImageProps) => (
+export const UserPhotoImage = styled(({ size = 50, ...props }: UserPhotoImageProps) => (
 	<Image width={size} height={size} {...props} alt={props.alt} quality={100} />
 ))`
 	border-radius: 50%;
 	margin-right: 0.5rem;
 	object-fit: cover;
-	box-sizing: border-box;
-	border: ${({ isActive }) => (isActive ? '3px solid green' : 'none')};
 `;
 
-export const UserPhotoStub = styled(({ isActive, size = 50, ...props }: UserPhotoStubProps) => <Box {...props} />)`
+export const MicroPreviewImage = styled((props: ImageProps) => (
+	<Image width={25} height={25} {...props} alt={props.alt} quality={80} />
+))`
+	border-radius: 0.25rem;
+	object-fit: cover;
+`;
+
+export const UserPhotoStub = styled(({ size = 50, ...props }: UserPhotoStubProps) => <Box {...props} />)`
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -30,12 +35,39 @@ export const UserPhotoStub = styled(({ isActive, size = 50, ...props }: UserPhot
 	color: #fff;
 	border-radius: 50%;
 	margin-right: 0.5rem;
-	border: ${({ isActive }) => (isActive ? '3px solid green' : 'none')};
 `;
 
 export const Wrapper = styled(Box)({
 	padding: '0.5rem',
 });
+
+export const ActiveWrapper = styled(Box)`
+	position: relative;
+`;
+export const Active = styled(Box)`
+	position: absolute;
+	bottom: 12%;
+	right: 12%;
+	width: 0.7rem;
+	height: 0.7rem;
+	background: #00be00;
+	border-radius: 50%;
+	animation: pulse 8s infinite;
+
+	@keyframes pulse {
+		0% {
+			scale: 0.8;
+			box-shadow: 0 0 0 0 darkgreen;
+		}
+		50% {
+			scale: 1;
+		}
+		100% {
+			scale: 0.8;
+			box-shadow: 0 0 0 0.25rem rgba(0, 100, 0, 0);
+		}
+	}
+`;
 
 export const ChatListWrapper = styled(({ isSelectMode, ...props }: ChatListWrapperProps) => <Box {...props} />)`
 	display: grid;
@@ -49,16 +81,19 @@ export const UserWrapper = styled(Box)({
 	justifyContent: 'space-between',
 	alignItems: 'center',
 });
+
+export const LastMessageWrapper = styled(Box)({
+	display: 'flex',
+	alignItems: 'center',
+	gap: '0.25rem',
+	maxWidth: 'calc(100% - 1.5rem)',
+	paddingLeft: '0.75rem',
+});
+
 export const ChatListItemMessageText = styled(Typography)({
 	textOverflow: 'ellipsis',
 	whiteSpace: 'nowrap',
 	overflow: 'hidden',
-	maxWidth: 'calc(100% - 1em - 1rem)',
-});
-
-export const Italic = styled((props: BoxProps) => <Box {...props} component="span" />)({
-	fontStyle: 'italic',
-	color: 'palegoldenrod',
 });
 
 export const ChatListItemUsername = styled(Typography)({
@@ -78,6 +113,8 @@ export const ChatListItemInnerWrapper = styled(({ isDeleteMode, ...props }: Chat
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
+	border-bottom: 1px solid #464545;
+	padding-bottom: 1rem;
 	width: ${({ isDeleteMode }) => (isDeleteMode ? '80vw' : '95vw')};
 `;
 

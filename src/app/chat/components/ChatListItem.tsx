@@ -11,12 +11,16 @@ import {
 	UserNameWrapper,
 	ChatListItemInnerWrapper,
 	ChatListItemDateWrapper,
-	Italic,
+	ActiveWrapper,
+	Active,
+	LastMessageWrapper,
+	MicroPreviewImage,
 } from '@/app/chat/styled';
 import { options } from '@/app/chat/[chatId]/constants';
-import { ChatListItemProps } from '@/types';
 import { StyledCheckbox } from '@/app/shared/styled';
 import { StyledLabel } from '@/app/styled';
+import { ChatListItemProps } from '@/types';
+import Image from 'next/image';
 
 export const ChatListItem = ({
 	chatId,
@@ -49,11 +53,12 @@ export const ChatListItem = ({
 				<UserWrapper>
 					<UserNameWrapper>
 						{interlocutor?.imageUrl ? (
-							<UserPhotoImage src={interlocutor?.imageUrl} alt="photo" isActive={isActive} />
+							<ActiveWrapper>
+								<UserPhotoImage src={interlocutor?.imageUrl} alt="photo" />
+								{isActive ? <Active /> : null}
+							</ActiveWrapper>
 						) : (
-							<UserPhotoStub isActive={isActive}>
-								{interlocutor?.email.at(0)?.toUpperCase()}
-							</UserPhotoStub>
+							<UserPhotoStub>{interlocutor?.email.at(0)?.toUpperCase()}</UserPhotoStub>
 						)}
 						<ChatListItemUsername>{interlocutor?.username || interlocutor?.email}</ChatListItemUsername>
 					</UserNameWrapper>
@@ -65,11 +70,14 @@ export const ChatListItem = ({
 				</UserWrapper>
 				{lastMessage ? (
 					<UserWrapper>
-						<ChatListItemMessageText>
-							{lastMessage.text}
-							{lastMessage.text && lastMessage.imageUrl ? <Italic> + </Italic> : null}
-							{lastMessage.imageUrl ? <Italic>Image</Italic> : null}
-						</ChatListItemMessageText>
+						<LastMessageWrapper>
+							{lastMessage.imageUrl ? (
+								<MicroPreviewImage src={lastMessage.imageUrl} alt="preview" />
+							) : null}
+
+							{lastMessage.text && lastMessage.imageUrl ? '+' : null}
+							<ChatListItemMessageText>{lastMessage.text}</ChatListItemMessageText>
+						</LastMessageWrapper>
 						{unreadNumber && !isSelectMode ? <ChatUnreadMessages>{unreadNumber}</ChatUnreadMessages> : null}
 					</UserWrapper>
 				) : null}

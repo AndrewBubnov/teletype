@@ -11,11 +11,9 @@ export const UserImage = async () => {
 	return (
 		<Link href={PROFILE}>
 			{user.imageUrl ? (
-				<UserPhotoImage src={user.imageUrl} size={40} alt="photo" isActive={false} priority />
+				<UserPhotoImage src={user.imageUrl} size={40} alt="photo" priority />
 			) : (
-				<UserPhotoStub isActive={false} size={40}>
-					{user.email.at(0)?.toUpperCase()}
-				</UserPhotoStub>
+				<UserPhotoStub size={40}>{user.email.at(0)?.toUpperCase()}</UserPhotoStub>
 			)}
 		</Link>
 	);
