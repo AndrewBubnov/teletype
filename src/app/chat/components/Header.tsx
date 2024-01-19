@@ -1,16 +1,11 @@
-import { Drawer } from '@/app/chat/components/Drawer';
 import { UserImage } from '@/app/chat/components/UserImage';
+import { Drawer } from '@/app/chat/components/Drawer';
+import styles from '../chat.module.css';
+import { User } from '@/types';
 
-export const Header = () => (
-	<div
-		style={{
-			display: 'flex',
-			justifyContent: 'space-between',
-			alignItems: 'center',
-			padding: '1.5rem 1rem 0 0.5rem',
-		}}
-	>
+export const Header = ({ user }: { user: User }) => (
+	<div className={styles.header}>
 		<Drawer />
-		<UserImage />
+		<UserImage user={user} />
 	</div>
 );

@@ -37,10 +37,6 @@ export const UserPhotoStub = styled(({ size = 50, ...props }: UserPhotoStubProps
 	margin-right: 0.5rem;
 `;
 
-export const Wrapper = styled(Box)({
-	padding: '0.5rem',
-});
-
 export const ActiveWrapper = styled(Box)`
 	position: relative;
 `;
@@ -137,66 +133,8 @@ export const UserNameWrapper = styled(Box)(() => ({
 	maxWidth: '85%',
 }));
 
-export const DrawerInnerWrapper = styled(Box)(() => ({
-	height: '100%',
-	background: '#333333FF',
-	padding: '1rem',
-	color: 'lightgray',
-}));
-
-export const NewChatMenuWrapper = styled(Box)(() => ({
-	width: '100%',
-}));
-
-export const FlexCenterWrapper = styled(Box)(() => ({
-	display: 'flex',
-	alignItems: 'center',
-}));
-
-export const NewChatMenuInnerWrapper = styled(Box)(() => ({
-	display: 'flex',
-	alignItems: 'center',
-	marginBottom: '0.5rem',
-}));
-
-export const DrawerList = styled(List)(() => ({
-	marginTop: '3rem',
-}));
-
-export const DrawerListItem = styled(ListItem)(() => ({
-	padding: '1rem 0',
-	borderBottom: '1px solid #636363',
-}));
-
-export const ProfileIcon = styled(PersonIcon)(() => ({
-	fill: 'lightgray',
-	marginRight: '1rem',
-}));
-
-export const SearchIcon = styled(SearchMuiIcon)(() => ({
-	fill: 'lightgray',
-	marginRight: '1rem',
-}));
-export const MenuIcon = styled(Menu)(() => ({
-	fill: 'lightgray',
-	width: '2rem',
-	height: '2rem',
-}));
-
-export const LogoutIcon = styled(LogoutMuiIcon)(() => ({
-	fill: 'lightgray',
-	marginRight: '1rem',
-}));
-
 export const CloseIcon = styled(CloseMUIIcon)(() => ({
 	fill: '#fff',
-}));
-
-export const StyledLink = styled(Link)(() => ({
-	display: 'flex',
-	alignItems: 'center',
-	color: 'lightgray',
-	textDecoration: 'none',
 }));
 
 export const StyledInput = styled(TextField)({

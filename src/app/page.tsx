@@ -1,7 +1,6 @@
 import { auth } from '@clerk/nextjs';
-import { Author, HeroContainer, LogLinkWrapper, StyledTypography } from '@/app/styled';
-import { Button } from '@mui/joy';
 import Link from 'next/link';
+import styles from './home.module.css';
 
 export default function Home() {
 	const userId = auth().userId as string;
@@ -10,18 +9,18 @@ export default function Home() {
 
 	return (
 		<>
-			<HeroContainer>
-				<StyledTypography>Teletype</StyledTypography>
-				<LogLinkWrapper>
-					<Link href="/sign-in">
-						<Button size="lg">Sign in</Button>
+			<div className={styles.container}>
+				<p className={styles.teletype}>Teletype</p>
+				<div className={styles.signLinkWrapper}>
+					<Link href="/sign-in" className={styles.signLinkButton}>
+						Sign in
 					</Link>
-					<Link href="/sign-up">
-						<Button size="lg">Sign up</Button>
+					<Link href="/sign-up" className={styles.signLinkButton}>
+						Sign up
 					</Link>
-				</LogLinkWrapper>
-			</HeroContainer>
-			<Author>witvit&nbsp;&#174;</Author>
+				</div>
+			</div>
+			<p className={styles.author}>witvit&nbsp;&#174;</p>
 		</>
 	);
 }

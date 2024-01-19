@@ -1,20 +1,16 @@
-import { getUser } from '@/prismaActions/getUser';
-import { UserPhotoImage, UserPhotoStub } from '@/app/chat/styled';
 import Link from 'next/link';
+import Image from 'next/image';
+import { UserPhotoImage, UserPhotoStub } from '@/app/chat/styled';
+import styles from '../chat.module.css';
 import { PROFILE } from '@/constants';
+import { User } from '@/types';
 
-export const UserImage = async () => {
-	const user = await getUser();
-
-	if (!user) return null;
-
-	return (
-		<Link href={PROFILE}>
-			{user.imageUrl ? (
-				<UserPhotoImage src={user.imageUrl} size={40} alt="photo" priority />
-			) : (
-				<UserPhotoStub size={40}>{user.email.at(0)?.toUpperCase()}</UserPhotoStub>
-			)}
-		</Link>
-	);
-};
+export const UserImage = ({ user }: { user: User }) => (
+	<Link href={PROFILE}>
+		{user.imageUrl ? (
+			<Image src={user.imageUrl} height={40} width={40} alt="photo" priority className={styles.userPhotoImage} />
+		) : (
+			<div className={styles.userPhotoImage}>{user.email.at(0)?.toUpperCase()}</div>
+		)}
+	</Link>
+);

@@ -1,7 +1,8 @@
 import { LoaderWrapper, LoadingIndicator } from '@/app/shared/styled';
+import styles from './shared.module.css';
 
 export const FullScreenLoader = () => (
-	<LoaderWrapper>
-		<LoadingIndicator />
-	</LoaderWrapper>
+	<div className={styles.loaderWrapper}>
+		<div className={styles.loader} />
+	</div>
 );

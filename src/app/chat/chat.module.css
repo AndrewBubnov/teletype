@@ -1,0 +1,83 @@
+.wrapper {
+    padding: 0.5rem;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 1rem 0 0.5rem;
+}
+
+.iconButton {
+    display: block;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: lightgray;
+    font-size: 2rem;
+}
+
+.drawerListItem {
+    list-style: none;
+    padding: 2rem 0;
+    border-bottom: 1px solid #636363;
+}
+
+.profileLink {
+    display: flex;
+    align-items: center;
+    color: lightgray;
+    gap: 1.5rem;
+    text-decoration: none;
+}
+
+.newChatInnerWrapper {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.flexCenterWrapper {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.drawer {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: #333333FF;
+    transform: translateX(-100%);
+    padding: 1rem;
+    color: lightgray;
+    font-size: 1.5rem;
+    transition: transform 0.3s ease-out;
+
+    @media (max-width: 600px) {
+        width: 75%;
+    }
+}
+
+.drawer.open {
+    transform: translateX(0%);
+    box-shadow: 10px 5px 5px #000;
+}
+
+.closeDrawerIcon {
+    width: fit-content;
+    margin: 0 0 0 auto;
+}
+
+.userPhotoImage {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    object-fit: cover;
+}

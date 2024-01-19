@@ -1,32 +1,24 @@
 'use client';
 import { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { IconButton, ListItemIcon, ListItemText } from '@mui/material';
-import { Drawer as MuiDrawer } from '@mui/joy';
-import { UserSelect } from '@/app/chat/components/UserSelect';
+import Link from 'next/link';
 import { SignOutButton } from '@clerk/nextjs';
+import { SideDrawer } from '@/app/chat/components/SideDrawer';
+import { UserSelect } from '@/app/chat/components/UserSelect';
 import { sendLogOut } from '@/webSocketActions/sendLogOut';
-import {
-	DrawerInnerWrapper,
-	DrawerList,
-	DrawerListItem,
-	FlexCenterWrapper,
-	LogoutIcon,
-	MenuIcon,
-	NewChatMenuInnerWrapper,
-	NewChatMenuWrapper,
-	ProfileIcon,
-	SearchIcon,
-	StyledLink,
-} from '@/app/chat/styled';
+import { IoMenuOutline as MenuIcon } from 'react-icons/io5';
+import { RxAvatar as ProfileIcon } from 'react-icons/rx';
+import { IoMdSearch as SearchIcon } from 'react-icons/io';
+import { AiOutlineLogout as LogoutIcon } from 'react-icons/ai';
 import { PROFILE } from '@/constants';
+import styles from '../chat.module.css';
 
 export const Drawer = () => {
 	const { push } = useRouter();
 
-	const [open, setOpen] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
 
-	const closeDrawer = useCallback(() => setOpen(false), []);
+	const onClose = useCallback(() => setIsOpen(false), []);
 
 	const onSignOut = useCallback(() => {
 		push('/');
@@ -35,40 +27,36 @@ export const Drawer = () => {
 
 	return (
 		<>
-			<IconButton onClick={() => setOpen(true)}>
+			<button onClick={() => setIsOpen(true)} className={styles.iconButton}>
 				<MenuIcon />
-			</IconButton>
-			<MuiDrawer open={open} onClose={() => setOpen(false)}>
-				<DrawerInnerWrapper>
-					<DrawerList>
-						<DrawerListItem disablePadding>
-							<StyledLink href={PROFILE}>
-								<ProfileIcon />
-								<ListItemText primary="Profile" />
-							</StyledLink>
-						</DrawerListItem>
-						<DrawerListItem disablePadding>
-							<NewChatMenuWrapper>
-								<NewChatMenuInnerWrapper>
-									<SearchIcon />
-									<ListItemText primary="New chat" />
-								</NewChatMenuInnerWrapper>
-								<UserSelect canOpen={open} closeDrawer={closeDrawer} />
-							</NewChatMenuWrapper>
-						</DrawerListItem>
-						<DrawerListItem disablePadding>
-							<SignOutButton signOutCallback={onSignOut}>
-								<FlexCenterWrapper>
-									<ListItemIcon>
-										<LogoutIcon />
-									</ListItemIcon>
-									<ListItemText primary="Log out" />
-								</FlexCenterWrapper>
-							</SignOutButton>
-						</DrawerListItem>
-					</DrawerList>
-				</DrawerInnerWrapper>
-			</MuiDrawer>
+			</button>
+			<SideDrawer isOpen={isOpen} onClose={onClose}>
+				<ul>
+					<li className={styles.drawerListItem}>
+						<Link href={PROFILE} className={styles.profileLink}>
+							<ProfileIcon />
+							<span>Profile</span>
+						</Link>
+					</li>
+					<li className={styles.drawerListItem}>
+						<div>
+							<div className={styles.newChatInnerWrapper}>
+								<SearchIcon />
+								<span>New chat</span>
+							</div>
+							<UserSelect canOpen={isOpen} closeDrawer={onClose} />
+						</div>
+					</li>
+					<li className={styles.drawerListItem}>
+						<SignOutButton signOutCallback={onSignOut}>
+							<div className={styles.flexCenterWrapper}>
+								<LogoutIcon />
+								<span>Log out</span>
+							</div>
+						</SignOutButton>
+					</li>
+				</ul>
+			</SideDrawer>
 		</>
 	);
 };
