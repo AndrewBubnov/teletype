@@ -67,3 +67,10 @@ export const StyledInput = styled(TextField)({
 		},
 	},
 });
+export const StyledLabel = styled('label')`
+	display: contents;
+
+	&:nth-of-type(1) > div {
+		padding-top: 0;
+	}
+`;

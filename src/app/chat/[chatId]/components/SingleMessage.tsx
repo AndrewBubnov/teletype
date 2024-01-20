@@ -5,10 +5,9 @@ import { ReplyTo } from '@/app/chat/[chatId]/components/ReplyTo';
 import { ImageMessage } from '@/app/chat/[chatId]/components/ImageMessage';
 import { MessageBottom } from '@/app/chat/[chatId]/components/MessageBottom';
 import { LinkMessagePart } from '@/app/chat/[chatId]/components/LinkMessagePart';
-import { StyledCheckbox } from '@/app/shared/styled';
+import { StyledCheckbox, StyledLabel } from '@/app/shared/styled';
 import { urlRegex } from '@/app/chat/[chatId]/constants';
 import { MessageType, SingleMessageProps } from '@/types';
-import { StyledLabel } from '@/app/styled';
 
 export const SingleMessage = ({
 	message,
