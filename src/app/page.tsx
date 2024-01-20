@@ -12,10 +12,10 @@ export default function Home() {
 			<div className={styles.container}>
 				<p className={styles.teletype}>Teletype</p>
 				<div className={styles.signLinkWrapper}>
-					<Link href="/sign-in" className={styles.signLinkButton}>
+					<Link href="/sign-in" className={styles.button}>
 						Sign in
 					</Link>
-					<Link href="/sign-up" className={styles.signLinkButton}>
+					<Link href="/sign-up" className={styles.button}>
 						Sign up
 					</Link>
 				</div>

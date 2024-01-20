@@ -9,11 +9,11 @@ import {
 	StyledBackIcon,
 } from '@/app/chat/[chatId]/styled';
 import { Typography } from '@mui/material';
-import { UserPhotoImage } from '@/app/chat/styled';
 import { ElapsedTime } from '@/app/chat/[chatId]/components/ElapsedTime';
 import { getInterlocutorState } from '@/app/chat/[chatId]/utils/getInterlocutorState';
 import { CHAT_LIST } from '@/constants';
 import { ChatHeaderProps, VisitorStatus } from '@/types';
+import { UserPhotoImage } from '@/app/shared/styled';
 
 const ChatHeaderComponent = ({ chatId, interlocutorId, interlocutorName, interlocutorImageUrl }: ChatHeaderProps) => {
 	const { chatVisitorStatus, activeUsers } = useCommonStore(state => ({

@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useRef } from 'react';
+import { clsx } from 'clsx';
 import { IoCloseOutline as CloseIcon } from 'react-icons/io5';
 import styles from '../chat.module.css';
-import { clsx } from 'clsx';
 
 export const SideDrawer = ({
 	children,
@@ -17,7 +17,8 @@ export const SideDrawer = ({
 	useEffect(() => {
 		if (!ref.current) return;
 		const handler = (evt: PointerEvent) => {
-			if (!ref.current?.contains(evt.target as Node)) onClose();
+			if (ref.current?.contains(evt.target as Node)) return;
+			onClose();
 		};
 		document.addEventListener('pointerdown', handler);
 		return () => document.removeEventListener('pointerdown', handler);

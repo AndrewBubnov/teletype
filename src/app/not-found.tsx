@@ -1,15 +1,14 @@
 import Link from 'next/link';
-import { Button } from '@mui/joy';
-import { HeroContainer } from '@/app/styled';
 import { CHAT_LIST } from '@/constants';
+import styles from './home.module.css';
 
 export default function NotFound() {
 	return (
-		<HeroContainer>
+		<div className={styles.container}>
 			<h2>Page not found</h2>
 			<Link href={CHAT_LIST}>
-				<Button>Back Home</Button>
+				<button className={styles.button}>Back home</button>
 			</Link>
-		</HeroContainer>
+		</div>
 	);
 }

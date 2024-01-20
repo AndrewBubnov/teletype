@@ -16,6 +16,7 @@
     outline: none;
     color: lightgray;
     font-size: 2rem;
+    cursor: pointer;
 }
 
 .drawerList {

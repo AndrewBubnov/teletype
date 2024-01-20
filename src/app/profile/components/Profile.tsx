@@ -8,13 +8,13 @@ import { Button } from '@mui/joy';
 import { getZoomFromSliderData } from '@/app/profile/utils/getZoomFromSliderData';
 import { getCroppedImg } from '@/app/profile/utils/getCroppedImg';
 import { getRotationFromSliderValue } from '@/app/profile/utils/getRotationFromSliderValue';
-import { StyledInput } from '@/app/chat/styled';
 import { FullScreenLoader } from '@/app/shared/components/FullScreenLoader';
 import { ButtonsWrapper, ControlsWrapper, StyledTypography } from '@/app/profile/styled';
 import { updateUserDetails } from '@/prismaActions/updateUser';
 import { CHAT_LIST } from '@/constants';
 import { CONTAINER_STYLE, CROP_AREA_STYLE, INPUT_STYLE, PROFILE_SLIDER_MIDDLE } from '@/app/profile/constants';
 import { User } from '@/types';
+import { StyledInput } from '@/app/shared/styled';
 
 export const Profile = ({ user }: { user: User }) => {
 	const { push } = useRouter();
