@@ -22,3 +22,89 @@
             transform: rotate(360deg);
         }
     }
+
+.selectedCountWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #fff;
+    margin-left: 0.8rem;
+}
+
+.iconButton {
+    display: block;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 1.5rem;
+    height: 1.5rem;
+}
+
+.selectedCount {
+    width: 1rem;
+}
+
+.labelWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    user-select: none;
+}
+
+.formLabel {
+    margin-left: 1rem;
+}
+
+.selectedHeaderStub {
+    height: 1.5rem;
+}
+
+.checkbox {
+    position: absolute;
+    visibility: hidden;
+}
+
+.checkboxLabel {
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.checkboxLabel::before {
+    content: '';
+    position: absolute;
+    left: 20%;
+    top: 50%;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    width: 0.8rem;
+    height: 0.8rem;
+    border: 2px solid #FFF;
+    background-color: transparent;
+}
+
+.checkboxLabel::after {
+    content: '\2713';
+    position: absolute;
+    left: 35%;
+    transform: translateY(-55%);
+    font-size: 0.6rem;
+    font-weight: bold;
+    color: transparent;
+}
+
+.labelSpan {
+    transform: translateY(-50%);
+    white-space: nowrap;
+    position: absolute;
+}
+
+input[type="checkbox"]:checked + .checkboxLabel::after {
+    color: #1a1a1a;
+}
+
+input[type="checkbox"]:checked + .checkboxLabel::before {
+    background-color: #FFF;
+}

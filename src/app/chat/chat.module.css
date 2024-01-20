@@ -6,7 +6,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 1rem 0 0.5rem;
+    padding: 1.5rem 0.5rem 1rem 0.5rem;
 }
 
 .iconButton {
@@ -74,10 +74,127 @@
     margin: 0 0 0 auto;
 }
 
-.userPhotoImage {
+.size40 {
     height: 40px;
     width: 40px;
+}
+
+.size50 {
+    height: 50px;
+    width: 50px;
+}
+
+.userPhotoImage {
     border-radius: 50%;
     margin-right: 0.5rem;
     object-fit: cover;
 }
+
+.styledLabel {
+    display: contents;
+}
+
+.chatListItemInnerWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-bottom: 1px solid #464545;
+    padding-bottom: 1rem;
+}
+
+.userWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.userNameWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 85%;
+}
+
+.activeWrapper {
+    position: relative;
+}
+
+.chatListItemUsername {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    user-select: none;
+}
+
+.chatListItemDateWrapper {
+    font-size: 0.7rem;
+}
+
+.lastMessageWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: calc(100% - 1.5rem);
+    padding-left: 0.75rem;
+}
+
+.microPreviewImage {
+    border-radius: 0.25rem;
+    object-fit: cover;
+}
+
+.chatListItemMessageText {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.chatUnreadMessages {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: darkgrey;
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.cell {
+    align-self: center;
+    justify-self: center;
+}
+
+.activeUser {
+    position: absolute;
+    bottom: 12%;
+    right: 12%;
+    width: 0.7rem;
+    height: 0.7rem;
+    background: #00be00;
+    border-radius: 50%;
+    animation: pulse 8s infinite;
+}
+
+@keyframes pulse {
+         0% {
+             scale: 0.8;
+             box-shadow: 0 0 0 0 darkgreen;
+         }
+         50% {
+             scale: 1;
+         }
+         100% {
+             scale: 0.8;
+             box-shadow: 0 0 0 0.25rem rgba(0, 100, 0, 0);
+         }
+     }
+
+.chatListWrapper {
+    display: grid;
+    gap: 1rem;
+    grid-template-rows: auto 1fr;
+}
+

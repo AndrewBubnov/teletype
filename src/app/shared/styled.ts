@@ -25,23 +25,7 @@ export const LoaderWrapper = styled(Box)(() => ({
 	alignItems: 'center',
 	height: '70vh',
 }));
-export const DeleteIcon = styled(DeleteOutlineIcon)`
-	fill: #fff;
-`;
-export const SelectedHeaderStub = styled(Box)`
-	height: 2.5rem;
-`;
-export const SelectedCountWrapper = styled(Box)`
-	display: flex;
-	align-items: center;
-	gap: 0.25rem;
-	color: #fff;
-	margin-left: 0.8rem;
-`;
 
-export const SelectedCount = styled(Box)`
-	width: 1rem;
-`;
 export const StyledCheckbox = styled(Checkbox)`
 	color: #fff;
 	padding: 0;
@@ -50,10 +34,4 @@ export const StyledCheckbox = styled(Checkbox)`
 	&.Mui-checked {
 		color: #fff;
 	}
-`;
-export const StyledFormLabel = styled(FormControlLabel)`
-	display: flex;
-	align-items: center;
-	gap: 0.25rem;
-	margin-left: 1rem;
 `;

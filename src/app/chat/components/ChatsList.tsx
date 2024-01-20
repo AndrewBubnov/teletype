@@ -5,8 +5,8 @@ import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
 import { deleteChats } from '@/prismaActions/deleteChats';
 import { useSelect } from '@/app/shared/hooks/useSelect';
 import { ChatListItem } from '@/app/chat/components/ChatListItem';
-import { ChatListWrapper } from '@/app/chat/styled';
 import { SelectModeHeader } from '@/app/shared/components/SelectModeHeader';
+import styles from '../chat.module.css';
 
 import { CHAT_LIST } from '@/constants';
 export const ChatsList = () => {
@@ -40,7 +40,7 @@ export const ChatsList = () => {
 	const isSelectMode = !!selectedIds.length;
 
 	return (
-		<ChatListWrapper isSelectMode={isSelectMode}>
+		<div className={styles.chatListWrapper} style={{ gridTemplateColumns: isSelectMode ? 'auto 70px' : 'auto' }}>
 			<SelectModeHeader
 				dropSelectMode={dropSelectMode}
 				selectedNumber={selectedIds.length}
@@ -58,10 +58,10 @@ export const ChatsList = () => {
 						onPress={chatPressHandler(id, chatId)}
 						onLongPress={chatLongPressHandler(id)}
 						isSelectMode={isSelectMode}
-						isSelected={selectedIds.includes(id)}
+						isChecked={selectedIds.includes(id)}
 					/>
 				);
 			})}
-		</ChatListWrapper>
+		</div>
 	);
 };

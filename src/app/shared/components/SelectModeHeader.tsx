@@ -1,15 +1,8 @@
-import { useState } from 'react';
-import { CloseIcon } from '@/app/chat/styled';
-import { IconButton } from '@mui/material';
-import {
-	SelectedHeaderStub,
-	DeleteIcon,
-	SelectedCountWrapper,
-	StyledCheckbox,
-	StyledFormLabel,
-	SelectedCount,
-} from '@/app/shared/styled';
+import { IoCloseOutline as CloseIcon } from 'react-icons/io5';
+import { MdDeleteOutline as DeleteIcon } from 'react-icons/md';
 import { SelectModeHeaderProps } from '@/types';
+import styles from './shared.module.css';
+import { StyledCheckbox } from '@/app/shared/components/StyledCheckbox';
 
 export const SelectModeHeader = ({
 	dropSelectMode,
@@ -20,20 +13,24 @@ export const SelectModeHeader = ({
 }: SelectModeHeaderProps) =>
 	selectedNumber ? (
 		<>
-			<SelectedCountWrapper>
-				<IconButton onClick={dropSelectMode}>
+			<div className={styles.selectedCountWrapper}>
+				<button className={styles.iconButton} onClick={dropSelectMode}>
 					<CloseIcon />
-				</IconButton>
-				<SelectedCount>{selectedNumber}</SelectedCount>
-				<StyledFormLabel
-					control={<StyledCheckbox checked={isAllSelected} onChange={toggleAllSelected} />}
-					label="Select all"
-				/>
-			</SelectedCountWrapper>
-			<IconButton onClick={onDelete}>
+				</button>
+				<div className={styles.selectedCount}>{selectedNumber}</div>
+				<div className={styles.formLabel}>
+					<StyledCheckbox
+						id="all_selected"
+						checked={isAllSelected}
+						onChange={toggleAllSelected}
+						label="Select all"
+					/>
+				</div>
+			</div>
+			<button className={styles.iconButton} onClick={onDelete}>
 				<DeleteIcon />
-			</IconButton>
+			</button>
 		</>
 	) : (
-		<SelectedHeaderStub />
+		<div className={styles.selectedHeaderStub} />
 	);

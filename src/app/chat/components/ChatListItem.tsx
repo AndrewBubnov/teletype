@@ -1,26 +1,12 @@
 import { useMemo } from 'react';
 import { useCommonStore, useMessageStore } from '@/store';
 import { useLongPress } from '@/app/chat/[chatId]/hooks/useLongPress';
-import {
-	ChatUnreadMessages,
-	ChatListItemMessageText,
-	UserPhotoImage,
-	UserPhotoStub,
-	UserWrapper,
-	ChatListItemUsername,
-	UserNameWrapper,
-	ChatListItemInnerWrapper,
-	ChatListItemDateWrapper,
-	ActiveWrapper,
-	Active,
-	LastMessageWrapper,
-	MicroPreviewImage,
-} from '@/app/chat/styled';
-import { options } from '@/app/chat/[chatId]/constants';
-import { StyledCheckbox } from '@/app/shared/styled';
-import { StyledLabel } from '@/app/styled';
-import { ChatListItemProps } from '@/types';
+import { clsx } from 'clsx';
 import Image from 'next/image';
+import styles from '@/app/chat/chat.module.css';
+import { options } from '@/app/chat/[chatId]/constants';
+import { ChatListItemProps } from '@/types';
+import { StyledCheckbox } from '@/app/shared/components/StyledCheckbox';
 
 export const ChatListItem = ({
 	chatId,
@@ -28,7 +14,7 @@ export const ChatListItem = ({
 	onPress,
 	onLongPress,
 	isSelectMode,
-	isSelected,
+	isChecked,
 }: ChatListItemProps) => {
 	const { activeUsers, userId } = useCommonStore(state => ({
 		activeUsers: state.activeUsers,
@@ -48,39 +34,62 @@ export const ChatListItem = ({
 	);
 
 	return (
-		<StyledLabel htmlFor={chatId} {...pressHandler}>
-			<ChatListItemInnerWrapper isDeleteMode={isSelectMode}>
-				<UserWrapper>
-					<UserNameWrapper>
+		<label className={styles.styledLabel} htmlFor={chatId} {...pressHandler}>
+			<div className={styles.chatListItemInnerWrapper}>
+				<div className={styles.userWrapper}>
+					<div className={styles.userNameWrapper}>
 						{interlocutor?.imageUrl ? (
-							<ActiveWrapper>
-								<UserPhotoImage src={interlocutor?.imageUrl} alt="photo" />
-								{isActive ? <Active /> : null}
-							</ActiveWrapper>
+							<div className={styles.activeWrapper}>
+								<Image
+									src={interlocutor?.imageUrl}
+									height={50}
+									width={50}
+									alt="photo"
+									priority
+									className={styles.userPhotoImage}
+								/>
+								{isActive ? <div className={styles.activeUser} /> : null}
+							</div>
 						) : (
-							<UserPhotoStub>{interlocutor?.email.at(0)?.toUpperCase()}</UserPhotoStub>
+							<div className={clsx(styles.userPhotoImage, styles.size50)}>
+								{interlocutor?.email.at(0)?.toUpperCase()}
+							</div>
 						)}
-						<ChatListItemUsername>{interlocutor?.username || interlocutor?.email}</ChatListItemUsername>
-					</UserNameWrapper>
+						<div className={styles.chatListItemUsername}>
+							{interlocutor?.username || interlocutor?.email}
+						</div>
+					</div>
 					{lastMessage && !isSelectMode ? (
-						<ChatListItemDateWrapper>
+						<div className={styles.chatListItemDateWrapper}>
 							{new Intl.DateTimeFormat('en-US', options).format(new Date(lastMessage.createdAt))}
-						</ChatListItemDateWrapper>
+						</div>
 					) : null}
-				</UserWrapper>
+				</div>
 				{lastMessage ? (
-					<UserWrapper>
-						<LastMessageWrapper>
+					<div className={styles.userWrapper}>
+						<div className={styles.lastMessageWrapper}>
 							{lastMessage.imageUrl ? (
-								<MicroPreviewImage src={lastMessage.imageUrl} alt="preview" />
+								<Image
+									src={lastMessage.imageUrl}
+									width={25}
+									height={25}
+									className={styles.microPreviewImage}
+									alt="preview"
+								/>
 							) : null}
-							<ChatListItemMessageText>{lastMessage.text}</ChatListItemMessageText>
-						</LastMessageWrapper>
-						{unreadNumber && !isSelectMode ? <ChatUnreadMessages>{unreadNumber}</ChatUnreadMessages> : null}
-					</UserWrapper>
+							<div className={styles.chatListItemMessageText}>{lastMessage.text}</div>
+						</div>
+						{unreadNumber && !isSelectMode ? (
+							<div className={styles.chatUnreadMessages}>{unreadNumber}</div>
+						) : null}
+					</div>
 				) : null}
-			</ChatListItemInnerWrapper>
-			{isSelectMode ? <StyledCheckbox id={chatId} checked={isSelected} /> : null}
-		</StyledLabel>
+			</div>
+			{isSelectMode ? (
+				<div className={styles.cell}>
+					<StyledCheckbox id={chatId} checked={isChecked} />
+				</div>
+			) : null}
+		</label>
 	);
 };

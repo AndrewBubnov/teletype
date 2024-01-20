@@ -54,10 +54,6 @@ export type User = {
 	imageUrl: string | null;
 };
 
-export interface UserPhotoStubProps extends HTMLAttributes<HTMLDivElement> {
-	size?: number;
-}
-
 export interface ActiveChatProps {
 	params: { chatId: string };
 }
@@ -101,7 +97,7 @@ export interface ChatListItemProps {
 	onPress(): void;
 	onLongPress(): void;
 	isSelectMode: boolean;
-	isSelected: boolean;
+	isChecked: boolean;
 }
 
 export enum VisitorStatus {
@@ -137,10 +133,6 @@ export type SingleMessageProps = {
 
 export interface StyledButtonProps extends ButtonProps {
 	textColor?: string;
-}
-
-export interface ChatListItemInnerWrapperProps extends HTMLAttributes<any> {
-	isDeleteMode: boolean;
 }
 
 export interface RepliedMessageBoxProps {
