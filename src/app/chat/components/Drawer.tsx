@@ -31,7 +31,7 @@ export const Drawer = () => {
 				<MenuIcon />
 			</button>
 			<SideDrawer isOpen={isOpen} onClose={onClose}>
-				<ul>
+				<ul className={styles.drawerList}>
 					<li className={styles.drawerListItem}>
 						<Link href={PROFILE} className={styles.profileLink}>
 							<ProfileIcon />
@@ -44,12 +44,12 @@ export const Drawer = () => {
 								<SearchIcon />
 								<span>New chat</span>
 							</div>
-							<UserSelect canOpen={isOpen} closeDrawer={onClose} />
+							<UserSelect />
 						</div>
 					</li>
 					<li className={styles.drawerListItem}>
 						<SignOutButton signOutCallback={onSignOut}>
-							<div className={styles.flexCenterWrapper}>
+							<div className={styles.logOutWrapper}>
 								<LogoutIcon />
 								<span>Log out</span>
 							</div>
