@@ -1,9 +1,8 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
-import { timeUnitDuration, timeUnits } from '@/app/chat/[chatId]/constants';
-import { getElapsedTimeDetails } from '@/app/chat/[chatId]/utils/getElapsedTimeDetails';
 import { useIsDomLoaded } from '@/app/chat/[chatId]/hooks/useIsDomLoaded';
-import { Box } from '@mui/material';
+import { getElapsedTimeDetails } from '@/app/chat/[chatId]/utils/getElapsedTimeDetails';
+import { timeUnitDuration, timeUnits } from '@/app/chat/[chatId]/constants';
 
 export const ElapsedTime = ({ lastSeen, prefix }: { lastSeen: Date; prefix: string }) => {
 	const [unit, setUnit] = useState<keyof typeof timeUnits>(getElapsedTimeDetails(lastSeen).unit);

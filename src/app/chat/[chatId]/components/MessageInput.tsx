@@ -110,7 +110,7 @@ export const MessageInput = ({
 	};
 
 	if (isCameraOn) {
-		return <CameraMode open={isCameraOn} onClose={closePhotoModalHandler} onTakePhoto={setMessageImageUrl} />;
+		return <CameraMode isOpen={isCameraOn} onClose={closePhotoModalHandler} onTakePhoto={setMessageImageUrl} />;
 	}
 
 	return isImagePreviewModalOpen ? (

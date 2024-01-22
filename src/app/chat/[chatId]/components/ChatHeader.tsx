@@ -1,19 +1,13 @@
 import { memo, useMemo } from 'react';
 import { useCommonStore } from '@/store';
-import {
-	CenterHorizontalWrapper,
-	ChatHeaderLink,
-	ChatHeaderWrapper,
-	ElapsedTimeStub,
-	ElapsedTimeWrapper,
-	StyledBackIcon,
-} from '@/app/chat/[chatId]/styled';
-import { Typography } from '@mui/material';
+import Link from 'next/link';
+import { IoIosArrowRoundBack as BackIcon } from 'react-icons/io';
 import { ElapsedTime } from '@/app/chat/[chatId]/components/ElapsedTime';
 import { getInterlocutorState } from '@/app/chat/[chatId]/utils/getInterlocutorState';
+import { UserPhotoImage } from '@/app/shared/styled';
+import styles from '../chatId.module.css';
 import { CHAT_LIST } from '@/constants';
 import { ChatHeaderProps, VisitorStatus } from '@/types';
-import { UserPhotoImage } from '@/app/shared/styled';
 
 const ChatHeaderComponent = ({ chatId, interlocutorId, interlocutorName, interlocutorImageUrl }: ChatHeaderProps) => {
 	const { chatVisitorStatus, activeUsers } = useCommonStore(state => ({
@@ -33,26 +27,26 @@ const ChatHeaderComponent = ({ chatId, interlocutorId, interlocutorName, interlo
 	);
 
 	return (
-		<ChatHeaderWrapper>
-			<ChatHeaderLink href={CHAT_LIST}>
-				<CenterHorizontalWrapper>
-					<StyledBackIcon />
+		<div className={styles.chatHeaderWrapper}>
+			<Link href={CHAT_LIST} className={styles.chatHeaderLink}>
+				<div className={styles.centerHorizontalWrapper}>
+					<BackIcon className={styles.backIcon} />
 					{interlocutorImageUrl && <UserPhotoImage src={interlocutorImageUrl} alt={'photo'} size={30} />}
-					<Typography>{interlocutorName}</Typography>
-				</CenterHorizontalWrapper>
-			</ChatHeaderLink>
+					<p>{interlocutorName}</p>
+				</div>
+			</Link>
 			{interlocutorState ? (
-				<ElapsedTimeWrapper color={interlocutorState.color}>
+				<p className={styles.elapsedTimeWrapper} style={{ color: interlocutorState.color }}>
 					{interlocutorState.status === VisitorStatus.IN ? (
 						interlocutorState.text
 					) : (
 						<ElapsedTime prefix={interlocutorState.text} lastSeen={interlocutorState.data} />
 					)}
-				</ElapsedTimeWrapper>
+				</p>
 			) : (
-				<ElapsedTimeStub />
+				<div className={styles.elapsedTimeStub} />
 			)}
-		</ChatHeaderWrapper>
+		</div>
 	);
 };
 

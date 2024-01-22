@@ -1,0 +1,113 @@
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    background-color: #1a1a1a;
+}
+
+.videoWrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    transition: opacity 0.5s;
+}
+
+.videoWrapper_isStreaming {
+    width: fit-content;
+    opacity: 1;
+}
+
+.videoWrapper_not_isStreaming {
+    width: 0;
+    opacity: 0;
+}
+
+.photoIconsWrapper {
+    position: absolute;
+    bottom: 1%;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    margin: 0 auto;
+    width: 98%;
+}
+
+.photoIconButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    outline: none;
+    border-radius: 50%;
+    color: #fff;
+    background-color: rgba(26, 26, 26, 0.1);;
+    transition: background-color 0.3s;
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
+}
+
+.photoIconButton:hover {
+    background-color: rgba(26, 26, 26, 0.25);
+}
+
+.switchCameraIconWrapper {
+    width: 2rem;
+    height: 2rem;
+}
+
+.canvas {
+    display: none;
+}
+
+.chatHeaderWrapper {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem 0 0 1rem;
+
+    @media (max-width: 600px) {
+        display: block;
+    }
+}
+
+.chatHeaderLink {
+    text-decoration: none;
+    user-select: none;
+    color: lightgray;
+}
+
+.centerHorizontalWrapper {
+    display: flex;
+    align-items: center;
+}
+
+.backIcon {
+    color: #fff;
+    font-size: 2rem;
+    margin-right: 0.5rem;
+}
+
+.elapsedTimeWrapper {
+    margin-left: 3rem;
+
+    @media (max-width: 600px) {
+        margin-left: 0;
+        margin-top: 0.5rem;
+    }
+}
+
+.elapsedTimeStub {
+    height: 1.5rem;
+
+    @media (max-width: 600px) {
+        margin-left: 0;
+        margin-top: 0.5rem;
+    }
+}

@@ -194,15 +194,6 @@ export const ImageIconsInnerWrapper = styled(Box)`
 	width: 11rem;
 	margin-left: auto;
 `;
-
-export const VideoWrapper = styled(({ isStreaming, ...props }: VideoWrapperProps) => <Box {...props} />)`
-	position: relative;
-	display: flex;
-	justify-content: center;
-	opacity: ${({ isStreaming }) => (isStreaming ? 1 : 0)};
-	overflow: hidden;
-	transition: opacity 0.5s;
-`;
 export const ReplyToContainer = styled(Box)`
 	background: palegreen;
 	border-radius: 0.25rem;
@@ -288,32 +279,6 @@ export const MessageWrapper = styled(Box)`
 	display: flex;
 	padding: 1rem 0;
 `;
-
-export const PhotoDialog = styled(Dialog)`
-	& .MuiBackdrop-root {
-		background-color: #1a1a1a;
-	}
-`;
-
-export const Canvas = styled('canvas')`
-	display: none;
-`;
-
-export const PhotoIconButton = styled(IconButton)`
-	background-color: rgba(26, 26, 26, 0.25);
-	width: 2.5rem;
-	height: 2.5rem;
-`;
-export const SwitchCameraIconWrapper = styled(IconButton)`
-	width: 2.5rem;
-	height: 2.5rem;
-`;
-
-export const ChatHeaderLink = styled(Link)`
-	text-decoration: none;
-	user-select: none;
-	color: lightgray;
-`;
 export const MessageItem = styled(
 	({ isAuthoredByUser, singlePadding, withOffset, transparent, fullWidth = false, ...props }: MessageBoxProps) => (
 		<Box {...props} />
@@ -358,16 +323,6 @@ export const TimeWrapper = styled(Box)`
 	gap: 0.5rem;
 	font-size: 0.6rem;
 	color: rgba(0, 210, 170, 0.8);
-`;
-
-export const PhotoIconsWrapper = styled(Box)`
-	position: absolute;
-	bottom: 1%;
-	display: flex;
-	flex-direction: row-reverse;
-	justify-content: space-between;
-	margin: 0 auto;
-	width: 98%;
 `;
 
 export const ReactionWrapper = styled(Box)`
@@ -511,14 +466,6 @@ export const IsReadIcon = styled(DoneAllIcon)`
 export const StyledDeleteIcon = styled(DeleteOutlineIcon)`
 	fill: lightgray;
 `;
-export const TakePhotoIcon = styled(CameraMUIIcon)`
-	fill: lightgray;
-`;
-export const CameraSwitchIcon = styled(CameraSwitchMUIIcon)`
-	fill: lightgray;
-	width: 2rem;
-	height: 2rem;
-`;
 export const CameraIcon = styled(PhotoCameraIcon)`
 	fill: lightgray;
 `;
@@ -528,47 +475,8 @@ export const MenuDeleteIcon = styled(DeleteOutlineIcon)`
 export const MenuReplyIcon = styled(ReplyIcon)`
 	fill: #000;
 `;
-
-export const ChatHeaderWrapper = styled(Box)`
-	display: flex;
-	align-items: center;
-	padding: 1.5rem 0 0 1rem;
-
-	@media (max-width: 600px) {
-		display: block;
-	}
-`;
-
-export const CenterHorizontalWrapper = styled(Box)`
-	display: flex;
-	align-items: center;
-`;
 export const EmojiDisplayWrapper = styled(({ component, ...props }: BoxProps) => <Box component="span" {...props} />)`
 	font-size: 2.5rem;
-`;
-export const StyledBackIcon = styled(ArrowBackIcon)`
-	fill: #fff;
-	margin-right: 1rem;
-	margin-left: -0.5rem;
-`;
-
-export const ElapsedTimeWrapper = styled(({ color, ...props }: ElapsedTimeWrapperProps) => <Typography {...props} />)`
-	margin-left: 3rem;
-	color: ${({ color }) => color};
-
-	@media (max-width: 600px) {
-		margin-left: 0;
-		margin-top: 0.5rem;
-	}
-`;
-
-export const ElapsedTimeStub = styled(Box)`
-	height: 1.5rem;
-
-	@media (max-width: 600px) {
-		margin-left: 0;
-		margin-top: 0.5rem;
-	}
 `;
 
 export const SendButton = styled(Button)`
@@ -596,9 +504,4 @@ export const PreviewWrapper = styled(Box)`
 `;
 export const StyledLink = styled('a')`
 	color: lightgray;
-`;
-export const CloseIcon = styled(CloseMUIIcon)`
-	fill: lightgray;
-	width: 2rem;
-	height: 2rem;
 `;

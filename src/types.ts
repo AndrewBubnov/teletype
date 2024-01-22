@@ -1,9 +1,11 @@
 import {
 	ChangeEvent,
 	Dispatch,
+	FC,
 	HTMLAttributes,
 	MutableRefObject,
 	PointerEvent,
+	ReactNode,
 	SetStateAction,
 	SyntheticEvent,
 } from 'react';
@@ -257,7 +259,7 @@ export interface ErrorToastProps {
 }
 
 export interface CameraModeProps {
-	open: boolean;
+	isOpen: boolean;
 	onClose(evt?: {}, reason?: 'backdropClick' | 'escapeKeyDown'): void;
 	onTakePhoto(arg: string): void;
 }
@@ -302,14 +304,18 @@ export interface AddReaction {
 	authorImageUrl?: string | null;
 }
 
-export interface ChatListWrapperProps extends BoxProps {
-	isSelectMode: boolean;
-}
-
 export interface SelectModeHeaderProps {
 	dropSelectMode(): void;
 	selectedNumber: number;
 	onDelete: (() => Promise<void>) | ((evt: SyntheticEvent) => void);
 	isAllSelected: boolean;
 	toggleAllSelected(): void;
+}
+
+export interface StyledElementProps extends HTMLAttributes<HTMLElement> {
+	element: string | FC;
+	className: string;
+	styles: { readonly [key: string]: string };
+	attributes?: Record<string, boolean | string>;
+	children: ReactNode;
 }

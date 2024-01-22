@@ -126,7 +126,7 @@ export const Chat = ({ chat }: ChatProps) => {
 	if (!userId) return <FullScreenLoader />;
 
 	return (
-		<Box>
+		<div>
 			<ChatHeader
 				chatId={chatId}
 				interlocutorName={interlocutorName}
@@ -195,6 +195,6 @@ export const Chat = ({ chat }: ChatProps) => {
 				onConfirm={onDeleteMessage}
 				interlocutorName={interlocutorName}
 			/>
-		</Box>
+		</div>
 	);
 };
