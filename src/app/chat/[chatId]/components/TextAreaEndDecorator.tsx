@@ -3,7 +3,6 @@ import {
 	EndDecorator,
 	ImageIconsInnerWrapper,
 	ImageIconsWrapper,
-	PreviewImage,
 	PreviewWrapper,
 	SendButton,
 	SendMessageIcon,
@@ -11,7 +10,9 @@ import {
 } from '@/app/chat/[chatId]/styled';
 import { IconButton } from '@mui/material';
 import { FileUploadInput } from '@/app/chat/[chatId]/components/FileUploadInput';
+import styles from '../chatId.module.css';
 import { TextAreaEndDecoratorProps } from '@/types';
+import Image from 'next/image';
 
 export const TextAreaEndDecorator = ({
 	messageImageUrl,
@@ -23,7 +24,9 @@ export const TextAreaEndDecorator = ({
 }: TextAreaEndDecoratorProps) => (
 	<EndDecorator>
 		<PreviewWrapper onClick={openPreviewModal}>
-			{messageImageUrl ? <PreviewImage src={messageImageUrl} alt="preview" /> : null}
+			{messageImageUrl ? (
+				<Image fill src={messageImageUrl} alt="preview" className={styles.previewImage} />
+			) : null}
 		</PreviewWrapper>
 		<ImageIconsWrapper>
 			{messageImageUrl ? (

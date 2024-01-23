@@ -1,15 +1,12 @@
 import styles from '../chatId.module.css';
-import { ReactNode } from 'react';
+import { DialogProps } from '@/types';
 
-export interface DialogProps {
-	children: ReactNode;
-	isOpen: boolean;
-	onClose(): void;
-}
-export const Dialog = ({ children, isOpen, onClose }: DialogProps) => {
+export const Dialog = ({ children, isOpen, onClose, style = {} }: DialogProps) => {
 	return isOpen ? (
 		<div className={styles.backdrop} onClick={onClose}>
-			{children}
+			<div className={styles.dialog} style={style}>
+				{children}
+			</div>
 		</div>
 	) : null;
 };

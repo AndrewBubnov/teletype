@@ -13,6 +13,7 @@ import { DIALOG_MARGINS } from '@/app/chat/[chatId]/constants';
 import { createMessage } from '@/prismaActions/createMessage';
 import { updateMessage } from '@/prismaActions/updateMessage';
 import { TextArea } from '@/app/chat/[chatId]/components/TextArea';
+import styles from '../chatId.module.css';
 import { Message, MessageInputProps, MessageType, UpdateMessageType } from '@/types';
 
 export const MessageInput = ({
@@ -121,7 +122,7 @@ export const MessageInput = ({
 			width={window.innerWidth - DIALOG_MARGINS}
 		/>
 	) : (
-		<SendMessageFormWrapper>
+		<div className={styles.sendMessageFormWrapper}>
 			<RepliedMessageBox message={repliedMessage} authorName={authorName} onDropMessage={dropReplyHandler} />
 			<TextArea
 				value={messageText}
@@ -140,25 +141,6 @@ export const MessageInput = ({
 					/>
 				}
 			/>
-			{/*<Textarea*/}
-			{/*	placeholder="Type in here…"*/}
-			{/*	value={messageText}*/}
-			{/*	onChange={textChangeHandler}*/}
-			{/*	minRows={1}*/}
-			{/*	maxRows={2}*/}
-			{/*	startDecorator={<TextAreaStartDecorator emojiHandler={emojiHandler} />}*/}
-			{/*	endDecorator={*/}
-			{/*<TextAreaEndDecorator*/}
-			{/*	messageImageUrl={messageImageUrl}*/}
-			{/*	onDropImageUrl={dropMessageImageUrl}*/}
-			{/*	openPreviewModal={openPreviewModalHandler}*/}
-			{/*	onSelectFile={selectFileHandler}*/}
-			{/*	onCameraStart={() => setIsCameraOn(true)}*/}
-			{/*	onSubmit={submitHandler}*/}
-			{/*/>*/}
-			{/*	}*/}
-			{/*	sx={TEXT_AREA_STYLE}*/}
-			{/*/>*/}
-		</SendMessageFormWrapper>
+		</div>
 	);
 };

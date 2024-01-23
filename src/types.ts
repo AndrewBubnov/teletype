@@ -1,5 +1,6 @@
 import {
 	ChangeEvent,
+	CSSProperties,
 	Dispatch,
 	FC,
 	HTMLAttributes,
@@ -11,7 +12,7 @@ import {
 	SyntheticEvent,
 } from 'react';
 import { ImageProps } from 'next/image';
-import { BoxProps, ButtonProps } from '@mui/material';
+import { ButtonProps } from '@mui/material';
 
 export type MessageMap = Record<string, Message[]>;
 
@@ -77,13 +78,6 @@ export interface InnerMessageBoxProps extends HTMLAttributes<HTMLDivElement> {
 export interface MessageItemBottomProps extends HTMLAttributes<HTMLDivElement> {
 	multipleChild: boolean;
 	withOffset?: boolean;
-}
-export interface ElapsedTimeWrapperProps extends HTMLAttributes<HTMLParagraphElement> {
-	color: string;
-}
-
-export interface RepliedMessageTextProps extends HTMLAttributes<HTMLDivElement> {
-	isMultiple: boolean;
 }
 
 export interface ChatProps {
@@ -265,10 +259,6 @@ export interface CameraModeProps {
 	onTakePhoto(arg: string): void;
 }
 
-export interface VideoWrapperProps extends BoxProps {
-	isStreaming: boolean;
-}
-
 export interface ConfirmDialogProps {
 	open: boolean;
 	onCancel(): void;
@@ -328,4 +318,11 @@ export interface TextAreaProps {
 	endDecorator: ReactElement;
 	value: string;
 	onChange(evt: ChangeEvent<HTMLTextAreaElement>): void;
+}
+
+export interface DialogProps {
+	children: ReactNode;
+	isOpen: boolean;
+	onClose(): void;
+	style?: CSSProperties;
 }

@@ -18,7 +18,7 @@ export const CameraMode = ({ isOpen, onClose, onTakePhoto }: CameraModeProps) =>
 		<Dialog onClose={onClose} isOpen={isOpen}>
 			{isStreaming ? null : <FullScreenLoader />}
 			<StyledElement element="div" className="videoWrapper" styles={styles} attributes={{ isStreaming }}>
-				<video muted playsInline autoPlay ref={videoRef} style={style} />
+				<video muted playsInline autoPlay ref={videoRef} className={styles.video} style={style} />
 				<div className={styles.photoIconsWrapper}>
 					<button className={styles.photoIconButton} onClick={onClose}>
 						<CloseIcon />

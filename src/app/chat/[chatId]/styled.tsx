@@ -1,18 +1,7 @@
 'use client';
 import { styled } from '@mui/material/styles';
 import Image, { ImageProps } from 'next/image';
-import {
-	Box,
-	BoxProps,
-	Button,
-	Checkbox,
-	Dialog,
-	DialogContentText,
-	FormLabel,
-	IconButton,
-	Typography,
-} from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Box, BoxProps, Button, Checkbox, DialogContentText, FormLabel, IconButton } from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import FileDownloadIcon from '@mui/icons-material/FileDownloadOutlined';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCameraOutlined';
@@ -20,34 +9,16 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import ReplyIcon from '@mui/icons-material/ReplyOutlined';
 import DownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import CameraMUIIcon from '@mui/icons-material/CameraOutlined';
 import CheckMUIIcon from '@mui/icons-material/Check';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import CloseMUIIcon from '@mui/icons-material/Close';
-import CameraSwitchMUIIcon from '@mui/icons-material/Cameraswitch';
 import SendIcon from '@mui/icons-material/Send';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
-import {
-	ElapsedTimeWrapperProps,
-	InnerMessageBoxProps,
-	MessageBoxProps,
-	MessageItemBottomProps,
-	RepliedMessageTextProps,
-	StyledButtonProps,
-	VideoWrapperProps,
-} from '@/types';
+import { InnerMessageBoxProps, MessageBoxProps, MessageItemBottomProps, StyledButtonProps } from '@/types';
 import Link from 'next/link';
 
 export const UploadLabel = styled(FormLabel)`
 	margin-top: 0.5rem;
-`;
-export const RepliedMessageContainer = styled(Box)`
-	display: flex;
-	flex-direction: column;
-	height: 3.5rem;
-	color: #1a1a1a;
-	margin-bottom: 3px;
 `;
 export const UnreadNumberButton = styled(Button)`
 	position: absolute;
@@ -126,16 +97,6 @@ export const UnreadNumberIcon = styled(DownIcon)`
 export const UploadFileIcon = styled(AttachFileIcon)`
 	fill: lightgray;
 `;
-export const RepliedMessageAuthor = styled(Box)`
-	flex: 1;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	background: lightgreen;
-	border-top-left-radius: 4px;
-	border-top-right-radius: 4px;
-	padding: 0 0.5rem;
-`;
 export const ImageIconsWrapper = styled(Box)`
 	display: flex;
 	justify-content: space-between;
@@ -148,77 +109,6 @@ export const ImageIconsInnerWrapper = styled(Box)`
 	justify-content: space-between;
 	width: 11rem;
 	margin-left: auto;
-`;
-export const ReplyToContainer = styled(Box)`
-	background: palegreen;
-	border-radius: 0.25rem;
-	padding: 0.25rem;
-	margin-bottom: 0.5rem;
-`;
-export const PreviewImageDialog = styled(Dialog)`
-	position: relative;
-`;
-export const ReplyToAuthor = styled(Box)`
-	font-size: 0.7rem;
-	color: green;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	margin-bottom: 0.25rem;
-`;
-export const ReplyToText = styled(Box)`
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	color: #1a1a1a;
-`;
-
-export const ReplyToWrapper = styled(Box)`
-	display: flex;
-	max-width: 20rem;
-`;
-export const ReplyToDateWrapper = styled(Box)`
-	display: flex;
-	flex-direction: row-reverse;
-`;
-export const ReplyToDate = styled(Box)`
-	font-size: 0.5rem;
-	color: green;
-`;
-export const RepliedMessageAuthorInner = styled(Box)`
-	display: flex;
-	max-width: 85%;
-	align-items: center;
-`;
-export const RepliedMessageText = styled(({ isMultiple, ...props }: RepliedMessageTextProps) => <Box {...props} />)`
-	flex: 1;
-	display: flex;
-	justify-content: ${({ isMultiple }) => (isMultiple ? 'space-between' : 'flex-start')};
-	align-items: center;
-	background: lightgray;
-	border-bottom-left-radius: 4px;
-	border-bottom-right-radius: 4px;
-	padding: 0 0.5rem;
-`;
-
-export const RepliedMessageImage = styled(Box)`
-	margin-left: 0.5rem;
-`;
-export const RepliedMessageInner = styled(Box)`
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-`;
-export const RepliedTimeContainer = styled(Box)`
-	display: flex;
-	flex-direction: column-reverse;
-	height: 80%;
-	margin-left: 1rem;
-	font-size: 0.6rem;
-`;
-export const DropReplyMessageButton = styled(IconButton)`
-	padding: 0;
-	margin-right: 1rem;
 `;
 export const Backdrop = styled(Box)`
 	position: absolute;
@@ -293,9 +183,6 @@ export const ReactionWrapper = styled(Box)`
 
 export const ReactionAuthorImage = styled((props: ImageProps) => <Image width={16} height={16} {...props} />)`
 	border-radius: 50%;
-	object-fit: cover;
-`;
-export const PreviewImage = styled((props: ImageProps) => <Image fill {...props} alt="preview" />)`
 	object-fit: cover;
 `;
 

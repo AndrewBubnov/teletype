@@ -1,40 +1,30 @@
-import { Box } from '@mui/material';
-import ClearIcon from '@mui/icons-material/Clear';
-import {
-	DropReplyMessageButton,
-	RepliedMessageAuthor,
-	RepliedMessageAuthorInner,
-	RepliedMessageContainer,
-	RepliedMessageImage,
-	RepliedMessageInner,
-	RepliedMessageText,
-	RepliedTimeContainer,
-} from '@/app/chat/[chatId]/styled';
-import { options } from '@/app/chat/[chatId]/constants';
-import { MessageType, RepliedMessageBoxProps } from '@/types';
 import Image from 'next/image';
+import { IoCloseOutline as ClearIcon } from 'react-icons/io5';
+import styles from '../chatId.module.css';
+import { options } from '@/app/chat/[chatId]/constants';
+import { RepliedMessageBoxProps } from '@/types';
 
 export const RepliedMessageBox = ({ message, onDropMessage, authorName }: RepliedMessageBoxProps) =>
 	message ? (
-		<RepliedMessageContainer>
-			<RepliedMessageAuthor>
-				<RepliedMessageAuthorInner>
-					<DropReplyMessageButton>
+		<div className={styles.repliedMessageContainer}>
+			<div className={styles.repliedMessageAuthor}>
+				<div className={styles.repliedMessageAuthorInner}>
+					<button className={styles.dropReplyMessageButton}>
 						<ClearIcon onMouseDown={onDropMessage} onTouchStart={onDropMessage} />
-					</DropReplyMessageButton>
-					<RepliedMessageInner>{authorName}</RepliedMessageInner>
-				</RepliedMessageAuthorInner>
-				<RepliedTimeContainer>
-					<Box>{new Intl.DateTimeFormat('en-US', options).format(new Date(message.createdAt))}</Box>
-				</RepliedTimeContainer>
-			</RepliedMessageAuthor>
-			<RepliedMessageText isMultiple={!!message.text && !!message.imageUrl}>
-				<RepliedMessageInner>{message.text && message.text}</RepliedMessageInner>
+					</button>
+					<div className={styles.repliedMessageInner}>{authorName}</div>
+				</div>
+				<div className={styles.repliedTimeContainer}>
+					<div>{new Intl.DateTimeFormat('en-US', options).format(new Date(message.createdAt))}</div>
+				</div>
+			</div>
+			<div className={styles.repliedMessageText}>
+				<div className={styles.repliedMessageInner}>{message.text && message.text}</div>
 				{message.imageUrl && (
-					<RepliedMessageImage>
+					<div className={styles.repliedMessageImage}>
 						<Image src={message.imageUrl!} width={20} height={20} alt="" />
-					</RepliedMessageImage>
+					</div>
 				)}
-			</RepliedMessageText>
-		</RepliedMessageContainer>
+			</div>
+		</div>
 	) : null;

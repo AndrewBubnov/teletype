@@ -1,19 +1,21 @@
+import Image from 'next/image';
 import { useAspectRatio } from '@/app/chat/[chatId]/hooks/useAspectRatio';
-import { PreviewImage, PreviewImageDialog } from '@/app/chat/[chatId]/styled';
 import { getDialogPaperProps } from '@/app/chat/[chatId]/utils/getDialogPaperProps';
+import { Dialog } from '@/app/chat/[chatId]/components/Dialog';
+import styles from '../chatId.module.css';
 import { MOBILE_WIDTH } from '@/app/chat/[chatId]/constants';
 import { ImagePreviewModalProps } from '@/types';
+
 export const ImagePreviewModal = ({ src, open, onClose, width }: ImagePreviewModalProps) => {
 	const aspectRatio = useAspectRatio(src);
 	if (!src) return null;
 	return (
-		<PreviewImageDialog
-			fullWidth
+		<Dialog
 			onClose={onClose}
-			PaperProps={getDialogPaperProps(width, aspectRatio, window.innerWidth < MOBILE_WIDTH)}
-			open={open}
+			style={getDialogPaperProps(width, aspectRatio, window.innerWidth < MOBILE_WIDTH)}
+			isOpen={open}
 		>
-			<PreviewImage src={src} alt="preview" />
-		</PreviewImageDialog>
+			<Image fill src={src} alt="preview" className={styles.previewImage} />
+		</Dialog>
 	);
 };
