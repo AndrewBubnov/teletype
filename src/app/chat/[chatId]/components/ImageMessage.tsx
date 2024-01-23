@@ -1,11 +1,8 @@
+import Image from 'next/image';
 import { useAspectRatio } from '@/app/chat/[chatId]/hooks/useAspectRatio';
-import {
-	ImageWrapper,
-	StyledCloseFullWidthIcon,
-	StyledFullWidthIcon,
-	StyledImage,
-	StyledImageButton,
-} from '@/app/chat/[chatId]/styled';
+import { LuMaximize2 as FullWidthIcon } from 'react-icons/lu';
+import { LuMinimize2 as CloseFullWidthIcon } from 'react-icons/lu';
+import styles from '../chatId.module.css';
 import { DEFAULT_IMAGE_WIDTH, ENLARGE_RATIO, MAX_MESSAGE_WIDTH_RATIO } from '@/app/chat/[chatId]/constants';
 import { ImageMessageProps } from '@/types';
 
@@ -22,31 +19,33 @@ export const ImageMessage = ({
 	if (isEnlarged) {
 		const enlargedImageHeight = window.innerHeight * ENLARGE_RATIO;
 		return (
-			<ImageWrapper>
-				<StyledImage
+			<div className={styles.imageWrapper}>
+				<Image
+					className={styles.styledImage}
 					src={message.imageUrl}
 					width={aspectRatio * enlargedImageHeight}
 					height={enlargedImageHeight}
 					alt=""
 				/>
-				<StyledImageButton onClick={onEnlargeToggle}>
-					<StyledCloseFullWidthIcon />
-				</StyledImageButton>
-			</ImageWrapper>
+				<button className={styles.imageButton} onClick={onEnlargeToggle}>
+					<CloseFullWidthIcon />
+				</button>
+			</div>
 		);
 	}
 
 	return (
-		<ImageWrapper>
-			<StyledImage
+		<div className={styles.imageWrapper}>
+			<Image
+				className={styles.styledImage}
 				src={message.imageUrl}
 				width={width * MAX_MESSAGE_WIDTH_RATIO}
 				height={(width * MAX_MESSAGE_WIDTH_RATIO) / aspectRatio}
 				alt=""
 			/>
-			<StyledImageButton onClick={onEnlargeToggle}>
-				<StyledFullWidthIcon />
-			</StyledImageButton>
-		</ImageWrapper>
+			<button className={styles.imageButton} onClick={onEnlargeToggle}>
+				<FullWidthIcon />
+			</button>
+		</div>
 	);
 };

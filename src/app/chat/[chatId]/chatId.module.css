@@ -381,3 +381,143 @@
         margin-right: 0.5rem;
     }
 }
+
+.styledLabel {
+    display: contents;
+}
+
+.styledLabel:nth-of-type(1) > div {
+    padding-top: 0;
+}
+
+.messageWrapper {
+    position: relative;
+    user-select: none;
+    display: flex;
+    padding: 1rem 0;
+}
+
+.messageItem {
+    border-radius: 0.25rem;
+}
+
+.messageItem_fullwidth {
+    max-width: 100%;
+}
+.messageItem_not_fullwidth {
+    max-width: 83%;
+}
+
+.messageItem_singlePadding {
+    padding: 0 0 0.5rem 0;
+}
+
+.messageItem_not_singlePadding {
+    padding: 0.5rem;
+}
+
+.messageItem_withOffset {
+    margin-top: 0.5rem;
+}
+
+.messageItem_not_withOffset {
+    margin-top: 0;
+}
+
+.messageItem_isAuthoredByUser {
+    margin-left: auto;
+    margin-right: 0;
+    background-color: #4682b499;
+}
+
+.messageItem_not_isAuthoredByUser {
+    margin-left: 0;
+    margin-right: auto;
+    background-color: #70809080;
+}
+
+.messageItem_transparent {
+    background-color: transparent;
+}
+
+.emojiDisplayWrapper {
+    font-size: 2.5rem;
+}
+
+.messageItemBottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+}
+
+.messageItemBottom_not_multipleChild {
+    flex-direction: row-reverse;
+}
+
+.messageItemBottom_withOffset {
+    margin: 0.5rem 0.5rem 0 0.5rem;
+}
+
+.messageItemBottom_not_withOffset {
+    margin: 0.5rem 0 0 0
+}
+
+.reactionWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    width: fit-content;
+    background: rgba(26, 26, 26, 0.2);
+    padding: 2px;
+    border-radius: 1rem;
+    font-size: 1rem;
+}
+
+.reactionAuthorImage {
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.timeWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.6rem;
+    color: rgba(0, 210, 170, 0.8);
+}
+
+.statusIcon {
+    color: rgba(0, 210, 170, 0.8);
+    font-size: 1rem;
+    margin-top: -2px;
+}
+
+.imageWrapper {
+    position: relative;
+}
+
+.styledImage {
+    display: block;
+    object-fit: cover;
+    border-radius: 0.25rem;
+    width: 100%;
+}
+
+.imageButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    outline: none;
+    position: absolute;
+    border-radius: 50%;
+    width: 1.6rem;
+    height: 1.6rem;
+    bottom: 2%;
+    right: 3%;
+    background: rgba(26, 26, 26, 0.5);
+    padding: 6px;
+    font-size: 0.7em;
+    color: lightgray;
+}

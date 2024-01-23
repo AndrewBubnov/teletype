@@ -1,27 +1,35 @@
-import {
-	IsReadIcon,
-	MessageItemBottom,
-	ReactionAuthorImage,
-	ReactionWrapper,
-	SentIcon,
-	TimeWrapper,
-} from '@/app/chat/[chatId]/styled';
+import Image from 'next/image';
+import { StyledElement } from '@/app/chat/[chatId]/components/StyledElement';
+import { MdOutlineDone as SentIcon } from 'react-icons/md';
+import { MdOutlineDoneAll as IsReadIcon } from 'react-icons/md';
+import styles from '../chatId.module.css';
 import { options } from '@/app/chat/[chatId]/constants';
 import { Message } from '@/types';
 
-export const MessageBottom = ({ message, withOffset }: { message: Message; withOffset?: boolean }) => (
-	<MessageItemBottom multipleChild={!!message.reaction} withOffset={withOffset}>
+export const MessageBottom = ({ message, withOffset = false }: { message: Message; withOffset?: boolean }) => (
+	<StyledElement
+		element="div"
+		className="messageItemBottom"
+		styles={styles}
+		attributes={{ multipleChild: !!message.reaction, withOffset }}
+	>
 		{message.reaction && (
-			<ReactionWrapper>
+			<div className={styles.reactionWrapper}>
 				{String.fromCodePoint(parseInt(message.reaction, 16))}
 				{message.reactionAuthorImageUrl && (
-					<ReactionAuthorImage src={message.reactionAuthorImageUrl} alt="author" />
+					<Image
+						className={styles.reactionAuthorImage}
+						src={message.reactionAuthorImageUrl}
+						height={16}
+						width={16}
+						alt="author"
+					/>
 				)}
-			</ReactionWrapper>
+			</div>
 		)}
-		<TimeWrapper>
+		<div className={styles.timeWrapper}>
 			{new Intl.DateTimeFormat('en-US', options).format(new Date(message.createdAt))}
-			{message.isRead ? <IsReadIcon /> : <SentIcon />}
-		</TimeWrapper>
-	</MessageItemBottom>
+			{message.isRead ? <IsReadIcon className={styles.statusIcon} /> : <SentIcon className={styles.statusIcon} />}
+		</div>
+	</StyledElement>
 );

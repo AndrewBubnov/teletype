@@ -1,13 +1,15 @@
 import { SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react';
-import { InnerMessageItem, MessageItem, MessageWrapper } from '@/app/chat/[chatId]/styled';
+import { InnerMessageItem, MessageWrapper } from '@/app/chat/[chatId]/styled';
 import { EmojiMessage } from '@/app/chat/[chatId]/components/EmojiMessage';
 import { ReplyTo } from '@/app/chat/[chatId]/components/ReplyTo';
 import { ImageMessage } from '@/app/chat/[chatId]/components/ImageMessage';
 import { MessageBottom } from '@/app/chat/[chatId]/components/MessageBottom';
 import { LinkMessagePart } from '@/app/chat/[chatId]/components/LinkMessagePart';
 import { StyledCheckbox, StyledLabel } from '@/app/shared/styled';
+import styles from '../chatId.module.css';
 import { urlRegex } from '@/app/chat/[chatId]/constants';
 import { MessageType, SingleMessageProps } from '@/types';
+import { StyledElement } from '@/app/chat/[chatId]/components/StyledElement';
 
 export const SingleMessage = ({
 	message,
@@ -67,12 +69,13 @@ export const SingleMessage = ({
 
 	if (message.type === MessageType.COMMON) {
 		return (
-			<StyledLabel htmlFor={message.id}>
-				<MessageWrapper ref={containerRef} id={message.id} onClick={onPress}>
-					<MessageItem
-						singlePadding={!repliedMessage}
-						isAuthoredByUser={isAuthoredByUser}
-						fullWidth={isImageEnlarged}
+			<label className={styles.styledLabel} htmlFor={message.id}>
+				<div className={styles.messageWrapper} ref={containerRef} id={message.id} onClick={onPress}>
+					<StyledElement
+						element="div"
+						className="messageItem"
+						styles={styles}
+						attributes={{ singlePadding: !repliedMessage, isAuthoredByUser, fullWidth: isImageEnlarged }}
 					>
 						<ReplyTo message={repliedMessage} />
 						{message.imageUrl && (
@@ -89,10 +92,11 @@ export const SingleMessage = ({
 							</InnerMessageItem>
 						)}
 						<MessageBottom message={message} withOffset={!repliedMessage} />
-					</MessageItem>
+						{/*</MessageItem>*/}
+					</StyledElement>
 					{isSelectMode ? <StyledCheckbox id={message.id} checked={isSelected} /> : null}
-				</MessageWrapper>
-			</StyledLabel>
+				</div>
+			</label>
 		);
 	}
 
