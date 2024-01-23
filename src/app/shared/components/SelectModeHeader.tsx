@@ -1,7 +1,7 @@
 import { IoCloseOutline as CloseIcon } from 'react-icons/io5';
 import { MdDeleteOutline as DeleteIcon } from 'react-icons/md';
 import { SelectModeHeaderProps } from '@/types';
-import styles from './shared.module.css';
+import styles from '../shared.module.css';
 import { StyledCheckbox } from '@/app/shared/components/StyledCheckbox';
 
 export const SelectModeHeader = ({

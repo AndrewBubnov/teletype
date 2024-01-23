@@ -1,18 +1,11 @@
-import {
-	CameraIcon,
-	EndDecorator,
-	ImageIconsInnerWrapper,
-	ImageIconsWrapper,
-	PreviewWrapper,
-	SendButton,
-	SendMessageIcon,
-	StyledDeleteIcon,
-} from '@/app/chat/[chatId]/styled';
-import { IconButton } from '@mui/material';
+import Image from 'next/image';
+import { clsx } from 'clsx';
+import { LuSendHorizonal as SendIcon } from 'react-icons/lu';
+import { IoCloseOutline as CloseIcon } from 'react-icons/io5';
+import { BsCamera as CameraIcon } from 'react-icons/bs';
 import { FileUploadInput } from '@/app/chat/[chatId]/components/FileUploadInput';
 import styles from '../chatId.module.css';
 import { TextAreaEndDecoratorProps } from '@/types';
-import Image from 'next/image';
 
 export const TextAreaEndDecorator = ({
 	messageImageUrl,
@@ -22,25 +15,27 @@ export const TextAreaEndDecorator = ({
 	onSubmit,
 	onCameraStart,
 }: TextAreaEndDecoratorProps) => (
-	<EndDecorator>
-		<PreviewWrapper onClick={openPreviewModal}>
+	<div className={styles.endDecorator}>
+		<div className={styles.previewWrapper} onClick={openPreviewModal}>
 			{messageImageUrl ? (
 				<Image fill src={messageImageUrl} alt="preview" className={styles.previewImage} />
 			) : null}
-		</PreviewWrapper>
-		<ImageIconsWrapper>
+		</div>
+		<div className={styles.imageIconsWrapper}>
 			{messageImageUrl ? (
-				<IconButton onClick={onDropImageUrl}>
-					<StyledDeleteIcon />
-				</IconButton>
+				<button className={clsx(styles.iconButton, styles.additionalIcon)} onClick={onDropImageUrl}>
+					<CloseIcon />
+				</button>
 			) : null}
-			<ImageIconsInnerWrapper>
+			<div className={styles.imageIconsInnerWrapper}>
 				<FileUploadInput onChange={onSelectFile} />
-				<IconButton onClick={onCameraStart}>
+				<button className={clsx(styles.iconButton, styles.additionalIcon)} onClick={onCameraStart}>
 					<CameraIcon />
-				</IconButton>
-				<SendButton type="submit" onClick={onSubmit} endIcon={<SendMessageIcon />} />
-			</ImageIconsInnerWrapper>
-		</ImageIconsWrapper>
-	</EndDecorator>
+				</button>
+				<button className={styles.sendButton} type="submit" onClick={onSubmit}>
+					<SendIcon />
+				</button>
+			</div>
+		</div>
+	</div>
 );

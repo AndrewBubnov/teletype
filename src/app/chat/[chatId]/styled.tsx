@@ -15,11 +15,7 @@ import SendIcon from '@mui/icons-material/Send';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
 import { InnerMessageBoxProps, MessageBoxProps, MessageItemBottomProps, StyledButtonProps } from '@/types';
-import Link from 'next/link';
 
-export const UploadLabel = styled(FormLabel)`
-	margin-top: 0.5rem;
-`;
 export const UnreadNumberButton = styled(Button)`
 	position: absolute;
 	display: flex;
@@ -63,45 +59,9 @@ export const UnreadNumberIconWrapper = styled(Box)`
 	margin-top: -0.5rem;
 `;
 
-export const StartDecorator = styled(Box)`
-	display: flex;
-	flex: 1;
-	justify-content: space-between;
-
-	@media (min-width: 600px) {
-		justify-content: flex-start;
-	}
-`;
-
-export const ReactionContainer = styled(Box)`
-	@media (min-width: 600px) {
-		margin-right: 0.5rem;
-	}
-`;
-
-export const EndDecorator = styled(Box)`
-	display: flex;
-	flex: auto;
-	gap: 0.5rem;
-	align-items: flex-end;
-	padding-top: 0.25rem;
-	border-top: 1px solid;
-	border-color: lightgray;
-`;
-
 export const UnreadNumberIcon = styled(DownIcon)`
 	fill: darkgreen;
 	margin-top: 3px;
-`;
-
-export const UploadFileIcon = styled(AttachFileIcon)`
-	fill: lightgray;
-`;
-export const ImageIconsWrapper = styled(Box)`
-	display: flex;
-	justify-content: space-between;
-	width: 15rem;
-	margin-left: auto;
 `;
 
 export const ImageIconsInnerWrapper = styled(Box)`
@@ -305,12 +265,6 @@ export const IsReadIcon = styled(DoneAllIcon)`
 	font-size: 1rem;
 	margin-top: -2px;
 `;
-export const StyledDeleteIcon = styled(DeleteOutlineIcon)`
-	fill: lightgray;
-`;
-export const CameraIcon = styled(PhotoCameraIcon)`
-	fill: lightgray;
-`;
 export const MenuDeleteIcon = styled(DeleteOutlineIcon)`
 	fill: #1a1a1a;
 `;
@@ -336,14 +290,6 @@ export const SendMessageIcon = styled(SendIcon)`
 	fill: lightgray;
 `;
 
-export const PreviewWrapper = styled(Box)`
-	position: relative;
-	box-sizing: border-box;
-	width: 4rem;
-	height: 3.5rem;
-	overflow: hidden;
-	border-radius: 4px;
-`;
 export const StyledLink = styled('a')`
 	color: lightgray;
 `;

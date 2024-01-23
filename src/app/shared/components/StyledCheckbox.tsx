@@ -1,4 +1,4 @@
-import styles from '@/app/shared/components/shared.module.css';
+import styles from '@/app/shared/shared.module.css';
 
 interface StyledCheckboxProps {
 	id: string;

@@ -1,7 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useCommonStore } from '@/store';
 import { RepliedMessageBox } from '@/app/chat/[chatId]/components/RepliedMessageBox';
-import { SendMessageFormWrapper } from '@/app/chat/[chatId]/styled';
 import { sendMessageToServer } from '@/webSocketActions/sendMessageToServer';
 import { ImagePreviewModal } from '@/app/chat/[chatId]/components/ImagePreviewModal';
 import { TextAreaEndDecorator } from '@/app/chat/[chatId]/components/TextAreaEndDecorator';

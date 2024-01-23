@@ -108,3 +108,4 @@ input[type="checkbox"]:checked + .checkboxLabel::after {
 input[type="checkbox"]:checked + .checkboxLabel::before {
     background-color: #FFF;
 }
+

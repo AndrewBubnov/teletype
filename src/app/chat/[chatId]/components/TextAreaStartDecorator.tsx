@@ -1,12 +1,12 @@
-import { ReactionContainer, StartDecorator } from '@/app/chat/[chatId]/styled';
+import styles from '../chatId.module.css';
 import { reactions } from '@/app/chat/[chatId]/constants';
 
 export const TextAreaStartDecorator = ({ emojiHandler }: { emojiHandler: (arg: string) => () => void }) => (
-	<StartDecorator>
+	<div className={styles.startDecorator}>
 		{reactions.map(reaction => (
-			<ReactionContainer key={reaction} onClick={emojiHandler(reaction)}>
+			<div className={styles.reactionContainer} key={reaction} onClick={emojiHandler(reaction)}>
 				{String.fromCodePoint(parseInt(reaction, 16))}
-			</ReactionContainer>
+			</div>
 		))}
-	</StartDecorator>
+	</div>
 );
