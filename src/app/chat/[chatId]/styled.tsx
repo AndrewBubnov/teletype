@@ -39,51 +39,6 @@ import {
 } from '@/types';
 import Link from 'next/link';
 
-export const ChatWrapper = styled(Box)`
-	padding: 0 1rem 1rem 1rem;
-	overflow-y: auto;
-	overflow-x: hidden;
-	height: 72vh;
-
-	&::-webkit-scrollbar {
-		width: 6px;
-	}
-
-	&::-webkit-scrollbar-track {
-		width: 6px;
-		background-color: transparent;
-		border: solid 1px transparent;
-	}
-
-	&::-webkit-scrollbar-thumb {
-		background-color: rgba(70, 130, 180, 0.6);
-		border: solid 1px transparent;
-		border-radius: 6px;
-		background-clip: padding-box;
-	}
-
-	@media (max-width: 600px) {
-		&::-webkit-scrollbar {
-			display: none;
-		}
-
-		&::-webkit-scrollbar-track {
-			display: none;
-		}
-	}
-`;
-
-export const CoverWrapper = styled(Box)`
-	position: relative;
-`;
-
-export const SelectModeWrapper = styled(Box)`
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-	padding-right: 0.5rem;
-`;
 export const UploadLabel = styled(FormLabel)`
 	margin-top: 0.5rem;
 `;

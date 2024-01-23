@@ -5,6 +5,7 @@ import {
 	HTMLAttributes,
 	MutableRefObject,
 	PointerEvent,
+	ReactElement,
 	ReactNode,
 	SetStateAction,
 	SyntheticEvent,
@@ -318,4 +319,13 @@ export interface StyledElementProps extends HTMLAttributes<HTMLElement> {
 	styles: { readonly [key: string]: string };
 	attributes?: Record<string, boolean | string>;
 	children: ReactNode;
+}
+
+export interface TextAreaProps {
+	minRows: number;
+	maxRows: number;
+	startDecorator: ReactElement;
+	endDecorator: ReactElement;
+	value: string;
+	onChange(evt: ChangeEvent<HTMLTextAreaElement>): void;
 }

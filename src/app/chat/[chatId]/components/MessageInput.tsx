@@ -1,6 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useCommonStore } from '@/store';
-import { Textarea } from '@mui/joy';
 import { RepliedMessageBox } from '@/app/chat/[chatId]/components/RepliedMessageBox';
 import { SendMessageFormWrapper } from '@/app/chat/[chatId]/styled';
 import { sendMessageToServer } from '@/webSocketActions/sendMessageToServer';
@@ -10,9 +9,10 @@ import { TextAreaStartDecorator } from '@/app/chat/[chatId]/components/TextAreaS
 import { sendEditMessage } from '@/webSocketActions/sendEditMessage';
 import { CameraMode } from '@/app/chat/[chatId]/components/CameraMode';
 import { useFileUpload } from '@/app/shared/hooks/useFileUpload';
-import { DIALOG_MARGINS, TEXT_AREA_STYLE } from '@/app/chat/[chatId]/constants';
+import { DIALOG_MARGINS } from '@/app/chat/[chatId]/constants';
 import { createMessage } from '@/prismaActions/createMessage';
 import { updateMessage } from '@/prismaActions/updateMessage';
+import { TextArea } from '@/app/chat/[chatId]/components/TextArea';
 import { Message, MessageInputProps, MessageType, UpdateMessageType } from '@/types';
 
 export const MessageInput = ({
@@ -123,12 +123,11 @@ export const MessageInput = ({
 	) : (
 		<SendMessageFormWrapper>
 			<RepliedMessageBox message={repliedMessage} authorName={authorName} onDropMessage={dropReplyHandler} />
-			<Textarea
-				placeholder="Type in here…"
+			<TextArea
 				value={messageText}
 				onChange={textChangeHandler}
-				minRows={1}
 				maxRows={2}
+				minRows={1}
 				startDecorator={<TextAreaStartDecorator emojiHandler={emojiHandler} />}
 				endDecorator={
 					<TextAreaEndDecorator
@@ -140,8 +139,26 @@ export const MessageInput = ({
 						onSubmit={submitHandler}
 					/>
 				}
-				sx={TEXT_AREA_STYLE}
 			/>
+			{/*<Textarea*/}
+			{/*	placeholder="Type in here…"*/}
+			{/*	value={messageText}*/}
+			{/*	onChange={textChangeHandler}*/}
+			{/*	minRows={1}*/}
+			{/*	maxRows={2}*/}
+			{/*	startDecorator={<TextAreaStartDecorator emojiHandler={emojiHandler} />}*/}
+			{/*	endDecorator={*/}
+			{/*<TextAreaEndDecorator*/}
+			{/*	messageImageUrl={messageImageUrl}*/}
+			{/*	onDropImageUrl={dropMessageImageUrl}*/}
+			{/*	openPreviewModal={openPreviewModalHandler}*/}
+			{/*	onSelectFile={selectFileHandler}*/}
+			{/*	onCameraStart={() => setIsCameraOn(true)}*/}
+			{/*	onSubmit={submitHandler}*/}
+			{/*/>*/}
+			{/*	}*/}
+			{/*	sx={TEXT_AREA_STYLE}*/}
+			{/*/>*/}
 		</SendMessageFormWrapper>
 	);
 };

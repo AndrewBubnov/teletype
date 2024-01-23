@@ -4,9 +4,7 @@ import { useChat } from '@/app/chat/[chatId]/hooks/useChat';
 import { useSelect } from '@/app/shared/hooks/useSelect';
 import { useMenuTransition } from '@/app/chat/[chatId]/hooks/useMenuTransition';
 import { useScrolledTo } from '@/app/chat/[chatId]/hooks/useScrolledTo';
-import { ChatWrapper, CoverWrapper, SelectModeWrapper } from '@/app/chat/[chatId]/styled';
 import { FullScreenLoader } from '@/app/shared/components/FullScreenLoader';
-import { Box } from '@mui/material';
 import { ChatHeader } from '@/app/chat/[chatId]/components/ChatHeader';
 import { SingleMessage } from '@/app/chat/[chatId]/components/SingleMessage';
 import { sendEditMessage } from '@/webSocketActions/sendEditMessage';
@@ -18,6 +16,7 @@ import { SelectModeHeader } from '@/app/shared/components/SelectModeHeader';
 import { useDeleteDialog } from '@/app/chat/[chatId]/hooks/useDeleteDialog';
 import { ConfirmDialog } from '@/app/chat/[chatId]/components/ConfirmDialog';
 import { getUpdateData } from '@/app/chat/[chatId]/utils/getUpdateData';
+import styles from '../chatId.module.css';
 import { ChatProps, Message, UpdateMessageType } from '@/types';
 
 export const Chat = ({ chat }: ChatProps) => {
@@ -133,8 +132,8 @@ export const Chat = ({ chat }: ChatProps) => {
 				interlocutorImageUrl={interlocutorImageUrl}
 				interlocutorId={interlocutorId}
 			/>
-			<CoverWrapper>
-				<SelectModeWrapper>
+			<div className={styles.coverWrapper}>
+				<div className={styles.selectModeWrapper}>
 					<SelectModeHeader
 						dropSelectMode={dropSelectMode}
 						selectedNumber={selectedIds.length}
@@ -142,8 +141,8 @@ export const Chat = ({ chat }: ChatProps) => {
 						isAllSelected={isAllSelected}
 						toggleAllSelected={toggleAllSelected}
 					/>
-				</SelectModeWrapper>
-				<ChatWrapper ref={containerRef}>
+				</div>
+				<div className={styles.chatWrapper} ref={containerRef}>
 					{shownMessageList.map((message, index, { length }) => {
 						const repliedMessage = message.replyToId
 							? messageList.find(el => el.id === message.replyToId)
@@ -163,7 +162,7 @@ export const Chat = ({ chat }: ChatProps) => {
 							/>
 						);
 					})}
-				</ChatWrapper>
+				</div>
 				{!!activeMessage && (
 					<ContextMenu
 						menuTop={menuTop}
@@ -179,7 +178,7 @@ export const Chat = ({ chat }: ChatProps) => {
 					/>
 				)}
 				{unreadNumber ? <UnreadMessages unreadNumber={unreadNumber} onPress={scrollToLastHandler} /> : null}
-			</CoverWrapper>
+			</div>
 			<MessageInput
 				chatId={chatId}
 				authorName={authorName}
