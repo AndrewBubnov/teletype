@@ -324,3 +324,8 @@ export interface StyledCheckboxProps {
 	onChange?(): void;
 	label?: string;
 }
+
+export interface BackButtonProps {
+	interlocutorName: string;
+	interlocutorImageUrl?: string | null;
+}

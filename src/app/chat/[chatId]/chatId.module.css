@@ -494,3 +494,9 @@
     font-size: 0.7em;
     color: lightgray;
 }
+
+.userPhotoImage {
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    object-fit: cover;
+}
