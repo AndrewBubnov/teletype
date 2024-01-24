@@ -326,3 +326,10 @@ export interface DialogProps {
 	onClose(): void;
 	style?: CSSProperties;
 }
+
+export interface StyledCheckboxProps {
+	id: string;
+	checked: boolean;
+	onChange?(): void;
+	label?: string;
+}

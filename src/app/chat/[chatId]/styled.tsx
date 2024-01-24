@@ -1,15 +1,13 @@
 'use client';
 import { styled } from '@mui/material/styles';
-import Image from 'next/image';
-import { Box, Button, Checkbox, DialogContentText, IconButton } from '@mui/material';
+import { Box, Button, Checkbox, DialogContentText } from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import FileDownloadIcon from '@mui/icons-material/FileDownloadOutlined';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import ReplyIcon from '@mui/icons-material/ReplyOutlined';
 import DownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CheckMUIIcon from '@mui/icons-material/Check';
-import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
-import { InnerMessageBoxProps, MessageBoxProps, MessageItemBottomProps, StyledButtonProps } from '@/types';
+import { InnerMessageBoxProps, StyledButtonProps } from '@/types';
 
 export const UnreadNumberButton = styled(Button)`
 	position: absolute;
@@ -80,30 +78,6 @@ export const InnerMessageItem = styled(({ isAuthoredByUser, withPadding, ...prop
 	max-width: 100%;
 	border-radius: 0.25rem;
 	word-break: break-word;
-`;
-
-export const StyledImage = styled(Image)`
-	display: block;
-	object-fit: cover;
-	border-radius: 0.25rem;
-	width: 100%;
-`;
-
-export const StyledImageButton = styled(IconButton)`
-	position: absolute;
-	bottom: 2%;
-	right: 3%;
-	background: rgba(26, 26, 26, 0.6);
-	padding: 6px;
-`;
-
-export const ImageWrapper = styled(Box)`
-	position: relative;
-`;
-export const StyledCloseFullWidthIcon = styled(CloseFullscreenIcon)`
-	width: 0.7em;
-	height: 0.7em;
-	fill: lightgray;
 `;
 
 export const MenuCard = styled(Box)`

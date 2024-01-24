@@ -125,23 +125,27 @@ export const Chat = ({ chat }: ChatProps) => {
 	if (!userId) return <FullScreenLoader />;
 
 	return (
-		<div>
+		<div className={styles.chatContainer}>
+			isSelectMode ? (
 			<ChatHeader
 				chatId={chatId}
 				interlocutorName={interlocutorName}
 				interlocutorImageUrl={interlocutorImageUrl}
 				interlocutorId={interlocutorId}
 			/>
+			)
 			<div className={styles.coverWrapper}>
-				<div className={styles.selectModeWrapper}>
-					<SelectModeHeader
-						dropSelectMode={dropSelectMode}
-						selectedNumber={selectedIds.length}
-						onDelete={deleteMessageHandler}
-						isAllSelected={isAllSelected}
-						toggleAllSelected={toggleAllSelected}
-					/>
-				</div>
+				{isSelectMode ? (
+					<div className={styles.selectModeWrapper}>
+						<SelectModeHeader
+							dropSelectMode={dropSelectMode}
+							selectedNumber={selectedIds.length}
+							onDelete={deleteMessageHandler}
+							isAllSelected={isAllSelected}
+							toggleAllSelected={toggleAllSelected}
+						/>
+					</div>
+				) : null}
 				<div className={styles.chatWrapper} ref={containerRef}>
 					{shownMessageList.map((message, index, { length }) => {
 						const repliedMessage = message.replyToId

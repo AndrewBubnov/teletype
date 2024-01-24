@@ -27,7 +27,7 @@ const ChatHeaderComponent = ({ chatId, interlocutorId, interlocutorName, interlo
 	);
 
 	return (
-		<div className={styles.chatHeaderWrapper}>
+		<div>
 			<Link href={CHAT_LIST} className={styles.chatHeaderLink}>
 				<div className={styles.centerHorizontalWrapper}>
 					<BackIcon className={styles.backIcon} />

@@ -31,7 +31,6 @@ export const TextArea = ({ minRows, maxRows, startDecorator, endDecorator, value
 				onChange={changeHandler}
 				className={styles.textArea}
 				rows={rows}
-				// onInput={changeHandler}
 				placeholder="Type in here.."
 			/>
 			{endDecorator}

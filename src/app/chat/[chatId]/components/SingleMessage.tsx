@@ -5,11 +5,12 @@ import { ReplyTo } from '@/app/chat/[chatId]/components/ReplyTo';
 import { ImageMessage } from '@/app/chat/[chatId]/components/ImageMessage';
 import { MessageBottom } from '@/app/chat/[chatId]/components/MessageBottom';
 import { LinkMessagePart } from '@/app/chat/[chatId]/components/LinkMessagePart';
-import { StyledCheckbox, StyledLabel } from '@/app/shared/styled';
+import { StyledLabel } from '@/app/shared/styled';
 import styles from '../chatId.module.css';
 import { urlRegex } from '@/app/chat/[chatId]/constants';
 import { MessageType, SingleMessageProps } from '@/types';
 import { StyledElement } from '@/app/chat/[chatId]/components/StyledElement';
+import { StyledCheckbox } from '@/app/shared/components/StyledCheckbox';
 
 export const SingleMessage = ({
 	message,
@@ -92,7 +93,6 @@ export const SingleMessage = ({
 							</InnerMessageItem>
 						)}
 						<MessageBottom message={message} withOffset={!repliedMessage} />
-						{/*</MessageItem>*/}
 					</StyledElement>
 					{isSelectMode ? <StyledCheckbox id={message.id} checked={isSelected} /> : null}
 				</div>

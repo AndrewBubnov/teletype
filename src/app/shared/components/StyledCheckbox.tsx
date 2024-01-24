@@ -1,14 +1,8 @@
 import styles from '@/app/shared/shared.module.css';
-
-interface StyledCheckboxProps {
-	id: string;
-	checked: boolean;
-	onChange?(): void;
-	label?: string;
-}
+import { StyledCheckboxProps } from '@/types';
 
 export const StyledCheckbox = ({ id, checked, label, onChange }: StyledCheckboxProps) => (
-	<div className={styles.labelWrapper}>
+	<label className={styles.checkboxWrapper} htmlFor={id}>
 		<input
 			type="checkbox"
 			className={styles.checkbox}
@@ -17,8 +11,6 @@ export const StyledCheckbox = ({ id, checked, label, onChange }: StyledCheckboxP
 			onChange={onChange}
 			readOnly={!onChange}
 		/>
-		<label htmlFor={id} className={styles.checkboxLabel}>
-			{label ? <span className={styles.labelSpan}>{label}</span> : null}
-		</label>
-	</div>
+		{label && <span>{label}</span>}
+	</label>
 );
