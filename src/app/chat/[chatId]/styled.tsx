@@ -7,7 +7,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import ReplyIcon from '@mui/icons-material/ReplyOutlined';
 import DownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CheckMUIIcon from '@mui/icons-material/Check';
-import { InnerMessageBoxProps, StyledButtonProps } from '@/types';
+import { StyledButtonProps } from '@/types';
 
 export const UnreadNumberButton = styled(Button)`
 	position: absolute;
@@ -63,21 +63,6 @@ export const Backdrop = styled(Box)`
 	z-index: 10;
 	inset: 0;
 	background: rgba(0, 0, 0, 0.3);
-`;
-export const MessageWrapper = styled(Box)`
-	position: relative;
-	user-select: none;
-	display: flex;
-	padding: 1rem 0;
-`;
-export const InnerMessageItem = styled(({ isAuthoredByUser, withPadding, ...props }: InnerMessageBoxProps) => (
-	<Box {...props} />
-))`
-	padding: ${({ withPadding }) => (withPadding ? '0.5rem' : 0)};
-	margin-top: 0.5rem;
-	max-width: 100%;
-	border-radius: 0.25rem;
-	word-break: break-word;
 `;
 
 export const MenuCard = styled(Box)`

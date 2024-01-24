@@ -62,11 +62,6 @@ export interface ActiveChatProps {
 	params: { chatId: string };
 }
 
-export interface InnerMessageBoxProps extends HTMLAttributes<HTMLDivElement> {
-	isAuthoredByUser: boolean;
-	withPadding?: boolean;
-}
-
 export interface ChatProps {
 	chat: UserChat;
 }
