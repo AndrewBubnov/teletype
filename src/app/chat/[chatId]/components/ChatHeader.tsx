@@ -32,7 +32,7 @@ const ChatHeaderComponent = ({
 		[activeUsers, chatVisitorStatus, chatId, interlocutorId]
 	);
 
-	if (isSelectMode)
+	if (isSelectMode) {
 		return (
 			<div className={styles.selectModeWrapper}>
 				<SelectModeHeader
@@ -44,6 +44,7 @@ const ChatHeaderComponent = ({
 				/>
 			</div>
 		);
+	}
 
 	return (
 		<div>
