@@ -4,6 +4,7 @@ import { useChat } from '@/app/chat/[chatId]/hooks/useChat';
 import { useSelect } from '@/app/shared/hooks/useSelect';
 import { useMenuTransition } from '@/app/chat/[chatId]/hooks/useMenuTransition';
 import { useScrolledTo } from '@/app/chat/[chatId]/hooks/useScrolledTo';
+import Link from 'next/link';
 import { FullScreenLoader } from '@/app/shared/components/FullScreenLoader';
 import { ChatHeader } from '@/app/chat/[chatId]/components/ChatHeader';
 import { SingleMessage } from '@/app/chat/[chatId]/components/SingleMessage';
@@ -12,11 +13,13 @@ import { ContextMenu } from '@/app/chat/[chatId]/components/ContextMenu';
 import { MessageInput } from '@/app/chat/[chatId]/components/MessageInput';
 import { UnreadMessages } from '@/app/chat/[chatId]/components/UnreadMessages';
 import { deleteOrHideMessages } from '@/prismaActions/deleteOrHideMessages';
-import { SelectModeHeader } from '@/app/shared/components/SelectModeHeader';
 import { useDeleteDialog } from '@/app/chat/[chatId]/hooks/useDeleteDialog';
 import { ConfirmDialog } from '@/app/chat/[chatId]/components/ConfirmDialog';
 import { getUpdateData } from '@/app/chat/[chatId]/utils/getUpdateData';
+import { IoIosArrowRoundBack as BackIcon } from 'react-icons/io';
+import { UserPhotoImage } from '@/app/shared/styled';
 import styles from '../chatId.module.css';
+import { CHAT_LIST } from '@/constants';
 import { ChatProps, Message, UpdateMessageType } from '@/types';
 
 export const Chat = ({ chat }: ChatProps) => {
@@ -126,26 +129,24 @@ export const Chat = ({ chat }: ChatProps) => {
 
 	return (
 		<div className={styles.chatContainer}>
-			isSelectMode ? (
+			<Link href={CHAT_LIST} className={styles.chatHeaderLink}>
+				<div className={styles.centerHorizontalWrapper}>
+					<BackIcon className={styles.backIcon} />
+					{interlocutorImageUrl && <UserPhotoImage src={interlocutorImageUrl} alt={'photo'} size={30} />}
+					<p>{interlocutorName}</p>
+				</div>
+			</Link>
 			<ChatHeader
 				chatId={chatId}
-				interlocutorName={interlocutorName}
-				interlocutorImageUrl={interlocutorImageUrl}
 				interlocutorId={interlocutorId}
+				isSelectMode={isSelectMode}
+				dropSelectMode={dropSelectMode}
+				selectedNumber={selectedIds.length}
+				onDelete={deleteMessageHandler}
+				isAllSelected={isAllSelected}
+				toggleAllSelected={toggleAllSelected}
 			/>
-			)
 			<div className={styles.coverWrapper}>
-				{isSelectMode ? (
-					<div className={styles.selectModeWrapper}>
-						<SelectModeHeader
-							dropSelectMode={dropSelectMode}
-							selectedNumber={selectedIds.length}
-							onDelete={deleteMessageHandler}
-							isAllSelected={isAllSelected}
-							toggleAllSelected={toggleAllSelected}
-						/>
-					</div>
-				) : null}
 				<div className={styles.chatWrapper} ref={containerRef}>
 					{shownMessageList.map((message, index, { length }) => {
 						const repliedMessage = message.replyToId

@@ -94,11 +94,7 @@
 
 .elapsedTimeWrapper {
     margin-block: 1rem;
-
-    @media (max-width: 600px) {
-        margin-left: 0;
-        margin-top: 0.5rem;
-    }
+    line-height: 1.5rem;
 }
 
 .elapsedTimeStub {
@@ -129,10 +125,7 @@
 .chatWrapper {
     overflow-y: auto;
     overflow-x: hidden;
-    height: 65vh;
-    @media (max-width: 600px) {
-        height: 70vh;
-    }
+    height: 72vh;
 }
 
 .chatWrapper::-webkit-scrollbar {
@@ -146,6 +139,7 @@
 .textAreaWrapper {
     width: calc(100% - 2rem);
     position: absolute;
+    bottom: 1rem;
     background-color: #1a1a1a;
     border: 1px solid lightgray;
     border-radius: 0.25rem;
@@ -298,6 +292,11 @@
     height: 3.5rem;
     overflow: hidden;
     border-radius: 4px;
+
+    @media (max-width: 400px) {
+        width: 3rem;
+        height: 2.25rem;
+    }
 }
 
 .imageIconsWrapper {

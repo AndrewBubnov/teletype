@@ -62,22 +62,9 @@ export interface ActiveChatProps {
 	params: { chatId: string };
 }
 
-export interface MessageBoxProps extends HTMLAttributes<HTMLDivElement> {
-	isAuthoredByUser: boolean;
-	fullWidth?: boolean;
-	transparent?: boolean;
-	singlePadding?: boolean;
-	withOffset?: boolean;
-}
-
 export interface InnerMessageBoxProps extends HTMLAttributes<HTMLDivElement> {
 	isAuthoredByUser: boolean;
 	withPadding?: boolean;
-}
-
-export interface MessageItemBottomProps extends HTMLAttributes<HTMLDivElement> {
-	multipleChild: boolean;
-	withOffset?: boolean;
 }
 
 export interface ChatProps {
@@ -159,8 +146,12 @@ export interface ContextMenuProps {
 export interface ChatHeaderProps {
 	chatId: string;
 	interlocutorId: string;
-	interlocutorName: string;
-	interlocutorImageUrl?: string | null;
+	isSelectMode: boolean;
+	dropSelectMode(): void;
+	selectedNumber: number;
+	onDelete: (() => Promise<void>) | ((evt: SyntheticEvent) => void);
+	isAllSelected: boolean;
+	toggleAllSelected(): void;
 }
 export interface MessageProps {
 	isAuthoredByUser: boolean;
