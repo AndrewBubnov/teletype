@@ -1,14 +1,46 @@
 .backdrop {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 1rem;
     background-color: #1a1a1a;
+}
+
+.menuBackdrop {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+
+
+.menuCard {
+    padding: 0.5rem;
+    width: 40%;
+    height: fit-content;
+    background: lightgoldenrodyellow;
+    border-radius: 0.25rem;
+    color: #000;
+    opacity: 0;
+    transition: all 0.3s;
+
+    @media (max-width: 600px) {
+        width: 60%;
+    }
+}
+
+.menuCardIsActive {
+    transform: translateY(var(--yOffset));
+    opacity: 1;
+}
+
+.menuCardIsInActive {
+    opacity: 0;
 }
 
 .dialog {
@@ -132,9 +164,6 @@
 }
 
 .textAreaWrapper {
-    width: calc(100% - 2rem);
-    position: absolute;
-    bottom: 1rem;
     background-color: #1a1a1a;
     border: 1px solid lightgray;
     border-radius: 0.25rem;
@@ -510,4 +539,36 @@
     border-radius: 50%;
     margin-right: 0.5rem;
     object-fit: cover;
+}
+
+.messageInputContainer {
+    position: absolute;
+    bottom: 1rem;
+    width: calc(100% - 2rem);
+}
+
+.reactionsWrapper {
+    display: flex;
+    overflow-x: auto;
+    font-size: 20px;
+    padding-bottom: 0.25rem;
+    user-select: none;
+}
+
+.menuListButton {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    gap: 2rem;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 0.5rem 1rem;
+    font-size: 1.5rem;
+    color: #1a1a1a;
+}
+
+.menuListOptionText {
+    font-size: 1.2rem;
+    color: #1a1a1a;
 }

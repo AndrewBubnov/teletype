@@ -121,7 +121,7 @@ export const MessageInput = ({
 			width={window.innerWidth - DIALOG_MARGINS}
 		/>
 	) : (
-		<div>
+		<div className={styles.messageInputContainer}>
 			<RepliedMessageBox message={repliedMessage} authorName={authorName} onDropMessage={dropReplyHandler} />
 			<TextArea
 				value={messageText}
