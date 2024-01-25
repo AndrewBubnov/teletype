@@ -1,16 +1,12 @@
-import {
-	UnreadNumber,
-	UnreadNumberIcon,
-	UnreadNumberIconWrapper,
-	UnreadNumberButton,
-} from '@/app/chat/[chatId]/styled';
+import { FaAngleDown as DownIcon } from 'react-icons/fa6';
+import styles from '../chatId.module.css';
 import { ScrollToBottomButtonProps } from '@/types';
 
 export const UnreadMessages = ({ unreadNumber, onPress }: ScrollToBottomButtonProps) => (
-	<UnreadNumberButton onTouchStart={onPress} onMouseDown={onPress}>
-		<UnreadNumber>{unreadNumber}</UnreadNumber>
-		<UnreadNumberIconWrapper>
-			<UnreadNumberIcon />
-		</UnreadNumberIconWrapper>
-	</UnreadNumberButton>
+	<button className={styles.unreadMessagesButton} onTouchStart={onPress} onMouseDown={onPress}>
+		<div className={styles.unreadNumber}>{unreadNumber}</div>
+		<div className={styles.downIconWrapper}>
+			<DownIcon className={styles.downIcon} />
+		</div>
+	</button>
 );
