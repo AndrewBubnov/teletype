@@ -9,6 +9,7 @@ import getBoundingClientRect from '@popperjs/core/lib/dom-utils/getBoundingClien
 import styles from '../chatId.module.css';
 import { reactions } from '@/app/chat/[chatId]/constants';
 import { ContextMenuProps } from '@/types';
+import { useMenuAnimate } from '@/app/chat/[chatId]/hooks/useMenuAnimate';
 
 export const ContextMenu = ({
 	onAddReaction,
@@ -22,23 +23,13 @@ export const ContextMenu = ({
 	onDownLoadImage,
 	isAuthor,
 }: ContextMenuProps) => {
-	const [isActive, setIsActive] = useState<boolean>(false);
+	const { isActive, animationStartHandler, closeHandler } = useMenuAnimate(onCloseMenu);
 	const ref = useRef<HTMLDivElement>(null);
-
-	useEffect(() => {
-		setTimeout(() => setIsActive(true), 0);
-	}, []);
 
 	useLayoutEffect(() => {
 		if (!ref.current) return;
 		initMenuParams.current = getBoundingClientRect(ref.current) as DOMRect;
 	}, [initMenuParams]);
-
-	const animationStartHandler = () => setIsActive(false);
-
-	const closeHandler = () => {
-		if (!isActive) onCloseMenu();
-	};
 
 	return (
 		<div className={styles.menuBackdrop} onClick={animationStartHandler}>
