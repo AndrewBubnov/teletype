@@ -6,7 +6,7 @@ export const usePhoto = (
 	onTakePhoto: (arg: string) => void,
 	onClose: (evt?: {}, reason?: 'backdropClick' | 'escapeKeyDown') => void
 ) => {
-	const setToast = useCommonStore(state => state.setToast);
+	const setToast = useCommonStore(state => state.setErrorToastText);
 
 	const [isStreaming, setIsStreaming] = useState(false);
 	const [width, setWidth] = useState(0);
@@ -52,7 +52,7 @@ export const usePhoto = (
 				video.srcObject = stream;
 			})
 			.catch(error => {
-				if (error instanceof Error) setToast({ text: error.message, type: 'error' });
+				if (error instanceof Error) setToast(error.message);
 			});
 		return () => {
 			canceled = true;

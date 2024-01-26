@@ -166,10 +166,6 @@ export interface ImageMessageProps {
 	width?: number;
 }
 
-type ToastSeverityType = 'error' | 'warning' | 'info' | 'success';
-
-export type Toast = { text: string; type: ToastSeverityType } | null;
-
 export type UpdateData = Record<string, Message | null>;
 
 export enum UpdateMessageType {
@@ -195,12 +191,12 @@ export interface CommonStore {
 	chatList: UserChat[];
 	activeUsers: string[];
 	userEmails: string[];
-	toast: Toast;
+	errorToastText: string;
 	userId: string;
 	setActiveUsers(arg: string[]): void;
 	setUserEmails(arg: string[]): void;
 	setChatList(arg: UserChat[]): void;
-	setToast(arg: Toast): void;
+	setErrorToastText(arg: string): void;
 	chatVisitorStatus: ChatVisitorStatus;
 	setChatVisitorStatus(arg: ChatVisitorStatus): void;
 	setUserId(arg: string): void;
@@ -225,7 +221,7 @@ export interface TextAreaEndDecoratorProps {
 
 export interface ToastProps {
 	onClose(): void;
-	context: NonNullable<Toast>;
+	text: string;
 }
 
 export interface CameraModeProps {

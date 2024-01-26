@@ -8,7 +8,6 @@ import {
 	Message,
 	MessageMap,
 	MessageStore,
-	Toast,
 	UpdateMessageType,
 	UserChat,
 } from '@/types';
@@ -105,12 +104,12 @@ export const useCommonStore = create<CommonStore>(set => ({
 	chatList: [],
 	userEmails: [],
 	chatVisitorStatus: {},
-	toast: null,
+	errorToastText: '',
 	userId: '',
 	setActiveUsers: (updated: string[]) => set({ activeUsers: updated }),
 	setUserEmails: (updated: string[]) => set({ userEmails: updated }),
 	setChatList: (updated: UserChat[]) => set({ chatList: updated }),
 	setChatVisitorStatus: (updated: ChatVisitorStatus) => set({ chatVisitorStatus: updated }),
-	setToast: (toast: Toast) => set({ toast }),
+	setErrorToastText: (errorToastText: string) => set({ errorToastText }),
 	setUserId: (userId: string) => set({ userId }),
 }));

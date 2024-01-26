@@ -29,7 +29,7 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap }: Subscr
 			setUserEmails: state.setUserEmails,
 			setChatVisitorStatus: state.setChatVisitorStatus,
 			setUserId: state.setUserId,
-			setToast: state.setToast,
+			setToast: state.setErrorToastText,
 		}));
 
 	useEffect(() => {
@@ -55,7 +55,7 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap }: Subscr
 		setUserId(userId);
 	}, [setUserId, userId]);
 
-	const setErrorToast = useCallback(() => setToast({ text: SERVER_CONNECTION_FAILED, type: 'error' }), [setToast]);
+	const setErrorToast = useCallback(() => setToast(SERVER_CONNECTION_FAILED), [setToast]);
 
 	useSubscribe(setActiveUsers, updateActiveUsers, clearActiveUsers);
 
