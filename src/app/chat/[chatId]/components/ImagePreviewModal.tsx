@@ -12,6 +12,7 @@ export const ImagePreviewModal = ({ src, open, onClose, width }: ImagePreviewMod
 	return (
 		<Dialog
 			onClose={onClose}
+			className={styles.fullWidth}
 			style={getDialogPaperProps(width, aspectRatio, window.innerWidth < MOBILE_WIDTH)}
 			isOpen={open}
 		>

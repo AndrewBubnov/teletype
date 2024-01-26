@@ -2,6 +2,7 @@
     position: fixed;
     inset: 0;
     display: flex;
+    z-index: 10;
     justify-content: center;
     align-items: center;
     padding: 1rem;
@@ -39,10 +40,6 @@
 
 .menuCardIsInActive {
     opacity: 0;
-}
-
-.dialog {
-    width: 100%;
 }
 
 .video {
@@ -625,6 +622,60 @@
 
 .downIcon {
     margin-top: 0.25rem;
-     font-size: 1.5rem;
+    font-size: 1.5rem;
     color: darkgreen;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.confirmDialog {
+    width: 30%;
+    padding: 1rem;
+    background-color: lightgoldenrodyellow;
+    color: #1a1a1a;
+    border-radius: 0.25rem;
+
+    @media (max-width: 600px) {
+        width: 100%;
+    }
+}
+
+.confirmDialogContainer {
+    display: flex;
+    gap: 5rem;
+    width: fit-content;
+    margin: 2rem 0 0 auto;
+}
+
+.confirmDialogButton {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-weight: 700;
+}
+
+.deleteButton {
+    color: red;
+}
+
+.confirmDialogHeader {
+    margin-bottom: 2rem;
+}
+
+.styledLink {
+    color: lightgray;
+}
+
+.black {
+    border: 2px solid #1a1a1a;
+}
+
+.black:checked {
+    background-color: #1a1a1a;
+}
+
+.black:checked::before {
+    color: #fff;
 }

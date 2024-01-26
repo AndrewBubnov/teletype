@@ -15,7 +15,7 @@ export const CameraMode = ({ isOpen, onClose, onTakePhoto }: CameraModeProps) =>
 	const style = { transform: facingMode === FacingMode.USER ? 'rotateY(180deg)' : 'none' };
 
 	return (
-		<Dialog onClose={onClose} isOpen={isOpen}>
+		<Dialog onClose={onClose} isOpen={isOpen} className={styles.fullWidth}>
 			{isStreaming ? null : <FullScreenLoader />}
 			<StyledElement element="div" className="videoWrapper" styles={styles} attributes={{ isStreaming }}>
 				<video muted playsInline autoPlay ref={videoRef} className={styles.video} style={style} />

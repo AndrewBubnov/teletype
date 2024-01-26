@@ -1,44 +1,40 @@
 import { ChangeEvent, useState } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
-import { StyledBlackCheckbox, StyledButton, StyledDialogContentText } from '@/app/chat/[chatId]/styled';
-import { ConfirmDialogProps } from '@/types';
+import { clsx } from 'clsx';
+import { StyledCheckbox } from '@/app/shared/components/StyledCheckbox';
+import { Dialog } from '@/app/chat/[chatId]/components/Dialog';
+import styles from '../chatId.module.css';
 import { DELETE_MULTIPLE_MESSAGE, DELETE_SINGLE_MESSAGE } from '@/app/chat/[chatId]/constants';
+import { ConfirmDialogProps } from '@/types';
 
 export const ConfirmDialog = ({ open, onCancel, onConfirm, interlocutorName, isMultiple }: ConfirmDialogProps) => {
 	const [deleteBoth, setDeleteBoth] = useState(false);
-	const [enter, setEnter] = useState<boolean>(false);
 	const changeHandler = (event: ChangeEvent<HTMLInputElement>) => setDeleteBoth(event.target.checked);
-	const backdropPressHandler = () => {
-		if (!enter) onCancel();
-	};
 	const deleteHandler = () => {
 		onConfirm(deleteBoth);
 		onCancel();
 	};
 
 	return (
-		<Dialog
-			open={open}
-			onTransitionEnter={() => setEnter(true)}
-			onTransitionEnd={() => setEnter(false)}
-			onClose={backdropPressHandler}
-		>
-			<DialogTitle>{`Delete message${isMultiple ? 's' : ''}`}</DialogTitle>
-			<DialogContent>
-				<DialogContentText>{isMultiple ? DELETE_MULTIPLE_MESSAGE : DELETE_SINGLE_MESSAGE}</DialogContentText>
-				<StyledDialogContentText>
-					<StyledBlackCheckbox checked={deleteBoth} onChange={changeHandler} />
-					also delete for {interlocutorName}
-				</StyledDialogContentText>
-			</DialogContent>
-			<DialogActions>
-				<StyledButton size="small" variant="text" onClick={onCancel}>
+		<Dialog isOpen={open} className={styles.confirmDialog} onClose={onCancel}>
+			<h3 className={styles.confirmDialogHeader}>{`Delete message${isMultiple ? 's' : ''}`}</h3>
+			<p>{isMultiple ? DELETE_MULTIPLE_MESSAGE : DELETE_SINGLE_MESSAGE}</p>
+			<p>
+				<StyledCheckbox
+					checked={deleteBoth}
+					onChange={changeHandler}
+					className={styles.black}
+					label={`also delete for ${interlocutorName}`}
+					id="black_checkbox"
+				/>
+			</p>
+			<div className={styles.confirmDialogContainer}>
+				<button className={styles.confirmDialogButton} onClick={onCancel}>
 					Cancel
-				</StyledButton>
-				<StyledButton size="small" variant="text" onClick={deleteHandler} textColor="red">
+				</button>
+				<button className={clsx(styles.confirmDialogButton, styles.deleteButton)} onClick={deleteHandler}>
 					Delete
-				</StyledButton>
-			</DialogActions>
+				</button>
+			</div>
 		</Dialog>
 	);
 };

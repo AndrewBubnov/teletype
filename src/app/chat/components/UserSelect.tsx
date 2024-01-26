@@ -1,10 +1,11 @@
 'use client';
-import { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, useCallback, useMemo, useRef, useState } from 'react';
 import { useCommonStore } from '@/store';
 import { getUserIdByEmail } from '@/prismaActions/getUserIdByEmail';
 import { onCreateChat } from '@/app/chat/utils/onCreateChat';
 import { createRoom } from '@/webSocketActions/createRoom';
 import styles from '../chat.module.css';
+import { useClickOutside } from '@/app/shared/hooks/useClickOutside';
 
 export const UserSelect = () => {
 	const { userEmails, userId } = useCommonStore(state => ({
@@ -18,15 +19,7 @@ export const UserSelect = () => {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const ulRef = useRef<HTMLUListElement>(null);
 
-	useEffect(() => {
-		const handler = (evt: PointerEvent) => {
-			const target = evt.target as Node;
-			if (inputRef.current?.contains(target)) setIsFocused(true);
-			if (!ulRef.current?.contains(target) && !inputRef.current?.contains(target)) setIsFocused(false);
-		};
-		document.addEventListener('pointerdown', handler);
-		return () => document.removeEventListener('pointerdown', handler);
-	}, []);
+	useClickOutside([ulRef, inputRef], () => setIsFocused(false));
 
 	const changeHandler = useCallback((evt: ChangeEvent<HTMLInputElement>) => setUserEmail(evt.target.value), []);
 
@@ -58,6 +51,7 @@ export const UserSelect = () => {
 				value={userEmail}
 				onChange={changeHandler}
 				className={styles.search}
+				onFocus={() => setIsFocused(true)}
 				placeholder="Search.."
 			/>
 			{isFocused ? (

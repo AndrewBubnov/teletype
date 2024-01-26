@@ -306,18 +306,20 @@ export interface TextAreaProps {
 	onChange(evt: ChangeEvent<HTMLTextAreaElement>): void;
 }
 
-export interface DialogProps {
+export interface DialogProps extends HTMLAttributes<HTMLDivElement> {
 	children: ReactNode;
 	isOpen: boolean;
 	onClose(): void;
+	className?: string;
 	style?: CSSProperties;
 }
 
 export interface StyledCheckboxProps {
 	id: string;
 	checked: boolean;
-	onChange?(): void;
+	onChange?: (() => void) | ((event: ChangeEvent<HTMLInputElement>) => void);
 	label?: string;
+	className?: string;
 }
 
 export interface BackButtonProps {

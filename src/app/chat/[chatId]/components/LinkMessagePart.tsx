@@ -1,11 +1,12 @@
-import { StyledLink } from '@/app/chat/[chatId]/styled';
+import styles from '../chatId.module.css';
+import Link from 'next/link';
 
 export const LinkMessagePart = ({ href }: { href: string }) => (
 	<>
 		<br />
-		<StyledLink href={href} target="_blank" rel="noopener noreferrer">
+		<Link href={href} className={styles.styledLink} target="_blank" rel="noopener noreferrer">
 			{href}
-		</StyledLink>
+		</Link>
 		<br />
 	</>
 );
