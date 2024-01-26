@@ -11,8 +11,6 @@ import {
 	SetStateAction,
 	SyntheticEvent,
 } from 'react';
-import { ImageProps } from 'next/image';
-import { ButtonProps } from '@mui/material';
 
 export type MessageMap = Record<string, Message[]>;
 
@@ -66,10 +64,6 @@ export interface ChatProps {
 	chat: UserChat;
 }
 
-export interface UserPhotoImageProps extends ImageProps {
-	size?: number;
-}
-
 export interface ChatListItemProps {
 	chatId: string;
 	interlocutor: User;
@@ -109,10 +103,6 @@ export type SingleMessageProps = {
 	isSelected: boolean;
 	isSelectMode: boolean;
 };
-
-export interface StyledButtonProps extends ButtonProps {
-	textColor?: string;
-}
 
 export interface RepliedMessageBoxProps {
 	message: Message | null;
@@ -233,10 +223,9 @@ export interface TextAreaEndDecoratorProps {
 	onSubmit(): Promise<void>;
 }
 
-export interface ErrorToastProps {
-	open: boolean;
+export interface ToastProps {
 	onClose(): void;
-	context: Toast;
+	context: NonNullable<Toast>;
 }
 
 export interface CameraModeProps {

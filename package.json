@@ -10,10 +10,6 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.5",
-    "@emotion/react": "^11.11.3",
-    "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.15.6",
-    "@mui/material": "^5.15.6",
     "@prisma/client": "^5.7.0",
     "bufferutil": "^4.0.8",
     "clsx": "^2.1.0",

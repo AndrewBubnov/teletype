@@ -8,7 +8,7 @@ import { BsDownload as DownloadIcon } from 'react-icons/bs';
 import styles from '../chatId.module.css';
 import { reactions } from '@/app/chat/[chatId]/constants';
 import { ContextMenuProps } from '@/types';
-import { useMenuAnimate } from '@/app/chat/[chatId]/hooks/useMenuAnimate';
+import { useAnimate } from '@/app/shared/hooks/useAnimate';
 
 export const ContextMenu = ({
 	onAddReaction,
@@ -22,7 +22,7 @@ export const ContextMenu = ({
 	onDownLoadImage,
 	isAuthor,
 }: ContextMenuProps) => {
-	const { isActive, animationStartHandler, closeHandler } = useMenuAnimate(onCloseMenu);
+	const { isActive, closeHandler, onCloseReturn } = useAnimate(onCloseMenu);
 	const ref = useRef<HTMLDivElement>(null);
 
 	useLayoutEffect(() => {
@@ -31,9 +31,9 @@ export const ContextMenu = ({
 	}, [initMenuParams]);
 
 	return (
-		<div className={styles.menuBackdrop} onClick={animationStartHandler}>
+		<div className={styles.menuBackdrop} onClick={closeHandler}>
 			<div
-				onTransitionEnd={closeHandler}
+				onTransitionEnd={onCloseReturn}
 				className={clsx(styles.menuCard, {
 					[styles.menuCardIsActive]: isActive,
 					[styles.menuCardIsInActive]: !isActive,

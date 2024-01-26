@@ -1,40 +1,30 @@
-import { forwardRef, ReactElement, SyntheticEvent } from 'react';
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
-import { Slide } from '@mui/material';
-import { TransitionProps } from '@mui/material/transitions';
-import { ErrorToastProps } from '@/types';
+import { useEffect } from 'react';
+import { clsx } from 'clsx';
+import { useAnimate } from '@/app/shared/hooks/useAnimate';
+import { IoCloseOutline as CloseIcon } from 'react-icons/io5';
+import { ToastProps } from '@/types';
+import styles from '../home.module.css';
 
-const TransitionLeft = (props: TransitionProps) => (
-	<Slide {...props} direction="left">
-		{props.children as ReactElement}
-	</Slide>
-);
+export const Toast = ({ onClose, context }: ToastProps) => {
+	const { isActive, closeHandler, onCloseReturn } = useAnimate(onClose);
 
-const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
-	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
-
-export const Toast = ({ open, onClose, context }: ErrorToastProps) => {
-	if (!context) return null;
-	const handleClose = (_?: SyntheticEvent | Event, reason?: string) => {
-		if (reason !== 'clickaway') onClose();
-	};
+	useEffect(() => {
+		setTimeout(closeHandler, 3000);
+	}, [closeHandler]);
 
 	return (
-		<Snackbar
-			open={open}
-			autoHideDuration={4000}
-			onClose={handleClose}
-			TransitionComponent={TransitionLeft}
-			anchorOrigin={{
-				vertical: 'bottom',
-				horizontal: 'right',
-			}}
+		<div
+			className={clsx(styles.toast, {
+				[styles.toastIn]: isActive,
+				[styles.toastOut]: !isActive,
+			})}
+			onTransitionEnd={onCloseReturn}
+			onClick={closeHandler}
 		>
-			<Alert onClose={handleClose} severity={context.type} sx={{ width: '100%' }}>
-				{context.text}
-			</Alert>
-		</Snackbar>
+			<div>{context.text}&nbsp;</div>
+			<button className={styles.toastButton}>
+				<CloseIcon />
+			</button>
+		</div>
 	);
 };
