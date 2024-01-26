@@ -1,5 +1,4 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import getBoundingClientRect from '@popperjs/core/lib/dom-utils/getBoundingClientRect';
 
 export const useMenuTransition = (menuActiveId: string, userId: string) => {
 	const [menuTop, setMenuTop] = useState<number>(0);
@@ -11,7 +10,7 @@ export const useMenuTransition = (menuActiveId: string, userId: string) => {
 
 	useLayoutEffect(() => {
 		if (!containerRef.current) return;
-		containerParams.current = getBoundingClientRect(containerRef.current) as DOMRect;
+		containerParams.current = containerRef.current.getBoundingClientRect();
 	}, [userId]);
 
 	useEffect(() => {

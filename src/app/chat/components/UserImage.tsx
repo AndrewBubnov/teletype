@@ -1,10 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import styles from '../chat.module.css';
+import { clsx } from 'clsx';
 import { PROFILE } from '@/constants';
 import { User } from '@/types';
-import { clsx } from 'clsx';
-import { UserPhotoImage } from '@/app/shared/styled';
+import styles from '../chat.module.css';
 
 export const UserImage = ({ user }: { user: User }) => (
 	<Link href={PROFILE}>

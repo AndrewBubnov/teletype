@@ -1,20 +1,17 @@
 'use client';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useFileUpload } from '@/app/shared/hooks/useFileUpload';
 import Cropper, { Area } from 'react-easy-crop';
-import { Box, FormLabel, Slider } from '@mui/material';
-import { Button } from '@mui/joy';
+import { useFileUpload } from '@/app/shared/hooks/useFileUpload';
 import { getZoomFromSliderData } from '@/app/profile/utils/getZoomFromSliderData';
 import { getCroppedImg } from '@/app/profile/utils/getCroppedImg';
 import { getRotationFromSliderValue } from '@/app/profile/utils/getRotationFromSliderValue';
 import { FullScreenLoader } from '@/app/shared/components/FullScreenLoader';
-import { ButtonsWrapper, ControlsWrapper, StyledTypography } from '@/app/profile/styled';
 import { updateUserDetails } from '@/prismaActions/updateUser';
 import { CHAT_LIST } from '@/constants';
-import { CONTAINER_STYLE, CROP_AREA_STYLE, INPUT_STYLE, PROFILE_SLIDER_MIDDLE } from '@/app/profile/constants';
+import { CONTAINER_STYLE, CROP_AREA_STYLE, PROFILE_SLIDER_MIDDLE } from '@/app/profile/constants';
 import { User } from '@/types';
-import { StyledInput } from '@/app/shared/styled';
+import styles from '../profile.module.css';
 
 export const Profile = ({ user }: { user: User }) => {
 	const { push } = useRouter();
@@ -42,9 +39,9 @@ export const Profile = ({ user }: { user: User }) => {
 
 	const onCropComplete = (_: Area, area: Area) => setCroppedAreaPixels(area);
 
-	const zoomSliderHandler = (_: Event, value: number | number[]) => setZoomSliderValue(value as number);
+	const zoomSliderHandler = (evt: ChangeEvent<HTMLInputElement>) => setZoomSliderValue(+evt.target.value);
 
-	const rotationSliderHandler = (_: Event, value: number | number[]) => setRotationSliderValue(value as number);
+	const rotationSliderHandler = (evt: ChangeEvent<HTMLInputElement>) => setRotationSliderValue(+evt.target.value);
 
 	const usernameHandler = (evt: ChangeEvent<HTMLInputElement>) => setUsername(evt.target.value);
 
@@ -62,7 +59,7 @@ export const Profile = ({ user }: { user: User }) => {
 	const deleteImageHandler = () => setImageUrl(null);
 
 	return (
-		<Box>
+		<div>
 			{opacity ? null : <FullScreenLoader />}
 			<Cropper
 				style={{ containerStyle: { ...CONTAINER_STYLE, opacity }, cropAreaStyle: CROP_AREA_STYLE }}
@@ -78,32 +75,52 @@ export const Profile = ({ user }: { user: User }) => {
 				onMediaLoaded={() => setOpacity(1)}
 				cropShape="round"
 			/>
-			<ControlsWrapper>
-				<ButtonsWrapper>
-					<Button size="sm" onClick={uploadHandler}>
+			<div className={styles.controlsWrapper}>
+				<div className={styles.buttonsWrapper}>
+					<button className={styles.button} onClick={uploadHandler}>
 						Upload
-					</Button>
-					<Button size="sm" onClick={dropUploadingHandler}>
+					</button>
+					<button className={styles.button} onClick={dropUploadingHandler}>
 						Reset
-					</Button>
-					<Button size="sm" onClick={deleteImageHandler}>
+					</button>
+					<button className={styles.button} onClick={deleteImageHandler}>
 						Delete
-					</Button>
-				</ButtonsWrapper>
-				<FormLabel htmlFor="formId" ref={ref}>
+					</button>
+				</div>
+				<label htmlFor="formId" ref={ref}>
 					<input id="formId" type="file" onChange={selectFileHandler} accept="image/*" hidden />
-				</FormLabel>
-				<StyledTypography>Zoom</StyledTypography>
-				<Slider value={zoomSliderValue} onChange={zoomSliderHandler} size="small" />
-				<StyledTypography>Rotation</StyledTypography>
-				<Slider value={rotationSliderValue} onChange={rotationSliderHandler} size="small" />
-				<StyledTypography>Username</StyledTypography>
-				<StyledInput value={username} onChange={usernameHandler} sx={INPUT_STYLE} />
-				<ButtonsWrapper>
-					<Button onClick={submitHandler}>Update</Button>
-					<Button onClick={redirectToChatList}>Back</Button>
-				</ButtonsWrapper>
-			</ControlsWrapper>
-		</Box>
+				</label>
+				<section className={styles.section}>
+					<p className={styles.sliderName}>Zoom</p>
+					<input
+						type="range"
+						value={zoomSliderValue}
+						onChange={zoomSliderHandler}
+						className={styles.slider}
+					/>
+				</section>
+				<section className={styles.section}>
+					<p className={styles.sliderName}>Rotation</p>
+					<input
+						type="range"
+						value={rotationSliderValue}
+						onChange={rotationSliderHandler}
+						className={styles.slider}
+					/>
+				</section>
+				<section className={styles.section}>
+					<p className={styles.sliderName}>Username</p>
+					<input value={username} onChange={usernameHandler} className={styles.input} />
+				</section>
+				<div className={styles.buttonsWrapper}>
+					<button className={styles.button} onClick={submitHandler}>
+						Update
+					</button>
+					<button className={styles.button} onClick={redirectToChatList}>
+						Back
+					</button>
+				</div>
+			</div>
+		</div>
 	);
 };
