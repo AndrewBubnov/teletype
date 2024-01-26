@@ -36,5 +36,3 @@ export const TextArea = ({ minRows, maxRows, startDecorator, endDecorator, value
 		</div>
 	);
 };
-
-TextArea.displayName = 'TextArea';
