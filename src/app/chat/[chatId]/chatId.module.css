@@ -627,6 +627,7 @@
 }
 
 .fullWidth {
+    position: relative;
     width: 100%;
 }
 
