@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useCommonStore } from '@/store';
+import { useSendTyping } from '@/app/chat/[chatId]/hooks/useSendTyping';
 import { RepliedMessageBox } from '@/app/chat/[chatId]/components/RepliedMessageBox';
 import { sendMessageToServer } from '@/webSocketActions/sendMessageToServer';
 import { ImagePreviewModal } from '@/app/chat/[chatId]/components/ImagePreviewModal';
@@ -22,6 +23,7 @@ export const MessageInput = ({
 	editedMessage,
 	setEditedMessage,
 	setRepliedMessage,
+	interlocutorId,
 }: MessageInputProps) => {
 	const userId = useCommonStore(state => state.userId);
 
@@ -37,6 +39,8 @@ export const MessageInput = ({
 		selectFileHandler,
 	} = useFileUpload();
 
+	useSendTyping(interlocutorId, messageText);
+
 	useEffect(() => {
 		if (!editedMessage) return;
 		setMessageImageUrl(editedMessage.imageUrl || '');
@@ -45,9 +49,10 @@ export const MessageInput = ({
 	}, [setMessageImageUrl, editedMessage]);
 
 	const textChangeHandler = (evt: ChangeEvent<HTMLTextAreaElement>) => {
-		setMessageText(evt.target.value);
-		if (emojis) setEmojis(evt.target.value);
-		if (editedMessage?.type === MessageType.EMOJI) setEmojis(evt.target.value);
+		const { value } = evt.target;
+		setMessageText(value);
+		if (emojis) setEmojis(value);
+		if (editedMessage?.type === MessageType.EMOJI) setEmojis(value);
 	};
 
 	const resetState = () => {

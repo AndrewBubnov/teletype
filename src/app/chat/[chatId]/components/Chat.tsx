@@ -182,6 +182,7 @@ export const Chat = ({ chat }: ChatProps) => {
 				setRepliedMessage={setRepliedMessage}
 				editedMessage={editedMessage}
 				setEditedMessage={setEditedMessage}
+				interlocutorId={interlocutorId}
 			/>
 			<ConfirmDialog
 				open={dialogOpen}

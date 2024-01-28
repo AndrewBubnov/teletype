@@ -157,6 +157,7 @@ export interface MessageInputProps {
 	setRepliedMessage: Dispatch<SetStateAction<Message | null>>;
 	editedMessage: Message | null;
 	setEditedMessage: Dispatch<SetStateAction<Message | null>>;
+	interlocutorId: string;
 }
 
 export interface ImageMessageProps {

@@ -120,8 +120,14 @@
 }
 
 .elapsedTimeWrapper {
+
     margin-block: 1rem;
     line-height: 1.5rem;
+}
+
+.typedWrapper {
+    width: fit-content;
+    margin-inline: auto;
 }
 
 .elapsedTimeStub {
@@ -679,4 +685,15 @@
 
 .black:checked::before {
     color: #fff;
+}
+
+.typed {
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typing 2s infinite;
+}
+
+@keyframes typing {
+    from { width: 85% }
+    to { width: 100% }
 }

@@ -1,10 +1,13 @@
-import { memo, useMemo } from 'react';
+import { memo, useMemo, useState } from 'react';
 import { useCommonStore } from '@/store';
 import { ElapsedTime } from '@/app/chat/[chatId]/components/ElapsedTime';
 import { getInterlocutorState } from '@/app/chat/[chatId]/utils/getInterlocutorState';
 import { SelectModeHeader } from '@/app/shared/components/SelectModeHeader';
 import styles from '../chatId.module.css';
 import { ChatHeaderProps, VisitorStatus } from '@/types';
+import { useSubscribe } from '@/app/hooks/useSubscribe';
+import { clearIsTyping, updateIsTyping } from '@/webSocketActions/updateIsTyping';
+import { clsx } from 'clsx';
 
 const ChatHeaderComponent = ({
 	chatId,
@@ -20,6 +23,10 @@ const ChatHeaderComponent = ({
 		chatVisitorStatus: state.chatVisitorStatus,
 		activeUsers: state.activeUsers,
 	}));
+
+	const [isTyping, setIsTyping] = useState<boolean>(false);
+
+	useSubscribe(setIsTyping, updateIsTyping, clearIsTyping);
 
 	const interlocutorState = useMemo(
 		() =>
@@ -45,6 +52,13 @@ const ChatHeaderComponent = ({
 			</div>
 		);
 	}
+
+	if (isTyping)
+		return (
+			<div className={clsx(styles.elapsedTimeWrapper, styles.typedWrapper)}>
+				<p className={styles.typed}>is typing...</p>
+			</div>
+		);
 
 	return (
 		<div>

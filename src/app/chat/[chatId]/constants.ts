@@ -54,3 +54,4 @@ export const urlRegex = /\b(?:https?|http|www)\:\/\/[^\s/$.?#].[^\s]*/gi;
 
 export const DELETE_SINGLE_MESSAGE = 'Are you sure you want to delete this message?';
 export const DELETE_MULTIPLE_MESSAGE = 'Are you sure you want to delete these messages?';
+export const CANCEL_IS_TYPING_DELAY = 5000;
