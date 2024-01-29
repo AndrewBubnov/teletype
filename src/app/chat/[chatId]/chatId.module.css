@@ -406,6 +406,7 @@
 
 .messageItem {
     border-radius: 0.25rem;
+    transition: transform 0.5s ease-in-out;
 }
 
 .messageItem_fullWidth {
@@ -445,6 +446,10 @@
 
 .messageItem_transparent {
     background-color: transparent;
+}
+
+.messageItem_isMoved {
+    transform: translateX(calc(-100vw + 100% + 3.5rem));
 }
 
 .emojiDisplayWrapper {

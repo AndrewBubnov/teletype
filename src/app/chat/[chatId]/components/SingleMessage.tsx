@@ -78,7 +78,12 @@ export const SingleMessage = ({
 						element="div"
 						className="messageItem"
 						styles={styles}
-						attributes={{ singlePadding: !repliedMessage, isAuthoredByUser, fullWidth: isImageEnlarged }}
+						attributes={{
+							singlePadding: !repliedMessage,
+							isAuthoredByUser,
+							fullWidth: isImageEnlarged,
+							isMoved: isAuthoredByUser && isSelectMode,
+						}}
 					>
 						<ReplyTo message={repliedMessage} />
 						{message.imageUrl && (

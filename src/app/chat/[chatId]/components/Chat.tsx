@@ -78,10 +78,10 @@ export const Chat = ({ chat }: ChatProps) => {
 		[activeMessage, addReaction, authorImageUrl]
 	);
 
-	const onSelectModeStart = useCallback(() => {
-		startSelection(menuActiveId)();
+	const onSelectModeStart = (id: string) => () => {
+		startSelection(id)();
 		setMenuActiveId('');
-	}, [menuActiveId, startSelection]);
+	};
 
 	const onDeleteMessage = useCallback(
 		async (informAll: boolean) => {
@@ -150,7 +150,7 @@ export const Chat = ({ chat }: ChatProps) => {
 						const repliedMessage = message.replyToId
 							? messageList.find(el => el.id === message.replyToId)
 							: null;
-						const isAuthoredByUser = isSelectMode ? false : message.authorId === userId;
+						const isAuthoredByUser = message.authorId === userId;
 						return (
 							<SingleMessage
 								key={message.id}
@@ -162,7 +162,7 @@ export const Chat = ({ chat }: ChatProps) => {
 								onContextMenuToggle={contextMenuToggleHandler(message.id)}
 								updateIsRead={message.authorId !== userId ? updateIsRead : null}
 								isAuthoredByUser={isAuthoredByUser}
-								onSelectModeStart={onSelectModeStart}
+								onSelectModeStart={onSelectModeStart(message.id)}
 							/>
 						);
 					})}
