@@ -28,7 +28,7 @@ export const ChatsList = () => {
 		push(`${CHAT_LIST}/${chatId}`);
 	};
 
-	const chatLongPressHandler = (id: string) => startSelection(id);
+	const chatLongPressHandler = (id: string) => () => startSelection(id);
 
 	const deleteChatsHandler = async () => {
 		sendDeleteUserChats(selectedIds);

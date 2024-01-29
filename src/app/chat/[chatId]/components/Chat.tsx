@@ -79,7 +79,7 @@ export const Chat = ({ chat }: ChatProps) => {
 	);
 
 	const onSelectModeStart = (id: string) => () => {
-		startSelection(id)();
+		startSelection(id);
 		setMenuActiveId('');
 	};
 

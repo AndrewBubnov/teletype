@@ -24,13 +24,10 @@ export const useSelect = <T extends Record<'id', string>>(list: T[] = []) => {
 		[]
 	);
 
-	const startSelection = useCallback(
-		(id: string) => () => {
-			setSelectedIds(prevState => (prevState.length ? [] : [id]));
-			startSelectionRef.current = id;
-		},
-		[]
-	);
+	const startSelection = useCallback((id: string) => {
+		setSelectedIds(prevState => (prevState.length ? [] : [id]));
+		startSelectionRef.current = id;
+	}, []);
 
 	const dropSelectMode = useCallback(() => setSelectedIds([]), []);
 
