@@ -1,4 +1,4 @@
-import { memo, useMemo, useState } from 'react';
+import { memo, useContext, useMemo, useState } from 'react';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
 import { useCommonStore } from '@/store';
 import { clsx } from 'clsx';
@@ -7,23 +7,26 @@ import { getInterlocutorState } from '@/app/chat/[chatId]/utils/getInterlocutorS
 import { SelectModeHeader } from '@/app/shared/components/SelectModeHeader';
 import { clearIsTyping, updateIsTyping } from '@/webSocketActions/updateIsTyping';
 import { ChatMenuButton } from '@/app/chat/[chatId]/components/ChatMenuButton';
-import { ChatHeaderProps, VisitorStatus } from '@/types';
+import { ChatMenuContext } from '@/app/chat/[chatId]/providers/ChatMenuProvider';
+import { VisitorStatus } from '@/types';
 import styles from '../chatId.module.css';
 
-const ChatHeaderComponent = ({
-	chatId,
-	interlocutorId,
-	isSelectMode,
-	dropSelectMode,
-	selectedNumber,
-	onDelete,
-	isAllSelected,
-	toggleAllSelected,
-}: ChatHeaderProps) => {
+const ChatHeaderComponent = () => {
 	const { chatVisitorStatus, activeUsers } = useCommonStore(state => ({
 		chatVisitorStatus: state.chatVisitorStatus,
 		activeUsers: state.activeUsers,
 	}));
+
+	const {
+		chatId,
+		interlocutorId,
+		isSelectMode,
+		dropSelectMode,
+		selectedNumber,
+		onDelete,
+		isAllSelected,
+		toggleAllSelected,
+	} = useContext(ChatMenuContext);
 
 	const [isTyping, setIsTyping] = useState<boolean>(false);
 

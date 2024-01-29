@@ -127,20 +127,10 @@ export interface ContextMenuProps {
 	menuTop: number;
 	isAuthor: boolean;
 }
-
-export interface ChatHeaderProps {
-	chatId: string;
-	interlocutorId: string;
-	isSelectMode: boolean;
-	dropSelectMode(): void;
-	selectedNumber: number;
-	onDelete: (() => Promise<void>) | ((evt: SyntheticEvent) => void);
-	isAllSelected: boolean;
-	toggleAllSelected(): void;
-}
 export interface MessageProps {
 	isAuthoredByUser: boolean;
 	message: Message;
+	isSelectMode: boolean;
 	repliedMessage?: Message | null;
 	width?: number;
 }
@@ -320,6 +310,14 @@ export interface ChatMenuProps {
 export interface ChatMenuContextProps {
 	onClearChatHistory(): void;
 	onDeleteChat(): void;
+	chatId: string;
+	interlocutorId: string;
+	isSelectMode: boolean;
+	dropSelectMode(): void;
+	selectedNumber: number;
+	onDelete: (() => Promise<void>) | ((evt: SyntheticEvent) => void);
+	isAllSelected: boolean;
+	toggleAllSelected(): void;
 }
 export interface ChatMenuProviderProps extends ChatMenuContextProps {
 	children: ReactNode;

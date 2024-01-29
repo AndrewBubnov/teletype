@@ -115,7 +115,12 @@ export const SingleMessage = ({
 	return (
 		<label className={styles.styledLabel} htmlFor={message.id} {...pressHandler}>
 			<div className={styles.messageWrapper} ref={containerRef} id={message.id}>
-				<EmojiMessage isAuthoredByUser={isAuthoredByUser} message={message} repliedMessage={repliedMessage} />
+				<EmojiMessage
+					isAuthoredByUser={isAuthoredByUser}
+					message={message}
+					repliedMessage={repliedMessage}
+					isSelectMode={isSelectMode}
+				/>
 				{isSelectMode ? <StyledCheckbox id={message.id} checked={isSelected} /> : null}
 			</div>
 		</label>

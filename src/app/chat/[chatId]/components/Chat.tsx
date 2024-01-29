@@ -159,17 +159,19 @@ export const Chat = ({ chat }: ChatProps) => {
 	return (
 		<div className={styles.chatContainer}>
 			<BackButton interlocutorName={interlocutorName} interlocutorImageUrl={interlocutorImageUrl} />
-			<ChatMenuProvider onClearChatHistory={onClearChatHistory} onDeleteChat={onDeleteChat}>
-				<ChatHeader
-					chatId={chatId}
-					interlocutorId={interlocutorId}
-					isSelectMode={isSelectMode}
-					dropSelectMode={dropSelectMode}
-					selectedNumber={selectedIds.length}
-					onDelete={deleteMessageHandler}
-					isAllSelected={isAllSelected}
-					toggleAllSelected={toggleAllSelected}
-				/>
+			<ChatMenuProvider
+				onClearChatHistory={onClearChatHistory}
+				onDeleteChat={onDeleteChat}
+				chatId={chatId}
+				interlocutorId={interlocutorId}
+				isSelectMode={isSelectMode}
+				dropSelectMode={dropSelectMode}
+				selectedNumber={selectedIds.length}
+				onDelete={deleteMessageHandler}
+				isAllSelected={isAllSelected}
+				toggleAllSelected={toggleAllSelected}
+			>
+				<ChatHeader />
 			</ChatMenuProvider>
 			<div className={styles.coverWrapper}>
 				<div className={styles.chatWrapper} ref={containerRef}>
