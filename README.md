@@ -1,6 +1,6 @@
 # Teletype - chat application
 
-Teletype is a real-time chat application built with Next.js 14, Prisma ORM, Atlas MongoDB, Websockets using socket.io, Material UI, and Clerk JS.
+Teletype is a real-time chat application built with Next.js 14, Prisma ORM, Atlas MongoDB, Websockets using socket.io, and Clerk JS.
 
 Explore the live demo, an auto-deploy from the master branch: [Teletype](https://teletype-sandy.vercel.app/)
 
@@ -18,9 +18,9 @@ Explore the live demo, an auto-deploy from the master branch: [Teletype](https:/
   
 - **Zustand:** A small, fast, and scalable state management library for React.
 
-- **Material UI:** A React UI framework that provides a set of high-quality React components.
-
 - **Clerk JS:** A user authentication and identity management service.
+
+_Note:_ Initially, the project was created using Material UI, but later, this framework was removed from the application and replaced with custom components. This resulted in a 1.5x reduction in the bundle sizes of the pages.
 
 ## Features
 
@@ -54,6 +54,8 @@ Explore the live demo, an auto-deploy from the master branch: [Teletype](https:/
    - **Reply**: Users can reply to specific messages.
 
   Additional option for Image Messages and Photo messages: **Download**.
+
+- **Real-time Indication**: Users can observe when their conversation partner is actively typing a message. The "is typing..." indicator disappears if the typing user pauses for more than 5 seconds and resumes upon continuing typing.
 
 - **Unified Chat and Message Selection**: Users can enter multi-select mode for both chats and messages. For chats, it is activated by long-pressing a chat, and for messages, users can choose the "Select" option from the context menu. In this mode, users can manually select individual chats/messages or use the "Select all" button to choose all chats/messages at once for deletion. Deletion options include removal by the message sender only or by both chat participants.
 
