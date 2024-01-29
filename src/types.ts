@@ -312,3 +312,15 @@ export interface BackButtonProps {
 	interlocutorName: string;
 	interlocutorImageUrl?: string | null;
 }
+
+export interface ChatMenuProps {
+	onClose(): void;
+}
+
+export interface ChatMenuContextProps {
+	onClearChatHistory(): void;
+	onDeleteChat(): void;
+}
+export interface ChatMenuProviderProps extends ChatMenuContextProps {
+	children: ReactNode;
+}

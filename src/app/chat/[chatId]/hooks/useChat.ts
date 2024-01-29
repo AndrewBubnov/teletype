@@ -1,6 +1,8 @@
 import { useEffect, useMemo } from 'react';
 import { useCommonStore, useMessageStore } from '@/store';
+import { useRouter } from 'next/navigation';
 import { sendChangeVisitorStatus } from '@/webSocketActions/sendChangeVisitorStatus';
+import { CHAT_LIST } from '@/constants';
 import { UserChat, VisitorStatus } from '@/types';
 
 export const useChat = (chat: UserChat) => {
@@ -9,7 +11,12 @@ export const useChat = (chat: UserChat) => {
 		updateIsRead: state.updateIsRead,
 		addReaction: state.addReaction,
 	}));
-	const userId = useCommonStore(state => state.userId);
+	const { userId, chatList } = useCommonStore(state => ({
+		userId: state.userId,
+		chatList: state.chatList,
+	}));
+
+	const { push } = useRouter();
 
 	const { members, chatId } = chat;
 	const author = members.find(user => user.userId === userId);
@@ -20,6 +27,10 @@ export const useChat = (chat: UserChat) => {
 	const authorName = author?.username || author?.email || '';
 	const authorImageUrl = author?.imageUrl;
 	const interlocutorImageUrl = interlocutor?.imageUrl;
+
+	useEffect(() => {
+		if (!chatList.map(chat => chat.chatId).includes(chatId)) push(CHAT_LIST);
+	}, [chatId, chatList, push]);
 
 	useEffect(() => {
 		const rest = { chatId, userId };

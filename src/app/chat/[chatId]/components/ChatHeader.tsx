@@ -1,13 +1,14 @@
 import { memo, useMemo, useState } from 'react';
+import { useSubscribe } from '@/app/hooks/useSubscribe';
 import { useCommonStore } from '@/store';
+import { clsx } from 'clsx';
 import { ElapsedTime } from '@/app/chat/[chatId]/components/ElapsedTime';
 import { getInterlocutorState } from '@/app/chat/[chatId]/utils/getInterlocutorState';
 import { SelectModeHeader } from '@/app/shared/components/SelectModeHeader';
-import styles from '../chatId.module.css';
-import { ChatHeaderProps, VisitorStatus } from '@/types';
-import { useSubscribe } from '@/app/hooks/useSubscribe';
 import { clearIsTyping, updateIsTyping } from '@/webSocketActions/updateIsTyping';
-import { clsx } from 'clsx';
+import { ChatMenuButton } from '@/app/chat/[chatId]/components/ChatMenuButton';
+import { ChatHeaderProps, VisitorStatus } from '@/types';
+import styles from '../chatId.module.css';
 
 const ChatHeaderComponent = ({
 	chatId,
@@ -53,15 +54,16 @@ const ChatHeaderComponent = ({
 		);
 	}
 
-	if (isTyping)
+	if (isTyping) {
 		return (
 			<div className={clsx(styles.elapsedTimeWrapper, styles.typedWrapper)}>
 				<p className={styles.typed}>is typing...</p>
 			</div>
 		);
+	}
 
 	return (
-		<div>
+		<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
 			{interlocutorState ? (
 				<p className={styles.elapsedTimeWrapper} style={{ color: interlocutorState.color }}>
 					{interlocutorState.status === VisitorStatus.IN ? (
@@ -73,6 +75,7 @@ const ChatHeaderComponent = ({
 			) : (
 				<div className={styles.elapsedTimeStub} />
 			)}
+			<ChatMenuButton />
 		</div>
 	);
 };

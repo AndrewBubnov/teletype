@@ -15,7 +15,6 @@
     justify-content: center;
     z-index: 10;
     inset: 0;
-    background: rgba(0, 0, 0, 0.3);
 }
 
 .menuCard {
@@ -581,6 +580,7 @@
 .menuListOptionText {
     font-size: 1.2rem;
     color: #1a1a1a;
+    white-space: nowrap;
 }
 
 .unreadMessagesButton {
@@ -701,4 +701,39 @@
 @keyframes typing {
     from { width: 85% }
     to { width: 100% }
+}
+
+.chatMenuIconButton {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: 1.5rem;
+    color: lightgray;
+}
+
+.chatMenuButtonContainer {
+    position: relative;
+}
+
+.chatMenu {
+    position: absolute;
+    top: 100%;
+    background-color: lightgoldenrodyellow;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    z-index: 10;
+    opacity: 0;
+    color: #1a1a1a;
+    transform: translate(-100%, -3rem);
+    transition: all 0.5s;
+}
+
+.chatMenuIn {
+    opacity: 1;
+    transform: translate(-100%, 0);
+}
+
+.chatMenuOut {
+    opacity: 0;
+    transform: translate(-100%, -3rem);
 }

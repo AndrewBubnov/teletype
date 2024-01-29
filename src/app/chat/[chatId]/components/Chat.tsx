@@ -16,8 +16,11 @@ import { deleteOrHideMessages } from '@/prismaActions/deleteOrHideMessages';
 import { useDeleteDialog } from '@/app/chat/[chatId]/hooks/useDeleteDialog';
 import { ConfirmDialog } from '@/app/chat/[chatId]/components/ConfirmDialog';
 import { getUpdateData } from '@/app/chat/[chatId]/utils/getUpdateData';
+import { ChatMenuProvider } from '@/app/chat/[chatId]/providers/ChatMenuProvider';
+import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
+import { deleteSingleChat } from '@/prismaActions/deleteSingleChat';
+import { ChatProps, Message, UpdateData, UpdateMessageType } from '@/types';
 import styles from '../chatId.module.css';
-import { ChatProps, Message, UpdateMessageType } from '@/types';
 
 export const Chat = ({ chat }: ChatProps) => {
 	const {
@@ -101,6 +104,28 @@ export const Chat = ({ chat }: ChatProps) => {
 		[chatId, dropSelectMode, isSelectMode, menuActiveId, selectedIds, userId]
 	);
 
+	const onClearChatHistory = useCallback(async () => {
+		const messageIds = messageList.map(el => el.id);
+		await deleteOrHideMessages(messageIds, UpdateMessageType.DELETE, null);
+		const updateData = messageIds.reduce(
+			(acc, cur) => ({
+				...acc,
+				[cur]: null,
+			}),
+			{} as UpdateData
+		);
+		sendEditMessage({
+			updateData,
+			type: UpdateMessageType.DELETE,
+			roomId: chatId,
+		});
+	}, [chatId, messageList]);
+
+	const onDeleteChat = useCallback(async () => {
+		await deleteSingleChat(chatId);
+		sendDeleteUserChats([chat.id]);
+	}, [chat.id, chatId]);
+
 	const onReplyMessage = useCallback(() => {
 		if (activeMessage) setRepliedMessage(activeMessage);
 		setMenuActiveId('');
@@ -134,16 +159,18 @@ export const Chat = ({ chat }: ChatProps) => {
 	return (
 		<div className={styles.chatContainer}>
 			<BackButton interlocutorName={interlocutorName} interlocutorImageUrl={interlocutorImageUrl} />
-			<ChatHeader
-				chatId={chatId}
-				interlocutorId={interlocutorId}
-				isSelectMode={isSelectMode}
-				dropSelectMode={dropSelectMode}
-				selectedNumber={selectedIds.length}
-				onDelete={deleteMessageHandler}
-				isAllSelected={isAllSelected}
-				toggleAllSelected={toggleAllSelected}
-			/>
+			<ChatMenuProvider onClearChatHistory={onClearChatHistory} onDeleteChat={onDeleteChat}>
+				<ChatHeader
+					chatId={chatId}
+					interlocutorId={interlocutorId}
+					isSelectMode={isSelectMode}
+					dropSelectMode={dropSelectMode}
+					selectedNumber={selectedIds.length}
+					onDelete={deleteMessageHandler}
+					isAllSelected={isAllSelected}
+					toggleAllSelected={toggleAllSelected}
+				/>
+			</ChatMenuProvider>
 			<div className={styles.coverWrapper}>
 				<div className={styles.chatWrapper} ref={containerRef}>
 					{shownMessageList.map((message, index, { length }) => {

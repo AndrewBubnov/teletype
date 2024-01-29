@@ -16,5 +16,7 @@ export const getAllUserEmails = async () => {
 	const existingChatMemberIds = chats.map(el => el.memberIds).flat();
 	const existingChatEmails = await getEmailsByIds(existingChatMemberIds);
 
-	return (users || []).map(el => el.email).filter(el => el !== myEmail && !existingChatEmails.includes(el));
+	const uniqueUserEmails = Array.from(new Set((users || []).map(el => el.email)));
+
+	return uniqueUserEmails.filter(el => el !== myEmail && !existingChatEmails.includes(el));
 };
