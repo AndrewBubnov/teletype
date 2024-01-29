@@ -6,9 +6,9 @@ import { deleteChats } from '@/prismaActions/deleteChats';
 import { useSelect } from '@/app/shared/hooks/useSelect';
 import { ChatListItem } from '@/app/chat/components/ChatListItem';
 import { SelectModeHeader } from '@/app/shared/components/SelectModeHeader';
+import { CHAT_LIST } from '@/constants';
 import styles from '../chat.module.css';
 
-import { CHAT_LIST } from '@/constants';
 export const ChatsList = () => {
 	const { chatList, userId } = useCommonStore(state => ({
 		chatList: state.chatList,
