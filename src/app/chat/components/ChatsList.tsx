@@ -23,9 +23,9 @@ export const ChatsList = () => {
 	const chatPressHandler = (id: string, chatId: string) => () => {
 		if (selectedIds.length) {
 			addSelection(id);
-		} else {
-			push(`${CHAT_LIST}/${chatId}`);
+			return;
 		}
+		push(`${CHAT_LIST}/${chatId}`);
 	};
 
 	const chatLongPressHandler = (id: string) => startSelection(id);

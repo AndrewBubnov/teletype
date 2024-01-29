@@ -73,10 +73,15 @@ export const Chat = ({ chat }: ChatProps) => {
 			if (!activeMessage) return;
 			const reaction = activeMessage.reaction === reactionString ? '' : reactionString;
 			await addReaction(activeMessage, reaction, authorImageUrl);
-			closeMenuHandler();
+			setMenuActiveId('');
 		},
-		[activeMessage, addReaction, authorImageUrl, closeMenuHandler]
+		[activeMessage, addReaction, authorImageUrl]
 	);
+
+	const onSelectModeStart = useCallback(() => {
+		startSelection(menuActiveId)();
+		setMenuActiveId('');
+	}, [menuActiveId, startSelection]);
 
 	const onDeleteMessage = useCallback(
 		async (informAll: boolean) => {
@@ -98,10 +103,12 @@ export const Chat = ({ chat }: ChatProps) => {
 
 	const onReplyMessage = useCallback(() => {
 		if (activeMessage) setRepliedMessage(activeMessage);
+		setMenuActiveId('');
 	}, [activeMessage]);
 
 	const onEditMessage = useCallback(() => {
 		if (activeMessage) setEditedMessage(activeMessage);
+		setMenuActiveId('');
 	}, [activeMessage]);
 
 	const onDownLoadImage = useCallback(() => {
@@ -155,6 +162,7 @@ export const Chat = ({ chat }: ChatProps) => {
 								onContextMenuToggle={contextMenuToggleHandler(message.id)}
 								updateIsRead={message.authorId !== userId ? updateIsRead : null}
 								isAuthoredByUser={isAuthoredByUser}
+								onSelectModeStart={onSelectModeStart}
 							/>
 						);
 					})}
@@ -168,7 +176,6 @@ export const Chat = ({ chat }: ChatProps) => {
 						onReplyMessage={onReplyMessage}
 						onAddReaction={addReactionHandler}
 						onDeleteMessage={deleteMessageHandler}
-						onSelect={startSelection(menuActiveId)}
 						isAuthor={activeMessage.authorId === authorId}
 						onDownLoadImage={activeMessage.imageUrl ? onDownLoadImage : null}
 					/>

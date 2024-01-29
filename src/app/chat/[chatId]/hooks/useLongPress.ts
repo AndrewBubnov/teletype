@@ -3,7 +3,7 @@ import { UseLongPress } from '@/types';
 
 const preventDefault = (event: Event) => event.preventDefault();
 
-export const useLongPress = ({ onLongPress, onPress = () => null, delay = 500 }: UseLongPress) => {
+export const useLongPress = ({ onLongPress, onPress = () => null, delay = 200 }: UseLongPress) => {
 	const [longPressTriggered, setLongPressTriggered] = useState(false);
 	const timeout = useRef<number | undefined>();
 	const target = useRef<EventTarget | null>();

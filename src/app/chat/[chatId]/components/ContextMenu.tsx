@@ -1,14 +1,14 @@
 import { CSSProperties, useLayoutEffect, useRef } from 'react';
 import { clsx } from 'clsx';
+import { useClickOutside } from '@/app/shared/hooks/useClickOutside';
 import { AiOutlineDelete as DeleteIcon } from 'react-icons/ai';
-import { MdOutlineDone as CheckIcon } from 'react-icons/md';
 import { CiEdit as EditIcon } from 'react-icons/ci';
 import { VscReply as ReplyIcon } from 'react-icons/vsc';
 import { BsDownload as DownloadIcon } from 'react-icons/bs';
-import styles from '../chatId.module.css';
+import { useAnimate } from '@/app/shared/hooks/useAnimate';
 import { reactions } from '@/app/chat/[chatId]/constants';
 import { ContextMenuProps } from '@/types';
-import { useAnimate } from '@/app/shared/hooks/useAnimate';
+import styles from '../chatId.module.css';
 
 export const ContextMenu = ({
 	onAddReaction,
@@ -18,12 +18,13 @@ export const ContextMenu = ({
 	onReplyMessage,
 	onEditMessage,
 	onDeleteMessage,
-	onSelect,
 	onDownLoadImage,
 	isAuthor,
 }: ContextMenuProps) => {
 	const { isActive, closeHandler, onCloseReturn } = useAnimate(onCloseMenu);
 	const ref = useRef<HTMLDivElement>(null);
+
+	useClickOutside([ref], closeHandler);
 
 	useLayoutEffect(() => {
 		if (!ref.current) return;
@@ -31,7 +32,7 @@ export const ContextMenu = ({
 	}, [initMenuParams]);
 
 	return (
-		<div className={styles.menuBackdrop} onClick={closeHandler}>
+		<div className={styles.menuBackdrop}>
 			<div
 				onTransitionEnd={onCloseReturn}
 				className={clsx(styles.menuCard, {
@@ -55,12 +56,6 @@ export const ContextMenu = ({
 						<button className={styles.menuListButton} onClick={onDeleteMessage}>
 							<DeleteIcon />
 							<span className={styles.menuListOptionText}>Delete</span>
-						</button>
-					</li>
-					<li>
-						<button className={styles.menuListButton} onClick={onSelect}>
-							<CheckIcon />
-							<span className={styles.menuListOptionText}>Select</span>
 						</button>
 					</li>
 					{isAuthor ? (

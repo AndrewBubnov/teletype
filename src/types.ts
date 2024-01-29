@@ -102,6 +102,7 @@ export type SingleMessageProps = {
 	isAuthoredByUser: boolean;
 	isSelected: boolean;
 	isSelectMode: boolean;
+	onSelectModeStart(): void;
 };
 
 export interface RepliedMessageBoxProps {
@@ -121,7 +122,6 @@ export interface ContextMenuProps {
 	initMenuParams: MutableRefObject<DOMRect | null>;
 	onReplyMessage(): void;
 	onEditMessage(): void;
-	onSelect(): void;
 	onDeleteMessage(evt: SyntheticEvent): void;
 	onDownLoadImage: null | (() => void);
 	menuTop: number;

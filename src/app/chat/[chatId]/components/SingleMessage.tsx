@@ -9,6 +9,7 @@ import { StyledCheckbox } from '@/app/shared/components/StyledCheckbox';
 import styles from '../chatId.module.css';
 import { urlRegex } from '@/app/chat/[chatId]/constants';
 import { MessageType, SingleMessageProps } from '@/types';
+import { useLongPress } from '@/app/chat/[chatId]/hooks/useLongPress';
 
 export const SingleMessage = ({
 	message,
@@ -19,6 +20,7 @@ export const SingleMessage = ({
 	isAuthoredByUser,
 	isSelectMode,
 	isSelected,
+	onSelectModeStart,
 }: SingleMessageProps) => {
 	const [isImageEnlarged, setIsImageEnlarged] = useState<boolean>(false);
 
@@ -66,10 +68,12 @@ export const SingleMessage = ({
 		onContextMenuToggle('open', params);
 	};
 
+	const pressHandler = useLongPress({ onPress, onLongPress: onSelectModeStart });
+
 	if (message.type === MessageType.COMMON) {
 		return (
-			<label className={styles.styledLabel} htmlFor={message.id}>
-				<div className={styles.messageWrapper} ref={containerRef} id={message.id} onClick={onPress}>
+			<label className={styles.styledLabel} htmlFor={message.id} {...pressHandler}>
+				<div className={styles.messageWrapper} ref={containerRef} id={message.id}>
 					<StyledElement
 						element="div"
 						className="messageItem"
@@ -104,8 +108,8 @@ export const SingleMessage = ({
 	}
 
 	return (
-		<label className={styles.styledLabel} htmlFor={message.id}>
-			<div className={styles.messageWrapper} ref={containerRef} id={message.id} onClick={onPress}>
+		<label className={styles.styledLabel} htmlFor={message.id} {...pressHandler}>
+			<div className={styles.messageWrapper} ref={containerRef} id={message.id}>
 				<EmojiMessage isAuthoredByUser={isAuthoredByUser} message={message} repliedMessage={repliedMessage} />
 				{isSelectMode ? <StyledCheckbox id={message.id} checked={isSelected} /> : null}
 			</div>
