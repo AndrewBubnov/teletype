@@ -1,5 +1,5 @@
 'use client';
-import { useCommonStore } from '@/store';
+import { useCommonStore, useMessageStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
 import { deleteChats } from '@/prismaActions/deleteChats';
@@ -14,6 +14,8 @@ export const ChatsList = () => {
 		chatList: state.chatList,
 		userId: state.userId,
 	}));
+
+	const messageMap = useMessageStore(state => state.messageMap);
 
 	const { selectedIds, isAllSelected, toggleAllSelected, addSelection, startSelection, dropSelectMode } =
 		useSelect(chatList);
@@ -48,20 +50,34 @@ export const ChatsList = () => {
 				isAllSelected={isAllSelected}
 				toggleAllSelected={toggleAllSelected}
 			/>
-			{chatList.map(({ chatId, id, members }) => {
-				const [interlocutor] = members.filter(member => member.userId !== userId);
-				return (
-					<ChatListItem
-						key={chatId}
-						chatId={chatId}
-						interlocutor={interlocutor}
-						onPress={chatPressHandler(id, chatId)}
-						onLongPress={chatLongPressHandler(id)}
-						isSelectMode={isSelectMode}
-						isChecked={selectedIds.includes(id)}
-					/>
-				);
-			})}
+			{chatList
+				.sort((chatA, chatB) => {
+					const messageListA = messageMap[chatA.chatId] || [];
+					const messageListB = messageMap[chatB.chatId] || [];
+					if (messageListA.at(-1) && messageListB.at(-1)) {
+						return (
+							Date.parse(messageListB.at(-1)!.createdAt.toString()) -
+							Date.parse(messageListA.at(-1)!.createdAt.toString())
+						);
+					}
+					if (messageListA.at(-1) && !messageListB.at(-1)) return -1;
+					if (messageListB.at(-1) && !messageListA.at(-1)) return 1;
+					return 0;
+				})
+				.map(({ chatId, id, members }) => {
+					const [interlocutor] = members.filter(member => member.userId !== userId);
+					return (
+						<ChatListItem
+							key={chatId}
+							chatId={chatId}
+							interlocutor={interlocutor}
+							onPress={chatPressHandler(id, chatId)}
+							onLongPress={chatLongPressHandler(id)}
+							isSelectMode={isSelectMode}
+							isChecked={selectedIds.includes(id)}
+						/>
+					);
+				})}
 		</div>
 	);
 };
