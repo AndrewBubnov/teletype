@@ -42,6 +42,8 @@ _Note:_ Initially, the project was created using Material UI, but later, this fr
   
 - **Photo Capture and Sending**: Users can capture photos by clicking on the camera icon, and they can seamlessly send the captured photos as messages. For mobile devices, users have the capability to switch between the main and front-facing cameras.
 
+- **Chat Options Menu**: Each chat has a menu accessible by tapping on the three-dot icon in the top right corner. This menu provides options to clear the chat history or delete the entire chat.
+
 - **Message Context Menu**: Click or tap on a message reveals a context menu for that specific message. For the message author, there is an option to edit the message. Users can also reply to specific messages. In a reply, the original author, the first line of its content for text messages, and the timestamp of its sending are displayed. Clicking or tapping on the area displaying the replied message smoothly scrolls the screen to that message.
   
    - **Reactions** for Non-Author Users: Non-authors of messages can add emoji reactions to messages.
