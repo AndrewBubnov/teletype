@@ -170,7 +170,9 @@ export const Chat = ({ chat }: ChatProps) => {
 					isAllSelected={isAllSelected}
 					toggleAllSelected={toggleAllSelected}
 				/>
-				<ChatMenuButton onDeleteChat={onDeleteChat} onClearChatHistory={onClearChatHistory} />
+				{!isSelectMode && (
+					<ChatMenuButton onDeleteChat={onDeleteChat} onClearChatHistory={onClearChatHistory} />
+				)}
 			</div>
 			<div className={styles.coverWrapper}>
 				<div className={styles.chatWrapper} ref={containerRef}>
