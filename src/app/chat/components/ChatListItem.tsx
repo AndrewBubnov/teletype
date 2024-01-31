@@ -4,7 +4,7 @@ import { useLongPress } from '@/app/chat/[chatId]/hooks/useLongPress';
 import { clsx } from 'clsx';
 import Image from 'next/image';
 import styles from '@/app/chat/chat.module.css';
-import { options } from '@/app/chat/[chatId]/constants';
+import { timeOptions } from '@/app/chat/[chatId]/constants';
 import { ChatListItemProps } from '@/types';
 import { StyledCheckbox } from '@/app/shared/components/StyledCheckbox';
 
@@ -61,7 +61,7 @@ export const ChatListItem = ({
 					</div>
 					{lastMessage && !isSelectMode ? (
 						<div className={styles.chatListItemDateWrapper}>
-							{new Intl.DateTimeFormat('en-US', options).format(new Date(lastMessage.createdAt))}
+							{new Intl.DateTimeFormat('en-US', timeOptions).format(new Date(lastMessage.createdAt))}
 						</div>
 					) : null}
 				</div>

@@ -29,6 +29,7 @@ export const useChat = (chat: UserChat) => {
 	const interlocutorImageUrl = interlocutor?.imageUrl;
 
 	useEffect(() => {
+		if (!chatList.length) return;
 		if (!chatList.map(chat => chat.chatId).includes(chatId)) push(CHAT_LIST);
 	}, [chatId, chatList, push]);
 
@@ -41,7 +42,20 @@ export const useChat = (chat: UserChat) => {
 		};
 	}, [chatId, userId]);
 
-	const messageList = useMemo(() => messageMap[chatId] || [], [chatId, messageMap]);
+	const messageList = useMemo(() => {
+		const list = messageMap[chatId] || [];
+		return list.map((message, index) => {
+			console.log(message.createdAt, message.createdAt.getDate());
+			const isFirstDateMessage =
+				!index || (index && message.createdAt.getDate() !== list[index - 1].createdAt.getDate());
+			const isFirstUnread = !message.isRead && (!index || list[index - 1].isRead);
+			return {
+				...message,
+				...(isFirstDateMessage ? { isFirstDateMessage: true } : {}),
+				...(isFirstUnread ? { isFirstUnread: true } : {}),
+			};
+		});
+	}, [chatId, messageMap]);
 
 	const unreadNumber = useMemo(() => {
 		if (!userId) return 0;

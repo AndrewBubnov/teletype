@@ -3,7 +3,7 @@ import { StyledElement } from '@/app/chat/[chatId]/components/StyledElement';
 import { MdOutlineDone as SentIcon } from 'react-icons/md';
 import { MdOutlineDoneAll as IsReadIcon } from 'react-icons/md';
 import styles from '../chatId.module.css';
-import { options } from '@/app/chat/[chatId]/constants';
+import { timeOptions } from '@/app/chat/[chatId]/constants';
 import { Message } from '@/types';
 
 export const MessageBottom = ({ message, withOffset = false }: { message: Message; withOffset?: boolean }) => (
@@ -28,7 +28,7 @@ export const MessageBottom = ({ message, withOffset = false }: { message: Messag
 			</div>
 		)}
 		<div className={styles.timeWrapper}>
-			{new Intl.DateTimeFormat('en-US', options).format(new Date(message.createdAt))}
+			{new Intl.DateTimeFormat('en-US', timeOptions).format(new Date(message.createdAt))}
 			{message.isRead ? <IsReadIcon className={styles.statusIcon} /> : <SentIcon className={styles.statusIcon} />}
 		</div>
 	</StyledElement>

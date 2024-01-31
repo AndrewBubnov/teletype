@@ -1,7 +1,7 @@
 import { SyntheticEvent } from 'react';
 import Image from 'next/image';
 import styles from '../chatId.module.css';
-import { options } from '@/app/chat/[chatId]/constants';
+import { timeOptions } from '@/app/chat/[chatId]/constants';
 import { Message } from '@/types';
 export const ReplyTo = ({ message }: { message?: Message | null }) => {
 	if (!message) return null;
@@ -24,7 +24,8 @@ export const ReplyTo = ({ message }: { message?: Message | null }) => {
 			</div>
 			<div className={styles.replyToDateWrapper}>
 				<div className={styles.replyToDate}>
-					{message.createdAt && new Intl.DateTimeFormat('en-US', options).format(new Date(message.createdAt))}
+					{message.createdAt &&
+						new Intl.DateTimeFormat('en-US', timeOptions).format(new Date(message.createdAt))}
 				</div>
 			</div>
 		</div>

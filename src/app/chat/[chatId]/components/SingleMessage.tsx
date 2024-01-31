@@ -1,4 +1,5 @@
 import { SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { useLongPress } from '@/app/chat/[chatId]/hooks/useLongPress';
 import { EmojiMessage } from '@/app/chat/[chatId]/components/EmojiMessage';
 import { ReplyTo } from '@/app/chat/[chatId]/components/ReplyTo';
 import { ImageMessage } from '@/app/chat/[chatId]/components/ImageMessage';
@@ -6,10 +7,9 @@ import { MessageBottom } from '@/app/chat/[chatId]/components/MessageBottom';
 import { LinkMessagePart } from '@/app/chat/[chatId]/components/LinkMessagePart';
 import { StyledElement } from '@/app/chat/[chatId]/components/StyledElement';
 import { StyledCheckbox } from '@/app/shared/components/StyledCheckbox';
-import styles from '../chatId.module.css';
-import { urlRegex } from '@/app/chat/[chatId]/constants';
+import { dateOptions, urlRegex } from '@/app/chat/[chatId]/constants';
 import { MessageType, SingleMessageProps } from '@/types';
-import { useLongPress } from '@/app/chat/[chatId]/hooks/useLongPress';
+import styles from '../chatId.module.css';
 
 export const SingleMessage = ({
 	message,
@@ -70,59 +70,85 @@ export const SingleMessage = ({
 
 	const pressHandler = useLongPress({ onPress, onLongPress: onSelectModeStart });
 
+	const isFirstDateDateMessagePrefix = useMemo(() => {
+		if (message.isFirstDateMessage) {
+			return (
+				<div className={styles.newDateIndicator}>
+					{new Intl.DateTimeFormat('en-US', dateOptions).format(new Date(message.createdAt))}
+				</div>
+			);
+		}
+		return null;
+	}, [message.createdAt, message.isFirstDateMessage]);
+
+	const isFirstUnreadPrefix = useMemo(() => {
+		if (message.isFirstUnread) {
+			return <p className={styles.unreadMessagesIndicator}>Unread messages</p>;
+		}
+		return null;
+	}, [message.isFirstUnread]);
+
 	if (message.type === MessageType.COMMON) {
 		return (
-			<label className={styles.styledLabel} htmlFor={message.id} {...pressHandler}>
-				<div className={styles.messageWrapper} ref={containerRef} id={message.id}>
-					<StyledElement
-						element="div"
-						className="messageItem"
-						styles={styles}
-						attributes={{
-							singlePadding: !repliedMessage,
-							isAuthoredByUser,
-							fullWidth: isImageEnlarged,
-							isMoved: isAuthoredByUser && isSelectMode,
-						}}
-					>
-						<ReplyTo message={repliedMessage} />
-						{message.imageUrl && (
-							<ImageMessage
-								message={message}
-								isEnlarged={isImageEnlarged}
-								onEnlargeToggle={toggleEnlargeHandler}
-								width={containerRef.current?.clientWidth}
-							/>
-						)}
-						{message.text && (
-							<StyledElement
-								element="div"
-								className="innerMessageItem"
-								styles={styles}
-								attributes={{ withPadding: !repliedMessage }}
-							>
-								{messageText}
-							</StyledElement>
-						)}
-						<MessageBottom message={message} withOffset={!repliedMessage} />
-					</StyledElement>
-					{isSelectMode ? <StyledCheckbox id={message.id} checked={isSelected} /> : null}
-				</div>
-			</label>
+			<>
+				{isFirstDateDateMessagePrefix}
+				{isFirstUnreadPrefix}
+				<label className={styles.styledLabel} htmlFor={message.id} {...pressHandler}>
+					<div className={styles.messageWrapper} ref={containerRef} id={message.id}>
+						<StyledElement
+							element="div"
+							className="messageItem"
+							styles={styles}
+							attributes={{
+								singlePadding: !repliedMessage,
+								isAuthoredByUser,
+								fullWidth: isImageEnlarged,
+								isMoved: isAuthoredByUser && isSelectMode,
+							}}
+						>
+							<ReplyTo message={repliedMessage} />
+							{message.imageUrl && (
+								<ImageMessage
+									message={message}
+									isEnlarged={isImageEnlarged}
+									onEnlargeToggle={toggleEnlargeHandler}
+									width={containerRef.current?.clientWidth}
+								/>
+							)}
+							{message.text && (
+								<StyledElement
+									element="div"
+									className="innerMessageItem"
+									styles={styles}
+									attributes={{ withPadding: !repliedMessage }}
+								>
+									{messageText}
+								</StyledElement>
+							)}
+							<MessageBottom message={message} withOffset={!repliedMessage} />
+						</StyledElement>
+						{isSelectMode ? <StyledCheckbox id={message.id} checked={isSelected} /> : null}
+					</div>
+				</label>
+			</>
 		);
 	}
 
 	return (
-		<label className={styles.styledLabel} htmlFor={message.id} {...pressHandler}>
-			<div className={styles.messageWrapper} ref={containerRef} id={message.id}>
-				<EmojiMessage
-					isAuthoredByUser={isAuthoredByUser}
-					message={message}
-					repliedMessage={repliedMessage}
-					isSelectMode={isSelectMode}
-				/>
-				{isSelectMode ? <StyledCheckbox id={message.id} checked={isSelected} /> : null}
-			</div>
-		</label>
+		<>
+			{isFirstDateDateMessagePrefix}
+			{isFirstUnreadPrefix}
+			<label className={styles.styledLabel} htmlFor={message.id} {...pressHandler}>
+				<div className={styles.messageWrapper} ref={containerRef} id={message.id}>
+					<EmojiMessage
+						isAuthoredByUser={isAuthoredByUser}
+						message={message}
+						repliedMessage={repliedMessage}
+						isSelectMode={isSelectMode}
+					/>
+					{isSelectMode ? <StyledCheckbox id={message.id} checked={isSelected} /> : null}
+				</div>
+			</label>
+		</>
 	);
 };

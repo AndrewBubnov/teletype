@@ -1,7 +1,12 @@
-export const options = {
+export const timeOptions = {
 	hour: 'numeric',
 	minute: 'numeric',
 	hour12: false,
+} as const;
+
+export const dateOptions = {
+	month: 'long',
+	day: 'numeric',
 } as const;
 
 export const timeUnits = {

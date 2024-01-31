@@ -33,6 +33,8 @@ export interface Message {
 	reaction?: string;
 	reactionAuthorImageUrl?: string | null;
 	replyToId?: string;
+	isFirstDateMessage?: true;
+	isFirstUnread?: true;
 }
 
 export type MessageDraft = Omit<Message, 'id' | 'createdAt' | 'hidden'>;

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { IoCloseOutline as ClearIcon } from 'react-icons/io5';
 import styles from '../chatId.module.css';
-import { options } from '@/app/chat/[chatId]/constants';
+import { timeOptions } from '@/app/chat/[chatId]/constants';
 import { RepliedMessageBoxProps } from '@/types';
 
 export const RepliedMessageBox = ({ message, onDropMessage, authorName }: RepliedMessageBoxProps) =>
@@ -15,7 +15,7 @@ export const RepliedMessageBox = ({ message, onDropMessage, authorName }: Replie
 					<div className={styles.repliedMessageInner}>{authorName}</div>
 				</div>
 				<div className={styles.repliedTimeContainer}>
-					<div>{new Intl.DateTimeFormat('en-US', options).format(new Date(message.createdAt))}</div>
+					<div>{new Intl.DateTimeFormat('en-US', timeOptions).format(new Date(message.createdAt))}</div>
 				</div>
 			</div>
 			<div className={styles.repliedMessageText}>
