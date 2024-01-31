@@ -49,7 +49,6 @@ _Note:_ Initially, the project was created using Material UI, but later, this fr
   Options for All Messages:
 
    - **Delete**: Allows users to delete the message. Deletion options include removal by the message sender only or by both chat participants.
-   - **Select**: Activates multi-select mode for both chats and messages.
    - **Edit**: Enables users to edit their own messages.
    - **Reply**: Users can reply to specific messages.
 
@@ -57,7 +56,9 @@ _Note:_ Initially, the project was created using Material UI, but later, this fr
 
 - **Real-time Indication**: Users can observe when their conversation partner is actively typing a message. The "is typing..." indicator disappears if the typing user pauses for more than 5 seconds and resumes upon continuing typing.
 
-- **Unified Chat and Message Selection**: Users can enter multi-select mode for both chats and messages. For chats, it is activated by long-pressing a chat, and for messages, users can choose the "Select" option from the context menu. In this mode, users can manually select individual chats/messages or use the "Select all" button to choose all chats/messages at once for deletion. Deletion options include removal by the message sender only or by both chat participants.
+- **Unified Chat and Message Selection**: Users can enter multi-select mode for both chats and messages via a long tap. In this mode, users can manually select individual chats/messages or use the "Select all" button to choose all chats/messages at once for deletion. Deletion options include removal by the message sender only or by both chat participants.
+
+- **Chat Sorting on Chat List Page**: Chats on the chat list page are sorted based on the timestamp of the last message in each chat.
 
 - **Clickable Hyperlinks:** Links included in messages are presented as clickable hyperlinks, allowing users to easily navigate to external websites or specific content shared within the conversation.
 
