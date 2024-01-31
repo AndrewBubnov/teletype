@@ -81,18 +81,10 @@ export const SingleMessage = ({
 		return null;
 	}, [message.createdAt, message.isFirstDateMessage]);
 
-	const isFirstUnreadPrefix = useMemo(() => {
-		if (message.isFirstUnread) {
-			return <p className={styles.unreadMessagesIndicator}>Unread messages</p>;
-		}
-		return null;
-	}, [message.isFirstUnread]);
-
 	if (message.type === MessageType.COMMON) {
 		return (
 			<>
 				{isFirstDateDateMessagePrefix}
-				{isFirstUnreadPrefix}
 				<label className={styles.styledLabel} htmlFor={message.id} {...pressHandler}>
 					<div className={styles.messageWrapper} ref={containerRef} id={message.id}>
 						<StyledElement
@@ -106,7 +98,7 @@ export const SingleMessage = ({
 								isMoved: isAuthoredByUser && isSelectMode,
 							}}
 						>
-							<ReplyTo message={repliedMessage} />
+							{repliedMessage && <ReplyTo message={repliedMessage} />}
 							{message.imageUrl && (
 								<ImageMessage
 									message={message}
@@ -137,15 +129,9 @@ export const SingleMessage = ({
 	return (
 		<>
 			{isFirstDateDateMessagePrefix}
-			{isFirstUnreadPrefix}
 			<label className={styles.styledLabel} htmlFor={message.id} {...pressHandler}>
 				<div className={styles.messageWrapper} ref={containerRef} id={message.id}>
-					<EmojiMessage
-						isAuthoredByUser={isAuthoredByUser}
-						message={message}
-						repliedMessage={repliedMessage}
-						isSelectMode={isSelectMode}
-					/>
+					<EmojiMessage isAuthoredByUser={isAuthoredByUser} message={message} isSelectMode={isSelectMode} />
 					{isSelectMode ? <StyledCheckbox id={message.id} checked={isSelected} /> : null}
 				</div>
 			</label>

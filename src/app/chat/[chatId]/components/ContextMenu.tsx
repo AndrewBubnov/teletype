@@ -19,6 +19,7 @@ export const ContextMenu = ({
 	onEditMessage,
 	onDeleteMessage,
 	onDownLoadImage,
+	canReply,
 	isAuthor,
 }: ContextMenuProps) => {
 	const { isActive, closeHandler, onCloseReturn } = useAnimate(onCloseMenu);
@@ -66,12 +67,14 @@ export const ContextMenu = ({
 							</button>
 						</li>
 					) : null}
-					<li>
-						<button className={styles.menuListButton} onClick={onReplyMessage}>
-							<ReplyIcon />
-							<span className={styles.menuListOptionText}>Reply</span>
-						</button>
-					</li>
+					{canReply && (
+						<li>
+							<button className={styles.menuListButton} onClick={onReplyMessage}>
+								<ReplyIcon />
+								<span className={styles.menuListOptionText}>Reply</span>
+							</button>
+						</li>
+					)}
 					{onDownLoadImage ? (
 						<li>
 							<button className={styles.menuListButton} onClick={onDownLoadImage}>

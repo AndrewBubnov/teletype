@@ -34,7 +34,6 @@ export interface Message {
 	reactionAuthorImageUrl?: string | null;
 	replyToId?: string;
 	isFirstDateMessage?: true;
-	isFirstUnread?: true;
 }
 
 export type MessageDraft = Omit<Message, 'id' | 'createdAt' | 'hidden'>;
@@ -128,12 +127,12 @@ export interface ContextMenuProps {
 	onDownLoadImage: null | (() => void);
 	menuTop: number;
 	isAuthor: boolean;
+	canReply: boolean;
 }
 export interface MessageProps {
 	isAuthoredByUser: boolean;
 	message: Message;
 	isSelectMode: boolean;
-	repliedMessage?: Message | null;
 	width?: number;
 }
 

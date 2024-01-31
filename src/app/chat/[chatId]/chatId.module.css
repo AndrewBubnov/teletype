@@ -750,9 +750,3 @@
     margin-inline: auto;
     padding-block: 1rem;
 }
-
-.unreadMessagesIndicator {
-    background-color: lightgray;
-    color: #1a1a1a;
-    margin-block: 1rem;
-}

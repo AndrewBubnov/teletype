@@ -18,7 +18,7 @@ import { ConfirmDialog } from '@/app/chat/[chatId]/components/ConfirmDialog';
 import { getUpdateData } from '@/app/chat/[chatId]/utils/getUpdateData';
 import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
 import { deleteSingleChat } from '@/prismaActions/deleteSingleChat';
-import { ChatProps, Message, UpdateData, UpdateMessageType } from '@/types';
+import { ChatProps, Message, MessageType, UpdateData, UpdateMessageType } from '@/types';
 import styles from '../chatId.module.css';
 import { ChatMenuButton } from '@/app/chat/[chatId]/components/ChatMenuButton';
 
@@ -206,6 +206,7 @@ export const Chat = ({ chat }: ChatProps) => {
 						onReplyMessage={onReplyMessage}
 						onAddReaction={addReactionHandler}
 						onDeleteMessage={deleteMessageHandler}
+						canReply={activeMessage.type === MessageType.COMMON}
 						isAuthor={activeMessage.authorId === authorId}
 						onDownLoadImage={activeMessage.imageUrl ? onDownLoadImage : null}
 					/>

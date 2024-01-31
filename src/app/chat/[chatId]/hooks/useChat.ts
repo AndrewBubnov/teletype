@@ -3,7 +3,7 @@ import { useCommonStore, useMessageStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { sendChangeVisitorStatus } from '@/webSocketActions/sendChangeVisitorStatus';
 import { CHAT_LIST } from '@/constants';
-import { UserChat, VisitorStatus } from '@/types';
+import { Message, UserChat, VisitorStatus } from '@/types';
 
 export const useChat = (chat: UserChat) => {
 	const { messageMap, updateIsRead, addReaction } = useMessageStore(state => ({
@@ -42,17 +42,15 @@ export const useChat = (chat: UserChat) => {
 		};
 	}, [chatId, userId]);
 
-	const messageList = useMemo(() => {
+	const messageList: Message[] = useMemo(() => {
 		const list = messageMap[chatId] || [];
 		return list.map((message, index) => {
-			console.log(message.createdAt, message.createdAt.getDate());
 			const isFirstDateMessage =
-				!index || (index && message.createdAt.getDate() !== list[index - 1].createdAt.getDate());
-			const isFirstUnread = !message.isRead && (!index || list[index - 1].isRead);
+				!index ||
+				(index && new Date(message.createdAt).getDate() !== new Date(list[index - 1].createdAt).getDate());
 			return {
 				...message,
 				...(isFirstDateMessage ? { isFirstDateMessage: true } : {}),
-				...(isFirstUnread ? { isFirstUnread: true } : {}),
 			};
 		});
 	}, [chatId, messageMap]);

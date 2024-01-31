@@ -1,10 +1,9 @@
-import { ReplyTo } from '@/app/chat/[chatId]/components/ReplyTo';
 import { MessageBottom } from '@/app/chat/[chatId]/components/MessageBottom';
-import { MessageProps } from '@/types';
 import { StyledElement } from '@/app/chat/[chatId]/components/StyledElement';
+import { MessageProps } from '@/types';
 import styles from '../chatId.module.css';
 
-export const EmojiMessage = ({ isAuthoredByUser, message, repliedMessage, isSelectMode }: MessageProps) => {
+export const EmojiMessage = ({ isAuthoredByUser, message, isSelectMode }: MessageProps) => {
 	if (!message.text) return null;
 
 	return (
@@ -19,7 +18,6 @@ export const EmojiMessage = ({ isAuthoredByUser, message, repliedMessage, isSele
 				isMoved: isAuthoredByUser && isSelectMode,
 			}}
 		>
-			<ReplyTo message={repliedMessage} />
 			<div className={styles.emojiDisplayWrapper}>
 				{message.text.split(' ').map((emoji, index) => (
 					<div key={`${emoji}${index}`}>{emoji}</div>
