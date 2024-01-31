@@ -1,17 +1,15 @@
-import { ForwardedRef, forwardRef, useContext, useRef } from 'react';
+import { ForwardedRef, forwardRef, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { clsx } from 'clsx';
 import { useAnimate } from '@/app/shared/hooks/useAnimate';
 import { useClickOutside } from '@/app/shared/hooks/useClickOutside';
-import { ChatMenuContext } from '@/app/chat/[chatId]/providers/ChatMenuProvider';
 import { IoCloseOutline as ClearIcon } from 'react-icons/io5';
 import { AiOutlineDelete as DeleteIcon } from 'react-icons/ai';
 import { ChatMenuProps } from '@/types';
 import styles from '../chatId.module.css';
 
 export const ChatMenu = forwardRef<HTMLDivElement, ChatMenuProps>(
-	({ onClose }: ChatMenuProps, ref: ForwardedRef<HTMLDivElement>) => {
-		const { onClearChatHistory, onDeleteChat } = useContext(ChatMenuContext);
+	({ onClose, onClearChatHistory, onDeleteChat }: ChatMenuProps, ref: ForwardedRef<HTMLDivElement>) => {
 		const { isActive, closeHandler, onCloseReturn } = useAnimate(onClose);
 		const menuRef = useRef<HTMLDivElement>(null);
 

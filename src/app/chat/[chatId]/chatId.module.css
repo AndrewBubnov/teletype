@@ -737,3 +737,10 @@
     opacity: 0;
     transform: translate(-100%, -3rem);
 }
+
+.chatHeaderContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}

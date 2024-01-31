@@ -16,11 +16,11 @@ import { deleteOrHideMessages } from '@/prismaActions/deleteOrHideMessages';
 import { useDeleteDialog } from '@/app/chat/[chatId]/hooks/useDeleteDialog';
 import { ConfirmDialog } from '@/app/chat/[chatId]/components/ConfirmDialog';
 import { getUpdateData } from '@/app/chat/[chatId]/utils/getUpdateData';
-import { ChatMenuProvider } from '@/app/chat/[chatId]/providers/ChatMenuProvider';
 import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
 import { deleteSingleChat } from '@/prismaActions/deleteSingleChat';
 import { ChatProps, Message, UpdateData, UpdateMessageType } from '@/types';
 import styles from '../chatId.module.css';
+import { ChatMenuButton } from '@/app/chat/[chatId]/components/ChatMenuButton';
 
 export const Chat = ({ chat }: ChatProps) => {
 	const {
@@ -159,20 +159,19 @@ export const Chat = ({ chat }: ChatProps) => {
 	return (
 		<div className={styles.chatContainer}>
 			<BackButton interlocutorName={interlocutorName} interlocutorImageUrl={interlocutorImageUrl} />
-			<ChatMenuProvider
-				onClearChatHistory={onClearChatHistory}
-				onDeleteChat={onDeleteChat}
-				chatId={chatId}
-				interlocutorId={interlocutorId}
-				isSelectMode={isSelectMode}
-				dropSelectMode={dropSelectMode}
-				selectedNumber={selectedIds.length}
-				onDelete={deleteMessageHandler}
-				isAllSelected={isAllSelected}
-				toggleAllSelected={toggleAllSelected}
-			>
-				<ChatHeader />
-			</ChatMenuProvider>
+			<div className={styles.chatHeaderContainer}>
+				<ChatHeader
+					chatId={chatId}
+					interlocutorId={interlocutorId}
+					isSelectMode={isSelectMode}
+					dropSelectMode={dropSelectMode}
+					selectedNumber={selectedIds.length}
+					onDelete={deleteMessageHandler}
+					isAllSelected={isAllSelected}
+					toggleAllSelected={toggleAllSelected}
+				/>
+				<ChatMenuButton onDeleteChat={onDeleteChat} onClearChatHistory={onClearChatHistory} />
+			</div>
 			<div className={styles.coverWrapper}>
 				<div className={styles.chatWrapper} ref={containerRef}>
 					{shownMessageList.map((message, index, { length }) => {

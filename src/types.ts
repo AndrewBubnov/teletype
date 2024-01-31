@@ -303,13 +303,16 @@ export interface BackButtonProps {
 	interlocutorImageUrl?: string | null;
 }
 
-export interface ChatMenuProps {
+export interface ChatMenuButtonProps {
+	onClearChatHistory(): void;
+	onDeleteChat(): void;
+}
+
+export interface ChatMenuProps extends ChatMenuButtonProps {
 	onClose(): void;
 }
 
-export interface ChatMenuContextProps {
-	onClearChatHistory(): void;
-	onDeleteChat(): void;
+export interface ChatHeaderProps {
 	chatId: string;
 	interlocutorId: string;
 	isSelectMode: boolean;
@@ -318,7 +321,4 @@ export interface ChatMenuContextProps {
 	onDelete: (() => Promise<void>) | ((evt: SyntheticEvent) => void);
 	isAllSelected: boolean;
 	toggleAllSelected(): void;
-}
-export interface ChatMenuProviderProps extends ChatMenuContextProps {
-	children: ReactNode;
 }

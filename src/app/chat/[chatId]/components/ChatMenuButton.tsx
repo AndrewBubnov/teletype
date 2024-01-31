@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react';
 import { PiDotsThreeOutlineVerticalFill as MenuIcon } from 'react-icons/pi';
 import { ChatMenu } from '@/app/chat/[chatId]/components/ChatMenu';
+import { ChatMenuButtonProps } from '@/types';
 import styles from '../chatId.module.css';
 
-export const ChatMenuButton = () => {
+export const ChatMenuButton = ({ onDeleteChat, onClearChatHistory }: ChatMenuButtonProps) => {
 	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
 	const portalContainerRef = useRef<HTMLDivElement>(null);
@@ -15,7 +16,12 @@ export const ChatMenuButton = () => {
 					<MenuIcon />
 				</button>
 				{isMenuOpen && portalContainerRef.current && (
-					<ChatMenu onClose={() => setIsMenuOpen(false)} ref={portalContainerRef} />
+					<ChatMenu
+						onClose={() => setIsMenuOpen(false)}
+						onClearChatHistory={onClearChatHistory}
+						onDeleteChat={onDeleteChat}
+						ref={portalContainerRef}
+					/>
 				)}
 			</div>
 		</>
