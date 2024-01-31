@@ -27,7 +27,7 @@ export const EmojiMessage = ({ isAuthoredByUser, message, isSelectMode }: Messag
 						<Fragment key={`${emoji}${index}`}>{emoji}</Fragment>
 					))}
 			</div>
-			<MessageBottom message={message} withOffset={true} />
+			<MessageBottom message={message} withOffset />
 		</StyledElement>
 	);
 };
