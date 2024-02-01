@@ -749,7 +749,7 @@
 .newDateIndicator {
     width: fit-content;
     margin-inline: auto;
-    padding-block: 1rem;
+    padding-bottom: 1rem;
 }
 
 .unreadIndicator {
