@@ -21,6 +21,7 @@ export const SingleMessage = ({
 	isSelectMode,
 	isSelected,
 	onSelectModeStart,
+	firstUnreadId,
 }: SingleMessageProps) => {
 	const [isImageEnlarged, setIsImageEnlarged] = useState<boolean>(false);
 
@@ -81,10 +82,18 @@ export const SingleMessage = ({
 		return null;
 	}, [message.createdAt, message.isFirstDateMessage]);
 
+	const isFirstUnreadPrefix = useMemo(() => {
+		if (firstUnreadId === message.id) {
+			return <div className={styles.unreadIndicator}>Unread messages</div>;
+		}
+		return null;
+	}, [firstUnreadId, message.id]);
+
 	if (message.type === MessageType.COMMON) {
 		return (
 			<>
 				{isFirstDateDateMessagePrefix}
+				{isFirstUnreadPrefix}
 				<label className={styles.styledLabel} htmlFor={message.id} {...pressHandler}>
 					<div className={styles.messageWrapper} ref={containerRef} id={message.id}>
 						<StyledElement
@@ -129,6 +138,7 @@ export const SingleMessage = ({
 	return (
 		<>
 			{isFirstDateDateMessagePrefix}
+			{isFirstUnreadPrefix}
 			<label className={styles.styledLabel} htmlFor={message.id} {...pressHandler}>
 				<div className={styles.messageWrapper} ref={containerRef} id={message.id}>
 					<EmojiMessage isAuthoredByUser={isAuthoredByUser} message={message} isSelectMode={isSelectMode} />

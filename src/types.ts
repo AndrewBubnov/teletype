@@ -104,6 +104,7 @@ export type SingleMessageProps = {
 	isSelected: boolean;
 	isSelectMode: boolean;
 	onSelectModeStart(): void;
+	firstUnreadId: string | null;
 };
 
 export interface RepliedMessageBoxProps {

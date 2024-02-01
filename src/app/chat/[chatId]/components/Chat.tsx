@@ -35,6 +35,7 @@ export const Chat = ({ chat }: ChatProps) => {
 		authorName,
 		unreadNumber,
 		updateIsRead,
+		firstUnreadId,
 		userId,
 	} = useChat(chat);
 
@@ -192,6 +193,7 @@ export const Chat = ({ chat }: ChatProps) => {
 								onContextMenuToggle={contextMenuToggleHandler(message.id)}
 								updateIsRead={message.authorId !== userId ? updateIsRead : null}
 								isAuthoredByUser={isAuthoredByUser}
+								firstUnreadId={firstUnreadId}
 								onSelectModeStart={onSelectModeStart(message.id)}
 							/>
 						);

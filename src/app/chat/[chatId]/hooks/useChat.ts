@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useCommonStore, useMessageStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { sendChangeVisitorStatus } from '@/webSocketActions/sendChangeVisitorStatus';
@@ -17,6 +17,8 @@ export const useChat = (chat: UserChat) => {
 	}));
 
 	const { push } = useRouter();
+
+	const firstUnreadRef = useRef<string>('');
 
 	const { members, chatId } = chat;
 	const author = members.find(user => user.userId === userId);
@@ -48,12 +50,20 @@ export const useChat = (chat: UserChat) => {
 			const isFirstDateMessage =
 				!index ||
 				(index && new Date(message.createdAt).getDate() !== new Date(list[index - 1].createdAt).getDate());
+			if (
+				!firstUnreadRef.current &&
+				message.authorId !== userId &&
+				!message.isRead &&
+				(list[index - 1]?.isRead || true)
+			) {
+				firstUnreadRef.current = message.id;
+			}
 			return {
 				...message,
 				...(isFirstDateMessage ? { isFirstDateMessage: true } : {}),
 			};
 		});
-	}, [chatId, messageMap]);
+	}, [chatId, messageMap, userId]);
 
 	const unreadNumber = useMemo(() => {
 		if (!userId) return 0;
@@ -72,6 +82,7 @@ export const useChat = (chat: UserChat) => {
 		authorName,
 		unreadNumber,
 		updateIsRead,
+		firstUnreadId: firstUnreadRef.current || null,
 		userId,
 	};
 };

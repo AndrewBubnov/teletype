@@ -751,3 +751,15 @@
     margin-inline: auto;
     padding-block: 1rem;
 }
+
+.unreadIndicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #3a3a3a;
+    height: 1.5rem;
+    color: lightgray;
+    text-align: center;
+    margin-block: 0.5rem;
+    border-radius: 0.25rem;
+}
