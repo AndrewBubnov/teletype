@@ -90,10 +90,9 @@ export const Chat = ({ chat, fetchedMessagesList }: ChatProps) => {
 	const onDeleteMessage = useCallback(
 		async (informAll: boolean) => {
 			setMenuActiveId('');
-			const ids = isSelectMode ? selectedIds : [menuActiveId];
 			const type = informAll ? UpdateMessageType.DELETE : UpdateMessageType.EDIT;
 			const hideToId = type === UpdateMessageType.EDIT ? userId : null;
-			const updated = await deleteOrHideMessages(ids, type, hideToId);
+			const updated = await deleteOrHideMessages(selectedIds, type, hideToId);
 			const updateData = getUpdateData({ updated, informAll, selectedIds, menuActiveId, isSelectMode });
 			sendEditMessage({
 				updateData,
@@ -207,8 +206,6 @@ export const Chat = ({ chat, fetchedMessagesList }: ChatProps) => {
 						initMenuParams={initMenuParams}
 						onReplyMessage={onReplyMessage}
 						onAddReaction={addReactionHandler}
-						onDeleteMessage={deleteMessageHandler}
-						canReply={activeMessage.type === MessageType.COMMON}
 						isAuthor={activeMessage.authorId === authorId}
 						onDownLoadImage={activeMessage.imageUrl ? onDownLoadImage : null}
 					/>

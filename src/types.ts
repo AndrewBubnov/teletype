@@ -125,11 +125,9 @@ export interface ContextMenuProps {
 	initMenuParams: MutableRefObject<DOMRect | null>;
 	onReplyMessage(): void;
 	onEditMessage(): void;
-	onDeleteMessage(evt: SyntheticEvent): void;
 	onDownLoadImage: null | (() => void);
 	menuTop: number;
 	isAuthor: boolean;
-	canReply: boolean;
 }
 export interface MessageProps {
 	isAuthoredByUser: boolean;
