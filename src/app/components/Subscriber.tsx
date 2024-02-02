@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useEffect } from 'react';
-import { useMessageStore, useCommonStore } from '@/store';
+import { useMessagesSliceStore, useCommonStore } from '@/store';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
 import { createRooms } from '@/app/chat/utils/createRooms';
 import { initUserChats } from '@/webSocketActions/initUserChats';
@@ -13,8 +13,7 @@ import { SERVER_CONNECTION_FAILED } from '@/app/constants';
 import { SubscriberProps } from '@/types';
 
 export const Subscriber = ({ userChats, userEmails, userId, messageMap, messagesSlice }: SubscriberProps) => {
-	const { setMessageMap, setMessagesSlice } = useMessageStore(state => ({
-		setMessageMap: state.setMessageMap,
+	const { setMessagesSlice } = useMessagesSliceStore(state => ({
 		setMessagesSlice: state.setMessagesSlice,
 	}));
 
@@ -38,10 +37,6 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap, messages
 	}, [userId]);
 
 	useEffect(() => createRooms(chatList, userId), [chatList, userId]);
-
-	useEffect(() => {
-		setMessageMap(messageMap);
-	}, [setMessageMap, messageMap]);
 
 	useEffect(() => {
 		setMessagesSlice(messagesSlice);

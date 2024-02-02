@@ -1,48 +1,11 @@
 import { create } from 'zustand';
-import { addReaction } from '@/prismaActions/addReaction';
+import { addMessageReaction } from '@/prismaActions/addMessageReaction';
 import { sendEditMessage } from '@/webSocketActions/sendEditMessage';
-import {
-	ChatVisitorStatus,
-	CommonStore,
-	Message,
-	MessageMap,
-	MessagesSlice,
-	MessageStore,
-	UpdateMessageType,
-	UserChat,
-} from '@/types';
+import { ChatVisitorStatus, CommonStore, MessagesSlice, MessagesSliceStore, UserChat } from '@/types';
 
-export const useMessageStore = create<MessageStore>(set => ({
-	messageMap: {},
+export const useMessagesSliceStore = create<MessagesSliceStore>(set => ({
 	messagesSlice: {},
-	setMessageMap: (updated: MessageMap) => set({ messageMap: updated }),
 	setMessagesSlice: (updated: MessagesSlice) => set({ messagesSlice: updated }),
-	addReaction: async (message: Message, reaction: string, authorImageUrl: string | null | undefined) => {
-		const { id: messageId, chatId } = message;
-		const updated = await addReaction({ messageId, reaction, authorImageUrl });
-		if (updated) {
-			sendEditMessage({
-				updateData: { [messageId]: updated },
-				type: UpdateMessageType.EDIT,
-				roomId: chatId,
-			});
-		}
-		set(state => ({
-			messageMap: {
-				...state.messageMap,
-				[chatId]: state.messageMap[chatId].map(message => {
-					if (message.id === messageId) {
-						return {
-							...message,
-							reaction,
-							reactionAuthorImageUrl: reaction ? authorImageUrl : undefined,
-						};
-					}
-					return message;
-				}),
-			},
-		}));
-	},
 }));
 export const useCommonStore = create<CommonStore>(set => ({
 	activeUsers: [],

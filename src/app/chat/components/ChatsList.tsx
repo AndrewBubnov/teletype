@@ -1,5 +1,5 @@
 'use client';
-import { useCommonStore, useMessageStore } from '@/store';
+import { useCommonStore, useMessagesSliceStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
 import { deleteChats } from '@/prismaActions/deleteChats';
@@ -15,7 +15,7 @@ export const ChatsList = () => {
 		userId: state.userId,
 	}));
 
-	const messageMap = useMessageStore(state => state.messageMap);
+	const messageMap = useMessagesSliceStore(state => state.messageMap);
 
 	const { selectedIds, isAllSelected, toggleAllSelected, addSelection, startSelection, dropSelectMode } =
 		useSelect(chatList);

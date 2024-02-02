@@ -2,7 +2,7 @@
 import { prisma } from '@/db';
 import { AddReaction, Message } from '@/types';
 
-export const addReaction = async ({ messageId, reaction, authorImageUrl }: AddReaction) => {
+export const addMessageReaction = async ({ messageId, reaction, authorImageUrl }: AddReaction) => {
 	const message = await prisma.message.findUnique({ where: { id: messageId } });
 
 	if (!message) return;

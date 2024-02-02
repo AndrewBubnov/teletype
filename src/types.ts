@@ -173,12 +173,9 @@ export type UpdateMessage = {
 	roomId: string;
 };
 
-export interface MessageStore {
-	messageMap: MessageMap;
+export interface MessagesSliceStore {
 	messagesSlice: MessagesSlice;
-	setMessageMap(arg: MessageMap): void;
 	setMessagesSlice(arg: MessagesSlice): void;
-	addReaction(message: Message, reaction: string, authorImageUrl: string | null | undefined): Promise<void>;
 }
 export interface CommonStore {
 	chatList: UserChat[];

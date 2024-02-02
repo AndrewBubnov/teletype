@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useCommonStore, useMessageStore } from '@/store';
+import { useCommonStore, useMessagesSliceStore } from '@/store';
 import { useLongPress } from '@/app/chat/[chatId]/hooks/useLongPress';
 import { clsx } from 'clsx';
 import Image from 'next/image';
@@ -20,7 +20,7 @@ export const ChatListItem = ({
 		activeUsers: state.activeUsers,
 		userId: state.userId,
 	}));
-	const messageMap = useMessageStore(state => state.messageMap);
+	const messageMap = useMessagesSliceStore(state => state.messageMap);
 
 	const messageList = messageMap[chatId] || [];
 	const unreadNumber = messageList.filter(el => !el.isRead && el.authorId !== userId).length;
