@@ -16,15 +16,15 @@ export const ChatListItem = ({
 	isSelectMode,
 	isChecked,
 }: ChatListItemProps) => {
-	const { activeUsers, userId } = useCommonStore(state => ({
-		activeUsers: state.activeUsers,
+	const activeUsers = useCommonStore(state => state.activeUsers);
+
+	const { messagesSlice, userId } = useMessagesSliceStore(state => ({
+		messagesSlice: state.messagesSlice,
 		userId: state.userId,
 	}));
-	const messageMap = useMessagesSliceStore(state => state.messageMap);
 
-	const messageList = messageMap[chatId] || [];
-	const unreadNumber = messageList.filter(el => !el.isRead && el.authorId !== userId).length;
-	const lastMessage = messageList.at(-1) || null;
+	const lastMessage = messagesSlice[chatId]?.lastMessage || null;
+	const unreadNumber = lastMessage?.authorId !== userId ? messagesSlice[chatId]?.unreadNumber || 0 : 0;
 
 	const pressHandler = useLongPress({ onLongPress, onPress });
 

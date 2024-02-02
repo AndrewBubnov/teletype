@@ -1,17 +1,16 @@
 'use client';
 import { ChangeEvent, useCallback, useMemo, useRef, useState } from 'react';
-import { useCommonStore } from '@/store';
+import { useCommonStore, useMessagesSliceStore } from '@/store';
 import { getUserIdByEmail } from '@/prismaActions/getUserIdByEmail';
 import { onCreateChat } from '@/app/chat/utils/onCreateChat';
 import { createRoom } from '@/webSocketActions/createRoom';
-import styles from '../chat.module.css';
 import { useClickOutside } from '@/app/shared/hooks/useClickOutside';
+import styles from '../chat.module.css';
 
 export const UserSelect = () => {
-	const { userEmails, userId } = useCommonStore(state => ({
-		userEmails: state.userEmails,
-		userId: state.userId,
-	}));
+	const userEmails = useCommonStore(state => state.userEmails);
+
+	const userId = useMessagesSliceStore(state => state.userId);
 
 	const [userEmail, setUserEmail] = useState<string>('');
 	const [isFocused, setIsFocused] = useState<boolean>(false);

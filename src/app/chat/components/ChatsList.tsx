@@ -10,12 +10,12 @@ import { CHAT_LIST } from '@/constants';
 import styles from '../chat.module.css';
 
 export const ChatsList = () => {
-	const { chatList, userId } = useCommonStore(state => ({
-		chatList: state.chatList,
+	const chatList = useCommonStore(state => state.chatList);
+
+	const { messagesSlice, userId } = useMessagesSliceStore(state => ({
+		messagesSlice: state.messagesSlice,
 		userId: state.userId,
 	}));
-
-	const messageMap = useMessagesSliceStore(state => state.messageMap);
 
 	const { selectedIds, isAllSelected, toggleAllSelected, addSelection, startSelection, dropSelectMode } =
 		useSelect(chatList);
@@ -52,16 +52,16 @@ export const ChatsList = () => {
 			/>
 			{chatList
 				.sort((chatA, chatB) => {
-					const messageListA = messageMap[chatA.chatId] || [];
-					const messageListB = messageMap[chatB.chatId] || [];
-					if (messageListA.at(-1) && messageListB.at(-1)) {
+					const lastMessageA = messagesSlice[chatA.chatId]?.lastMessage;
+					const lastMessageB = messagesSlice[chatB.chatId]?.lastMessage;
+					if (lastMessageA && lastMessageB) {
 						return (
-							Date.parse(messageListB.at(-1)!.createdAt.toString()) -
-							Date.parse(messageListA.at(-1)!.createdAt.toString())
+							Date.parse(lastMessageB.createdAt.toString()) -
+							Date.parse(lastMessageA.createdAt.toString())
 						);
 					}
-					if (messageListA.at(-1) && !messageListB.at(-1)) return -1;
-					if (messageListB.at(-1) && !messageListA.at(-1)) return 1;
+					if (lastMessageA && !lastMessageB) return -1;
+					if (lastMessageB && !lastMessageA) return 1;
 					return 0;
 				})
 				.map(({ chatId, id, members }) => {

@@ -9,24 +9,27 @@ import { clearActiveUsers, updateActiveUsers } from '@/webSocketActions/updateAc
 import { clearUpdateChatList, updateChatList } from '@/webSocketActions/updateChatList';
 import { clearUpdateVisitorStatus, updateVisitorStatus } from '@/webSocketActions/updateVisitorStatus';
 import { clearUpdateConnectionError, updateConnectionError } from '@/webSocketActions/updateConnectionError';
+import { addClientMessage, clearAddClientMessage } from '@/webSocketActions/addClientMessage';
 import { SERVER_CONNECTION_FAILED } from '@/app/constants';
 import { SubscriberProps } from '@/types';
 
-export const Subscriber = ({ userChats, userEmails, userId, messageMap, messagesSlice }: SubscriberProps) => {
-	const { setMessagesSlice } = useMessagesSliceStore(state => ({
+export const Subscriber = ({ userChats, userEmails, userId, messagesSlice }: SubscriberProps) => {
+	const { setMessagesSlice, addChatMessage, setUserId } = useMessagesSliceStore(state => ({
 		setMessagesSlice: state.setMessagesSlice,
+		addChatMessage: state.addChatMessage,
+		setUserId: state.setUserId,
 	}));
 
-	const { setActiveUsers, setChatList, setUserEmails, chatList, setChatVisitorStatus, setUserId, setToast } =
-		useCommonStore(state => ({
+	const { setActiveUsers, setChatList, setUserEmails, chatList, setChatVisitorStatus, setToast } = useCommonStore(
+		state => ({
 			setActiveUsers: state.setActiveUsers,
 			chatList: state.chatList,
 			setChatList: state.setChatList,
 			setUserEmails: state.setUserEmails,
 			setChatVisitorStatus: state.setChatVisitorStatus,
-			setUserId: state.setUserId,
 			setToast: state.setErrorToastText,
-		}));
+		})
+	);
 
 	useEffect(() => {
 		initUserChats(userChats);
@@ -52,6 +55,8 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap, messages
 	}, [setUserId, userId]);
 
 	const setErrorToast = useCallback(() => setToast(SERVER_CONNECTION_FAILED), [setToast]);
+
+	useSubscribe(addChatMessage, addClientMessage, clearAddClientMessage);
 
 	useSubscribe(setActiveUsers, updateActiveUsers, clearActiveUsers);
 

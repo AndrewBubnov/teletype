@@ -176,20 +176,22 @@ export type UpdateMessage = {
 export interface MessagesSliceStore {
 	messagesSlice: MessagesSlice;
 	setMessagesSlice(arg: MessagesSlice): void;
+	addChatMessage(message: Message): void;
+	reduceMessagesSliceUnread(arg: string): void;
+	userId: string;
+	setUserId(arg: string): void;
 }
 export interface CommonStore {
 	chatList: UserChat[];
 	activeUsers: string[];
 	userEmails: string[];
 	errorToastText: string;
-	userId: string;
 	setActiveUsers(arg: string[]): void;
 	setUserEmails(arg: string[]): void;
 	setChatList(arg: UserChat[]): void;
 	setErrorToastText(arg: string): void;
 	chatVisitorStatus: ChatVisitorStatus;
 	setChatVisitorStatus(arg: ChatVisitorStatus): void;
-	setUserId(arg: string): void;
 }
 
 export type Subscription<T> = (fn: (arg: T) => void) => void;
@@ -237,7 +239,6 @@ export interface SubscriberProps {
 	userChats: UserChat[];
 	userEmails: string[];
 	userId: string;
-	messageMap: Record<string, Message[]>;
 	messagesSlice: MessagesSlice;
 }
 

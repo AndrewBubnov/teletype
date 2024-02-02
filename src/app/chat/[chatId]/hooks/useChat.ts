@@ -1,20 +1,22 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useCommonStore } from '@/store';
+import { useCommonStore, useMessagesSliceStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { sendChangeVisitorStatus } from '@/webSocketActions/sendChangeVisitorStatus';
-import { CHAT_LIST } from '@/constants';
-import { Message, UpdateData, UpdateMessageType, UserChat, VisitorStatus } from '@/types';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
 import { clearUpdateClientMessage, updateClientMessage } from '@/webSocketActions/updateClientMessage';
 import { addClientMessage, clearAddClientMessage } from '@/webSocketActions/addClientMessage';
 import { updateMessageIsRead } from '@/prismaActions/updateMessageIsRead';
 import { sendEditMessage } from '@/webSocketActions/sendEditMessage';
 import { addMessageReaction } from '@/prismaActions/addMessageReaction';
+import { CHAT_LIST } from '@/constants';
+import { Message, UpdateData, UpdateMessageType, UserChat, VisitorStatus } from '@/types';
 
 export const useChat = (chat: UserChat, fetchedMessagesList: Message[]) => {
-	const { userId, chatList } = useCommonStore(state => ({
-		userId: state.userId,
-		chatList: state.chatList,
+	const chatList = useCommonStore(state => state.chatList);
+
+	const { reduceMessagesSliceUnread, userId } = useMessagesSliceStore(store => ({
+		reduceMessagesSliceUnread: store.reduceMessagesSliceUnread,
+		userId: store.userId,
 	}));
 
 	const [chatMessagesList, setChatMessagesList] = useState<Message[]>(fetchedMessagesList);
@@ -70,20 +72,24 @@ export const useChat = (chat: UserChat, fetchedMessagesList: Message[]) => {
 		};
 	}, [chatId, userId]);
 
-	const updateIsRead = useCallback(async (message: Message) => {
-		const { id, chatId } = message;
-		const updated = await updateMessageIsRead(id);
-		if (updated) {
-			sendEditMessage({
-				updateData: { [id]: updated },
-				type: UpdateMessageType.EDIT,
-				roomId: chatId,
-			});
-		}
-		setChatMessagesList(prevState =>
-			prevState.map(el => (el.id === id && !el.isRead ? { ...el, isRead: true } : el))
-		);
-	}, []);
+	const updateIsRead = useCallback(
+		async (message: Message) => {
+			const { id, chatId } = message;
+			const updated = await updateMessageIsRead(id);
+			reduceMessagesSliceUnread(chatId);
+			if (updated) {
+				sendEditMessage({
+					updateData: { [id]: updated },
+					type: UpdateMessageType.EDIT,
+					roomId: chatId,
+				});
+			}
+			setChatMessagesList(prevState =>
+				prevState.map(el => (el.id === id && !el.isRead ? { ...el, isRead: true } : el))
+			);
+		},
+		[reduceMessagesSliceUnread]
+	);
 
 	const addReaction = useCallback(
 		async (message: Message, reaction: string, authorImageUrl: string | null | undefined) => {

@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useCommonStore } from '@/store';
+import { useCommonStore, useMessagesSliceStore } from '@/store';
 import { useSendTyping } from '@/app/chat/[chatId]/hooks/useSendTyping';
 import { RepliedMessageBox } from '@/app/chat/[chatId]/components/RepliedMessageBox';
 import { sendMessageToServer } from '@/webSocketActions/sendMessageToServer';
@@ -25,7 +25,7 @@ export const MessageInput = ({
 	setRepliedMessage,
 	interlocutorId,
 }: MessageInputProps) => {
-	const userId = useCommonStore(state => state.userId);
+	const userId = useMessagesSliceStore(state => state.userId);
 
 	const [messageText, setMessageText] = useState<string>('');
 	const [emojis, setEmojis] = useState<string>('');
