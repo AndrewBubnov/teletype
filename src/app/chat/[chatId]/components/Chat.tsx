@@ -19,7 +19,7 @@ import { ConfirmDialog } from '@/app/chat/[chatId]/components/ConfirmDialog';
 import { getUpdateData } from '@/app/chat/[chatId]/utils/getUpdateData';
 import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
 import { deleteSingleChat } from '@/prismaActions/deleteSingleChat';
-import { ChatProps, Message, MessageType, UpdateData, UpdateMessageType } from '@/types';
+import { ChatProps, Message, UpdateData, UpdateMessageType } from '@/types';
 import styles from '../chatId.module.css';
 
 export const Chat = ({ chat, fetchedMessagesList }: ChatProps) => {
