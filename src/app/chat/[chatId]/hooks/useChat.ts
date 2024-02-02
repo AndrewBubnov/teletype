@@ -1,13 +1,15 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useCommonStore, useMessageStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { sendChangeVisitorStatus } from '@/webSocketActions/sendChangeVisitorStatus';
 import { CHAT_LIST } from '@/constants';
-import { Message, UserChat, VisitorStatus } from '@/types';
+import { Message, UpdateData, UpdateMessageType, UserChat, VisitorStatus } from '@/types';
+import { useSubscribe } from '@/app/hooks/useSubscribe';
+import { clearUpdateClientMessage, updateClientMessage } from '@/webSocketActions/updateClientMessage';
+import { addClientMessage, clearAddClientMessage } from '@/webSocketActions/addClientMessage';
 
-export const useChat = (chat: UserChat) => {
-	const { messageMap, updateIsRead, addReaction } = useMessageStore(state => ({
-		messageMap: state.messageMap,
+export const useChat = (chat: UserChat, fetchedMessagesList: Message[]) => {
+	const { updateIsRead, addReaction } = useMessageStore(state => ({
 		updateIsRead: state.updateIsRead,
 		addReaction: state.addReaction,
 	}));
@@ -16,9 +18,42 @@ export const useChat = (chat: UserChat) => {
 		chatList: state.chatList,
 	}));
 
+	const [chatMessagesList, setChatMessagesList] = useState<Message[]>(fetchedMessagesList);
+
 	const { push } = useRouter();
 
 	const firstUnreadRef = useRef<string>('');
+
+	const updateMessagesList = useCallback(
+		(message: Message) => setChatMessagesList(prevState => [...prevState, message]),
+		[]
+	);
+
+	const updateMessage = ({
+		updateData,
+		type,
+		roomId: chatId,
+	}: {
+		updateData: UpdateData;
+		type: UpdateMessageType;
+		roomId: string;
+	}) => {
+		if (type === UpdateMessageType.DELETE) {
+			const deletedIds = Object.keys(updateData);
+			setChatMessagesList(prevState => prevState.filter(el => !deletedIds.includes(el.id)));
+		} else {
+			setChatMessagesList(prevState =>
+				prevState.map(el => {
+					if (updateData[el.id]) return updateData[el.id]!;
+					return el;
+				})
+			);
+		}
+	};
+
+	useSubscribe(updateMessage, updateClientMessage, clearUpdateClientMessage);
+
+	useSubscribe(updateMessagesList, addClientMessage, clearAddClientMessage);
 
 	const { members, chatId } = chat;
 	const author = members.find(user => user.userId === userId);
@@ -45,16 +80,17 @@ export const useChat = (chat: UserChat) => {
 	}, [chatId, userId]);
 
 	const messageList: Message[] = useMemo(() => {
-		const list = messageMap[chatId] || [];
-		return list.map((message, index) => {
+		return chatMessagesList.map((message, index) => {
 			const isFirstDateMessage =
 				!index ||
-				(index && new Date(message.createdAt).getDate() !== new Date(list[index - 1].createdAt).getDate());
+				(index &&
+					new Date(message.createdAt).getDate() !==
+						new Date(chatMessagesList[index - 1].createdAt).getDate());
 			if (
 				!firstUnreadRef.current &&
 				message.authorId !== userId &&
 				!message.isRead &&
-				(list[index - 1]?.isRead || true)
+				(chatMessagesList[index - 1]?.isRead || true)
 			) {
 				firstUnreadRef.current = message.id;
 			}
@@ -63,7 +99,7 @@ export const useChat = (chat: UserChat) => {
 				...(isFirstDateMessage ? { isFirstDateMessage: true } : {}),
 			};
 		});
-	}, [chatId, messageMap, userId]);
+	}, [chatMessagesList, userId]);
 
 	const unreadNumber = useMemo(() => {
 		if (!userId) return 0;

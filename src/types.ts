@@ -63,6 +63,7 @@ export interface ActiveChatProps {
 
 export interface ChatProps {
 	chat: UserChat;
+	fetchedMessagesList: Message[];
 }
 
 export interface ChatListItemProps {
@@ -174,9 +175,9 @@ export type UpdateMessage = {
 
 export interface MessageStore {
 	messageMap: MessageMap;
+	messagesSlice: MessagesSlice;
 	setMessageMap(arg: MessageMap): void;
-	addMessageToMessageMap(arg: Message): void;
-	updateMessageInMessageMap(args: UpdateMessage): void;
+	setMessagesSlice(arg: MessagesSlice): void;
 	updateIsRead(message: Message): Promise<void>;
 	addReaction(message: Message, reaction: string, authorImageUrl: string | null | undefined): Promise<void>;
 }
@@ -241,6 +242,7 @@ export interface SubscriberProps {
 	userEmails: string[];
 	userId: string;
 	messageMap: Record<string, Message[]>;
+	messagesSlice: MessagesSlice;
 }
 
 export interface CreateMessage {
@@ -324,3 +326,10 @@ export interface ChatHeaderProps {
 	isAllSelected: boolean;
 	toggleAllSelected(): void;
 }
+
+export interface MessagesSliceItem {
+	lastMessage: Message | null;
+	unreadNumber: number;
+}
+
+export type MessagesSlice = Record<string, MessagesSliceItem>;

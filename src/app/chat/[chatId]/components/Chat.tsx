@@ -22,7 +22,7 @@ import { ChatProps, Message, MessageType, UpdateData, UpdateMessageType } from '
 import styles from '../chatId.module.css';
 import { ChatMenuButton } from '@/app/chat/[chatId]/components/ChatMenuButton';
 
-export const Chat = ({ chat }: ChatProps) => {
+export const Chat = ({ chat, fetchedMessagesList }: ChatProps) => {
 	const {
 		messageList,
 		addReaction,
@@ -37,7 +37,7 @@ export const Chat = ({ chat }: ChatProps) => {
 		updateIsRead,
 		firstUnreadId,
 		userId,
-	} = useChat(chat);
+	} = useChat(chat, fetchedMessagesList);
 
 	const shownMessageList = useMemo(
 		() => messageList.filter(el => !el.isHidden?.includes(userId)),

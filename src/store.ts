@@ -7,6 +7,7 @@ import {
 	CommonStore,
 	Message,
 	MessageMap,
+	MessagesSlice,
 	MessageStore,
 	UpdateMessageType,
 	UserChat,
@@ -14,40 +15,9 @@ import {
 
 export const useMessageStore = create<MessageStore>(set => ({
 	messageMap: {},
+	messagesSlice: {},
 	setMessageMap: (updated: MessageMap) => set({ messageMap: updated }),
-	addMessageToMessageMap: (message: Message) =>
-		set(state => {
-			if (!message.chatId) return { messageMap: state.messageMap };
-			if (state.messageMap[message.chatId])
-				return {
-					messageMap: {
-						...state.messageMap,
-						[message.chatId]: [...state.messageMap[message.chatId], message],
-					},
-				};
-			return { messageMap: { ...state.messageMap, [message.chatId]: [message] } };
-		}),
-	updateMessageInMessageMap: ({ updateData, type, roomId: chatId }) =>
-		set(state => {
-			if (type === UpdateMessageType.DELETE) {
-				const deletedIds = Object.keys(updateData);
-				return {
-					messageMap: {
-						...state.messageMap,
-						[chatId]: state.messageMap[chatId].filter(el => !deletedIds.includes(el.id)),
-					},
-				};
-			}
-			return {
-				messageMap: {
-					...state.messageMap,
-					[chatId]: state.messageMap[chatId].map(el => {
-						if (updateData[el.id]) return updateData[el.id]!;
-						return el;
-					}),
-				},
-			};
-		}),
+	setMessagesSlice: (updated: MessagesSlice) => set({ messagesSlice: updated }),
 	updateIsRead: async (message: Message) => {
 		const { id, chatId } = message;
 		const updated = await updateMessageIsRead(id);

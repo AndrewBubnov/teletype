@@ -6,19 +6,16 @@ import { createRooms } from '@/app/chat/utils/createRooms';
 import { initUserChats } from '@/webSocketActions/initUserChats';
 import { sendJoin } from '@/webSocketActions/sendJoin';
 import { clearActiveUsers, updateActiveUsers } from '@/webSocketActions/updateActiveUsers';
-import { addClientMessage, clearAddClientMessage } from '@/webSocketActions/addClientMessage';
-import { clearUpdateClientMessage, updateClientMessage } from '@/webSocketActions/updateClientMessage';
 import { clearUpdateChatList, updateChatList } from '@/webSocketActions/updateChatList';
 import { clearUpdateVisitorStatus, updateVisitorStatus } from '@/webSocketActions/updateVisitorStatus';
 import { clearUpdateConnectionError, updateConnectionError } from '@/webSocketActions/updateConnectionError';
 import { SERVER_CONNECTION_FAILED } from '@/app/constants';
 import { SubscriberProps } from '@/types';
 
-export const Subscriber = ({ userChats, userEmails, userId, messageMap }: SubscriberProps) => {
-	const { setMessageMap, addMessageToMessageMap, updateMessageInMessageMap } = useMessageStore(state => ({
+export const Subscriber = ({ userChats, userEmails, userId, messageMap, messagesSlice }: SubscriberProps) => {
+	const { setMessageMap, setMessagesSlice } = useMessageStore(state => ({
 		setMessageMap: state.setMessageMap,
-		addMessageToMessageMap: state.addMessageToMessageMap,
-		updateMessageInMessageMap: state.updateMessageInMessageMap,
+		setMessagesSlice: state.setMessagesSlice,
 	}));
 
 	const { setActiveUsers, setChatList, setUserEmails, chatList, setChatVisitorStatus, setUserId, setToast } =
@@ -47,6 +44,10 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap }: Subscr
 	}, [setMessageMap, messageMap]);
 
 	useEffect(() => {
+		setMessagesSlice(messagesSlice);
+	}, [setMessagesSlice, messagesSlice]);
+
+	useEffect(() => {
 		setUserEmails(userEmails);
 		setChatList(userChats);
 	}, [setChatList, setUserEmails, userEmails, userChats]);
@@ -58,10 +59,6 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap }: Subscr
 	const setErrorToast = useCallback(() => setToast(SERVER_CONNECTION_FAILED), [setToast]);
 
 	useSubscribe(setActiveUsers, updateActiveUsers, clearActiveUsers);
-
-	useSubscribe(addMessageToMessageMap, addClientMessage, clearAddClientMessage);
-
-	useSubscribe(updateMessageInMessageMap, updateClientMessage, clearUpdateClientMessage);
 
 	useSubscribe(setChatList, updateChatList, clearUpdateChatList);
 

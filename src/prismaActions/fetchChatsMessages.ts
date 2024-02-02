@@ -2,7 +2,7 @@
 import { Message, UserChat } from '@/types';
 import { prisma } from '@/db';
 
-export async function fetchChatMessages(chats: UserChat[]) {
+export async function fetchChatsMessages(chats: UserChat[]) {
 	const messagesArray = (await Promise.all(
 		chats.map(chat => prisma.message.findMany({ where: { chatId: chat.chatId } }))
 	)) as Message[][];
