@@ -7,10 +7,11 @@ import { Message, UpdateData, UpdateMessageType, UserChat, VisitorStatus } from 
 import { useSubscribe } from '@/app/hooks/useSubscribe';
 import { clearUpdateClientMessage, updateClientMessage } from '@/webSocketActions/updateClientMessage';
 import { addClientMessage, clearAddClientMessage } from '@/webSocketActions/addClientMessage';
+import { updateMessageIsRead } from '@/prismaActions/updateMessageIsRead';
+import { sendEditMessage } from '@/webSocketActions/sendEditMessage';
 
 export const useChat = (chat: UserChat, fetchedMessagesList: Message[]) => {
-	const { updateIsRead, addReaction } = useMessageStore(state => ({
-		updateIsRead: state.updateIsRead,
+	const { addReaction } = useMessageStore(state => ({
 		addReaction: state.addReaction,
 	}));
 	const { userId, chatList } = useCommonStore(state => ({
@@ -29,15 +30,7 @@ export const useChat = (chat: UserChat, fetchedMessagesList: Message[]) => {
 		[]
 	);
 
-	const updateMessage = ({
-		updateData,
-		type,
-		roomId: chatId,
-	}: {
-		updateData: UpdateData;
-		type: UpdateMessageType;
-		roomId: string;
-	}) => {
+	const updateMessage = useCallback(({ updateData, type }: { updateData: UpdateData; type: UpdateMessageType }) => {
 		if (type === UpdateMessageType.DELETE) {
 			const deletedIds = Object.keys(updateData);
 			setChatMessagesList(prevState => prevState.filter(el => !deletedIds.includes(el.id)));
@@ -49,7 +42,22 @@ export const useChat = (chat: UserChat, fetchedMessagesList: Message[]) => {
 				})
 			);
 		}
-	};
+	}, []);
+
+	const updateIsRead = useCallback(async (message: Message) => {
+		const { id, chatId } = message;
+		const updated = await updateMessageIsRead(id);
+		if (updated) {
+			sendEditMessage({
+				updateData: { [id]: updated },
+				type: UpdateMessageType.EDIT,
+				roomId: chatId,
+			});
+		}
+		setChatMessagesList(prevState =>
+			prevState.map(el => (el.id === id && !el.isRead ? { ...el, isRead: true } : el))
+		);
+	}, []);
 
 	useSubscribe(updateMessage, updateClientMessage, clearUpdateClientMessage);
 
@@ -80,6 +88,7 @@ export const useChat = (chat: UserChat, fetchedMessagesList: Message[]) => {
 	}, [chatId, userId]);
 
 	const messageList: Message[] = useMemo(() => {
+		if (!userId) return [];
 		return chatMessagesList.map((message, index) => {
 			const isFirstDateMessage =
 				!index ||

@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { updateMessageIsRead } from '@/prismaActions/updateMessageIsRead';
 import { addReaction } from '@/prismaActions/addReaction';
 import { sendEditMessage } from '@/webSocketActions/sendEditMessage';
 import {
@@ -18,30 +17,6 @@ export const useMessageStore = create<MessageStore>(set => ({
 	messagesSlice: {},
 	setMessageMap: (updated: MessageMap) => set({ messageMap: updated }),
 	setMessagesSlice: (updated: MessagesSlice) => set({ messagesSlice: updated }),
-	updateIsRead: async (message: Message) => {
-		const { id, chatId } = message;
-		const updated = await updateMessageIsRead(id);
-		if (updated) {
-			sendEditMessage({
-				updateData: { [id]: updated },
-				type: UpdateMessageType.EDIT,
-				roomId: chatId,
-			});
-		}
-		return set(state => {
-			const predicate = (el: Message): boolean => el.id === id;
-			const message = state.messageMap[chatId].find(predicate);
-			if (message && !message?.isRead) {
-				return {
-					messageMap: {
-						...state.messageMap,
-						[chatId]: state.messageMap[chatId].map(el => (predicate(el) ? { ...el, isRead: true } : el)),
-					},
-				};
-			}
-			return state;
-		});
-	},
 	addReaction: async (message: Message, reaction: string, authorImageUrl: string | null | undefined) => {
 		const { id: messageId, chatId } = message;
 		const updated = await addReaction({ messageId, reaction, authorImageUrl });

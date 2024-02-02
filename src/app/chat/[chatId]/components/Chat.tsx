@@ -11,6 +11,7 @@ import { SingleMessage } from '@/app/chat/[chatId]/components/SingleMessage';
 import { sendEditMessage } from '@/webSocketActions/sendEditMessage';
 import { ContextMenu } from '@/app/chat/[chatId]/components/ContextMenu';
 import { MessageInput } from '@/app/chat/[chatId]/components/MessageInput';
+import { ChatMenuButton } from '@/app/chat/[chatId]/components/ChatMenuButton';
 import { UnreadMessages } from '@/app/chat/[chatId]/components/UnreadMessages';
 import { deleteOrHideMessages } from '@/prismaActions/deleteOrHideMessages';
 import { useDeleteDialog } from '@/app/chat/[chatId]/hooks/useDeleteDialog';
@@ -20,7 +21,6 @@ import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
 import { deleteSingleChat } from '@/prismaActions/deleteSingleChat';
 import { ChatProps, Message, MessageType, UpdateData, UpdateMessageType } from '@/types';
 import styles from '../chatId.module.css';
-import { ChatMenuButton } from '@/app/chat/[chatId]/components/ChatMenuButton';
 
 export const Chat = ({ chat, fetchedMessagesList }: ChatProps) => {
 	const {

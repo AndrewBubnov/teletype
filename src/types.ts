@@ -178,7 +178,6 @@ export interface MessageStore {
 	messagesSlice: MessagesSlice;
 	setMessageMap(arg: MessageMap): void;
 	setMessagesSlice(arg: MessagesSlice): void;
-	updateIsRead(message: Message): Promise<void>;
 	addReaction(message: Message, reaction: string, authorImageUrl: string | null | undefined): Promise<void>;
 }
 export interface CommonStore {
