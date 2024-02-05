@@ -50,12 +50,6 @@ export const ContextMenu = ({
 					</div>
 				) : null}
 				<ul>
-					{/*<li>*/}
-					{/*	<button className={styles.menuListButton} onClick={onDeleteMessage}>*/}
-					{/*		<DeleteIcon />*/}
-					{/*		<span className={styles.menuListOptionText}>Delete</span>*/}
-					{/*	</button>*/}
-					{/*</li>*/}
 					{isAuthor ? (
 						<li>
 							<button className={styles.menuListButton} onClick={onEditMessage}>
