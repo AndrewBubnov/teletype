@@ -1,11 +1,11 @@
 import {
-	ChangeEvent,
+	ChangeEventHandler,
 	CSSProperties,
 	Dispatch,
 	FC,
-	HTMLAttributes,
 	MutableRefObject,
-	PointerEvent,
+	PointerEventHandler,
+	PropsWithChildren,
 	ReactElement,
 	ReactNode,
 	SetStateAction,
@@ -113,8 +113,8 @@ export interface RepliedMessageBoxProps {
 	authorName: string;
 }
 export interface UseLongPress {
-	onLongPress: (event: PointerEvent) => void;
-	onPress?: (event: PointerEvent) => void;
+	onLongPress: PointerEventHandler;
+	onPress?: PointerEventHandler;
 	delay?: number;
 }
 
@@ -202,7 +202,7 @@ export interface ImagePreviewModalProps {
 	width: number;
 }
 export interface TextAreaEndDecoratorProps {
-	onSelectFile(event: ChangeEvent<HTMLInputElement>): void;
+	onSelectFile: ChangeEventHandler<HTMLInputElement>;
 	messageImageUrl: string | null;
 	openPreviewModal(): void;
 	onDropImageUrl(): void;
@@ -265,12 +265,11 @@ export interface SelectModeHeaderProps {
 	toggleAllSelected(): void;
 }
 
-export interface StyledElementProps extends HTMLAttributes<HTMLElement> {
+export interface StyledElementProps extends PropsWithChildren {
 	element: string | FC;
 	className: string;
 	styles: { readonly [key: string]: string };
 	attributes?: Record<string, boolean | string>;
-	children: ReactNode;
 }
 
 export interface TextAreaProps {
@@ -279,10 +278,10 @@ export interface TextAreaProps {
 	startDecorator: ReactElement;
 	endDecorator: ReactElement;
 	value: string;
-	onChange(evt: ChangeEvent<HTMLTextAreaElement>): void;
+	onChange: ChangeEventHandler<HTMLTextAreaElement>;
 }
 
-export interface DialogProps extends HTMLAttributes<HTMLDivElement> {
+export interface DialogProps extends PropsWithChildren {
 	children: ReactNode;
 	isOpen: boolean;
 	onClose(): void;
@@ -293,7 +292,7 @@ export interface DialogProps extends HTMLAttributes<HTMLDivElement> {
 export interface StyledCheckboxProps {
 	id: string;
 	checked: boolean;
-	onChange?: (() => void) | ((event: ChangeEvent<HTMLInputElement>) => void);
+	onChange?: ChangeEventHandler<HTMLInputElement>;
 	label?: string;
 	className?: string;
 }
