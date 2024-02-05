@@ -93,15 +93,11 @@ export const Chat = ({ chat }: ChatProps) => {
 			const type = informAll ? UpdateMessageType.DELETE : UpdateMessageType.EDIT;
 			const hideToId = type === UpdateMessageType.EDIT ? userId : null;
 			const updated = await deleteOrHideMessages(selectedIds, type, hideToId);
-			const updateData = getUpdateData({ updated, informAll, selectedIds, menuActiveId, isSelectMode });
-			sendEditMessage({
-				updateData,
-				type: informAll ? UpdateMessageType.DELETE : UpdateMessageType.EDIT,
-				roomId: chatId,
-			});
+			const updateData = getUpdateData({ updated, informAll, selectedIds });
+			sendEditMessage({ updateData, type, roomId: chatId });
 			dropSelectMode();
 		},
-		[chatId, dropSelectMode, isSelectMode, menuActiveId, selectedIds, userId]
+		[chatId, dropSelectMode, selectedIds, userId]
 	);
 
 	const onClearChatHistory = useCallback(async () => {

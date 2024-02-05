@@ -322,3 +322,9 @@ export interface ChatHeaderProps {
 	isAllSelected: boolean;
 	toggleAllSelected(): void;
 }
+
+export interface GetUpdateData {
+	selectedIds: string[];
+	informAll: boolean;
+	updated: Message[];
+}
