@@ -2,14 +2,12 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useChat } from '@/app/chat/[chatId]/hooks/useChat';
 import { useSelect } from '@/app/shared/hooks/useSelect';
-import { useMenuTransition } from '@/app/chat/[chatId]/hooks/useMenuTransition';
 import { useScrolledTo } from '@/app/chat/[chatId]/hooks/useScrolledTo';
 import { FullScreenLoader } from '@/app/shared/components/FullScreenLoader';
 import { BackButton } from '@/app/chat/[chatId]/components/BackButton';
 import { ChatHeader } from '@/app/chat/[chatId]/components/ChatHeader';
 import { SingleMessage } from '@/app/chat/[chatId]/components/SingleMessage';
 import { sendEditMessage } from '@/webSocketActions/sendEditMessage';
-import { ContextMenu } from '@/app/chat/[chatId]/components/ContextMenu';
 import { MessageInput } from '@/app/chat/[chatId]/components/MessageInput';
 import { UnreadMessages } from '@/app/chat/[chatId]/components/UnreadMessages';
 import { deleteOrHideMessages } from '@/prismaActions/deleteOrHideMessages';
@@ -19,9 +17,9 @@ import { getUpdateData } from '@/app/chat/[chatId]/utils/getUpdateData';
 import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
 import { deleteSingleChat } from '@/prismaActions/deleteSingleChat';
 import { ChatMenuButton } from '@/app/chat/[chatId]/components/ChatMenuButton';
+import { downloadImage } from '@/app/chat/[chatId]/utils/downloadImage';
 import { ChatProps, Message, UpdateData, UpdateMessageType } from '@/types';
 import styles from '../chatId.module.css';
-import { downloadImage } from '@/app/chat/[chatId]/utils/downloadImage';
 
 export const Chat = ({ chat }: ChatProps) => {
 	const {
@@ -47,9 +45,6 @@ export const Chat = ({ chat }: ChatProps) => {
 
 	const [repliedMessage, setRepliedMessage] = useState<Message | null>(null);
 	const [editedMessage, setEditedMessage] = useState<Message | null>(null);
-	const [menuActiveId, setMenuActiveId] = useState<string>('');
-
-	const { menuTop, setMessageParams, containerRef, initMenuParams } = useMenuTransition(menuActiveId, userId);
 
 	const { selectedIds, isAllSelected, toggleAllSelected, addSelection, startSelection, dropSelectMode } =
 		useSelect(shownMessageList);
@@ -60,37 +55,19 @@ export const Chat = ({ chat }: ChatProps) => {
 
 	const isSelectMode = !!selectedIds.length;
 
-	const contextMenuToggleHandler = (id: string) => (type: 'open' | 'close', messageParams: DOMRect) => {
-		if (isSelectMode) {
-			addSelection(id);
-			return;
-		}
-		setMessageParams(messageParams);
-		setMenuActiveId(type === 'open' ? id : '');
+	const getActiveMessage = useCallback((id: string) => messageList.find(el => el.id === id), [messageList]);
+
+	const addReactionHandler = (id: string) => async (reactionString: string) => {
+		const activeMessage = getActiveMessage(id);
+		if (!activeMessage) return;
+		const reaction = activeMessage.reaction === reactionString ? '' : reactionString;
+		await addReaction(activeMessage, reaction, authorImageUrl);
 	};
 
-	const closeMenuHandler = useCallback(() => setMenuActiveId(''), []);
-
-	const activeMessage = useMemo(() => messageList.find(el => el.id === menuActiveId), [menuActiveId, messageList]);
-
-	const addReactionHandler = useCallback(
-		async (reactionString: string) => {
-			if (!activeMessage) return;
-			const reaction = activeMessage.reaction === reactionString ? '' : reactionString;
-			await addReaction(activeMessage, reaction, authorImageUrl);
-			setMenuActiveId('');
-		},
-		[activeMessage, addReaction, authorImageUrl]
-	);
-
-	const onSelectModeStart = (id: string) => () => {
-		startSelection(id);
-		setMenuActiveId('');
-	};
+	const onSelectModeStart = (id: string) => () => startSelection(id);
 
 	const onDeleteMessage = useCallback(
 		async (informAll: boolean) => {
-			setMenuActiveId('');
 			const type = informAll ? UpdateMessageType.DELETE : UpdateMessageType.EDIT;
 			const hideToId = type === UpdateMessageType.EDIT ? userId : null;
 			const updated = await deleteOrHideMessages(selectedIds, type, hideToId);
@@ -123,20 +100,19 @@ export const Chat = ({ chat }: ChatProps) => {
 		sendDeleteUserChats([chat.id]);
 	}, [chat.id, chatId]);
 
-	const onReplyMessage = useCallback(() => {
+	const onReplyMessage = (id: string) => () => {
+		const activeMessage = getActiveMessage(id);
 		if (activeMessage) setRepliedMessage(activeMessage);
-		setMenuActiveId('');
-	}, [activeMessage]);
+	};
 
-	const onEditMessage = useCallback(() => {
+	const onEditMessage = (id: string) => () => {
+		const activeMessage = getActiveMessage(id);
 		if (activeMessage) setEditedMessage(activeMessage);
-		setMenuActiveId('');
-	}, [activeMessage]);
-
-	const onDownLoadImage = useCallback(() => {
+	};
+	const onDownLoadImage = (id: string) => () => {
+		const activeMessage = getActiveMessage(id);
 		downloadImage(activeMessage);
-		setMenuActiveId('');
-	}, [activeMessage]);
+	};
 
 	const scrollToLastHandler = useCallback(() => {
 		const id = messageList.at(-1)?.id;
@@ -166,7 +142,7 @@ export const Chat = ({ chat }: ChatProps) => {
 				)}
 			</div>
 			<div className={styles.coverWrapper}>
-				<div className={styles.chatWrapper} ref={containerRef}>
+				<div className={styles.chatWrapper}>
 					{shownMessageList.map((message, index, { length }) => {
 						const repliedMessage = message.replyToId
 							? messageList.find(el => el.id === message.replyToId)
@@ -174,13 +150,17 @@ export const Chat = ({ chat }: ChatProps) => {
 						const isAuthoredByUser = message.authorId === userId;
 						return (
 							<SingleMessage
+								onReplyMessage={onReplyMessage(message.id)}
+								onEditMessage={onEditMessage(message.id)}
+								onDownLoadImage={message.imageUrl ? onDownLoadImage(message.id) : null}
+								onAddReaction={addReactionHandler(message.id)}
+								isAuthor={message.authorId === authorId}
 								key={message.id}
 								message={message}
 								isSelectMode={isSelectMode}
 								repliedMessage={repliedMessage}
 								isSelected={selectedIds.includes(message.id)}
 								isScrolledTo={isAuthoredByUser && index === length - 1 - scrolledTo}
-								onContextMenuToggle={contextMenuToggleHandler(message.id)}
 								updateIsRead={message.authorId !== userId ? updateIsRead : null}
 								isAuthoredByUser={isAuthoredByUser}
 								firstUnreadId={firstUnreadId}
@@ -189,18 +169,6 @@ export const Chat = ({ chat }: ChatProps) => {
 						);
 					})}
 				</div>
-				{!!activeMessage && (
-					<ContextMenu
-						menuTop={menuTop}
-						onEditMessage={onEditMessage}
-						onCloseMenu={closeMenuHandler}
-						initMenuParams={initMenuParams}
-						onReplyMessage={onReplyMessage}
-						onAddReaction={addReactionHandler}
-						isAuthor={activeMessage.authorId === authorId}
-						onDownLoadImage={activeMessage.imageUrl ? onDownLoadImage : null}
-					/>
-				)}
 				{unreadNumber ? <UnreadMessages unreadNumber={unreadNumber} onPress={scrollToLastHandler} /> : null}
 			</div>
 			<MessageInput

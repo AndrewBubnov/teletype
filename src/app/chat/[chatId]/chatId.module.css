@@ -17,30 +17,6 @@
     inset: 0;
 }
 
-.menuCard {
-    padding: 0.5rem;
-    width: 40%;
-    height: fit-content;
-    background: lightgoldenrodyellow;
-    border-radius: 0.25rem;
-    color: #000;
-    opacity: 0;
-    transition: all 0.3s;
-
-    @media (max-width: 600px) {
-        width: 60%;
-    }
-}
-
-.menuCardIsActive {
-    transform: translateY(var(--yOffset));
-    opacity: 1;
-}
-
-.menuCardIsInActive {
-    opacity: 0;
-}
-
 .video {
     max-width: 100%;
 }
@@ -151,7 +127,7 @@
 
 .chatWrapper {
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: clip;
     height: 67vh;
 
     @media (max-width: 600px) {
@@ -737,6 +713,28 @@
 .chatMenuOut {
     opacity: 0;
     transform: translate(-100%, -3rem);
+}
+
+.menu {
+    position: absolute;
+    left: 50%;
+    background-color: lightgoldenrodyellow;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    z-index: 100;
+    opacity: 0;
+    color: #1a1a1a;
+    transition: all 0.5s;
+}
+
+.menuIn {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.menuOut {
+    opacity: 0;
+    transform: translate(-50%, -3rem);
 }
 
 .chatHeaderContainer {

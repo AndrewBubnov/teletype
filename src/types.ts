@@ -97,7 +97,6 @@ export interface GetInterlocutorState {
 export type SingleMessageProps = {
 	message: Message;
 	repliedMessage?: Message | null;
-	onContextMenuToggle(type: 'open' | 'close', middle?: DOMRect): void;
 	updateIsRead: ((arg: Message) => void) | null;
 	isScrolledTo: boolean;
 	isAuthoredByUser: boolean;
@@ -105,6 +104,11 @@ export type SingleMessageProps = {
 	isSelectMode: boolean;
 	onSelectModeStart(): void;
 	firstUnreadId: string | null;
+	onReplyMessage(): void;
+	onEditMessage(): void;
+	onAddReaction(reactionString: string): Promise<void>;
+	onDownLoadImage: (() => void) | null;
+	isAuthor: boolean;
 };
 
 export interface RepliedMessageBoxProps {
@@ -116,17 +120,6 @@ export interface UseLongPress {
 	onLongPress: PointerEventHandler;
 	onPress?: PointerEventHandler;
 	delay?: number;
-}
-
-export interface ContextMenuProps {
-	onAddReaction(arg: string): void;
-	onCloseMenu(): void;
-	initMenuParams: MutableRefObject<DOMRect | null>;
-	onReplyMessage(): void;
-	onEditMessage(): void;
-	onDownLoadImage: null | (() => void);
-	menuTop: number;
-	isAuthor: boolean;
 }
 export interface MessageProps {
 	isAuthoredByUser: boolean;
@@ -326,4 +319,14 @@ export interface GetUpdateData {
 	selectedIds: string[];
 	informAll: boolean;
 	updated: Message[];
+}
+
+export interface ContextMenuProps {
+	onClose(): void;
+	top?: number;
+	onReplyMessage(): void;
+	onEditMessage(): void;
+	onAddReaction(arg: string): void;
+	onDownLoadImage: (() => void) | null;
+	isAuthor: boolean;
 }

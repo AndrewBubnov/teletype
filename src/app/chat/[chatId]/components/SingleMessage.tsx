@@ -7,13 +7,13 @@ import { MessageBottom } from '@/app/chat/[chatId]/components/MessageBottom';
 import { LinkMessagePart } from '@/app/chat/[chatId]/components/LinkMessagePart';
 import { StyledElement } from '@/app/chat/[chatId]/components/StyledElement';
 import { StyledCheckbox } from '@/app/shared/components/StyledCheckbox';
+import { ContextMenu } from '@/app/chat/[chatId]/components/ContextMenu';
 import { dateOptions, urlRegex } from '@/app/chat/[chatId]/constants';
 import { MessageType, SingleMessageProps } from '@/types';
 import styles from '../chatId.module.css';
 
 export const SingleMessage = ({
 	message,
-	onContextMenuToggle,
 	repliedMessage,
 	updateIsRead,
 	isScrolledTo,
@@ -22,8 +22,14 @@ export const SingleMessage = ({
 	isSelected,
 	onSelectModeStart,
 	firstUnreadId,
+	onReplyMessage,
+	onEditMessage,
+	onDownLoadImage,
+	onAddReaction,
+	isAuthor,
 }: SingleMessageProps) => {
 	const [isImageEnlarged, setIsImageEnlarged] = useState<boolean>(false);
+	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
 	const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -64,9 +70,10 @@ export const SingleMessage = ({
 	};
 
 	const onPress = () => {
-		const params = containerRef.current?.getBoundingClientRect();
-		if (!params) return;
-		onContextMenuToggle('open', params);
+		setIsMenuOpen(true);
+		// const params = containerRef.current?.getBoundingClientRect();
+		// if (!params) return;
+		// onContextMenuToggle('open', params);
 	};
 
 	const pressHandler = useLongPress({ onPress, onLongPress: onSelectModeStart });
@@ -95,6 +102,17 @@ export const SingleMessage = ({
 				{isFirstDateDateMessagePrefix}
 				{isFirstUnreadPrefix}
 				<div className={styles.messageWrapper} ref={containerRef} id={message.id}>
+					{isMenuOpen && (
+						<ContextMenu
+							onClose={() => setIsMenuOpen(false)}
+							top={containerRef.current?.getBoundingClientRect().top}
+							onEditMessage={onEditMessage}
+							onReplyMessage={onReplyMessage}
+							onDownLoadImage={onDownLoadImage}
+							onAddReaction={onAddReaction}
+							isAuthor={isAuthor}
+						/>
+					)}
 					<StyledElement
 						element="div"
 						className="messageItem"
