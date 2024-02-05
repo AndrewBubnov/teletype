@@ -91,60 +91,56 @@ export const SingleMessage = ({
 
 	if (message.type === MessageType.COMMON) {
 		return (
-			<>
+			<label className={styles.styledLabel} htmlFor={message.id} {...pressHandler}>
 				{isFirstDateDateMessagePrefix}
 				{isFirstUnreadPrefix}
-				<label className={styles.styledLabel} htmlFor={message.id} {...pressHandler}>
-					<div className={styles.messageWrapper} ref={containerRef} id={message.id}>
-						<StyledElement
-							element="div"
-							className="messageItem"
-							styles={styles}
-							attributes={{
-								singlePadding: !repliedMessage,
-								isAuthoredByUser,
-								fullWidth: isImageEnlarged,
-								isMoved: isAuthoredByUser && isSelectMode,
-							}}
-						>
-							{repliedMessage && <ReplyTo message={repliedMessage} />}
-							{message.imageUrl && (
-								<ImageMessage
-									message={message}
-									isEnlarged={isImageEnlarged}
-									onEnlargeToggle={toggleEnlargeHandler}
-									width={containerRef.current?.clientWidth}
-								/>
-							)}
-							{message.text && (
-								<StyledElement
-									element="div"
-									className="innerMessageItem"
-									styles={styles}
-									attributes={{ withPadding: !repliedMessage }}
-								>
-									{messageText}
-								</StyledElement>
-							)}
-							<MessageBottom message={message} withOffset={!repliedMessage} />
-						</StyledElement>
-						{isSelectMode ? <StyledCheckbox id={message.id} checked={isSelected} /> : null}
-					</div>
-				</label>
-			</>
+				<div className={styles.messageWrapper} ref={containerRef} id={message.id}>
+					<StyledElement
+						element="div"
+						className="messageItem"
+						styles={styles}
+						attributes={{
+							singlePadding: !repliedMessage,
+							isAuthoredByUser,
+							fullWidth: isImageEnlarged,
+							isMoved: isAuthoredByUser && isSelectMode,
+						}}
+					>
+						{repliedMessage && <ReplyTo message={repliedMessage} />}
+						{message.imageUrl && (
+							<ImageMessage
+								message={message}
+								isEnlarged={isImageEnlarged}
+								onEnlargeToggle={toggleEnlargeHandler}
+								width={containerRef.current?.clientWidth}
+							/>
+						)}
+						{message.text && (
+							<StyledElement
+								element="div"
+								className="innerMessageItem"
+								styles={styles}
+								attributes={{ withPadding: !repliedMessage }}
+							>
+								{messageText}
+							</StyledElement>
+						)}
+						<MessageBottom message={message} withOffset={!repliedMessage} />
+					</StyledElement>
+					{isSelectMode ? <StyledCheckbox id={message.id} checked={isSelected} /> : null}
+				</div>
+			</label>
 		);
 	}
 
 	return (
-		<>
+		<label className={styles.styledLabel} htmlFor={message.id} {...pressHandler}>
 			{isFirstDateDateMessagePrefix}
 			{isFirstUnreadPrefix}
-			<label className={styles.styledLabel} htmlFor={message.id} {...pressHandler}>
-				<div className={styles.messageWrapper} ref={containerRef} id={message.id}>
-					<EmojiMessage isAuthoredByUser={isAuthoredByUser} message={message} isSelectMode={isSelectMode} />
-					{isSelectMode ? <StyledCheckbox id={message.id} checked={isSelected} /> : null}
-				</div>
-			</label>
-		</>
+			<div className={styles.messageWrapper} ref={containerRef} id={message.id}>
+				<EmojiMessage isAuthoredByUser={isAuthoredByUser} message={message} isSelectMode={isSelectMode} />
+				{isSelectMode ? <StyledCheckbox id={message.id} checked={isSelected} /> : null}
+			</div>
+		</label>
 	);
 };
