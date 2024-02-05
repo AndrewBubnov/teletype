@@ -21,6 +21,7 @@ import { deleteSingleChat } from '@/prismaActions/deleteSingleChat';
 import { ChatMenuButton } from '@/app/chat/[chatId]/components/ChatMenuButton';
 import { ChatProps, Message, UpdateData, UpdateMessageType } from '@/types';
 import styles from '../chatId.module.css';
+import { downloadImage } from '@/app/chat/[chatId]/utils/downloadImage';
 
 export const Chat = ({ chat }: ChatProps) => {
 	const {
@@ -133,13 +134,7 @@ export const Chat = ({ chat }: ChatProps) => {
 	}, [activeMessage]);
 
 	const onDownLoadImage = useCallback(() => {
-		if (!activeMessage) return;
-		if (activeMessage.imageUrl) {
-			const link = document.createElement('a');
-			link.download = 'image.jpg';
-			link.href = activeMessage.imageUrl;
-			link.click();
-		}
+		downloadImage(activeMessage);
 		setMenuActiveId('');
 	}, [activeMessage]);
 
