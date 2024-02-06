@@ -17,7 +17,6 @@ import { getUpdateData } from '@/app/chat/[chatId]/utils/getUpdateData';
 import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
 import { deleteSingleChat } from '@/prismaActions/deleteSingleChat';
 import { ChatMenuButton } from '@/app/chat/[chatId]/components/ChatMenuButton';
-import { downloadImage } from '@/app/chat/[chatId]/utils/downloadImage';
 import { ChatProps, Message, UpdateData, UpdateMessageType } from '@/types';
 import styles from '../chatId.module.css';
 
@@ -55,13 +54,9 @@ export const Chat = ({ chat }: ChatProps) => {
 
 	const isSelectMode = !!selectedIds.length;
 
-	const getActiveMessage = useCallback((id: string) => messageList.find(el => el.id === id), [messageList]);
-
-	const addReactionHandler = (id: string) => async (reactionString: string) => {
-		const activeMessage = getActiveMessage(id);
-		if (!activeMessage) return;
-		const reaction = activeMessage.reaction === reactionString ? '' : reactionString;
-		await addReaction(activeMessage, reaction, authorImageUrl);
+	const addReactionHandler = (message: Message) => async (reactionString: string) => {
+		const reaction = message.reaction === reactionString ? '' : reactionString;
+		await addReaction(message, reaction, authorImageUrl);
 	};
 
 	const onSelectModeStart = (id: string) => () => startSelection(id);
@@ -100,19 +95,9 @@ export const Chat = ({ chat }: ChatProps) => {
 		sendDeleteUserChats([chat.id]);
 	}, [chat.id, chatId]);
 
-	const onReplyMessage = (id: string) => () => {
-		const activeMessage = getActiveMessage(id);
-		if (activeMessage) setRepliedMessage(activeMessage);
-	};
+	const onReplyMessage = (message: Message) => () => setRepliedMessage(message);
 
-	const onEditMessage = (id: string) => () => {
-		const activeMessage = getActiveMessage(id);
-		if (activeMessage) setEditedMessage(activeMessage);
-	};
-	const onDownLoadImage = (id: string) => () => {
-		const activeMessage = getActiveMessage(id);
-		downloadImage(activeMessage);
-	};
+	const onEditMessage = (message: Message) => () => setEditedMessage(message);
 
 	const scrollToLastHandler = useCallback(() => {
 		const id = messageList.at(-1)?.id;
@@ -152,10 +137,9 @@ export const Chat = ({ chat }: ChatProps) => {
 							<SingleMessage
 								key={message.id}
 								message={message}
-								onReplyMessage={onReplyMessage(message.id)}
-								onEditMessage={onEditMessage(message.id)}
-								onDownLoadImage={message.imageUrl ? onDownLoadImage(message.id) : null}
-								onAddReaction={addReactionHandler(message.id)}
+								onReplyMessage={onReplyMessage(message)}
+								onEditMessage={onEditMessage(message)}
+								onAddReaction={addReactionHandler(message)}
 								isAuthor={message.authorId === authorId}
 								isSelected={selectedIds.includes(message.id)}
 								isScrolledTo={isAuthoredByUser && index === length - 1 - scrolledTo}

@@ -107,7 +107,6 @@ export type SingleMessageProps = {
 	onReplyMessage(): void;
 	onEditMessage(): void;
 	onAddReaction(reactionString: string): Promise<void>;
-	onDownLoadImage: (() => void) | null;
 	isAuthor: boolean;
 	addSelection(arg: string): void;
 };

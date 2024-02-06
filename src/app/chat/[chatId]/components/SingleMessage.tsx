@@ -1,4 +1,4 @@
-import { SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLongPress } from '@/app/chat/[chatId]/hooks/useLongPress';
 import { EmojiMessage } from '@/app/chat/[chatId]/components/EmojiMessage';
 import { ReplyTo } from '@/app/chat/[chatId]/components/ReplyTo';
@@ -8,6 +8,7 @@ import { LinkMessagePart } from '@/app/chat/[chatId]/components/LinkMessagePart'
 import { StyledElement } from '@/app/chat/[chatId]/components/StyledElement';
 import { StyledCheckbox } from '@/app/shared/components/StyledCheckbox';
 import { ContextMenu } from '@/app/chat/[chatId]/components/ContextMenu';
+import { downloadImage } from '@/app/chat/[chatId]/utils/downloadImage';
 import { dateOptions, urlRegex } from '@/app/chat/[chatId]/constants';
 import { MessageType, SingleMessageProps } from '@/types';
 import styles from '../chatId.module.css';
@@ -24,7 +25,6 @@ export const SingleMessage = ({
 	firstUnreadId,
 	onReplyMessage,
 	onEditMessage,
-	onDownLoadImage,
 	onAddReaction,
 	addSelection,
 	isAuthor,
@@ -65,18 +65,18 @@ export const SingleMessage = ({
 		});
 	}, [message.text]);
 
-	const toggleEnlargeHandler = (evt: SyntheticEvent) => {
+	const toggleEnlargeHandler = useCallback((evt: SyntheticEvent) => {
 		evt.stopPropagation();
 		setIsImageEnlarged(prevState => !prevState);
-	};
+	}, []);
 
-	const onPress = () => {
+	const onPress = useCallback(() => {
 		if (isSelectMode) {
 			addSelection(message.id);
 			return;
 		}
 		setIsMenuOpen(true);
-	};
+	}, [addSelection, isSelectMode, message.id]);
 
 	const pressHandler = useLongPress({ onPress, onLongPress: onSelectModeStart });
 
@@ -90,6 +90,11 @@ export const SingleMessage = ({
 		}
 		return null;
 	}, [message.createdAt, message.isFirstDateMessage]);
+
+	const onDownLoadImage = () => {
+		if (message.imageUrl) return downloadImage(message);
+		return null;
+	};
 
 	const isFirstUnreadPrefix = useMemo(() => {
 		if (firstUnreadId === message.id) {
