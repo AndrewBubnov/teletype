@@ -1,11 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
 export const useSelect = <T extends Record<'id', string>>(list: T[] = []) => {
 	const [selectedIds, setSelectedIds] = useState<string[]>([]);
-	const [isAllSelected, setIsAllSelected] = useState<boolean>(selectedIds.length < list.length);
+	const isAllSelected = useMemo<boolean>(() => selectedIds.length === list.length, [list.length, selectedIds.length]);
 	const startSelectionRef = useRef<string>('');
-
-	useEffect(() => setIsAllSelected(selectedIds.length === list.length), [selectedIds.length, list.length]);
 
 	const toggleAllSelected = useCallback(
 		() =>

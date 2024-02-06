@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useEffect } from 'react';
-import { useMessageStore, useCommonStore } from '@/store';
+import { useMessageStore, useCommonStore, useStatusStore } from '@/store';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
 import { createRooms } from '@/app/chat/utils/createRooms';
 import { initUserChats } from '@/webSocketActions/initUserChats';
@@ -21,16 +21,18 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap }: Subscr
 		updateMessageInMessageMap: state.updateMessageInMessageMap,
 	}));
 
-	const { setActiveUsers, setChatList, setUserEmails, chatList, setChatVisitorStatus, setUserId, setToast } =
-		useCommonStore(state => ({
-			setActiveUsers: state.setActiveUsers,
-			chatList: state.chatList,
-			setChatList: state.setChatList,
-			setUserEmails: state.setUserEmails,
-			setChatVisitorStatus: state.setChatVisitorStatus,
-			setUserId: state.setUserId,
-			setToast: state.setErrorToastText,
-		}));
+	const { setChatList, setUserEmails, chatList, setUserId, setToast } = useCommonStore(state => ({
+		chatList: state.chatList,
+		setChatList: state.setChatList,
+		setUserEmails: state.setUserEmails,
+		setUserId: state.setUserId,
+		setToast: state.setErrorToastText,
+	}));
+
+	const { setActiveUsers, setChatVisitorStatus } = useStatusStore(state => ({
+		setActiveUsers: state.setActiveUsers,
+		setChatVisitorStatus: state.setChatVisitorStatus,
+	}));
 
 	useEffect(() => {
 		initUserChats(userChats);
