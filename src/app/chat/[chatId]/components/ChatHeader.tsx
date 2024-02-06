@@ -1,6 +1,6 @@
 import { memo, useMemo, useState } from 'react';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
-import { useCommonStore } from '@/store';
+import { useStatusStore } from '@/store';
 import { clsx } from 'clsx';
 import { ElapsedTime } from '@/app/chat/[chatId]/components/ElapsedTime';
 import { getInterlocutorState } from '@/app/chat/[chatId]/utils/getInterlocutorState';
@@ -19,7 +19,7 @@ const ChatHeaderComponent = ({
 	isAllSelected,
 	toggleAllSelected,
 }: ChatHeaderProps) => {
-	const { chatVisitorStatus, activeUsers } = useCommonStore(state => ({
+	const { chatVisitorStatus, activeUsers } = useStatusStore(state => ({
 		chatVisitorStatus: state.chatVisitorStatus,
 		activeUsers: state.activeUsers,
 	}));

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useCommonStore, useMessageStore } from '@/store';
+import { useCommonStore, useMessageStore, useStatusStore } from '@/store';
 import { useLongPress } from '@/app/chat/[chatId]/hooks/useLongPress';
 import { clsx } from 'clsx';
 import Image from 'next/image';
@@ -16,10 +16,8 @@ export const ChatListItem = ({
 	isSelectMode,
 	isChecked,
 }: ChatListItemProps) => {
-	const { activeUsers, userId } = useCommonStore(state => ({
-		activeUsers: state.activeUsers,
-		userId: state.userId,
-	}));
+	const userId = useCommonStore(state => state.userId);
+	const activeUsers = useStatusStore(state => state.activeUsers);
 	const messageMap = useMessageStore(state => state.messageMap);
 
 	const messageList = messageMap[chatId] || [];

@@ -178,18 +178,21 @@ export interface MessageStore {
 	updateIsRead(message: Message): Promise<void>;
 	addReaction(message: Message, reaction: string, authorImageUrl: string | null | undefined): Promise<void>;
 }
+export interface StatusStore {
+	activeUsers: string[];
+	chatVisitorStatus: ChatVisitorStatus;
+	setActiveUsers(arg: string[]): void;
+	setChatVisitorStatus(arg: ChatVisitorStatus): void;
+}
+
 export interface CommonStore {
 	chatList: UserChat[];
-	activeUsers: string[];
 	userEmails: string[];
 	errorToastText: string;
 	userId: string;
-	setActiveUsers(arg: string[]): void;
 	setUserEmails(arg: string[]): void;
 	setChatList(arg: UserChat[]): void;
 	setErrorToastText(arg: string): void;
-	chatVisitorStatus: ChatVisitorStatus;
-	setChatVisitorStatus(arg: ChatVisitorStatus): void;
 	setUserId(arg: string): void;
 }
 
