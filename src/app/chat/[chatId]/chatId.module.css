@@ -717,6 +717,7 @@
 
 .menu {
     position: absolute;
+    top: var(--yOffset);
     left: 50%;
     background-color: lightgoldenrodyellow;
     border-radius: 0.25rem;
@@ -760,4 +761,8 @@
     text-align: center;
     margin-block: 0.5rem;
     border-radius: 0.25rem;
+}
+
+.ul {
+    list-style: none;
 }

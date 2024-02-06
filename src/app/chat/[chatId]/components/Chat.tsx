@@ -150,21 +150,22 @@ export const Chat = ({ chat }: ChatProps) => {
 						const isAuthoredByUser = message.authorId === userId;
 						return (
 							<SingleMessage
+								key={message.id}
+								message={message}
 								onReplyMessage={onReplyMessage(message.id)}
 								onEditMessage={onEditMessage(message.id)}
 								onDownLoadImage={message.imageUrl ? onDownLoadImage(message.id) : null}
 								onAddReaction={addReactionHandler(message.id)}
 								isAuthor={message.authorId === authorId}
-								key={message.id}
-								message={message}
-								isSelectMode={isSelectMode}
-								repliedMessage={repliedMessage}
 								isSelected={selectedIds.includes(message.id)}
 								isScrolledTo={isAuthoredByUser && index === length - 1 - scrolledTo}
 								updateIsRead={message.authorId !== userId ? updateIsRead : null}
 								isAuthoredByUser={isAuthoredByUser}
-								firstUnreadId={firstUnreadId}
 								onSelectModeStart={onSelectModeStart(message.id)}
+								addSelection={addSelection}
+								isSelectMode={isSelectMode}
+								repliedMessage={repliedMessage}
+								firstUnreadId={firstUnreadId}
 							/>
 						);
 					})}

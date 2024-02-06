@@ -26,6 +26,7 @@ export const SingleMessage = ({
 	onEditMessage,
 	onDownLoadImage,
 	onAddReaction,
+	addSelection,
 	isAuthor,
 }: SingleMessageProps) => {
 	const [isImageEnlarged, setIsImageEnlarged] = useState<boolean>(false);
@@ -70,10 +71,11 @@ export const SingleMessage = ({
 	};
 
 	const onPress = () => {
+		if (isSelectMode) {
+			addSelection(message.id);
+			return;
+		}
 		setIsMenuOpen(true);
-		// const params = containerRef.current?.getBoundingClientRect();
-		// if (!params) return;
-		// onContextMenuToggle('open', params);
 	};
 
 	const pressHandler = useLongPress({ onPress, onLongPress: onSelectModeStart });

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { CSSProperties, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { clsx } from 'clsx';
 import { useAnimate } from '@/app/shared/hooks/useAnimate';
@@ -52,7 +52,7 @@ export const ContextMenu = ({
 				[styles.menuOut]: !isActive,
 			})}
 			onTransitionEnd={onCloseReturn}
-			style={{ top: `${top}px` }}
+			style={{ '--yOffset': `${top}px` } as CSSProperties}
 		>
 			{!isAuthor ? (
 				<div className={styles.reactionsWrapper}>
@@ -63,7 +63,7 @@ export const ContextMenu = ({
 					))}
 				</div>
 			) : null}
-			<ul>
+			<ul className={styles.ul}>
 				{isAuthor ? (
 					<li>
 						<button className={styles.menuListButton} onClick={editHandler}>

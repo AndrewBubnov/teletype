@@ -109,6 +109,7 @@ export type SingleMessageProps = {
 	onAddReaction(reactionString: string): Promise<void>;
 	onDownLoadImage: (() => void) | null;
 	isAuthor: boolean;
+	addSelection(arg: string): void;
 };
 
 export interface RepliedMessageBoxProps {
