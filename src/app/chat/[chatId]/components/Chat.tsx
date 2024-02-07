@@ -28,7 +28,6 @@ export const Chat = ({ chat }: ChatProps) => {
 		authorImageUrl,
 		interlocutorImageUrl,
 		chatId,
-		authorId,
 		interlocutorId,
 		authorName,
 		unreadNumber,

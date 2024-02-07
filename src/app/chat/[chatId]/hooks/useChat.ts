@@ -24,7 +24,6 @@ export const useChat = (chat: UserChat) => {
 	const author = members.find(user => user.userId === userId);
 	const interlocutor = members.find(user => user.userId !== userId);
 	const interlocutorId = interlocutor?.userId || '';
-	const authorId = author?.userId || '';
 	const interlocutorName = interlocutor?.username || interlocutor?.email || '';
 	const authorName = author?.username || author?.email || '';
 	const authorImageUrl = author?.imageUrl;
@@ -77,7 +76,6 @@ export const useChat = (chat: UserChat) => {
 		authorImageUrl,
 		interlocutorImageUrl,
 		chatId,
-		authorId,
 		interlocutorId,
 		authorName,
 		unreadNumber,
