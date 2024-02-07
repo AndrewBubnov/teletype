@@ -57,7 +57,7 @@ export const ContextMenu = ({
 			{!isAuthor ? (
 				<div className={styles.reactionsWrapper}>
 					{reactions.map(reaction => (
-						<div key={reaction} onClick={() => addReactionHandler(reaction)}>
+						<div key={reaction} onPointerDown={() => addReactionHandler(reaction)}>
 							{String.fromCodePoint(parseInt(reaction, 16))}
 						</div>
 					))}
@@ -66,21 +66,21 @@ export const ContextMenu = ({
 			<ul className={styles.ul}>
 				{isAuthor ? (
 					<li>
-						<button className={styles.menuListButton} onClick={editHandler}>
+						<button className={styles.menuListButton} onPointerDown={editHandler}>
 							<EditIcon />
 							<span className={styles.menuListOptionText}>Edit</span>
 						</button>
 					</li>
 				) : null}
 				<li>
-					<button className={styles.menuListButton} onClick={replyHandler}>
+					<button className={styles.menuListButton} onPointerDown={replyHandler}>
 						<ReplyIcon />
 						<span className={styles.menuListOptionText}>Reply</span>
 					</button>
 				</li>
 				{onDownLoadImage ? (
 					<li>
-						<button className={styles.menuListButton} onClick={downloadHandler}>
+						<button className={styles.menuListButton} onPointerDown={downloadHandler}>
 							<DownloadIcon />
 							<span className={styles.menuListOptionText}>Download</span>
 						</button>
