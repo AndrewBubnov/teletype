@@ -1,4 +1,5 @@
-import { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { SyntheticEvent, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { MessageContext } from '@/app/chat/[chatId]/providers/MessageProvider';
 import { SingleMessageWrapper } from '@/app/chat/[chatId]/components/SingleMessageWrapper';
 import { EmojiMessage } from '@/app/chat/[chatId]/components/EmojiMessage';
 import { ReplyTo } from '@/app/chat/[chatId]/components/ReplyTo';
@@ -13,19 +14,13 @@ import styles from '../chatId.module.css';
 
 export const SingleMessage = ({
 	message,
-	repliedMessage,
 	updateIsRead,
 	isScrolledTo,
 	isAuthoredByUser,
-	isSelectMode,
 	isSelected,
-	onSelectModeStart,
-	firstUnreadId,
-	onReplyMessage,
-	onEditMessage,
-	onAddReaction,
-	addSelection,
+	repliedMessage,
 }: SingleMessageProps) => {
+	const { isSelectMode } = useContext(MessageContext);
 	const [isImageEnlarged, setIsImageEnlarged] = useState<boolean>(false);
 	const containerRef = useRef<HTMLDivElement>(null);
 
@@ -55,15 +50,8 @@ export const SingleMessage = ({
 		return (
 			<SingleMessageWrapper
 				message={message}
-				isSelectMode={isSelectMode}
-				onReplyMessage={onReplyMessage}
-				onEditMessage={onEditMessage}
-				addSelection={addSelection}
-				onSelectModeStart={onSelectModeStart}
 				updateIsRead={updateIsRead}
-				onAddReaction={onAddReaction}
 				isAuthoredByUser={isAuthoredByUser}
-				firstUnreadId={firstUnreadId}
 				ref={containerRef}
 			>
 				<StyledElement
@@ -106,15 +94,8 @@ export const SingleMessage = ({
 	return (
 		<SingleMessageWrapper
 			message={message}
-			isSelectMode={isSelectMode}
-			onReplyMessage={onReplyMessage}
-			onEditMessage={onEditMessage}
-			addSelection={addSelection}
-			onSelectModeStart={onSelectModeStart}
 			updateIsRead={updateIsRead}
-			onAddReaction={onAddReaction}
 			isAuthoredByUser={isAuthoredByUser}
-			firstUnreadId={firstUnreadId}
 			ref={containerRef}
 		>
 			<EmojiMessage isAuthoredByUser={isAuthoredByUser} message={message} isSelectMode={isSelectMode} />

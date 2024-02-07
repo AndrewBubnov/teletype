@@ -19,6 +19,7 @@ import { deleteSingleChat } from '@/prismaActions/deleteSingleChat';
 import { ChatMenuButton } from '@/app/chat/[chatId]/components/ChatMenuButton';
 import { ChatProps, Message, UpdateData, UpdateMessageType } from '@/types';
 import styles from '../chatId.module.css';
+import { MessageProvider } from '@/app/chat/[chatId]/providers/MessageProvider';
 
 export const Chat = ({ chat }: ChatProps) => {
 	const {
@@ -53,12 +54,15 @@ export const Chat = ({ chat }: ChatProps) => {
 
 	const isSelectMode = !!selectedIds.length;
 
-	const addReactionHandler = (message: Message) => async (reactionString: string) => {
-		const reaction = message.reaction === reactionString ? '' : reactionString;
-		await addReaction(message, reaction, authorImageUrl);
-	};
+	const onAddReaction = useCallback(
+		(message: Message) => async (reactionString: string) => {
+			const reaction = message.reaction === reactionString ? '' : reactionString;
+			await addReaction(message, reaction, authorImageUrl);
+		},
+		[addReaction, authorImageUrl]
+	);
 
-	const onSelectModeStart = (id: string) => () => startSelection(id);
+	const onSelectModeStart = useCallback((id: string) => () => startSelection(id), [startSelection]);
 
 	const onDeleteMessage = useCallback(
 		async (informAll: boolean) => {
@@ -105,6 +109,19 @@ export const Chat = ({ chat }: ChatProps) => {
 		node?.scrollIntoView({ behavior: 'smooth' });
 	}, [messageList]);
 
+	const messageContextProps = useMemo(
+		() => ({
+			replyMessageHandler: onReplyMessage,
+			editMessageHandler: onEditMessage,
+			addReactionHandler: onAddReaction,
+			selectModeStartHandler: onSelectModeStart,
+			addSelection,
+			isSelectMode,
+			firstUnreadId,
+		}),
+		[addSelection, firstUnreadId, isSelectMode, onAddReaction, onSelectModeStart]
+	);
+
 	if (!userId) return <FullScreenLoader />;
 
 	return (
@@ -127,30 +144,25 @@ export const Chat = ({ chat }: ChatProps) => {
 			</div>
 			<div className={styles.coverWrapper}>
 				<div className={styles.chatWrapper}>
-					{shownMessageList.map((message, index, { length }) => {
-						const repliedMessage = message.replyToId
-							? messageList.find(el => el.id === message.replyToId)
-							: null;
-						const isAuthoredByUser = message.authorId === userId;
-						return (
-							<SingleMessage
-								key={message.id}
-								message={message}
-								onReplyMessage={onReplyMessage(message)}
-								onEditMessage={onEditMessage(message)}
-								onAddReaction={addReactionHandler(message)}
-								isSelected={selectedIds.includes(message.id)}
-								isScrolledTo={isAuthoredByUser && index === length - 1 - scrolledTo}
-								updateIsRead={!isAuthoredByUser ? updateIsRead : null}
-								isAuthoredByUser={isAuthoredByUser}
-								onSelectModeStart={onSelectModeStart(message.id)}
-								addSelection={addSelection}
-								isSelectMode={isSelectMode}
-								repliedMessage={repliedMessage}
-								firstUnreadId={firstUnreadId}
-							/>
-						);
-					})}
+					<MessageProvider messageContextProps={messageContextProps}>
+						{shownMessageList.map((message, index, { length }) => {
+							const repliedMessage = message.replyToId
+								? messageList.find(el => el.id === message.replyToId)
+								: null;
+							const isAuthoredByUser = message.authorId === userId;
+							return (
+								<SingleMessage
+									key={message.id}
+									message={message}
+									isSelected={selectedIds.includes(message.id)}
+									isScrolledTo={isAuthoredByUser && index === length - 1 - scrolledTo}
+									updateIsRead={!isAuthoredByUser ? updateIsRead : null}
+									isAuthoredByUser={isAuthoredByUser}
+									repliedMessage={repliedMessage}
+								/>
+							);
+						})}
+					</MessageProvider>
 				</div>
 				{unreadNumber ? <UnreadMessages unreadNumber={unreadNumber} onPress={scrollToLastHandler} /> : null}
 			</div>

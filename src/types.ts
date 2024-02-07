@@ -97,20 +97,13 @@ export type SingleMessageWrapperProps = {
 	message: Message;
 	updateIsRead: ((arg: Message) => void) | null;
 	isAuthoredByUser: boolean;
-	isSelectMode: boolean;
-	onSelectModeStart(): void;
-	firstUnreadId: string | null;
-	onReplyMessage(): void;
-	onEditMessage(): void;
-	onAddReaction(reactionString: string): Promise<void>;
-	addSelection(arg: string): void;
 	children: ReactNode;
 };
 
 export interface SingleMessageProps extends Omit<SingleMessageWrapperProps, 'children'> {
-	repliedMessage?: Message | null;
 	isScrolledTo: boolean;
 	isSelected: boolean;
+	repliedMessage?: Message | null;
 }
 
 export interface RepliedMessageBoxProps {
@@ -334,4 +327,19 @@ export interface ContextMenuProps {
 	onAddReaction(arg: string): void;
 	onDownLoadImage: (() => void) | null;
 	isAuthor: boolean;
+}
+
+export interface MessageContextProps {
+	replyMessageHandler: (message: Message) => () => void;
+	editMessageHandler: (message: Message) => () => void;
+	addReactionHandler: (message: Message) => (reaction: string) => Promise<void>;
+	selectModeStartHandler: (id: string) => () => void;
+	addSelection: (id: string) => void;
+	isSelectMode: boolean;
+	firstUnreadId: string | null;
+}
+
+export interface MessageProviderProps {
+	children: ReactNode;
+	messageContextProps: MessageContextProps;
 }

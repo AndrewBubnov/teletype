@@ -1,29 +1,29 @@
-import { forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
+import { forwardRef, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { ContextMenu } from '@/app/chat/[chatId]/components/ContextMenu';
 import { downloadImage } from '@/app/chat/[chatId]/utils/downloadImage';
 import { useLongPress } from '@/app/chat/[chatId]/hooks/useLongPress';
 import { dateOptions } from '@/app/chat/[chatId]/constants';
 import { MessageType, SingleMessageWrapperProps } from '@/types';
 import styles from '@/app/chat/[chatId]/chatId.module.css';
+import { MessageContext } from '@/app/chat/[chatId]/providers/MessageProvider';
 
 export const SingleMessageWrapper = forwardRef<HTMLDivElement, SingleMessageWrapperProps>(
-	(
-		{
-			message,
-			updateIsRead,
-			firstUnreadId,
+	({ message, updateIsRead, isAuthoredByUser, children }: SingleMessageWrapperProps, ref) => {
+		const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+		const {
+			replyMessageHandler,
+			editMessageHandler,
+			addReactionHandler,
+			selectModeStartHandler,
 			addSelection,
 			isSelectMode,
-			onSelectModeStart,
-			onEditMessage,
-			onReplyMessage,
-			onAddReaction,
-			isAuthoredByUser,
-			children,
-		}: SingleMessageWrapperProps,
-		ref
-	) => {
-		const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+			firstUnreadId,
+		} = useContext(MessageContext);
+
+		const onReplyMessage = replyMessageHandler(message);
+		const onEditMessage = editMessageHandler(message);
+		const onAddReaction = addReactionHandler(message);
+		const onSelectModeStart = selectModeStartHandler(message.id);
 
 		useEffect(() => {
 			if (!ref || !('current' in ref) || !ref.current) return;
