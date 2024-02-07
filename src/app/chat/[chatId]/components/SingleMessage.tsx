@@ -27,7 +27,6 @@ export const SingleMessage = ({
 	onEditMessage,
 	onAddReaction,
 	addSelection,
-	isAuthor,
 }: SingleMessageProps) => {
 	const [isImageEnlarged, setIsImageEnlarged] = useState<boolean>(false);
 	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -117,7 +116,7 @@ export const SingleMessage = ({
 							onReplyMessage={onReplyMessage}
 							onDownLoadImage={onDownLoadImage}
 							onAddReaction={onAddReaction}
-							isAuthor={isAuthor}
+							isAuthor={isAuthoredByUser}
 						/>
 					)}
 					<StyledElement

@@ -140,10 +140,9 @@ export const Chat = ({ chat }: ChatProps) => {
 								onReplyMessage={onReplyMessage(message)}
 								onEditMessage={onEditMessage(message)}
 								onAddReaction={addReactionHandler(message)}
-								isAuthor={message.authorId === authorId}
 								isSelected={selectedIds.includes(message.id)}
 								isScrolledTo={isAuthoredByUser && index === length - 1 - scrolledTo}
-								updateIsRead={message.authorId !== userId ? updateIsRead : null}
+								updateIsRead={!isAuthoredByUser ? updateIsRead : null}
 								isAuthoredByUser={isAuthoredByUser}
 								onSelectModeStart={onSelectModeStart(message.id)}
 								addSelection={addSelection}
