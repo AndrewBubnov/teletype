@@ -90,10 +90,8 @@ export const SingleMessage = ({
 		return null;
 	}, [message.createdAt, message.isFirstDateMessage]);
 
-	const onDownLoadImage = () => {
-		if (message.imageUrl) return downloadImage(message);
-		return null;
-	};
+	const onDownLoadImage =
+		message.imageUrl && message.type === MessageType.COMMON ? () => downloadImage(message) : null;
 
 	const isFirstUnreadPrefix = useMemo(() => {
 		if (firstUnreadId === message.id) {
@@ -162,6 +160,17 @@ export const SingleMessage = ({
 			{isFirstDateDateMessagePrefix}
 			{isFirstUnreadPrefix}
 			<div className={styles.messageWrapper} ref={containerRef} id={message.id}>
+				{isMenuOpen && (
+					<ContextMenu
+						onClose={() => setIsMenuOpen(false)}
+						top={containerRef.current?.getBoundingClientRect().top}
+						onEditMessage={onEditMessage}
+						onReplyMessage={onReplyMessage}
+						onDownLoadImage={onDownLoadImage}
+						onAddReaction={onAddReaction}
+						isAuthor={isAuthoredByUser}
+					/>
+				)}
 				<EmojiMessage isAuthoredByUser={isAuthoredByUser} message={message} isSelectMode={isSelectMode} />
 				{isSelectMode ? <StyledCheckbox id={message.id} checked={isSelected} /> : null}
 			</div>
