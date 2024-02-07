@@ -93,13 +93,10 @@ export interface GetInterlocutorState {
 	activeUsers: string[];
 }
 
-export type SingleMessageProps = {
+export type SingleMessageWrapperProps = {
 	message: Message;
-	repliedMessage?: Message | null;
 	updateIsRead: ((arg: Message) => void) | null;
-	isScrolledTo: boolean;
 	isAuthoredByUser: boolean;
-	isSelected: boolean;
 	isSelectMode: boolean;
 	onSelectModeStart(): void;
 	firstUnreadId: string | null;
@@ -107,7 +104,14 @@ export type SingleMessageProps = {
 	onEditMessage(): void;
 	onAddReaction(reactionString: string): Promise<void>;
 	addSelection(arg: string): void;
+	children: ReactNode;
 };
+
+export interface SingleMessageProps extends Omit<SingleMessageWrapperProps, 'children'> {
+	repliedMessage?: Message | null;
+	isScrolledTo: boolean;
+	isSelected: boolean;
+}
 
 export interface RepliedMessageBoxProps {
 	message: Message | null;
