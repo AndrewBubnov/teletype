@@ -3,7 +3,6 @@ import {
 	CSSProperties,
 	Dispatch,
 	FC,
-	MutableRefObject,
 	PointerEventHandler,
 	PropsWithChildren,
 	ReactElement,
