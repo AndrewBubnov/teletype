@@ -1,4 +1,4 @@
-import { CSSProperties, useRef } from 'react';
+import { CSSProperties, SyntheticEvent, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { clsx } from 'clsx';
 import { useAnimate } from '@/app/shared/hooks/useAnimate';
@@ -34,7 +34,8 @@ export const ContextMenu = ({
 		closeHandler();
 	};
 
-	const addReactionHandler = (reaction: string) => {
+	const addReactionHandler = (reaction: string) => (evt: SyntheticEvent) => {
+		evt.stopPropagation();
 		onAddReaction(reaction);
 		closeHandler();
 	};
@@ -57,7 +58,7 @@ export const ContextMenu = ({
 			{!isAuthor ? (
 				<div className={styles.reactionsWrapper}>
 					{reactions.map(reaction => (
-						<div key={reaction} onPointerDown={() => addReactionHandler(reaction)}>
+						<div key={reaction} onClick={addReactionHandler(reaction)}>
 							{String.fromCodePoint(parseInt(reaction, 16))}
 						</div>
 					))}
