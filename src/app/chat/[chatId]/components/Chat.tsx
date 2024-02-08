@@ -2,6 +2,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useChat } from '@/app/chat/[chatId]/hooks/useChat';
 import { useSelect } from '@/app/shared/hooks/useSelect';
+import { MessageProvider } from '@/app/chat/[chatId]/providers/MessageProvider';
 import { useScrolledTo } from '@/app/chat/[chatId]/hooks/useScrolledTo';
 import { FullScreenLoader } from '@/app/shared/components/FullScreenLoader';
 import { BackButton } from '@/app/chat/[chatId]/components/BackButton';
@@ -19,7 +20,6 @@ import { deleteSingleChat } from '@/prismaActions/deleteSingleChat';
 import { ChatMenuButton } from '@/app/chat/[chatId]/components/ChatMenuButton';
 import { ChatProps, Message, UpdateData, UpdateMessageType } from '@/types';
 import styles from '../chatId.module.css';
-import { MessageProvider } from '@/app/chat/[chatId]/providers/MessageProvider';
 
 export const Chat = ({ chat }: ChatProps) => {
 	const {
