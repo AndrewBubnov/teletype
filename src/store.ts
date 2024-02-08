@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { updateMessageIsRead } from '@/prismaActions/updateMessageIsRead';
 import { addReaction } from '@/prismaActions/addReaction';
 import { sendEditMessage } from '@/webSocketActions/sendEditMessage';
+import { withErrorNotification } from '@/app/shared/utils/withErrorNotification';
 import {
 	ChatVisitorStatus,
 	CommonStore,
@@ -51,7 +52,7 @@ export const useMessageStore = create<MessageStore>(set => ({
 		}),
 	updateIsRead: async (message: Message) => {
 		const { id, chatId } = message;
-		const updated = await updateMessageIsRead(id);
+		const updated = await withErrorNotification(updateMessageIsRead, id);
 		if (updated) {
 			sendEditMessage({
 				updateData: { [id]: updated },
@@ -75,7 +76,7 @@ export const useMessageStore = create<MessageStore>(set => ({
 	},
 	addReaction: async (message: Message, reaction: string, authorImageUrl: string | null | undefined) => {
 		const { id: messageId, chatId } = message;
-		const updated = await addReaction({ messageId, reaction, authorImageUrl });
+		const updated = await withErrorNotification(addReaction, { messageId, reaction, authorImageUrl });
 		if (updated) {
 			sendEditMessage({
 				updateData: { [messageId]: updated },

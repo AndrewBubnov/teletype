@@ -15,6 +15,7 @@ import { updateMessage } from '@/prismaActions/updateMessage';
 import { TextArea } from '@/app/chat/[chatId]/components/TextArea';
 import styles from '../chatId.module.css';
 import { Message, MessageInputProps, MessageType, UpdateMessageType } from '@/types';
+import { withErrorNotification } from '@/app/shared/utils/withErrorNotification';
 
 export const MessageInput = ({
 	chatId,
@@ -77,14 +78,14 @@ export const MessageInput = ({
 				imageUrl: messageImageUrl,
 				replyToId: repliedMessage?.id,
 			};
-			const saved = (await updateMessage(editedMessage.id, updated)) as Message;
+			const saved = (await withErrorNotification(updateMessage, editedMessage.id, updated)) as Message;
 			sendEditMessage({
 				updateData: { [editedMessage.id]: saved },
 				type: UpdateMessageType.EDIT,
 				roomId: chatId,
 			});
 		} else {
-			const message = await createMessage({
+			const message = await withErrorNotification(createMessage, {
 				chatId,
 				authorId: userId,
 				authorName,

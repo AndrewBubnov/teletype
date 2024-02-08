@@ -22,6 +22,7 @@ import { ChatMenuButton } from '@/app/chat/[chatId]/components/ChatMenuButton';
 import { ChatProps, Message, UpdateData, UpdateMessageType } from '@/types';
 import styles from '../chatId.module.css';
 import { downloadImage } from '@/app/chat/[chatId]/utils/downloadImage';
+import { withErrorNotification } from '@/app/shared/utils/withErrorNotification';
 
 export const Chat = ({ chat }: ChatProps) => {
 	const {
@@ -93,7 +94,7 @@ export const Chat = ({ chat }: ChatProps) => {
 			setMenuActiveId('');
 			const type = informAll ? UpdateMessageType.DELETE : UpdateMessageType.EDIT;
 			const hideToId = type === UpdateMessageType.EDIT ? userId : null;
-			const updated = await deleteOrHideMessages(selectedIds, type, hideToId);
+			const updated = await withErrorNotification(deleteOrHideMessages, selectedIds, type, hideToId);
 			const updateData = getUpdateData({ updated, informAll, selectedIds });
 			sendEditMessage({ updateData, type, roomId: chatId });
 			dropSelectMode();
@@ -119,7 +120,7 @@ export const Chat = ({ chat }: ChatProps) => {
 	}, [chatId, messageList]);
 
 	const onDeleteChat = useCallback(async () => {
-		await deleteSingleChat(chatId);
+		await withErrorNotification(deleteSingleChat, chatId);
 		sendDeleteUserChats([chat.id]);
 	}, [chat.id, chatId]);
 

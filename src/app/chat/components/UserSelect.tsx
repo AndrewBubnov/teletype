@@ -6,6 +6,7 @@ import { onCreateChat } from '@/app/chat/utils/onCreateChat';
 import { createRoom } from '@/webSocketActions/createRoom';
 import styles from '../chat.module.css';
 import { useClickOutside } from '@/app/shared/hooks/useClickOutside';
+import { withErrorNotification } from '@/app/shared/utils/withErrorNotification';
 
 export const UserSelect = () => {
 	const { userEmails, userId } = useCommonStore(state => ({
@@ -26,7 +27,7 @@ export const UserSelect = () => {
 	const pickHandler = useCallback(
 		async (email: string) => {
 			setUserEmail('');
-			const id = await getUserIdByEmail(email);
+			const id = await withErrorNotification(getUserIdByEmail, email);
 			if (!userId || !id) return;
 			await onCreateChat(userId, id);
 			createRoom(userId, id);

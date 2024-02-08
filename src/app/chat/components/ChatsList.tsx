@@ -8,6 +8,7 @@ import { ChatListItem } from '@/app/chat/components/ChatListItem';
 import { SelectModeHeader } from '@/app/shared/components/SelectModeHeader';
 import { CHAT_LIST } from '@/constants';
 import styles from '../chat.module.css';
+import { withErrorNotification } from '@/app/shared/utils/withErrorNotification';
 
 export const ChatsList = () => {
 	const { chatList, userId } = useCommonStore(state => ({
@@ -36,7 +37,7 @@ export const ChatsList = () => {
 		sendDeleteUserChats(selectedIds);
 		dropSelectMode();
 		const chatIds = chatList.filter(({ id }) => selectedIds.includes(id)).map(({ chatId }) => chatId);
-		await deleteChats(selectedIds, chatIds);
+		await withErrorNotification(deleteChats, selectedIds, chatIds);
 	};
 
 	const isSelectMode = !!selectedIds.length;

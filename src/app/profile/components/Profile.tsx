@@ -12,6 +12,7 @@ import { CHAT_LIST } from '@/constants';
 import { CONTAINER_STYLE, CROP_AREA_STYLE, PROFILE_SLIDER_MIDDLE } from '@/app/profile/constants';
 import { User } from '@/types';
 import styles from '../profile.module.css';
+import { withErrorNotification } from '@/app/shared/utils/withErrorNotification';
 
 export const Profile = ({ user }: { user: User }) => {
 	const { push } = useRouter();
@@ -50,7 +51,7 @@ export const Profile = ({ user }: { user: User }) => {
 	const submitHandler = async () => {
 		const croppedImage = await getCroppedImg(imageUrl, croppedAreaPixels, rotation);
 		setImageUrl(croppedImage);
-		await updateUserDetails(user.id, username, croppedImage);
+		await withErrorNotification(updateUserDetails, user.id, username, croppedImage);
 		redirectToChatList();
 	};
 
