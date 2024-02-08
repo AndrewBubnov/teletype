@@ -18,15 +18,10 @@ export const ChatMenu = forwardRef<HTMLDivElement, ChatMenuProps>(
 		if (!ref || !('current' in ref)) return null;
 		if (!ref.current) return null;
 
-		const clearHandler = () => {
-			onClearChatHistory();
+		const [clearHandler, deleteHandler] = [onClearChatHistory, onDeleteChat].map(fn => () => {
+			fn();
 			closeHandler();
-		};
-
-		const deleteHandler = () => {
-			onDeleteChat();
-			closeHandler();
-		};
+		});
 
 		return createPortal(
 			<div

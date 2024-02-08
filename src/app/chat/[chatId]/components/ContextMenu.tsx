@@ -1,4 +1,4 @@
-import { CSSProperties, SyntheticEvent, useRef } from 'react';
+import { CSSProperties, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { clsx } from 'clsx';
 import { useAnimate } from '@/app/shared/hooks/useAnimate';
@@ -24,26 +24,17 @@ export const ContextMenu = ({
 
 	useClickOutside([menuRef], closeHandler);
 
-	const editHandler = () => {
-		onEditMessage();
-		closeHandler();
-	};
-
-	const replyHandler = () => {
-		onReplyMessage();
-		closeHandler();
-	};
-
-	const addReactionHandler = (reaction: string) => (evt: SyntheticEvent) => {
-		evt.stopPropagation();
+	const addReactionHandler = (reaction: string) => () => {
 		onAddReaction(reaction);
 		closeHandler();
 	};
 
-	const downloadHandler = () => {
-		if (onDownLoadImage) onDownLoadImage();
-		closeHandler();
-	};
+	const [editHandler, replyHandler, downloadHandler] = [onEditMessage, onReplyMessage, onDownLoadImage].map(
+		fn => () => {
+			if (fn) fn();
+			closeHandler();
+		}
+	);
 
 	return createPortal(
 		<div
