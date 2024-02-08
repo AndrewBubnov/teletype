@@ -127,7 +127,9 @@ export const MessageInput = ({
 		/>
 	) : (
 		<div className={styles.messageInputContainer}>
-			<RepliedMessageBox message={repliedMessage} authorName={authorName} onDropMessage={dropReplyHandler} />
+			{repliedMessage && (
+				<RepliedMessageBox message={repliedMessage} authorName={authorName} onDropMessage={dropReplyHandler} />
+			)}
 			<TextArea
 				value={messageText}
 				onChange={textChangeHandler}

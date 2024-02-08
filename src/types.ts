@@ -108,7 +108,7 @@ export type SingleMessageProps = {
 };
 
 export interface RepliedMessageBoxProps {
-	message: Message | null;
+	message: Message;
 	onDropMessage(): void;
 	authorName: string;
 }

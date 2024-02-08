@@ -208,6 +208,15 @@
     height: 3.5rem;
     color: #1a1a1a;
     margin-bottom: 3px;
+    transition: opacity .5s;
+}
+
+.repliedMessageContainerIn {
+    opacity: 1;
+}
+
+.repliedMessageContainerOut {
+    opacity: 0;
 }
 
 .repliedMessageAuthor {

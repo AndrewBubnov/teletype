@@ -3,14 +3,27 @@ import { IoCloseOutline as ClearIcon } from 'react-icons/io5';
 import styles from '../chatId.module.css';
 import { timeOptions } from '@/app/chat/[chatId]/constants';
 import { RepliedMessageBoxProps } from '@/types';
+import { useAnimate } from '@/app/shared/hooks/useAnimate';
+import { useRef } from 'react';
+import { clsx } from 'clsx';
 
-export const RepliedMessageBox = ({ message, onDropMessage, authorName }: RepliedMessageBoxProps) =>
-	message ? (
-		<div className={styles.repliedMessageContainer}>
+export const RepliedMessageBox = ({ message, onDropMessage, authorName }: RepliedMessageBoxProps) => {
+	const { isActive, closeHandler, onCloseReturn } = useAnimate(onDropMessage);
+	const ref = useRef<HTMLDivElement>(null);
+
+	return (
+		<div
+			ref={ref}
+			className={clsx(styles.repliedMessageContainer, {
+				[styles.repliedMessageContainerIn]: isActive,
+				[styles.repliedMessageContainerOut]: !isActive,
+			})}
+			onTransitionEnd={onCloseReturn}
+		>
 			<div className={styles.repliedMessageAuthor}>
 				<div className={styles.repliedMessageAuthorInner}>
 					<button className={styles.dropReplyMessageButton}>
-						<ClearIcon onMouseDown={onDropMessage} onTouchStart={onDropMessage} />
+						<ClearIcon onClick={closeHandler} />
 					</button>
 					<div className={styles.repliedMessageInner}>{authorName}</div>
 				</div>
@@ -27,4 +40,5 @@ export const RepliedMessageBox = ({ message, onDropMessage, authorName }: Replie
 				)}
 			</div>
 		</div>
-	) : null;
+	);
+};
