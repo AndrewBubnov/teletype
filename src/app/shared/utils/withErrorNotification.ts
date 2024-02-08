@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { useCommonStore } from '@/store';
 
-export const withErrorNotification = async <T>(fn: Function, ...args: unknown[]) => {
+export const withErrorNotification = async (fn: Function, ...args: unknown[]) => {
 	try {
 		const result = fn(...args);
 		if (result instanceof Promise) {
