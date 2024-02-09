@@ -1,11 +1,11 @@
-import Image from 'next/image';
-import { IoCloseOutline as ClearIcon } from 'react-icons/io5';
-import styles from '../chatId.module.css';
-import { timeOptions } from '@/app/chat/[chatId]/constants';
-import { RepliedMessageBoxProps } from '@/types';
-import { useAnimate } from '@/app/shared/hooks/useAnimate';
 import { useRef } from 'react';
 import { clsx } from 'clsx';
+import Image from 'next/image';
+import { useAnimate } from '@/app/shared/hooks/useAnimate';
+import { IoCloseOutline as ClearIcon } from 'react-icons/io5';
+import { timeOptions } from '@/app/chat/[chatId]/constants';
+import { RepliedMessageBoxProps } from '@/types';
+import styles from '../chatId.module.css';
 
 export const RepliedMessageBox = ({ message, onDropMessage, authorName }: RepliedMessageBoxProps) => {
 	const { isActive, closeHandler, onCloseReturn } = useAnimate(onDropMessage);
