@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { clsx } from 'clsx';
 import Image from 'next/image';
 import { useAnimate } from '@/app/shared/hooks/useAnimate';
@@ -9,11 +8,9 @@ import styles from '../chatId.module.css';
 
 export const RepliedMessageBox = ({ message, onDropMessage, authorName }: RepliedMessageBoxProps) => {
 	const { isActive, closeHandler, onCloseReturn } = useAnimate(onDropMessage);
-	const ref = useRef<HTMLDivElement>(null);
 
 	return (
 		<div
-			ref={ref}
 			className={clsx(styles.repliedMessageContainer, {
 				[styles.repliedMessageContainerIn]: isActive,
 				[styles.repliedMessageContainerOut]: !isActive,
