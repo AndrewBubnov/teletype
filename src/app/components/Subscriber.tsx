@@ -2,7 +2,7 @@
 import { useCallback, useEffect } from 'react';
 import { useMessageStore, useCommonStore, useStatusStore } from '@/store';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
-import { createRooms } from '@/app/chat/utils/createRooms';
+import { createRooms } from '@/app/chat-list/utils/createRooms';
 import { initUserChats } from '@/webSocketActions/initUserChats';
 import { sendJoin } from '@/webSocketActions/sendJoin';
 import { clearActiveUsers, updateActiveUsers } from '@/webSocketActions/updateActiveUsers';

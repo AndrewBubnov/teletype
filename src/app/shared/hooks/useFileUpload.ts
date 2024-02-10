@@ -1,7 +1,7 @@
 import { ChangeEvent, useCallback, useState } from 'react';
 import { useCommonStore } from '@/store';
-import { fileInputHelper } from '@/app/chat/[chatId]/utils/fileInputHelper';
-import { MAX_FILE_SIZE } from '@/app/chat/[chatId]/constants';
+import { fileInputHelper } from '@/app/chat-list/[chatId]/utils/fileInputHelper';
+import { MAX_FILE_SIZE } from '@/app/chat-list/[chatId]/constants';
 import { UPLOAD_FILE_ERROR_MESSAGE } from '@/app/profile/constants';
 
 export const useFileUpload = () => {
