@@ -154,8 +154,8 @@
     overflow-x: hidden;
     height: 67vh;
 
-    @media (max-width: 600px) {
-        height: 72vh;
+    @media (width < 600px) {
+        height: 72svh;
     }
 }
 
@@ -172,7 +172,7 @@
     border: 1px solid lightgray;
     border-radius: 0.25rem;
     padding: 0.25rem;
-    box-shadow: 0 -15px 5px #1a1a1a;
+    box-shadow: 10px -15px 5px #1a1a1a;
 }
 
 .textArea {
