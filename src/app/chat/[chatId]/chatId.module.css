@@ -17,6 +17,10 @@
     inset: 0;
 }
 
+.ul {
+    list-style: none;
+}
+
 .menuCard {
     padding: 0.5rem;
     width: 40%;

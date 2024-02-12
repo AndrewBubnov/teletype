@@ -49,7 +49,7 @@ export const ContextMenu = ({
 						))}
 					</div>
 				) : null}
-				<ul>
+				<ul className={styles.ul}>
 					{isAuthor ? (
 						<li>
 							<button className={styles.menuListButton} onClick={onEditMessage}>
