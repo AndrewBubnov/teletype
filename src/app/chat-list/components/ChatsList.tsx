@@ -10,6 +10,7 @@ import { sortChatsByLatestMessage } from '@/app/chat-list/utils/sortChatsByLates
 import { CHAT_LIST } from '@/constants';
 import styles from '../chat.module.css';
 import { useEffect, useMemo } from 'react';
+import { clsx } from 'clsx';
 
 export const ChatsList = () => {
 	const { chatList, userId } = useCommonStore(state => ({
@@ -57,14 +58,16 @@ export const ChatsList = () => {
 	const isSelectMode = !!selectedIds.length;
 
 	return (
-		<div className={styles.chatListWrapper} style={{ gridTemplateColumns: isSelectMode ? 'auto 70px' : 'auto' }}>
-			<SelectModeHeader
-				dropSelectMode={dropSelectMode}
-				selectedNumber={selectedIds.length}
-				onDelete={deleteChatsHandler}
-				isAllSelected={isAllSelected}
-				toggleAllSelected={toggleAllSelected}
-			/>
+		<div className={clsx({ [styles.inWideMode]: isWideMode, [styles.inNarrowMode]: !isWideMode })}>
+			<div className={styles.chatListHeaderContainer}>
+				<SelectModeHeader
+					dropSelectMode={dropSelectMode}
+					selectedNumber={selectedIds.length}
+					onDelete={deleteChatsHandler}
+					isAllSelected={isAllSelected}
+					toggleAllSelected={toggleAllSelected}
+				/>
+			</div>
 			{sortedChatList.map(({ chatId, id, members }) => {
 				const [interlocutor] = members.filter(member => member.userId !== userId);
 				return (

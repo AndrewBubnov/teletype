@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useCommonStore } from '@/store';
+import { useCommonStore, useIsWideModeStore } from '@/store';
 import { useSendTyping } from '@/app/chat-list/[chatId]/hooks/useSendTyping';
 import { RepliedMessageBox } from '@/app/chat-list/[chatId]/components/RepliedMessageBox';
 import { sendMessageToServer } from '@/webSocketActions/sendMessageToServer';
@@ -15,6 +15,7 @@ import { updateMessage } from '@/prismaActions/updateMessage';
 import { TextArea } from '@/app/chat-list/[chatId]/components/TextArea';
 import styles from '../chatId.module.css';
 import { Message, MessageInputProps, MessageType, UpdateMessageType } from '@/types';
+import { clsx } from 'clsx';
 
 export const MessageInput = ({
 	chatId,
@@ -26,6 +27,7 @@ export const MessageInput = ({
 	interlocutorId,
 }: MessageInputProps) => {
 	const userId = useCommonStore(state => state.userId);
+	const isWideMode = useIsWideModeStore(state => state.isWideMode);
 
 	const [messageText, setMessageText] = useState<string>('');
 	const [emojis, setEmojis] = useState<string>('');
@@ -126,7 +128,12 @@ export const MessageInput = ({
 			width={window.innerWidth - DIALOG_MARGINS}
 		/>
 	) : (
-		<div className={styles.messageInputContainer}>
+		<div
+			className={clsx(styles.messageInputContainer, {
+				[styles.textareaInWideMode]: isWideMode,
+				[styles.textareaInNarrowMode]: !isWideMode,
+			})}
+		>
 			{repliedMessage && (
 				<RepliedMessageBox message={repliedMessage} authorName={authorName} onDropMessage={dropReplyHandler} />
 			)}

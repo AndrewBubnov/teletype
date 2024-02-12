@@ -153,8 +153,11 @@
 .chatWrapper {
     overflow-y: auto;
     overflow-x: hidden;
-    height: 67vh;
+    height: 60vh;
 
+    @media (600px < width < 1024px) {
+        height: 67svh;
+    }
     @media (width < 600px) {
         height: 72svh;
     }
@@ -173,7 +176,6 @@
     border: 1px solid lightgray;
     border-radius: 0.25rem;
     padding: 0.25rem;
-    box-shadow: 10px -15px 5px #1a1a1a;
 }
 
 .textArea {
@@ -564,6 +566,13 @@
 .messageInputContainer {
     position: absolute;
     bottom: 1rem;
+}
+
+.textareaInWideMode {
+    width: calc(75% - 2rem);
+}
+
+.textareaInNarrowMode {
     width: calc(100% - 2rem);
 }
 

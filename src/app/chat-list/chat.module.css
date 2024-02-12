@@ -10,7 +10,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 0.5rem 1rem 0.5rem;
+    padding: 1.5rem 0.5rem 0 0.5rem;
 }
 
 .drawerList {
@@ -103,6 +103,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    width: 100%;
     border-bottom: 1px solid #464545;
     padding: 1rem 0.25rem;
     border-radius: 0.25rem;
@@ -144,8 +145,15 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    max-width: calc(100vw - 2.5rem);
     padding-left: 0.75rem;
+}
+
+.lastMessageWrapperInWideMode {
+    max-width: 100%;
+}
+
+.lastMessageWrapperInNarrowMode {
+    max-width: calc(100vw - 5rem);
 }
 
 .microPreviewImage {
@@ -201,9 +209,19 @@
          }
      }
 
-.chatListWrapper {
-    display: grid;
-    grid-template-rows: auto 1fr;
+.inWideMode {
+    width: 25%;
+}
+
+.inNarrowMode {
+    width: 100%;
+}
+
+.chatListHeaderContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
 .search {
