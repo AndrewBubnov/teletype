@@ -63,7 +63,7 @@ export const Profile = ({ user }: { user: User }) => {
 			{opacity ? null : <FullScreenLoader />}
 			<Cropper
 				style={{ containerStyle: { ...CONTAINER_STYLE, opacity }, cropAreaStyle: CROP_AREA_STYLE }}
-				image={user.imageUrl || imageUrl || undefined}
+				image={imageUrl || user.imageUrl || undefined}
 				crop={crop}
 				zoom={zoom}
 				rotation={rotation}
