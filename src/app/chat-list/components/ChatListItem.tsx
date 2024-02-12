@@ -34,7 +34,7 @@ export const ChatListItem = ({
 	);
 
 	return (
-		<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+		<div className={styles.chatListItemWrapper}>
 			<label className={styles.styledLabel} htmlFor={chatId} {...pressHandler}>
 				<div className={clsx(styles.chatListItemInnerWrapper, { [styles.isActiveChat]: isActiveChat })}>
 					<div className={styles.userWrapper}>

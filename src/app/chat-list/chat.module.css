@@ -4,6 +4,7 @@
 
 .flex {
     display: flex;
+    gap: 1rem;
 }
 
 .header {
@@ -11,6 +12,11 @@
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem 0.5rem 0 0.5rem;
+}
+
+.styledLink {
+    text-decoration: none;
+    color: lightgray;
 }
 
 .drawerList {
@@ -90,6 +96,10 @@
 }
 
 .userPhotoImage {
+    background-color: #4682b499;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 50%;
     margin-right: 0.5rem;
     object-fit: cover;
@@ -97,6 +107,11 @@
 
 .styledLabel {
     display: contents;
+}
+
+.chatListItemWrapper {
+    display: flex;
+    justify-content: space-between;
 }
 
 .chatListItemInnerWrapper {
