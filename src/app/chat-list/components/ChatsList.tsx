@@ -59,15 +59,13 @@ export const ChatsList = () => {
 
 	return (
 		<div className={clsx({ [styles.inWideMode]: isWideMode, [styles.inNarrowMode]: !isWideMode })}>
-			<div className={styles.chatListHeaderContainer}>
-				<SelectModeHeader
-					dropSelectMode={dropSelectMode}
-					selectedNumber={selectedIds.length}
-					onDelete={deleteChatsHandler}
-					isAllSelected={isAllSelected}
-					toggleAllSelected={toggleAllSelected}
-				/>
-			</div>
+			<SelectModeHeader
+				dropSelectMode={dropSelectMode}
+				selectedNumber={selectedIds.length}
+				onDelete={deleteChatsHandler}
+				isAllSelected={isAllSelected}
+				toggleAllSelected={toggleAllSelected}
+			/>
 			{sortedChatList.map(({ chatId, id, members }) => {
 				const [interlocutor] = members.filter(member => member.userId !== userId);
 				return (

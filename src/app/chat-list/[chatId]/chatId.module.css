@@ -138,6 +138,12 @@
     padding: 1rem;
 }
 
+.chatHeaderContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .coverWrapper {
     position: relative;
 }
@@ -756,13 +762,6 @@
 .chatMenuOut {
     opacity: 0;
     transform: translate(-100%, -3rem);
-}
-
-.chatHeaderContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
 }
 
 .newDateIndicator {

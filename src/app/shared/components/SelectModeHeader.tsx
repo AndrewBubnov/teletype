@@ -12,7 +12,7 @@ export const SelectModeHeader = ({
 	toggleAllSelected,
 }: SelectModeHeaderProps) =>
 	selectedNumber ? (
-		<>
+		<div className={styles.selectModeHeaderWrapper}>
 			<div className={styles.selectedCountWrapper}>
 				<button className={styles.iconButton} onClick={dropSelectMode}>
 					<CloseIcon />
@@ -30,7 +30,7 @@ export const SelectModeHeader = ({
 			<button className={styles.iconButton} onClick={onDelete}>
 				<DeleteIcon />
 			</button>
-		</>
+		</div>
 	) : (
 		<div className={styles.selectedHeaderStub} />
 	);

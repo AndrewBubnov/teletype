@@ -217,13 +217,6 @@
     width: 100%;
 }
 
-.chatListHeaderContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
 .search {
     width: 100%;
     background: transparent;
