@@ -15,6 +15,7 @@ export const ChatListItem = ({
 	onLongPress,
 	isSelectMode,
 	isChecked,
+	isActiveChat,
 }: ChatListItemProps) => {
 	const userId = useCommonStore(state => state.userId);
 	const activeUsers = useStatusStore(state => state.activeUsers);
@@ -33,7 +34,7 @@ export const ChatListItem = ({
 
 	return (
 		<label className={styles.styledLabel} htmlFor={chatId} {...pressHandler}>
-			<div className={styles.chatListItemInnerWrapper}>
+			<div className={clsx(styles.chatListItemInnerWrapper, { [styles.isActiveChat]: isActiveChat })}>
 				<div className={styles.userWrapper}>
 					<div className={styles.userNameWrapper}>
 						{interlocutor?.imageUrl ? (

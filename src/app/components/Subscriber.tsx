@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useEffect } from 'react';
-import { useMessageStore, useCommonStore, useStatusStore } from '@/store';
+import { useMessageStore, useCommonStore, useStatusStore, useIsWideModeStore } from '@/store';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
 import { createRooms } from '@/app/chat-list/utils/createRooms';
 import { initUserChats } from '@/webSocketActions/initUserChats';
@@ -34,6 +34,8 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap }: Subscr
 		setChatVisitorStatus: state.setChatVisitorStatus,
 	}));
 
+	const setIsWideMode = useIsWideModeStore(state => state.setIsWideMode);
+
 	useEffect(() => {
 		initUserChats(userChats);
 	}, [userChats]);
@@ -56,6 +58,16 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap }: Subscr
 	useEffect(() => {
 		setUserId(userId);
 	}, [setUserId, userId]);
+
+	useEffect(() => {
+		const handler = () => {
+			const isWideMode = window.matchMedia('(min-width: 1024px)').matches;
+			setIsWideMode(isWideMode);
+		};
+		handler();
+		window.addEventListener('resize', handler);
+		return () => window.removeEventListener('resize', handler);
+	}, [setIsWideMode]);
 
 	const setErrorToast = useCallback(() => setToast(SERVER_CONNECTION_FAILED), [setToast]);
 

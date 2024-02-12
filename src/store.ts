@@ -3,8 +3,10 @@ import { updateMessageIsRead } from '@/prismaActions/updateMessageIsRead';
 import { addReaction } from '@/prismaActions/addReaction';
 import { sendEditMessage } from '@/webSocketActions/sendEditMessage';
 import {
+	ActiveChatStore,
 	ChatVisitorStatus,
 	CommonStore,
+	IsWideModeStore,
 	Message,
 	MessageMap,
 	MessageStore,
@@ -116,4 +118,14 @@ export const useCommonStore = create<CommonStore>(set => ({
 	setChatList: (updated: UserChat[]) => set({ chatList: updated }),
 	setErrorToastText: (errorToastText: string) => set({ errorToastText }),
 	setUserId: (userId: string) => set({ userId }),
+}));
+
+export const useActiveChatStore = create<ActiveChatStore>(set => ({
+	activeChat: null,
+	setActiveChat: (activeChat: UserChat) => set({ activeChat }),
+}));
+
+export const useIsWideModeStore = create<IsWideModeStore>(set => ({
+	isWideMode: false,
+	setIsWideMode: (isWideMode: boolean) => set({ isWideMode }),
 }));

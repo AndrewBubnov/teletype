@@ -1,5 +1,5 @@
 'use client';
-import { useCommonStore, useMessageStore } from '@/store';
+import { useActiveChatStore, useCommonStore, useIsWideModeStore, useMessageStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
 import { deleteChats } from '@/prismaActions/deleteChats';
@@ -9,6 +9,7 @@ import { SelectModeHeader } from '@/app/shared/components/SelectModeHeader';
 import { sortChatsByLatestMessage } from '@/app/chat-list/utils/sortChatsByLatestMessage';
 import { CHAT_LIST } from '@/constants';
 import styles from '../chat.module.css';
+import { useEffect, useMemo } from 'react';
 
 export const ChatsList = () => {
 	const { chatList, userId } = useCommonStore(state => ({
@@ -16,19 +17,32 @@ export const ChatsList = () => {
 		userId: state.userId,
 	}));
 
+	const { activeChat, setActiveChat } = useActiveChatStore(state => ({
+		activeChat: state.activeChat,
+		setActiveChat: state.setActiveChat,
+	}));
+
 	const messageMap = useMessageStore(state => state.messageMap);
+	const isWideMode = useIsWideModeStore(state => state.isWideMode);
 
 	const { selectedIds, isAllSelected, toggleAllSelected, addSelection, startSelection, dropSelectMode } =
 		useSelect(chatList);
 
 	const { push } = useRouter();
 
+	const sortedChatList = useMemo(() => sortChatsByLatestMessage(chatList, messageMap), [chatList, messageMap]);
+
+	useEffect(() => {
+		if (!activeChat && isWideMode) setActiveChat(sortedChatList[0] || null);
+	}, [activeChat, isWideMode, setActiveChat, sortedChatList]);
+
 	const chatPressHandler = (id: string, chatId: string) => () => {
 		if (selectedIds.length) {
 			addSelection(id);
 			return;
 		}
-		push(`${CHAT_LIST}/${chatId}`, { shallow: true });
+		if (!isWideMode) push(`${CHAT_LIST}/${chatId}`, { shallow: true });
+		if (isWideMode) setActiveChat(chatList.find(chat => chat.id === id) || null);
 	};
 
 	const chatLongPressHandler = (id: string) => () => startSelection(id);
@@ -51,12 +65,13 @@ export const ChatsList = () => {
 				isAllSelected={isAllSelected}
 				toggleAllSelected={toggleAllSelected}
 			/>
-			{sortChatsByLatestMessage(chatList, messageMap).map(({ chatId, id, members }) => {
+			{sortedChatList.map(({ chatId, id, members }) => {
 				const [interlocutor] = members.filter(member => member.userId !== userId);
 				return (
 					<ChatListItem
 						key={chatId}
 						chatId={chatId}
+						isActiveChat={activeChat?.chatId === chatId}
 						interlocutor={interlocutor}
 						onPress={chatPressHandler(id, chatId)}
 						onLongPress={chatLongPressHandler(id)}

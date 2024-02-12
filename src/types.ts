@@ -72,6 +72,7 @@ export interface ChatListItemProps {
 	onLongPress(): void;
 	isSelectMode: boolean;
 	isChecked: boolean;
+	isActiveChat: boolean;
 }
 
 export enum VisitorStatus {
@@ -194,6 +195,16 @@ export interface CommonStore {
 	setChatList(arg: UserChat[]): void;
 	setErrorToastText(arg: string): void;
 	setUserId(arg: string): void;
+}
+
+export interface ActiveChatStore {
+	activeChat: UserChat | null;
+	setActiveChat(arg: UserChat | null): void;
+}
+
+export interface IsWideModeStore {
+	isWideMode: boolean;
+	setIsWideMode(arg: boolean): void;
 }
 
 export type Subscription<T> = (fn: (arg: T) => void) => void;

@@ -3,6 +3,7 @@ import { Header } from '@/app/chat-list/components/Header';
 import { getUser } from '@/prismaActions/getUser';
 import { FullScreenLoader } from '@/app/shared/components/FullScreenLoader';
 import styles from './chat.module.css';
+import { ChatWrapper } from '@/app/chat-list/components/ChatWrapper';
 
 export default async function ChatListPage() {
 	const user = await getUser();
@@ -12,7 +13,10 @@ export default async function ChatListPage() {
 	return (
 		<div className={styles.wrapper}>
 			<Header user={user} />
-			<ChatsList />
+			<div className={styles.flex}>
+				<ChatsList />
+				<ChatWrapper />
+			</div>
 		</div>
 	);
 }

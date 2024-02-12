@@ -2,6 +2,10 @@
     padding: 0.5rem;
 }
 
+.flex {
+    display: flex;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -100,7 +104,12 @@
     flex-direction: column;
     gap: 0.5rem;
     border-bottom: 1px solid #464545;
-    padding-bottom: 1rem;
+    padding: 1rem 0.25rem;
+    border-radius: 0.25rem;
+}
+
+.isActiveChat {
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .userWrapper {
@@ -194,7 +203,6 @@
 
 .chatListWrapper {
     display: grid;
-    gap: 1rem;
     grid-template-rows: auto 1fr;
 }
 
