@@ -34,9 +34,14 @@ export const ChatListItem = ({
 	);
 
 	return (
-		<div className={styles.chatListItemWrapper}>
+		<div className={clsx(styles.chatListItemWrapper, { [styles.isActiveChat]: isActiveChat })}>
 			<label className={styles.styledLabel} htmlFor={chatId} {...pressHandler}>
-				<div className={clsx(styles.chatListItemInnerWrapper, { [styles.isActiveChat]: isActiveChat })}>
+				<div
+					className={clsx(styles.chatListItemInnerWrapper, {
+						[styles.notInSelectMode]: !isSelectMode,
+						[styles.inSelectMode]: isSelectMode,
+					})}
+				>
 					<div className={styles.userWrapper}>
 						<div className={styles.userNameWrapper}>
 							{interlocutor?.imageUrl ? (

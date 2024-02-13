@@ -112,16 +112,24 @@
 .chatListItemWrapper {
     display: flex;
     justify-content: space-between;
+    transition: background-color 0.3s;
 }
 
 .chatListItemInnerWrapper {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    width: 100%;
     border-bottom: 1px solid #464545;
     padding: 1rem 0.25rem;
     border-radius: 0.25rem;
+}
+
+.notInSelectMode {
+    width: 100%;
+}
+
+.inSelectMode {
+    width: calc(100% - 1.5rem);
 }
 
 .isActiveChat {
@@ -164,7 +172,7 @@
 }
 
 .lastMessageWrapperInWideMode {
-    max-width: 100%;
+    max-width: calc(100% - 1.5rem);
 }
 
 .lastMessageWrapperInNarrowMode {
