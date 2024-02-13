@@ -234,6 +234,7 @@
 
 .inWideMode {
     width: 25%;
+    margin-top: 2rem;
 }
 
 .inNarrowMode {

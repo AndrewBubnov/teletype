@@ -128,12 +128,7 @@ export const MessageInput = ({
 			width={window.innerWidth - DIALOG_MARGINS}
 		/>
 	) : (
-		<div
-			className={clsx(styles.messageInputContainer, {
-				[styles.textareaInWideMode]: isWideMode,
-				[styles.textareaInNarrowMode]: !isWideMode,
-			})}
-		>
+		<div className={styles.messageInputContainer}>
 			{repliedMessage && (
 				<RepliedMessageBox message={repliedMessage} authorName={authorName} onDropMessage={dropReplyHandler} />
 			)}

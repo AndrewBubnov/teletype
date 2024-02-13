@@ -578,16 +578,7 @@
 }
 
 .messageInputContainer {
-    position: absolute;
-    bottom: 1rem;
-}
-
-.textareaInWideMode {
-    width: calc(75% - 3.75rem);
-}
-
-.textareaInNarrowMode {
-    width: calc(100% - 2rem);
+    width: 100%;
 }
 
 .reactionsWrapper {
