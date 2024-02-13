@@ -471,6 +471,10 @@
 
 .messageItem_isMoved {
     transform: translateX(calc(-100vw + 100% + 3.5rem));
+
+    @media (width > 1024px)  {
+        transform: translateX(calc(-75vw + 100% + 4.5rem));
+    }
 }
 
 .emojiDisplayWrapper {
