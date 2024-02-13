@@ -48,7 +48,7 @@ export const Profile = ({ user }: { user: User }) => {
 	const redirectToChatList = () => push(CHAT_LIST);
 
 	const submitHandler = async () => {
-		const croppedImage = await getCroppedImg(imageUrl, croppedAreaPixels, rotation);
+		const croppedImage = await getCroppedImg(imageUrl || user.imageUrl, croppedAreaPixels, rotation);
 		setImageUrl(croppedImage);
 		await updateUserDetails(user.id, username, croppedImage);
 		redirectToChatList();
