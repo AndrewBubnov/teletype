@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useCommonStore, useIsWideModeStore } from '@/store';
+import { useCommonStore } from '@/store';
 import { useSendTyping } from '@/app/chat-list/[chatId]/hooks/useSendTyping';
 import { RepliedMessageBox } from '@/app/chat-list/[chatId]/components/RepliedMessageBox';
 import { sendMessageToServer } from '@/webSocketActions/sendMessageToServer';
@@ -13,9 +13,8 @@ import { DIALOG_MARGINS } from '@/app/chat-list/[chatId]/constants';
 import { createMessage } from '@/prismaActions/createMessage';
 import { updateMessage } from '@/prismaActions/updateMessage';
 import { TextArea } from '@/app/chat-list/[chatId]/components/TextArea';
-import styles from '../chatId.module.css';
 import { Message, MessageInputProps, MessageType, UpdateMessageType } from '@/types';
-import { clsx } from 'clsx';
+import styles from '../chatId.module.css';
 
 export const MessageInput = ({
 	chatId,
@@ -27,7 +26,6 @@ export const MessageInput = ({
 	interlocutorId,
 }: MessageInputProps) => {
 	const userId = useCommonStore(state => state.userId);
-	const isWideMode = useIsWideModeStore(state => state.isWideMode);
 
 	const [messageText, setMessageText] = useState<string>('');
 	const [emojis, setEmojis] = useState<string>('');
