@@ -217,20 +217,18 @@
     height: 0.7rem;
     background: #00be00;
     border-radius: 50%;
-    animation: pulse 8s infinite;
+    animation: pulse 5s infinite;
 }
 
 @keyframes pulse {
          0% {
-             scale: 0.8;
-             box-shadow: 0 0 0 0 darkgreen;
+             scale: 0.9;
          }
          50% {
              scale: 1;
          }
          100% {
-             scale: 0.8;
-             box-shadow: 0 0 0 0.25rem rgba(0, 100, 0, 0);
+             scale: 0.9;
          }
      }
 

@@ -123,8 +123,7 @@
 }
 
 .elapsedTimeWrapper {
-
-    margin-block: 1rem;
+    margin-block: 1.25rem;
     line-height: 1.5rem;
 }
 
@@ -169,11 +168,6 @@
     align-items: center;
     width: 100%;
     margin: 1rem 0;
-
-    @media (width > 1024px) {
-        margin: 1rem 0 0.5rem 0;
-    }
-
 }
 
 .chatWrapper {
@@ -487,7 +481,7 @@
     transform: translateX(calc(-100vw + 100% + 3.5rem));
 
     @media (width > 1024px)  {
-        transform: translateX(calc(-75vw + 100% + 4.5rem));
+        transform: translateX(calc(-75vw + 100% + 0.25rem));
     }
 }
 
