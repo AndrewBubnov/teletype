@@ -89,5 +89,6 @@ export const useChat = (chat: UserChat) => {
 		updateIsRead,
 		firstUnreadId: firstUnreadRef.current || null,
 		userId,
+		isWideMode,
 	};
 };

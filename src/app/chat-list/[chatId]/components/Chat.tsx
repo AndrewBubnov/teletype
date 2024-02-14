@@ -22,6 +22,7 @@ import { ChatMenuButton } from '@/app/chat-list/[chatId]/components/ChatMenuButt
 import { ChatProps, Message, UpdateData, UpdateMessageType } from '@/types';
 import styles from '../chatId.module.css';
 import { downloadImage } from '@/app/chat-list/[chatId]/utils/downloadImage';
+import { clsx } from 'clsx';
 
 export const Chat = ({ chat }: ChatProps) => {
 	const {
@@ -38,6 +39,7 @@ export const Chat = ({ chat }: ChatProps) => {
 		updateIsRead,
 		firstUnreadId,
 		userId,
+		isWideMode,
 	} = useChat(chat);
 
 	const shownMessageList = useMemo(
@@ -148,7 +150,12 @@ export const Chat = ({ chat }: ChatProps) => {
 	if (!userId) return <FullScreenLoader />;
 
 	return (
-		<div className={styles.chatContainer}>
+		<div
+			className={clsx(styles.chatContainer, {
+				[styles.inWideMode]: isWideMode,
+				[styles.notInWideMode]: !isWideMode,
+			})}
+		>
 			<BackButton interlocutorName={interlocutorName} interlocutorImageUrl={interlocutorImageUrl} />
 			<div className={styles.chatHeaderContainer}>
 				<ChatHeader
