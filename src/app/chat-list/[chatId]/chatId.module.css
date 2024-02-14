@@ -138,8 +138,15 @@
 }
 
 .chatContainer {
+    display: flex;
+    flex-direction: column;
     width: 100%;
+    height: 100svh;
     padding: 1rem;
+
+    @media (width > 1024px) {
+        height: calc(100svh - 5rem);
+    }
 }
 
 .chatHeaderContainer {
@@ -150,6 +157,7 @@
 
 .coverWrapper {
     position: relative;
+    flex: 1;
 }
 
 .selectModeWrapper {
@@ -168,14 +176,6 @@
 .chatWrapper {
     overflow-y: auto;
     overflow-x: hidden;
-    height: 60vh;
-
-    @media (600px < width < 1024px) {
-        height: 67svh;
-    }
-    @media (width < 600px) {
-        height: 72svh;
-    }
 }
 
 .chatWrapper::-webkit-scrollbar {
@@ -194,6 +194,7 @@
 }
 
 .textArea {
+    flex-shrink: 0;
     width: 100%;
     padding: 0.5rem;
     font-family: inherit;
