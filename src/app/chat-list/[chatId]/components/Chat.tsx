@@ -1,5 +1,6 @@
 'use client';
 import { useCallback, useMemo, useState } from 'react';
+import { clsx } from 'clsx';
 import { useChat } from '@/app/chat-list/[chatId]/hooks/useChat';
 import { useSelect } from '@/app/shared/hooks/useSelect';
 import { useMenuTransition } from '@/app/chat-list/[chatId]/hooks/useMenuTransition';
@@ -19,10 +20,9 @@ import { getUpdateData } from '@/app/chat-list/[chatId]/utils/getUpdateData';
 import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
 import { deleteSingleChat } from '@/prismaActions/deleteSingleChat';
 import { ChatMenuButton } from '@/app/chat-list/[chatId]/components/ChatMenuButton';
+import { downloadImage } from '@/app/chat-list/[chatId]/utils/downloadImage';
 import { ChatProps, Message, UpdateData, UpdateMessageType } from '@/types';
 import styles from '../chatId.module.css';
-import { downloadImage } from '@/app/chat-list/[chatId]/utils/downloadImage';
-import { clsx } from 'clsx';
 
 export const Chat = ({ chat }: ChatProps) => {
 	const {
