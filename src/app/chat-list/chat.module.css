@@ -205,6 +205,7 @@
 .cell {
     align-self: center;
     justify-self: center;
+    padding-left: 0.5rem;
 }
 
 .activeUser {

@@ -8,5 +8,10 @@ export const ChatWrapper = () => {
 	const isWideMode = useIsWideModeStore(state => state.isWideMode);
 
 	if (!activeChat || !isWideMode) return null;
-	return <Chat chat={activeChat} />;
+	return (
+		<>
+			<div style={{ width: 1, background: 'rgb(70, 69, 69)', marginBlock: '1rem' }} />
+			<Chat chat={activeChat} />
+		</>
+	);
 };

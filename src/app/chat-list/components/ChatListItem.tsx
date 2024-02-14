@@ -34,12 +34,13 @@ export const ChatListItem = ({
 	);
 
 	return (
-		<div className={clsx(styles.chatListItemWrapper, { [styles.isActiveChat]: isActiveChat })}>
+		<div className={styles.chatListItemWrapper}>
 			<label className={styles.styledLabel} htmlFor={chatId} {...pressHandler}>
 				<div
 					className={clsx(styles.chatListItemInnerWrapper, {
 						[styles.notInSelectMode]: !isSelectMode,
 						[styles.inSelectMode]: isSelectMode,
+						[styles.isActiveChat]: isActiveChat,
 					})}
 				>
 					<div className={styles.userWrapper}>
