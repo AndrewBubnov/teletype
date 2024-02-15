@@ -47,14 +47,6 @@ export const MAX_FILE_SIZE = 1000_000;
 export const DEFAULT_IMAGE_WIDTH = 350;
 export const DIALOG_MARGINS = 64;
 export const ENLARGE_RATIO = 0.6;
-export const MOBILE_WIDTH = 600;
-export const TEXT_AREA_STYLE = {
-	'width': '100%',
-	'background': 'rgba(255,255,255, 0.05)',
-	'color': 'lightgray',
-	'--Textarea-focusedHighlight': 'lightgray !important',
-};
-
 export const urlRegex = /\b(?:https?|http|www)\:\/\/[^\s/$.?#].[^\s]*/gi;
 
 export const DELETE_SINGLE_MESSAGE = 'Are you sure you want to delete this message?';
