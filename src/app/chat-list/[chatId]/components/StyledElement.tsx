@@ -1,11 +1,12 @@
 import { createElement, FC, useMemo } from 'react';
-import { StyledElementProps } from '@/types';
+import { StyledElementClone, StyledElementProps } from '@/types';
 
 export const StyledElement: FC<StyledElementProps> = ({
 	element,
 	className,
 	styles,
 	attributes = {},
+	style = {},
 	children,
 	...props
 }: StyledElementProps) => {
@@ -19,5 +20,5 @@ export const StyledElement: FC<StyledElementProps> = ({
 	);
 	const classNameString = `${styles[className]} ${attributeStyles}`;
 
-	return createElement<{ className: string }>(element, { className: classNameString, ...props }, children);
+	return createElement<StyledElementClone>(element, { className: classNameString, style, ...props }, children);
 };

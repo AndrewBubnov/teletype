@@ -427,7 +427,6 @@
 }
 
 .messageWrapper {
-    position: relative;
     user-select: none;
     display: flex;
     padding: 1rem 0;
@@ -478,11 +477,7 @@
 }
 
 .messageItem_isMoved {
-    transform: translateX(calc(-100vw + 100% + 3.5rem));
-
-    @media (width > 1024px)  {
-        transform: translateX(calc(-75vw + 100% + 0.25rem));
-    }
+        transform: translateX(var(--xOffset));
 }
 
 .emojiDisplayWrapper {

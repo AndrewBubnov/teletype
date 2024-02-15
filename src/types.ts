@@ -284,6 +284,7 @@ export interface StyledElementProps extends PropsWithChildren {
 	className: string;
 	styles: { readonly [key: string]: string };
 	attributes?: Record<string, boolean | string>;
+	style?: CSSProperties;
 }
 
 export interface TextAreaProps {
@@ -340,4 +341,9 @@ export interface GetUpdateData {
 	selectedIds: string[];
 	informAll: boolean;
 	updated: Message[];
+}
+
+export interface StyledElementClone {
+	className: string;
+	style: CSSProperties;
 }

@@ -1,4 +1,4 @@
-import { SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { CSSProperties, SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { useLongPress } from '@/app/chat-list/[chatId]/hooks/useLongPress';
 import { EmojiMessage } from '@/app/chat-list/[chatId]/components/EmojiMessage';
 import { ReplyTo } from '@/app/chat-list/[chatId]/components/ReplyTo';
@@ -99,6 +99,11 @@ export const SingleMessage = ({
 						element="div"
 						className="messageItem"
 						styles={styles}
+						style={
+							{
+								'--xOffset': `calc(-${containerRef.current?.clientWidth}px + 100% + 1.5rem)`,
+							} as CSSProperties
+						}
 						attributes={{
 							singlePadding: !repliedMessage,
 							isAuthoredByUser,
