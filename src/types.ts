@@ -277,6 +277,7 @@ export interface SelectModeHeaderProps {
 	onDelete: (() => Promise<void>) | ((evt: SyntheticEvent) => void);
 	isAllSelected: boolean;
 	toggleAllSelected(): void;
+	withPadding?: boolean;
 }
 
 export interface StyledElementProps extends PropsWithChildren {

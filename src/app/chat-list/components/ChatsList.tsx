@@ -65,6 +65,7 @@ export const ChatsList = () => {
 				onDelete={deleteChatsHandler}
 				isAllSelected={isAllSelected}
 				toggleAllSelected={toggleAllSelected}
+				withPadding
 			/>
 			{sortedChatList.map(({ chatId, id, members }) => {
 				const [interlocutor] = members.filter(member => member.userId !== userId);

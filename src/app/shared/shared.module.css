@@ -35,6 +35,9 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+}
+
+.withPadding {
     padding-bottom: 0.5rem;
 }
 

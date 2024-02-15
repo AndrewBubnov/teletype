@@ -1,8 +1,9 @@
+import { clsx } from 'clsx';
 import { IoCloseOutline as CloseIcon } from 'react-icons/io5';
 import { AiOutlineDelete as DeleteIcon } from 'react-icons/ai';
 import { StyledCheckbox } from '@/app/shared/components/StyledCheckbox';
-import styles from '../shared.module.css';
 import { SelectModeHeaderProps } from '@/types';
+import styles from '../shared.module.css';
 
 export const SelectModeHeader = ({
 	dropSelectMode,
@@ -10,9 +11,10 @@ export const SelectModeHeader = ({
 	onDelete,
 	isAllSelected,
 	toggleAllSelected,
+	withPadding = false,
 }: SelectModeHeaderProps) =>
 	selectedNumber ? (
-		<div className={styles.selectModeHeaderWrapper}>
+		<div className={clsx(styles.selectModeHeaderWrapper, { [styles.withPadding]: withPadding })}>
 			<div className={styles.selectedCountWrapper}>
 				<button className={styles.iconButton} onClick={dropSelectMode}>
 					<CloseIcon />
