@@ -10,6 +10,7 @@ import { StyledCheckbox } from '@/app/shared/components/StyledCheckbox';
 import { dateOptions, urlRegex } from '@/app/chat-list/[chatId]/constants';
 import { MessageType, SingleMessageProps } from '@/types';
 import styles from '../chatId.module.css';
+import { Fade } from '@/app/shared/components/Fade';
 
 export const SingleMessage = ({
 	message,
@@ -132,7 +133,9 @@ export const SingleMessage = ({
 						)}
 						<MessageBottom message={message} withOffset={!repliedMessage} />
 					</StyledElement>
-					{isSelectMode ? <StyledCheckbox id={message.id} checked={isSelected} /> : null}
+					<Fade isShown={isSelectMode}>
+						<StyledCheckbox id={message.id} checked={isSelected} />
+					</Fade>
 				</div>
 			</label>
 		);
@@ -144,7 +147,9 @@ export const SingleMessage = ({
 			{isFirstUnreadPrefix}
 			<div className={styles.messageWrapper} ref={containerRef} id={message.id}>
 				<EmojiMessage isAuthoredByUser={isAuthoredByUser} message={message} isSelectMode={isSelectMode} />
-				{isSelectMode ? <StyledCheckbox id={message.id} checked={isSelected} /> : null}
+				<Fade isShown={isSelectMode}>
+					<StyledCheckbox id={message.id} checked={isSelected} />
+				</Fade>
 			</div>
 		</label>
 	);

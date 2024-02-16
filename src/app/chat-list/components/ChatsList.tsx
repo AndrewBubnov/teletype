@@ -11,6 +11,8 @@ import { CHAT_LIST } from '@/constants';
 import styles from '../chat.module.css';
 import { useEffect, useMemo } from 'react';
 import { clsx } from 'clsx';
+import { Fade } from '@/app/shared/components/Fade';
+import { AiOutlineDelete as DeleteIcon } from 'react-icons/ai';
 
 export const ChatsList = () => {
 	const { chatList, userId } = useCommonStore(state => ({
@@ -59,14 +61,24 @@ export const ChatsList = () => {
 
 	return (
 		<div className={clsx({ [styles.inWideMode]: isWideMode, [styles.inNarrowMode]: !isWideMode })}>
-			<SelectModeHeader
-				dropSelectMode={dropSelectMode}
-				selectedNumber={selectedIds.length}
-				onDelete={deleteChatsHandler}
-				isAllSelected={isAllSelected}
-				toggleAllSelected={toggleAllSelected}
-				withPadding
-			/>
+			<div className={styles.chatListSelectModeStub}>
+				<div className={clsx(styles.selectModeHeaderWrapper, styles.flex)}>
+					<Fade isShown={isSelectMode}>
+						<SelectModeHeader
+							dropSelectMode={dropSelectMode}
+							selectedNumber={selectedIds.length}
+							isAllSelected={isAllSelected}
+							toggleAllSelected={toggleAllSelected}
+							withPadding
+						/>
+					</Fade>
+					<Fade isShown={!!selectedIds.length} className={styles.iconButton}>
+						<button onClick={deleteChatsHandler}>
+							<DeleteIcon />
+						</button>
+					</Fade>
+				</div>
+			</div>
 			{sortedChatList.map(({ chatId, id, members }) => {
 				const [interlocutor] = members.filter(member => member.userId !== userId);
 				return (

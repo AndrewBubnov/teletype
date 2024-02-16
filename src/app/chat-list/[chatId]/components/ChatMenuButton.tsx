@@ -11,7 +11,7 @@ export const ChatMenuButton = ({ onDeleteChat, onClearChatHistory }: ChatMenuBut
 	return (
 		<>
 			{isMenuOpen && <div className={styles.menuBackdrop} />}
-			<div className={styles.chatMenuButtonContainer} ref={portalContainerRef}>
+			<div ref={portalContainerRef}>
 				<button className={styles.chatMenuIconButton} onClick={() => setIsMenuOpen(prevState => !prevState)}>
 					<MenuIcon />
 				</button>

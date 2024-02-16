@@ -66,10 +66,6 @@
     margin-left: 1rem;
 }
 
-.selectedHeaderStub {
-    height: 2rem;
-}
-
 .checkboxWrapper {
     display: flex;
     align-items: center;
@@ -97,4 +93,16 @@
     content: "\2714";
     font-size: 0.9rem;
     color: #1a1a1a;
+}
+
+.fade {
+    transition: opacity 0.5s;
+}
+
+.fadeIn {
+    opacity: 1;
+}
+
+.fadeOut {
+    opacity: 0;
 }

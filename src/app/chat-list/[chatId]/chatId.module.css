@@ -156,6 +156,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 4rem;
 }
 
 .coverWrapper {
@@ -378,7 +379,7 @@
     border: none;
     outline: none;
     color: lightgray;
-    font-size: 2rem;
+    font-size: 1.75rem;
     cursor: pointer;
 }
 
@@ -749,10 +750,6 @@
     color: lightgray;
 }
 
-.chatMenuButtonContainer {
-    position: relative;
-}
-
 .chatMenu {
     position: absolute;
     top: 100%;
@@ -792,4 +789,10 @@
     text-align: center;
     margin-block: 0.5rem;
     border-radius: 0.25rem;
+}
+
+.selectModeHeaderWrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
 }

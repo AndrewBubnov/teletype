@@ -15,7 +15,6 @@ const ChatHeaderComponent = ({
 	isSelectMode,
 	dropSelectMode,
 	selectedNumber,
-	onDelete,
 	isAllSelected,
 	toggleAllSelected,
 }: ChatHeaderProps) => {
@@ -41,15 +40,12 @@ const ChatHeaderComponent = ({
 
 	if (isSelectMode) {
 		return (
-			<div className={styles.selectModeWrapper}>
-				<SelectModeHeader
-					dropSelectMode={dropSelectMode}
-					selectedNumber={selectedNumber}
-					onDelete={onDelete}
-					isAllSelected={isAllSelected}
-					toggleAllSelected={toggleAllSelected}
-				/>
-			</div>
+			<SelectModeHeader
+				dropSelectMode={dropSelectMode}
+				selectedNumber={selectedNumber}
+				isAllSelected={isAllSelected}
+				toggleAllSelected={toggleAllSelected}
+			/>
 		);
 	}
 
@@ -61,7 +57,7 @@ const ChatHeaderComponent = ({
 		);
 	}
 
-	return interlocutorState ? (
+	return interlocutorState && !isSelectMode ? (
 		<p className={styles.elapsedTimeWrapper} style={{ color: interlocutorState.color }}>
 			{interlocutorState.status === VisitorStatus.IN ? (
 				interlocutorState.text

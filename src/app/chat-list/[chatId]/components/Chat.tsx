@@ -16,6 +16,7 @@ import { UnreadMessages } from '@/app/chat-list/[chatId]/components/UnreadMessag
 import { deleteOrHideMessages } from '@/prismaActions/deleteOrHideMessages';
 import { useDeleteDialog } from '@/app/chat-list/[chatId]/hooks/useDeleteDialog';
 import { ConfirmDialog } from '@/app/chat-list/[chatId]/components/ConfirmDialog';
+import { AiOutlineDelete as DeleteIcon } from 'react-icons/ai';
 import { getUpdateData } from '@/app/chat-list/[chatId]/utils/getUpdateData';
 import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
 import { deleteSingleChat } from '@/prismaActions/deleteSingleChat';
@@ -164,11 +165,14 @@ export const Chat = ({ chat }: ChatProps) => {
 					isSelectMode={isSelectMode}
 					dropSelectMode={dropSelectMode}
 					selectedNumber={selectedIds.length}
-					onDelete={deleteMessageHandler}
 					isAllSelected={isAllSelected}
 					toggleAllSelected={toggleAllSelected}
 				/>
-				{!isSelectMode && (
+				{isSelectMode ? (
+					<button className={styles.iconButton} onClick={deleteMessageHandler}>
+						<DeleteIcon />
+					</button>
+				) : (
 					<ChatMenuButton onDeleteChat={onDeleteChat} onClearChatHistory={onClearChatHistory} />
 				)}
 			</div>

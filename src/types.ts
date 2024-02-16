@@ -274,10 +274,10 @@ export interface AddReaction {
 export interface SelectModeHeaderProps {
 	dropSelectMode(): void;
 	selectedNumber: number;
-	onDelete: (() => Promise<void>) | ((evt: SyntheticEvent) => void);
 	isAllSelected: boolean;
 	toggleAllSelected(): void;
 	withPadding?: boolean;
+	className?: string;
 }
 
 export interface StyledElementProps extends PropsWithChildren {
@@ -333,7 +333,6 @@ export interface ChatHeaderProps {
 	isSelectMode: boolean;
 	dropSelectMode(): void;
 	selectedNumber: number;
-	onDelete: (() => Promise<void>) | ((evt: SyntheticEvent) => void);
 	isAllSelected: boolean;
 	toggleAllSelected(): void;
 }
