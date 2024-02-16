@@ -276,6 +276,7 @@ export interface SelectModeHeaderProps {
 	selectedNumber: number;
 	isAllSelected: boolean;
 	toggleAllSelected(): void;
+	onDelete: (() => Promise<void>) | ((evt: SyntheticEvent) => void);
 	withPadding?: boolean;
 	className?: string;
 }
@@ -332,6 +333,7 @@ export interface ChatHeaderProps {
 	interlocutorId: string;
 	isSelectMode: boolean;
 	dropSelectMode(): void;
+	onDelete: (() => Promise<void>) | ((evt: SyntheticEvent) => void);
 	selectedNumber: number;
 	isAllSelected: boolean;
 	toggleAllSelected(): void;

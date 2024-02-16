@@ -17,6 +17,7 @@ const ChatHeaderComponent = ({
 	selectedNumber,
 	isAllSelected,
 	toggleAllSelected,
+	onDelete,
 }: ChatHeaderProps) => {
 	const { chatVisitorStatus, activeUsers } = useStatusStore(state => ({
 		chatVisitorStatus: state.chatVisitorStatus,
@@ -43,6 +44,7 @@ const ChatHeaderComponent = ({
 			<SelectModeHeader
 				dropSelectMode={dropSelectMode}
 				selectedNumber={selectedNumber}
+				onDelete={onDelete}
 				isAllSelected={isAllSelected}
 				toggleAllSelected={toggleAllSelected}
 			/>

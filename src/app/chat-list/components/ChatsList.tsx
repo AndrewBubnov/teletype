@@ -1,18 +1,17 @@
 'use client';
+import { useEffect, useMemo } from 'react';
+import { clsx } from 'clsx';
 import { useActiveChatStore, useCommonStore, useIsWideModeStore, useMessageStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
 import { deleteChats } from '@/prismaActions/deleteChats';
 import { useSelect } from '@/app/shared/hooks/useSelect';
 import { ChatListItem } from '@/app/chat-list/components/ChatListItem';
+import { Fade } from '@/app/shared/components/Fade';
 import { SelectModeHeader } from '@/app/shared/components/SelectModeHeader';
 import { sortChatsByLatestMessage } from '@/app/chat-list/utils/sortChatsByLatestMessage';
 import { CHAT_LIST } from '@/constants';
 import styles from '../chat.module.css';
-import { useEffect, useMemo } from 'react';
-import { clsx } from 'clsx';
-import { Fade } from '@/app/shared/components/Fade';
-import { AiOutlineDelete as DeleteIcon } from 'react-icons/ai';
 
 export const ChatsList = () => {
 	const { chatList, userId } = useCommonStore(state => ({
@@ -62,22 +61,16 @@ export const ChatsList = () => {
 	return (
 		<div className={clsx({ [styles.inWideMode]: isWideMode, [styles.inNarrowMode]: !isWideMode })}>
 			<div className={styles.chatListSelectModeStub}>
-				<div className={clsx(styles.selectModeHeaderWrapper, styles.flex)}>
-					<Fade isShown={isSelectMode}>
-						<SelectModeHeader
-							dropSelectMode={dropSelectMode}
-							selectedNumber={selectedIds.length}
-							isAllSelected={isAllSelected}
-							toggleAllSelected={toggleAllSelected}
-							withPadding
-						/>
-					</Fade>
-					<Fade isShown={!!selectedIds.length} className={styles.iconButton}>
-						<button onClick={deleteChatsHandler}>
-							<DeleteIcon />
-						</button>
-					</Fade>
-				</div>
+				<Fade isShown={isSelectMode} className={styles.selectModeHeaderWrapper}>
+					<SelectModeHeader
+						dropSelectMode={dropSelectMode}
+						selectedNumber={selectedIds.length}
+						onDelete={deleteChatsHandler}
+						isAllSelected={isAllSelected}
+						toggleAllSelected={toggleAllSelected}
+						withPadding
+					/>
+				</Fade>
 			</div>
 			{sortedChatList.map(({ chatId, id, members }) => {
 				const [interlocutor] = members.filter(member => member.userId !== userId);

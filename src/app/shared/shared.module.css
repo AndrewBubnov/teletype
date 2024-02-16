@@ -25,9 +25,11 @@
 
 .selectedCountWrapper {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: 0.25rem;
-    color: #fff;
+    width: 100%;
+    color: lightgray;
 }
 
 .selectModeHeaderWrapper {
@@ -95,8 +97,13 @@
     color: #1a1a1a;
 }
 
+.flex {
+    display: flex;
+    align-items: center;
+}
+
 .fade {
-    transition: opacity 0.5s;
+    transition: opacity 0.3s;
 }
 
 .fadeIn {
