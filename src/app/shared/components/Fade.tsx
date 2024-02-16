@@ -1,20 +1,7 @@
-import { cloneElement, createContext, ReactElement, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import { cloneElement, createContext, useCallback, useEffect, useMemo, useState } from 'react';
 import { clsx } from 'clsx';
+import { FadeContextProps, FadeProps, FadeProviderProps } from '@/types';
 import styles from '../shared.module.css';
-
-export interface FadeProps {
-	children: ReactElement;
-	isShown: boolean;
-	className?: string;
-}
-
-interface FadeContextProps {
-	onTransitionEnd(): void;
-}
-
-interface FadeProviderProps extends FadeContextProps {
-	children: ReactNode;
-}
 
 export const FadeContext = createContext<FadeContextProps>({} as FadeContextProps);
 

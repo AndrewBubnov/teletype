@@ -347,3 +347,17 @@ export interface StyledElementClone {
 	className: string;
 	style: CSSProperties;
 }
+
+export interface FadeProps {
+	children: ReactElement;
+	isShown: boolean;
+	className?: string;
+}
+
+export interface FadeContextProps {
+	onTransitionEnd(): void;
+}
+
+export interface FadeProviderProps extends FadeContextProps {
+	children: ReactNode;
+}
