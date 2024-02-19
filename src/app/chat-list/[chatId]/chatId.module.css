@@ -424,11 +424,8 @@
     display: contents;
 }
 
-.styledLabel:nth-of-type(1) > div {
-    padding-top: 0;
-}
-
 .messageWrapper {
+    position: relative;
     user-select: none;
     display: flex;
     padding: 1rem 0;

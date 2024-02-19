@@ -65,7 +65,7 @@
 }
 
 .formLabel {
-    margin-left: 1rem;
+    margin-left: 2rem;
 }
 
 .checkboxWrapper {
@@ -74,6 +74,7 @@
     gap: 0.5rem;
 }
 .checkbox {
+    position: absolute;
     -webkit-appearance: none;
     appearance: none;
     display: inline-flex;
@@ -87,6 +88,17 @@
     outline: none;
     cursor: pointer;
 }
+
+.checkboxNoLabel {
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+}
+
+.checkboxWithLabel {
+    transform: translateX(-120%);
+}
+
 .checkbox:checked {
     background-color: #fff;
 }
@@ -98,6 +110,7 @@
 }
 
 .flex {
+    position: relative;
     display: flex;
     align-items: center;
 }

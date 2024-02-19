@@ -103,7 +103,7 @@ export const SingleMessage = ({
 						styles={styles}
 						style={
 							{
-								'--xOffset': `calc(-${containerRef.current?.clientWidth}px + 100% + 1.5rem)`,
+								'--xOffset': `calc(-${containerRef.current?.clientWidth}px + 100%)`,
 							} as CSSProperties
 						}
 						attributes={{

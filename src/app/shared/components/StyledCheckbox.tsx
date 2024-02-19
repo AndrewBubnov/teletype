@@ -10,7 +10,10 @@ export const StyledCheckbox = ({ id, checked, label, onChange, className = '' }:
 		<label className={styles.checkboxWrapper} htmlFor={id} onTransitionEnd={onTransitionEnd}>
 			<input
 				type="checkbox"
-				className={clsx(styles.checkbox, className)}
+				className={clsx(styles.checkbox, className, {
+					[styles.checkboxWithLabel]: !!label,
+					[styles.checkboxNoLabel]: !label,
+				})}
 				id={id}
 				checked={checked}
 				onChange={onChange}
