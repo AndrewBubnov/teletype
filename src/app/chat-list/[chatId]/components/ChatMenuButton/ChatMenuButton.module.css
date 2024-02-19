@@ -1,0 +1,11 @@
+.chatMenuIconWrapper {
+    position: relative;
+}
+
+.chatMenuIconButton {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: 1.5rem;
+    color: lightgray;
+}

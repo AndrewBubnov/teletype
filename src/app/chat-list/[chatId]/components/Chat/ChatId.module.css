@@ -1,0 +1,45 @@
+.chatContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 1rem;
+}
+
+.inWideMode {
+    height: calc(100svh - 5rem);
+}
+
+.notInWideMode {
+    height: 100svh;
+}
+
+.chatHeaderContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 4rem;
+}
+
+.coverWrapper {
+    position: relative;
+    flex: 1;
+}
+
+.chatWrapper {
+    max-height: 70svh;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    @media (width > 1024px) {
+        max-height: 60svh;
+    }
+}
+
+.chatWrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.chatWrapper::-webkit-scrollbar-track {
+    display: none;
+}

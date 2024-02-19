@@ -1,0 +1,25 @@
+.elapsedTimeWrapper {
+    margin-block: 1.25rem;
+    line-height: 1.5rem;
+}
+
+.typedWrapper {
+    width: fit-content;
+    margin-inline: auto;
+}
+
+
+.elapsedTimeStub {
+    height: 3.5rem;
+}
+
+.typed {
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typing 2s infinite;
+}
+
+@keyframes typing {
+    from { width: 85% }
+    to { width: 100% }
+}

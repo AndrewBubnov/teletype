@@ -1,4 +1,4 @@
-import { Chat } from '@/app/chat-list/[chatId]/components/Chat';
+import { Chat } from '@/app/chat-list/[chatId]/components/Chat/Chat';
 import { getChatByChatId } from '@/prismaActions/getChatByChatId';
 import { ActiveChatProps } from '@/types';
 

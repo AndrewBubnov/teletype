@@ -1,0 +1,12 @@
+.fullWidth {
+    position: relative;
+    width: 100%;
+
+    @media (width > 1024px) {
+        width: 75%;
+    }
+}
+
+.previewImage {
+    object-fit: cover;
+}

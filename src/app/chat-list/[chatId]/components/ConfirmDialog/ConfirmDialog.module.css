@@ -1,0 +1,45 @@
+.confirmDialog {
+    width: 30%;
+    padding: 1rem;
+    background-color: lightgoldenrodyellow;
+    color: #1a1a1a;
+    border-radius: 0.25rem;
+
+    @media (max-width: 600px) {
+        width: 100%;
+    }
+}
+
+.confirmDialogContainer {
+    display: flex;
+    gap: 5rem;
+    width: fit-content;
+    margin: 2rem 0 0 auto;
+}
+
+.confirmDialogButton {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-weight: 700;
+}
+
+.confirmDialogHeader {
+    margin-bottom: 2rem;
+}
+
+.black {
+    border: 2px solid #1a1a1a !important;
+}
+
+.black:checked {
+    background-color: #1a1a1a !important;
+}
+
+.black:checked::before {
+    color: #fff !important;
+}
+
+.deleteButton {
+    color: red;
+}
