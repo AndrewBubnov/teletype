@@ -739,6 +739,10 @@
     to { width: 100% }
 }
 
+.chatMenuIconWrapper {
+    position: relative;
+}
+
 .chatMenuIconButton {
     background-color: transparent;
     border: none;
