@@ -8,9 +8,9 @@ export const ChatMenuButton = ({ onDeleteChat, onClearChatHistory }: ChatMenuBut
 	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
 	const portalContainerRef = useRef<HTMLDivElement>(null);
+
 	return (
 		<>
-			{isMenuOpen && <div className={styles.menuBackdrop} />}
 			<div ref={portalContainerRef} className={styles.chatMenuIconWrapper}>
 				<button className={styles.chatMenuIconButton} onClick={() => setIsMenuOpen(prevState => !prevState)}>
 					<MenuIcon />
