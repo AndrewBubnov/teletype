@@ -27,14 +27,12 @@ export const SelectModeHeader = ({
 					<CloseIcon />
 				</button>
 				<div className={styles.selectedCount}>{selectedNumber}</div>
-				<div className={styles.formLabel}>
-					<StyledCheckbox
-						id="all_selected"
-						checked={isAllSelected}
-						onChange={toggleAllSelected}
-						label="Select all"
-					/>
-				</div>
+				<StyledCheckbox
+					id="all_selected"
+					checked={isAllSelected}
+					onChange={toggleAllSelected}
+					label="Select all"
+				/>
 			</div>
 			<button className={styles.iconButton} onClick={onDelete}>
 				<DeleteIcon />

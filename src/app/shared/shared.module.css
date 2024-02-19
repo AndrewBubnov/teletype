@@ -55,7 +55,7 @@
 }
 
 .selectedCount {
-    width: 1rem;
+    width: 3rem;
 }
 
 .labelWrapper {
@@ -91,13 +91,9 @@
 }
 
 .checkboxNoLabel {
-    top: 50%;
     right: 0;
+    top: 50%;
     transform: translateY(-50%);
-}
-
-.checkboxWithLabel {
-    transform: translateX(-120%);
 }
 
 .checkbox:checked {

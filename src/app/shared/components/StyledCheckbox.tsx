@@ -10,16 +10,13 @@ export const StyledCheckbox = ({ id, checked, label, onChange, className = '' }:
 		<label className={styles.checkboxWrapper} htmlFor={id} onTransitionEnd={onTransitionEnd}>
 			<input
 				type="checkbox"
-				className={clsx(styles.checkbox, className, {
-					[styles.checkboxWithLabel]: !!label,
-					[styles.checkboxNoLabel]: !label,
-				})}
+				className={clsx(styles.checkbox, className, { [styles.checkboxNoLabel]: !label })}
 				id={id}
 				checked={checked}
 				onChange={onChange}
 				readOnly={!onChange}
 			/>
-			{label && <span>{label}</span>}
+			{label && <span className={styles.formLabel}>{label}</span>}
 		</label>
 	);
 };
