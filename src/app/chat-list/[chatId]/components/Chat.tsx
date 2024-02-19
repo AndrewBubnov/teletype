@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useMemo, useState } from 'react';
+import { SyntheticEvent, useCallback, useMemo, useState } from 'react';
 import { clsx } from 'clsx';
 import { useChat } from '@/app/chat-list/[chatId]/hooks/useChat';
 import { useSelect } from '@/app/shared/hooks/useSelect';
@@ -85,10 +85,13 @@ export const Chat = ({ chat }: ChatProps) => {
 		[activeMessage, addReaction, authorImageUrl]
 	);
 
-	const onSelectModeStart = (id: string) => () => {
-		startSelection(id);
-		setMenuActiveId('');
-	};
+	const onSelectModeStart = useCallback(
+		(evt: SyntheticEvent) => {
+			startSelection((evt.target as Element).id);
+			setMenuActiveId('');
+		},
+		[startSelection]
+	);
 
 	const onDeleteMessage = useCallback(
 		async (informAll: boolean) => {
@@ -191,7 +194,7 @@ export const Chat = ({ chat }: ChatProps) => {
 								updateIsRead={message.authorId !== userId ? updateIsRead : null}
 								isAuthoredByUser={isAuthoredByUser}
 								firstUnreadId={firstUnreadId}
-								onSelectModeStart={onSelectModeStart(message.id)}
+								onSelectModeStart={onSelectModeStart}
 							/>
 						);
 					})}

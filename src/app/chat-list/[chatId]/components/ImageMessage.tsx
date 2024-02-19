@@ -1,17 +1,10 @@
 import Image from 'next/image';
 import { useAspectRatio } from '@/app/chat-list/[chatId]/hooks/useAspectRatio';
-import { LuMaximize2 as FullWidthIcon } from 'react-icons/lu';
-import { LuMinimize2 as CloseFullWidthIcon } from 'react-icons/lu';
-import styles from '../chatId.module.css';
 import { DEFAULT_IMAGE_WIDTH, ENLARGE_RATIO, MAX_MESSAGE_WIDTH_RATIO } from '@/app/chat-list/[chatId]/constants';
 import { ImageMessageProps } from '@/types';
+import styles from '../chatId.module.css';
 
-export const ImageMessage = ({
-	message,
-	isEnlarged,
-	onEnlargeToggle,
-	width = DEFAULT_IMAGE_WIDTH,
-}: ImageMessageProps) => {
+export const ImageMessage = ({ message, isEnlarged, width = DEFAULT_IMAGE_WIDTH }: ImageMessageProps) => {
 	const aspectRatio = useAspectRatio(message.imageUrl);
 
 	if (!message.imageUrl) return null;
@@ -27,9 +20,6 @@ export const ImageMessage = ({
 					height={enlargedImageHeight}
 					alt=""
 				/>
-				<button className={styles.imageButton} onClick={onEnlargeToggle}>
-					<CloseFullWidthIcon />
-				</button>
 			</div>
 		);
 	}
@@ -43,9 +33,6 @@ export const ImageMessage = ({
 				height={(width * MAX_MESSAGE_WIDTH_RATIO) / aspectRatio}
 				alt=""
 			/>
-			<button className={styles.imageButton} onClick={onEnlargeToggle}>
-				<FullWidthIcon />
-			</button>
 		</div>
 	);
 };

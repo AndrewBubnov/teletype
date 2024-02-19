@@ -1,4 +1,4 @@
-import { CSSProperties, SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { CSSProperties, SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLongPress } from '@/app/chat-list/[chatId]/hooks/useLongPress';
 import { EmojiMessage } from '@/app/chat-list/[chatId]/components/EmojiMessage';
 import { ReplyTo } from '@/app/chat-list/[chatId]/components/ReplyTo';
@@ -59,16 +59,17 @@ export const SingleMessage = ({
 		});
 	}, [message.text]);
 
-	const toggleEnlargeHandler = (evt: SyntheticEvent) => {
-		evt.stopPropagation();
-		setIsImageEnlarged(prevState => !prevState);
-	};
-
-	const onPress = () => {
-		const params = containerRef.current?.getBoundingClientRect();
-		if (!params) return;
-		onContextMenuToggle('open', params);
-	};
+	const onPress = useCallback(
+		(evt: SyntheticEvent) => {
+			if ((evt.target as Element).tagName === 'IMG') {
+				setIsImageEnlarged(prevState => !prevState);
+				return;
+			}
+			const params = containerRef.current?.getBoundingClientRect();
+			if (params) onContextMenuToggle('open', params);
+		},
+		[onContextMenuToggle]
+	);
 
 	const pressHandler = useLongPress({ onPress, onLongPress: onSelectModeStart });
 
@@ -117,7 +118,6 @@ export const SingleMessage = ({
 							<ImageMessage
 								message={message}
 								isEnlarged={isImageEnlarged}
-								onEnlargeToggle={toggleEnlargeHandler}
 								width={containerRef.current?.clientWidth}
 							/>
 						)}

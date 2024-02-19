@@ -104,7 +104,7 @@ export type SingleMessageProps = {
 	isAuthoredByUser: boolean;
 	isSelected: boolean;
 	isSelectMode: boolean;
-	onSelectModeStart(): void;
+	onSelectModeStart(evt: SyntheticEvent): void;
 	firstUnreadId: string | null;
 };
 
@@ -154,7 +154,6 @@ export interface MessageInputProps {
 export interface ImageMessageProps {
 	message: Message;
 	isEnlarged: boolean;
-	onEnlargeToggle(evt: SyntheticEvent): void;
 	width?: number;
 }
 
