@@ -1,0 +1,23 @@
+.inWideMode {
+    width: 25%;
+    margin-top: 2.25rem;
+}
+
+.inNarrowMode {
+    width: 100%;
+}
+
+.chatListSelectModeStub {
+    height: 2rem;
+
+    @media (width < 1024px) {
+        margin-top: 1rem;
+    }
+}
+
+.selectModeHeaderWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}

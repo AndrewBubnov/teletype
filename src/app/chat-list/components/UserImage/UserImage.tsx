@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { clsx } from 'clsx';
 import { PROFILE } from '@/constants';
 import { User } from '@/types';
-import styles from '../chat.module.css';
+import styles from './UserImage.module.css';
 
 export const UserImage = ({ user }: { user: User }) => (
 	<Link href={PROFILE} className={styles.styledLink}>

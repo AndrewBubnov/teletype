@@ -1,0 +1,143 @@
+.chatListItemWrapper {
+    display: flex;
+    justify-content: space-between;
+    transition: background-color 0.3s;
+}
+
+.chatListItemInnerWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-bottom: 1px solid #464545;
+    padding: 1rem 0.25rem;
+    border-radius: 0.25rem;
+}
+
+.styledLabel {
+    display: contents;
+}
+
+.notInSelectMode {
+    width: 100%;
+}
+
+.inSelectMode {
+    width: calc(100% - 2rem);
+}
+
+.isActiveChat {
+    @media (width > 1024px) {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+}
+
+.userWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.userNameWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 85%;
+}
+
+.activeWrapper {
+    position: relative;
+}
+
+.chatListItemUsername {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    user-select: none;
+}
+
+.chatListItemDateWrapper {
+    font-size: 0.7rem;
+}
+
+.userPhotoImage {
+    background-color: #4682b499;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    object-fit: cover;
+}
+
+.activeUser {
+    position: absolute;
+    bottom: 12%;
+    right: 12%;
+    width: 0.7rem;
+    height: 0.7rem;
+    background: #00be00;
+    border-radius: 50%;
+    animation: pulse 5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        scale: 0.9;
+    }
+    50% {
+        scale: 1;
+    }
+    100% {
+        scale: 0.9;
+    }
+}
+
+.size50 {
+    height: 50px;
+    width: 50px;
+}
+
+.lastMessageWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-left: 0.75rem;
+}
+
+.lastMessageWrapperInWideMode {
+    max-width: calc(100% - 1.5rem);
+}
+
+.lastMessageWrapperInNarrowMode {
+    max-width: calc(100vw - 5rem);
+}
+
+.microPreviewImage {
+    object-fit: cover;
+}
+
+.chatListItemMessageText {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.chatUnreadMessages {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: darkgrey;
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.cell {
+    position: relative;
+    align-self: center;
+    justify-self: center;
+    padding-left: 0.5rem;
+}

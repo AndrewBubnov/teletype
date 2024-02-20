@@ -3,10 +3,10 @@ import { useCommonStore, useIsWideModeStore, useMessageStore, useStatusStore } f
 import { useLongPress } from '@/app/chat-list/[chatId]/hooks/useLongPress';
 import { clsx } from 'clsx';
 import Image from 'next/image';
-import styles from '@/app/chat-list/chat.module.css';
+import { StyledCheckbox } from '@/app/shared/components/StyledCheckbox';
 import { timeOptions } from '@/app/chat-list/[chatId]/constants';
 import { ChatListItemProps } from '@/types';
-import { StyledCheckbox } from '@/app/shared/components/StyledCheckbox';
+import styles from './ChatListItem.module.css';
 
 export const ChatListItem = ({
 	chatId,

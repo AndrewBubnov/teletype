@@ -1,0 +1,38 @@
+.drawer {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: #333333FF;
+    transform: translateX(-100%);
+    padding: 1rem;
+    color: lightgray;
+    font-size: 1.5rem;
+    transition: transform 0.3s ease-out;
+
+    @media (max-width: 600px) {
+        width: 75%;
+    }
+}
+
+.drawer.open {
+    transform: translateX(0%);
+    box-shadow: 10px 5px 5px #000;
+}
+
+.iconButton {
+    height: 2rem;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: lightgray;
+    font-size: 1.75rem;
+    cursor: pointer;
+}
+
+.closeDrawerIcon {
+    width: fit-content;
+    margin: 0 0 0 auto;
+}

@@ -6,12 +6,12 @@ import { useRouter } from 'next/navigation';
 import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
 import { deleteChats } from '@/prismaActions/deleteChats';
 import { useSelect } from '@/app/shared/hooks/useSelect';
-import { ChatListItem } from '@/app/chat-list/components/ChatListItem';
+import { ChatListItem } from '@/app/chat-list/components/ChatListItem/ChatListItem';
 import { Fade } from '@/app/shared/components/Fade';
 import { SelectModeHeader } from '@/app/shared/components/SelectModeHeader';
 import { sortChatsByLatestMessage } from '@/app/chat-list/utils/sortChatsByLatestMessage';
 import { CHAT_LIST } from '@/constants';
-import styles from '../chat.module.css';
+import styles from './ChatsList.module.css';
 
 export const ChatsList = () => {
 	const { chatList, userId } = useCommonStore(state => ({

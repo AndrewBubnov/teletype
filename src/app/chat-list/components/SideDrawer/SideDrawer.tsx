@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useRef } from 'react';
 import { clsx } from 'clsx';
 import { IoCloseOutline as CloseIcon } from 'react-icons/io5';
-import styles from '../chat.module.css';
+import styles from './SideDrawer.module.css';
 
 export const SideDrawer = ({
 	children,

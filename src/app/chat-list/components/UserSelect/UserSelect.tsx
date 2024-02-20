@@ -1,11 +1,11 @@
 'use client';
 import { ChangeEvent, useCallback, useMemo, useRef, useState } from 'react';
 import { useCommonStore } from '@/store';
+import { useClickOutside } from '@/app/shared/hooks/useClickOutside';
 import { getUserIdByEmail } from '@/prismaActions/getUserIdByEmail';
 import { onCreateChat } from '@/app/chat-list/utils/onCreateChat';
 import { createRoom } from '@/webSocketActions/createRoom';
-import styles from '../chat.module.css';
-import { useClickOutside } from '@/app/shared/hooks/useClickOutside';
+import styles from './UserSelect.module.css';
 
 export const UserSelect = () => {
 	const { userEmails, userId } = useCommonStore(state => ({

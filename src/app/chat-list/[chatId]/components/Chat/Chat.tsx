@@ -85,13 +85,10 @@ export const Chat = ({ chat }: ChatProps) => {
 		[activeMessage, addReaction, authorImageUrl]
 	);
 
-	const onSelectModeStart = useCallback(
-		(evt: SyntheticEvent) => {
-			startSelection((evt.target as Element).id);
-			setMenuActiveId('');
-		},
-		[startSelection]
-	);
+	const onSelectModeStart = (id: string) => () => {
+		startSelection(id);
+		setMenuActiveId('');
+	};
 
 	const onDeleteMessage = useCallback(
 		async (informAll: boolean) => {
@@ -194,7 +191,7 @@ export const Chat = ({ chat }: ChatProps) => {
 								updateIsRead={message.authorId !== userId ? updateIsRead : null}
 								isAuthoredByUser={isAuthoredByUser}
 								firstUnreadId={firstUnreadId}
-								onSelectModeStart={onSelectModeStart}
+								onSelectModeStart={onSelectModeStart(message.id)}
 							/>
 						);
 					})}

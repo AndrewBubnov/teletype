@@ -2,8 +2,8 @@
 
 import { useActiveChatStore, useIsWideModeStore } from '@/store';
 import dynamic from 'next/dynamic';
-import styles from '../chat.module.css';
 import { FullScreenLoader } from '@/app/shared/components/FullScreenLoader';
+import styles from './ChatWrapper.module.css';
 
 const DynamicChat = dynamic(() => import('@/app/chat-list/[chatId]/components/Chat/Chat').then(res => res.Chat), {
 	ssr: false,

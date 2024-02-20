@@ -3,15 +3,15 @@ import { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { SignOutButton } from '@clerk/nextjs';
-import { SideDrawer } from '@/app/chat-list/components/SideDrawer';
-import { UserSelect } from '@/app/chat-list/components/UserSelect';
+import { SideDrawer } from '@/app/chat-list/components/SideDrawer/SideDrawer';
+import { UserSelect } from '@/app/chat-list/components/UserSelect/UserSelect';
 import { sendLogOut } from '@/webSocketActions/sendLogOut';
 import { IoMenuOutline as MenuIcon } from 'react-icons/io5';
 import { RxAvatar as ProfileIcon } from 'react-icons/rx';
 import { IoMdSearch as SearchIcon } from 'react-icons/io';
 import { AiOutlineLogout as LogoutIcon } from 'react-icons/ai';
 import { PROFILE } from '@/constants';
-import styles from '../chat.module.css';
+import styles from './Drawer.module.css';
 
 export const Drawer = () => {
 	const { push } = useRouter();

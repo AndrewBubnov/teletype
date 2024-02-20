@@ -1,0 +1,32 @@
+.search {
+    width: 100%;
+    background: transparent;
+    color: lightgray;
+    padding: 0.5rem;
+    border-color: darkgray;
+    border-radius: 0.25rem;
+}
+
+.suggestions {
+    width: 100%;
+    background-color: lightgray;
+    color: #1a1a1a;
+    font-size: 1rem;
+    margin-top: 0.25rem;
+    border-radius: 0.25rem;
+}
+
+.search:focus-visible, .suggestions:focus {
+    outline: 1px solid lightgray;
+}
+
+.suggestions > li {
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+.suggestions > li:hover {
+    background-color: #c0c0c0;
+}
