@@ -361,3 +361,5 @@ export interface FadeContextProps {
 export interface FadeProviderProps extends FadeContextProps {
 	children: ReactNode;
 }
+
+export type AspectRatioAndWidth = { width: number; aspectRatio: number };

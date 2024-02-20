@@ -1,6 +1,6 @@
 import { useIsWideModeStore } from '@/store';
 import Image from 'next/image';
-import { useAspectRatio } from '@/app/chat-list/[chatId]/hooks/useAspectRatio';
+import { useAspectRatioAndWidth } from '@/app/chat-list/[chatId]/hooks/useAspectRatioAndWidth';
 import { getDialogPaperProps } from '@/app/chat-list/[chatId]/utils/getDialogPaperProps';
 import { Dialog } from '@/app/chat-list/[chatId]/components/Dialog/Dialog';
 import { getImageWidth } from '@/app/chat-list/[chatId]/utils/getImageWidth';
@@ -9,7 +9,7 @@ import styles from './ImagePreviewModal.module.css';
 
 export const ImagePreviewModal = ({ src, open, onClose, width }: ImagePreviewModalProps) => {
 	const isWideMode = useIsWideModeStore(state => state.isWideMode);
-	const aspectRatio = useAspectRatio(src);
+	const { aspectRatio } = useAspectRatioAndWidth(src);
 
 	const imageWidth = getImageWidth({ width, aspectRatio, isWideMode });
 
