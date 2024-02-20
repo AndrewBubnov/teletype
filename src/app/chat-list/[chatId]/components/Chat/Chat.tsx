@@ -173,7 +173,10 @@ export const Chat = ({ chat }: ChatProps) => {
 				)}
 			</div>
 			<div className={styles.coverWrapper}>
-				<div className={styles.chatWrapper} ref={containerRef}>
+				<div
+					className={clsx(styles.chatWrapper, { [styles.withReplied]: !!repliedMessage })}
+					ref={containerRef}
+				>
 					{shownMessageList.map((message, index, { length }) => {
 						const repliedMessage = message.replyToId
 							? messageList.find(el => el.id === message.replyToId)
