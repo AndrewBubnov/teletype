@@ -4,7 +4,7 @@ import { DEFAULT_IMAGE_WIDTH, ENLARGE_RATIO, MAX_MESSAGE_WIDTH_RATIO } from '@/a
 import { ImageMessageProps } from '@/types';
 import styles from './ImageMessage.module.css';
 
-export const ImageMessage = ({ message, isEnlarged, width = DEFAULT_IMAGE_WIDTH }: ImageMessageProps) => {
+export const ImageMessage = ({ message, isEnlarged }: ImageMessageProps) => {
 	const aspectRatio = useAspectRatio(message.imageUrl);
 
 	if (!message.imageUrl) return null;
@@ -29,8 +29,8 @@ export const ImageMessage = ({ message, isEnlarged, width = DEFAULT_IMAGE_WIDTH 
 			<Image
 				className={styles.styledImage}
 				src={message.imageUrl}
-				width={width * MAX_MESSAGE_WIDTH_RATIO}
-				height={(width * MAX_MESSAGE_WIDTH_RATIO) / aspectRatio}
+				width={DEFAULT_IMAGE_WIDTH * MAX_MESSAGE_WIDTH_RATIO}
+				height={(DEFAULT_IMAGE_WIDTH * MAX_MESSAGE_WIDTH_RATIO) / aspectRatio}
 				alt=""
 			/>
 		</div>

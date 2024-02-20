@@ -154,7 +154,6 @@ export interface MessageInputProps {
 export interface ImageMessageProps {
 	message: Message;
 	isEnlarged: boolean;
-	width?: number;
 }
 
 export type UpdateData = Record<string, Message | null>;

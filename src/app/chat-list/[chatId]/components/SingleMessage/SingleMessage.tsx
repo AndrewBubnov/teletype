@@ -114,13 +114,7 @@ export const SingleMessage = ({
 						}}
 					>
 						{repliedMessage && <ReplyTo message={repliedMessage} />}
-						{message.imageUrl && (
-							<ImageMessage
-								message={message}
-								isEnlarged={isImageEnlarged}
-								width={containerRef.current?.clientWidth}
-							/>
-						)}
+						{message.imageUrl && <ImageMessage message={message} isEnlarged={isImageEnlarged} />}
 						{message.text && (
 							<StyledElement
 								element="div"
