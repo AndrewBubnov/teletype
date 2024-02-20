@@ -1,5 +1,5 @@
 'use client';
-import { SyntheticEvent, useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { clsx } from 'clsx';
 import { useChat } from '@/app/chat-list/[chatId]/hooks/useChat';
 import { useSelect } from '@/app/shared/hooks/useSelect';
