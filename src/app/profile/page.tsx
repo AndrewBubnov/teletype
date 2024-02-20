@@ -1,5 +1,5 @@
 import { getUser } from '@/prismaActions/getUser';
-import { Profile } from '@/app/profile/components/Profile';
+import { Profile } from '@/app/profile/components/Profile/Profile';
 
 export default async function ProfilePage() {
 	const user = await getUser();

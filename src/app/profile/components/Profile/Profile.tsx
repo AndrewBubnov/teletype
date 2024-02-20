@@ -8,10 +8,10 @@ import { getCroppedImg } from '@/app/profile/utils/getCroppedImg';
 import { getRotationFromSliderValue } from '@/app/profile/utils/getRotationFromSliderValue';
 import { FullScreenLoader } from '@/app/shared/components/FullScreenLoader';
 import { updateUserDetails } from '@/prismaActions/updateUser';
-import { CHAT_LIST } from '@/constants';
 import { CONTAINER_STYLE, CROP_AREA_STYLE, PROFILE_SLIDER_MIDDLE } from '@/app/profile/constants';
+import { CHAT_LIST } from '@/constants';
 import { User } from '@/types';
-import styles from '../profile.module.css';
+import styles from './Profile.module.css';
 
 export const Profile = ({ user }: { user: User }) => {
 	const { push } = useRouter();
