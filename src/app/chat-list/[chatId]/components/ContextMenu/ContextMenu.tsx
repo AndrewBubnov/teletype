@@ -1,6 +1,5 @@
-import { CSSProperties, useLayoutEffect, useRef } from 'react';
+import { CSSProperties, useRef } from 'react';
 import { clsx } from 'clsx';
-import { useClickOutside } from '@/app/shared/hooks/useClickOutside';
 import { CiEdit as EditIcon } from 'react-icons/ci';
 import { VscReply as ReplyIcon } from 'react-icons/vsc';
 import { BsDownload as DownloadIcon } from 'react-icons/bs';
@@ -12,7 +11,6 @@ import styles from './ContextMenu.module.css';
 export const ContextMenu = ({
 	onAddReaction,
 	onCloseMenu,
-	initMenuParams,
 	menuTop,
 	onReplyMessage,
 	onEditMessage,
@@ -22,15 +20,8 @@ export const ContextMenu = ({
 	const { isActive, closeHandler, onCloseReturn } = useAnimate(onCloseMenu);
 	const ref = useRef<HTMLDivElement>(null);
 
-	useClickOutside([ref], closeHandler);
-
-	useLayoutEffect(() => {
-		if (!ref.current) return;
-		initMenuParams.current = ref.current.getBoundingClientRect();
-	}, [initMenuParams]);
-
 	return (
-		<div className={styles.menuBackdrop}>
+		<div className={styles.menuBackdrop} onClick={closeHandler}>
 			<div
 				onTransitionEnd={onCloseReturn}
 				className={clsx(styles.menuCard, {

@@ -1,4 +1,4 @@
-import { CSSProperties, SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { CSSProperties, PointerEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLongPress } from '@/app/chat-list/[chatId]/hooks/useLongPress';
 import { EmojiMessage } from '@/app/chat-list/[chatId]/components/EmojiMessage/EmojiMessage';
 import { ReplyTo } from '@/app/chat-list/[chatId]/components/ReplyTo/ReplyTo';
@@ -60,13 +60,13 @@ export const SingleMessage = ({
 	}, [message.text]);
 
 	const onPress = useCallback(
-		(evt: SyntheticEvent) => {
+		(evt: PointerEvent<Element>) => {
 			if ((evt.target as Element).tagName === 'IMG') {
 				setIsImageEnlarged(prevState => !prevState);
 				return;
 			}
-			const params = containerRef.current?.getBoundingClientRect();
-			if (params) onContextMenuToggle('open', params);
+			const rect = containerRef.current?.getBoundingClientRect();
+			if (rect) onContextMenuToggle('open', rect.top);
 		},
 		[onContextMenuToggle]
 	);

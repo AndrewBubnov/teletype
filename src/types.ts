@@ -98,7 +98,7 @@ export interface GetInterlocutorState {
 export type SingleMessageProps = {
 	message: Message;
 	repliedMessage?: Message | null;
-	onContextMenuToggle(type: 'open' | 'close', middle?: DOMRect): void;
+	onContextMenuToggle(type: 'open' | 'close', arg?: number): void;
 	updateIsRead: ((arg: Message) => void) | null;
 	isScrolledTo: boolean;
 	isAuthoredByUser: boolean;
@@ -122,7 +122,6 @@ export interface UseLongPress {
 export interface ContextMenuProps {
 	onAddReaction(arg: string): void;
 	onCloseMenu(): void;
-	initMenuParams: MutableRefObject<DOMRect | null>;
 	onReplyMessage(): void;
 	onEditMessage(): void;
 	onDownLoadImage: null | (() => void);

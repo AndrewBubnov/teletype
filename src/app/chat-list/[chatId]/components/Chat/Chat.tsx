@@ -1,9 +1,8 @@
 'use client';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { clsx } from 'clsx';
 import { useChat } from '@/app/chat-list/[chatId]/hooks/useChat';
 import { useSelect } from '@/app/shared/hooks/useSelect';
-import { useMenuTransition } from '@/app/chat-list/[chatId]/hooks/useMenuTransition';
 import { useScrolledTo } from '@/app/chat-list/[chatId]/hooks/useScrolledTo';
 import { FullScreenLoader } from '@/app/shared/components/FullScreenLoader';
 import { BackButton } from '@/app/chat-list/[chatId]/components/BackButton/BackButton';
@@ -50,8 +49,9 @@ export const Chat = ({ chat }: ChatProps) => {
 	const [repliedMessage, setRepliedMessage] = useState<Message | null>(null);
 	const [editedMessage, setEditedMessage] = useState<Message | null>(null);
 	const [menuActiveId, setMenuActiveId] = useState<string>('');
+	const [menuTop, setMenuTop] = useState<number>(0);
 
-	const { menuTop, setMessageParams, containerRef, initMenuParams } = useMenuTransition(menuActiveId, userId);
+	const containerRef = useRef<HTMLDivElement>(null);
 
 	const { selectedIds, isAllSelected, toggleAllSelected, addSelection, startSelection, dropSelectMode } =
 		useSelect(shownMessageList);
@@ -62,12 +62,12 @@ export const Chat = ({ chat }: ChatProps) => {
 
 	const isSelectMode = !!selectedIds.length;
 
-	const contextMenuToggleHandler = (id: string) => (type: 'open' | 'close', messageParams: DOMRect) => {
+	const contextMenuToggleHandler = (id: string) => (type: 'open' | 'close', top: number) => {
 		if (isSelectMode) {
 			addSelection(id);
 			return;
 		}
-		setMessageParams(messageParams);
+		if (containerRef.current) setMenuTop(top - containerRef.current.getBoundingClientRect().top);
 		setMenuActiveId(type === 'open' ? id : '');
 	};
 
@@ -89,6 +89,8 @@ export const Chat = ({ chat }: ChatProps) => {
 		startSelection(id);
 		setMenuActiveId('');
 	};
+
+	console.log('render');
 
 	const onDeleteMessage = useCallback(
 		async (informAll: boolean) => {
@@ -201,7 +203,6 @@ export const Chat = ({ chat }: ChatProps) => {
 						menuTop={menuTop}
 						onEditMessage={onEditMessage}
 						onCloseMenu={closeMenuHandler}
-						initMenuParams={initMenuParams}
 						onReplyMessage={onReplyMessage}
 						onAddReaction={addReactionHandler}
 						isAuthor={activeMessage.authorId === authorId}
