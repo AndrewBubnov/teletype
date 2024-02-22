@@ -1,0 +1,22 @@
+.divider {
+    width: 1px;
+    background: rgb(70, 69, 69);
+
+}
+
+.container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0 1rem 1rem;
+}
+
+.handle {
+    position: absolute;
+    width: 0.8rem;
+    height: 0.8rem;
+    border: 1px solid lightgray;
+    background-color: #1a1a1a;
+    border-radius: 50%;
+    transform: translateY(300%);
+}

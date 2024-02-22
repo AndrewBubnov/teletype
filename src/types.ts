@@ -1,14 +1,17 @@
 import {
-	ChangeEvent,
+	ChangeEventHandler,
+	CSSProperties,
 	Dispatch,
-	HTMLAttributes,
+	FC,
 	MutableRefObject,
-	PointerEvent,
+	PointerEventHandler,
+	PropsWithChildren,
+	ReactElement,
+	ReactNode,
 	SetStateAction,
 	SyntheticEvent,
 } from 'react';
-import { ImageProps } from 'next/image';
-import { BoxProps, ButtonProps } from '@mui/material';
+import { useLeftSideWidthStore } from '@/store';
 
 export type MessageMap = Record<string, Message[]>;
 
@@ -17,25 +20,24 @@ export enum MessageType {
 	EMOJI = 'EMOJI',
 }
 
-export interface ServerMessage {
+export interface Message {
 	id: string;
 	createdAt: Date;
 	authorId: string;
 	authorName: string;
 	type: MessageType;
 	chatId: string;
+	isRead: boolean;
+	isHidden?: string;
 	text?: string;
 	imageUrl?: string | null;
 	reaction?: string;
 	reactionAuthorImageUrl?: string | null;
 	replyToId?: string;
+	isFirstDateMessage?: true;
 }
 
-export interface Message extends ServerMessage {
-	isRead: boolean;
-}
-
-export type MessageDraft = Omit<Message, 'id' | 'createdAt'>;
+export type MessageDraft = Omit<Message, 'id' | 'createdAt' | 'hidden'>;
 
 export type Chat = {
 	id: string;
@@ -56,46 +58,12 @@ export type User = {
 	imageUrl: string | null;
 };
 
-export interface UserPhotoStubProps extends HTMLAttributes<HTMLDivElement> {
-	isActive: boolean;
-	size?: number;
-}
-
 export interface ActiveChatProps {
 	params: { chatId: string };
 }
 
-export interface MessageBoxProps extends HTMLAttributes<HTMLDivElement> {
-	isAuthoredByUser: boolean;
-	transparent?: boolean;
-	singlePadding?: boolean;
-	withOffset?: boolean;
-}
-
-export interface InnerMessageBoxProps extends HTMLAttributes<HTMLDivElement> {
-	isAuthoredByUser: boolean;
-	withPadding?: boolean;
-}
-
-export interface MessageItemBottomProps extends HTMLAttributes<HTMLDivElement> {
-	multipleChild: boolean;
-	withOffset?: boolean;
-}
-export interface ElapsedTimeWrapperProps extends HTMLAttributes<HTMLDivElement> {
-	color: string;
-}
-
-export interface RepliedMessageTextProps extends HTMLAttributes<HTMLDivElement> {
-	isMultiple: boolean;
-}
-
 export interface ChatProps {
 	chat: UserChat;
-}
-
-export interface UserPhotoImageProps extends ImageProps {
-	isActive?: boolean;
-	size?: number;
 }
 
 export interface ChatListItemProps {
@@ -103,9 +71,9 @@ export interface ChatListItemProps {
 	interlocutor: User;
 	onPress(): void;
 	onLongPress(): void;
-	isDeleteMode: boolean;
-	onCheckboxToggle(): void;
+	isSelectMode: boolean;
 	isChecked: boolean;
+	isActiveChat: boolean;
 }
 
 export enum VisitorStatus {
@@ -132,62 +100,40 @@ export type SingleMessageProps = {
 	message: Message;
 	repliedMessage?: Message | null;
 	onContextMenuToggle(type: 'open' | 'close', middle?: DOMRect): void;
-	updateIsRead: ((arg: string) => void) | null;
+	updateIsRead: ((arg: Message) => void) | null;
 	isScrolledTo: boolean;
+	isAuthoredByUser: boolean;
+	isSelected: boolean;
+	isSelectMode: boolean;
+	onSelectModeStart(evt: SyntheticEvent): void;
+	firstUnreadId: string | null;
 };
 
-export interface EditMessageClient {
-	messageId: string;
-	message: Message | null;
-	roomId: string;
-}
-export interface EditMessageServer extends EditMessageClient {
-	authorOnly?: boolean;
-}
-
-export interface StyledButtonProps extends ButtonProps {
-	textColor?: string;
-}
-
-export interface ChatListItemInnerWrapperProps extends HTMLAttributes<any> {
-	isDeleteMode: boolean;
-}
-
 export interface RepliedMessageBoxProps {
-	message: Message | null;
+	message: Message;
 	onDropMessage(): void;
 	authorName: string;
 }
 export interface UseLongPress {
-	onLongPress: (event: PointerEvent) => void;
-	onPress?: (event: PointerEvent) => void;
+	onLongPress: PointerEventHandler;
+	onPress?: PointerEventHandler;
 	delay?: number;
 }
 
 export interface ContextMenuProps {
-	interlocutorName: string;
 	onAddReaction(arg: string): void;
 	onCloseMenu(): void;
 	initMenuParams: MutableRefObject<DOMRect | null>;
 	onReplyMessage(): void;
 	onEditMessage(): void;
-	onDeleteMessage(arg: boolean): void;
 	onDownLoadImage: null | (() => void);
 	menuTop: number;
 	isAuthor: boolean;
 }
-
-export interface ChatHeaderProps {
-	chatId: string;
-	interlocutorId: string;
-	interlocutorName: string;
-	interlocutorImageUrl?: string | null;
-}
 export interface MessageProps {
 	isAuthoredByUser: boolean;
-	onPress(): void;
 	message: Message;
-	repliedMessage?: Message | null;
+	isSelectMode: boolean;
 	width?: number;
 }
 
@@ -203,41 +149,66 @@ export interface MessageInputProps {
 	setRepliedMessage: Dispatch<SetStateAction<Message | null>>;
 	editedMessage: Message | null;
 	setEditedMessage: Dispatch<SetStateAction<Message | null>>;
+	interlocutorId: string;
 }
 
 export interface ImageMessageProps {
 	message: Message;
 	isEnlarged: boolean;
-	onEnlargeToggle(evt: SyntheticEvent): void;
-	width?: number;
 }
 
-type ToastSeverityType = 'error' | 'warning' | 'info' | 'success';
+export type UpdateData = Record<string, Message | null>;
 
-export type Toast = { text: string; type: ToastSeverityType } | null;
+export enum UpdateMessageType {
+	EDIT = 'edit',
+	DELETE = 'delete',
+}
 
-export interface Store {
+export type UpdateMessage = {
+	updateData: Record<string, Message | null>;
+	type: UpdateMessageType;
+	roomId: string;
+};
+
+export interface MessageStore {
 	messageMap: MessageMap;
-	chatList: UserChat[];
-	activeUsers: string[];
-	userEmails: string[];
-	toast: Toast;
-	userId: string;
-	setActiveUsers(arg: string[]): void;
-	setUserEmails(arg: string[]): void;
-	setChatList(arg: UserChat[]): void;
-	setToast(arg: Toast): void;
-	chatVisitorStatus: ChatVisitorStatus;
-	setChatVisitorStatus(arg: ChatVisitorStatus): void;
 	setMessageMap(arg: MessageMap): void;
 	addMessageToMessageMap(arg: Message): void;
-	updateMessageInMessageMap(args: EditMessageClient): void;
-	updateIsReadMap: (chatId: string) => (id: string) => Promise<void>;
-	addReactionMap: (
-		chatId: string,
-		authorImageUrl: string | null | undefined
-	) => (id: string, reaction: string) => Promise<void>;
+	updateMessageInMessageMap(args: UpdateMessage): void;
+	updateIsRead(message: Message): Promise<void>;
+	addReaction(message: Message, reaction: string, authorImageUrl: string | null | undefined): Promise<void>;
+}
+export interface StatusStore {
+	activeUsers: string[];
+	chatVisitorStatus: ChatVisitorStatus;
+	setActiveUsers(arg: string[]): void;
+	setChatVisitorStatus(arg: ChatVisitorStatus): void;
+}
+
+export interface CommonStore {
+	chatList: UserChat[];
+	userEmails: string[];
+	errorToastText: string;
+	userId: string;
+	setUserEmails(arg: string[]): void;
+	setChatList(arg: UserChat[]): void;
+	setErrorToastText(arg: string): void;
 	setUserId(arg: string): void;
+}
+
+export interface ActiveChatStore {
+	activeChat: UserChat | null;
+	setActiveChat(arg: UserChat | null): void;
+}
+
+export interface IsWideModeStore {
+	isWideMode: boolean;
+	setIsWideMode(arg: boolean): void;
+}
+
+export interface LeftSideWidthStore {
+	leftSideWidth: number;
+	setLeftSideWidth(arg: number): void;
 }
 
 export type Subscription<T> = (fn: (arg: T) => void) => void;
@@ -249,7 +220,7 @@ export interface ImagePreviewModalProps {
 	width: number;
 }
 export interface TextAreaEndDecoratorProps {
-	onSelectFile(event: ChangeEvent<HTMLInputElement>): void;
+	onSelectFile: ChangeEventHandler<HTMLInputElement>;
 	messageImageUrl: string | null;
 	openPreviewModal(): void;
 	onDropImageUrl(): void;
@@ -257,26 +228,15 @@ export interface TextAreaEndDecoratorProps {
 	onSubmit(): Promise<void>;
 }
 
-export interface ErrorToastProps {
-	open: boolean;
+export interface ToastProps {
 	onClose(): void;
-	context: Toast;
-}
-
-export interface SendAddReactionArgs {
-	chatId: string;
-	messageId: string;
-	message: Message;
+	text: string;
 }
 
 export interface CameraModeProps {
-	open: boolean;
+	isOpen: boolean;
 	onClose(evt?: {}, reason?: 'backdropClick' | 'escapeKeyDown'): void;
 	onTakePhoto(arg: string): void;
-}
-
-export interface VideoWrapperProps extends BoxProps {
-	isStreaming: boolean;
 }
 
 export interface ConfirmDialogProps {
@@ -284,6 +244,7 @@ export interface ConfirmDialogProps {
 	onCancel(): void;
 	onConfirm: (arg: boolean) => void;
 	interlocutorName: string;
+	isMultiple: boolean;
 }
 
 export enum FacingMode {
@@ -313,3 +274,98 @@ export interface AddReaction {
 	reaction: string;
 	authorImageUrl?: string | null;
 }
+
+export interface SelectModeHeaderProps {
+	dropSelectMode(): void;
+	selectedNumber: number;
+	isAllSelected: boolean;
+	toggleAllSelected(): void;
+	onDelete: (() => Promise<void>) | ((evt: SyntheticEvent) => void);
+	withPadding?: boolean;
+	className?: string;
+}
+
+export interface StyledElementProps extends PropsWithChildren {
+	element: string | FC;
+	className: string;
+	styles: { readonly [key: string]: string };
+	attributes?: Record<string, boolean | string>;
+	style?: CSSProperties;
+}
+
+export interface TextAreaProps {
+	minRows: number;
+	maxRows: number;
+	startDecorator: ReactElement;
+	endDecorator: ReactElement;
+	value: string;
+	onChange: ChangeEventHandler<HTMLTextAreaElement>;
+}
+
+export interface DialogProps extends PropsWithChildren {
+	children: ReactNode;
+	isOpen: boolean;
+	onClose(): void;
+	className?: string;
+	style?: CSSProperties;
+}
+
+export interface StyledCheckboxProps {
+	id: string;
+	checked: boolean;
+	onChange?: ChangeEventHandler<HTMLInputElement>;
+	label?: string;
+	className?: string;
+}
+
+export interface BackButtonProps {
+	interlocutorName: string;
+	interlocutorImageUrl?: string | null;
+}
+
+export interface ChatMenuButtonProps {
+	onClearChatHistory(): void;
+	onDeleteChat(): void;
+}
+
+export interface ChatMenuProps extends ChatMenuButtonProps {
+	onClose(): void;
+}
+
+export interface ChatHeaderProps {
+	chatId: string;
+	interlocutorId: string;
+	isSelectMode: boolean;
+	dropSelectMode(): void;
+	onDelete: (() => Promise<void>) | ((evt: SyntheticEvent) => void);
+	selectedNumber: number;
+	isAllSelected: boolean;
+	toggleAllSelected(): void;
+}
+
+export interface GetUpdateData {
+	selectedIds: string[];
+	informAll: boolean;
+	updated: Message[];
+}
+
+export interface StyledElementClone {
+	className: string;
+	style: CSSProperties;
+}
+
+export interface FadeProps {
+	children: ReactElement;
+	isShown: boolean;
+	className?: string;
+}
+
+export interface FadeContextProps {
+	onTransitionEnd(): void;
+}
+
+export interface FadeProviderProps extends FadeContextProps {
+	children: ReactNode;
+}
+
+export type AspectRatioAndWidth = { width: number; aspectRatio: number };

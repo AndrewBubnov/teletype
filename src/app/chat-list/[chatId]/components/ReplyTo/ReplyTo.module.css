@@ -1,0 +1,37 @@
+.replyToContainer {
+    background: palegreen;
+    border-radius: 0.25rem;
+    padding: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.replyToAuthor {
+    font-size: 0.7rem;
+    color: green;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 0.25rem;
+}
+
+.replyToWrapper {
+    display: flex;
+    max-width: 20rem;
+}
+
+.replyToDateWrapper {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.replyToDate {
+    font-size: 0.5rem;
+    color: green;
+}
+
+.replyToText {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #1a1a1a;
+}

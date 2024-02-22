@@ -1,59 +1,70 @@
 import { create } from 'zustand';
-import { sendAddReaction } from '@/utils/sendAddReaction';
-import { updateMessageIsRead } from '@/actions/updateMessageIsRead';
-import { addReaction } from '@/actions/addReaction';
-import { playAddMessageSound, playDeleteMessageSound } from '@/utils/playSound';
-import { ChatVisitorStatus, Message, MessageMap, Store, Toast, UserChat } from '@/types';
+import { updateMessageIsRead } from '@/prismaActions/updateMessageIsRead';
+import { addReaction } from '@/prismaActions/addReaction';
+import { sendEditMessage } from '@/webSocketActions/sendEditMessage';
+import { MIN_LEFT_SIDE_WIDTH } from '@/constants';
+import {
+	ActiveChatStore,
+	ChatVisitorStatus,
+	CommonStore,
+	IsWideModeStore,
+	LeftSideWidthStore,
+	Message,
+	MessageMap,
+	MessageStore,
+	StatusStore,
+	UpdateMessageType,
+	UserChat,
+} from '@/types';
 
-export const useStore = create<Store>((set, getState) => ({
+export const useMessageStore = create<MessageStore>(set => ({
 	messageMap: {},
-	activeUsers: [],
-	chatList: [],
-	userEmails: [],
-	chatVisitorStatus: {},
-	toast: null,
-	userId: '',
 	setMessageMap: (updated: MessageMap) => set({ messageMap: updated }),
-	setActiveUsers: (updated: string[]) => set({ activeUsers: updated }),
-	setUserEmails: (updated: string[]) => set({ userEmails: updated }),
-	setChatList: (updated: UserChat[]) => set({ chatList: updated }),
-	setChatVisitorStatus: (updated: ChatVisitorStatus) => set({ chatVisitorStatus: updated }),
-	setToast: (toast: Toast) => set({ toast }),
 	addMessageToMessageMap: (message: Message) => {
-		playAddMessageSound(message, getState().userId);
-		return set(state => {
-			if (!message.chatId) return { messageMap: state.messageMap };
-			if (state.messageMap[message.chatId]) {
-				return {
-					messageMap: {
-						...state.messageMap,
-						[message.chatId]: [...state.messageMap[message.chatId], message],
-					},
-				};
-			}
-			return { messageMap: { ...state.messageMap, [message.chatId]: [message] } };
-		});
-	},
-	updateMessageInMessageMap: ({ message, messageId, roomId: chatId }) =>
+        playAddMessageSound(message, getState().userId);
+        set(state => {
+            if (!message.chatId) return { messageMap: state.messageMap };
+            if (state.messageMap[message.chatId])
+                return {
+                    messageMap: {
+                        ...state.messageMap,
+                        [message.chatId]: [...state.messageMap[message.chatId], message],
+                    },
+                };
+            return { messageMap: { ...state.messageMap, [message.chatId]: [message] } };
+        })
+    },
+	updateMessageInMessageMap: ({ updateData, type, roomId: chatId }) =>
 		set(state => {
-			if (!message) {
-				playDeleteMessageSound();
+			if (type === UpdateMessageType.DELETE) {
+				const deletedIds = Object.keys(updateData);
 				return {
 					messageMap: {
 						...state.messageMap,
-						[chatId]: state.messageMap[chatId].filter(el => el.id !== messageId),
+						[chatId]: state.messageMap[chatId].filter(el => !deletedIds.includes(el.id)),
 					},
 				};
 			}
 			return {
 				messageMap: {
 					...state.messageMap,
-					[chatId]: state.messageMap[chatId].map(el => (el.id === messageId ? message : el)),
+					[chatId]: state.messageMap[chatId].map(el => {
+						if (updateData[el.id]) return updateData[el.id]!;
+						return el;
+					}),
 				},
 			};
 		}),
-	updateIsReadMap: (chatId: string) => async (id: string) => {
-		await updateMessageIsRead(id);
+	updateIsRead: async (message: Message) => {
+		const { id, chatId } = message;
+		const updated = await updateMessageIsRead(id);
+		if (updated) {
+			sendEditMessage({
+				updateData: { [id]: updated },
+				type: UpdateMessageType.EDIT,
+				roomId: chatId,
+			});
+		}
 		return set(state => {
 			const predicate = (el: Message): boolean => el.id === id;
 			const message = state.messageMap[chatId].find(predicate);
@@ -68,25 +79,62 @@ export const useStore = create<Store>((set, getState) => ({
 			return state;
 		});
 	},
-	addReactionMap:
-		(chatId: string, authorImageUrl: string | null | undefined) => async (messageId: string, reaction: string) => {
-			const message = await addReaction({ messageId, reaction, authorImageUrl });
-			if (message) sendAddReaction({ chatId, messageId, message });
-			set(state => ({
-				messageMap: {
-					...state.messageMap,
-					[chatId]: state.messageMap[chatId].map(message => {
-						if (message.id === messageId) {
-							return {
-								...message,
-								reaction,
-								reactionAuthorImageUrl: reaction ? authorImageUrl : undefined,
-							};
-						}
-						return message;
-					}),
-				},
-			}));
-		},
+	addReaction: async (message: Message, reaction: string, authorImageUrl: string | null | undefined) => {
+		const { id: messageId, chatId } = message;
+		const updated = await addReaction({ messageId, reaction, authorImageUrl });
+		if (updated) {
+			sendEditMessage({
+				updateData: { [messageId]: updated },
+				type: UpdateMessageType.EDIT,
+				roomId: chatId,
+			});
+		}
+		set(state => ({
+			messageMap: {
+				...state.messageMap,
+				[chatId]: state.messageMap[chatId].map(message => {
+					if (message.id === messageId) {
+						return {
+							...message,
+							reaction,
+							reactionAuthorImageUrl: reaction ? authorImageUrl : undefined,
+						};
+					}
+					return message;
+				}),
+			},
+		}));
+	},
+}));
+export const useStatusStore = create<StatusStore>(set => ({
+	activeUsers: [],
+	chatVisitorStatus: {},
+	setActiveUsers: (updated: string[]) => set({ activeUsers: updated }),
+	setChatVisitorStatus: (updated: ChatVisitorStatus) => set({ chatVisitorStatus: updated }),
+}));
+
+export const useCommonStore = create<CommonStore>(set => ({
+	chatList: [],
+	userEmails: [],
+	errorToastText: '',
+	userId: '',
+	setUserEmails: (updated: string[]) => set({ userEmails: updated }),
+	setChatList: (updated: UserChat[]) => set({ chatList: updated }),
+	setErrorToastText: (errorToastText: string) => set({ errorToastText }),
 	setUserId: (userId: string) => set({ userId }),
+}));
+
+export const useActiveChatStore = create<ActiveChatStore>(set => ({
+	activeChat: null,
+	setActiveChat: (activeChat: UserChat) => set({ activeChat }),
+}));
+
+export const useIsWideModeStore = create<IsWideModeStore>(set => ({
+	isWideMode: false,
+	setIsWideMode: (isWideMode: boolean) => set({ isWideMode }),
+}));
+
+export const useLeftSideWidthStore = create<LeftSideWidthStore>(set => ({
+	leftSideWidth: MIN_LEFT_SIDE_WIDTH,
+	setLeftSideWidth: (leftSideWidth: number) => set({ leftSideWidth }),
 }));

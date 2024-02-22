@@ -1,0 +1,48 @@
+.reactionWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    width: fit-content;
+    background: rgba(26, 26, 26, 0.2);
+    padding: 2px;
+    border-radius: 1rem;
+    font-size: 1rem;
+}
+
+.reactionAuthorImage {
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.timeWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.6rem;
+    color: rgba(0, 210, 170, 0.8);
+}
+
+.statusIcon {
+    color: rgba(0, 210, 170, 0.8);
+    font-size: 1rem;
+    margin-top: -2px;
+}
+
+.messageItemBottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+}
+
+.messageItemBottom_not_multipleChild {
+    flex-direction: row-reverse;
+}
+
+.messageItemBottom_withOffset {
+    margin: 0.5rem 0.5rem 0 0.5rem;
+}
+
+.messageItemBottom_not_withOffset {
+    margin: 0.5rem 0 0 0
+}

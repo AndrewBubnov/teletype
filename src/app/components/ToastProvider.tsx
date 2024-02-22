@@ -1,12 +1,17 @@
 'use client';
-import { useStore } from '@/store';
+import { useCallback } from 'react';
+import { useCommonStore } from '@/store';
 import { Toast } from '@/app/components/Toast';
 
 export const ToastProvider = () => {
-	const { toast, setToast } = useStore(state => ({
-		toast: state.toast,
-		setToast: state.setToast,
+	const { text, setToast } = useCommonStore(state => ({
+		text: state.errorToastText,
+		setToast: state.setErrorToastText,
 	}));
 
-	return <Toast open={!!toast} onClose={() => setToast(null)} context={toast} />;
+	const onClose = useCallback(() => setToast(''), [setToast]);
+
+	if (!text) return null;
+
+	return <Toast onClose={onClose} text={text} />;
 };

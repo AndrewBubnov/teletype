@@ -1,0 +1,46 @@
+.iconButton {
+    height: 2rem;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: lightgray;
+    font-size: 1.75rem;
+    cursor: pointer;
+}
+
+.drawerList {
+    margin-top: 4rem;
+}
+
+.drawerListItem {
+    list-style: none;
+    padding: 2rem 0;
+    border-bottom: 1px solid #636363;
+}
+
+.drawerListItem:last-of-type {
+    position: fixed;
+    bottom: 0;
+}
+
+.newChatInnerWrapper {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.profileLink {
+    display: flex;
+    align-items: center;
+    color: lightgray;
+    gap: 1.5rem;
+    text-decoration: none;
+}
+
+.logOutWrapper {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    color: tomato;
+}

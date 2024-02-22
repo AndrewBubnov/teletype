@@ -1,0 +1,24 @@
+.textAreaWrapper {
+    background-color: #1a1a1a;
+    border: 1px solid lightgray;
+    border-radius: 0.25rem;
+    padding: 0.25rem;
+}
+
+.textArea {
+    flex-shrink: 0;
+    width: 100%;
+    padding: 0.5rem;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+    overflow-y: auto;
+    background-color: transparent;
+    border: none;
+    resize: none;
+    color: lightgray;
+}
+
+.textArea:focus-visible {
+    outline: none;
+}

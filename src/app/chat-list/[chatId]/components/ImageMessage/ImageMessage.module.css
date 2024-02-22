@@ -1,0 +1,10 @@
+.imageWrapper {
+    position: relative;
+}
+
+.styledImage {
+    display: block;
+    object-fit: cover;
+    border-radius: 0.25rem;
+    width: 100%;
+}

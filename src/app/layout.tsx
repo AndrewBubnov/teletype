@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { auth, ClerkProvider } from '@clerk/nextjs';
 import { Fetcher } from '@/app/components/Fetcher';
-import './globals.css';
 import { ToastProvider } from '@/app/components/ToastProvider';
+import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 

@@ -11,5 +11,4 @@ export const CONTAINER_STYLE: CropperProps['style']['containerStyle'] = {
 };
 
 export const CROP_AREA_STYLE: CropperProps['style']['cropAreaStyle'] = { boxShadow: 'none' };
-export const INPUT_STYLE = { display: 'flex', margin: '1rem auto 2rem auto' };
 export const UPLOAD_FILE_ERROR_MESSAGE = 'Max file size of 1MB exceeded';

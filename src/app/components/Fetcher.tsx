@@ -1,9 +1,9 @@
-import { getUser } from '@/actions/getUser';
-import { getUserChats } from '@/actions/getUserChats';
-import { getAllUserEmails } from '@/actions/getAllUserEmails';
+import { getUser } from '@/prismaActions/getUser';
+import { getUserChats } from '@/prismaActions/getUserChats';
+import { getAllUserEmails } from '@/prismaActions/getAllUserEmails';
 import { Subscriber } from '@/app/components/Subscriber';
-import { fetchChatMessages } from '@/actions/fetchChatMessages';
-import { deleteReadMessages } from '@/actions/deleteReadMessages';
+import { fetchChatMessages } from '@/prismaActions/fetchChatMessages';
+import { deleteReadMessages } from '@/prismaActions/deleteReadMessages';
 
 export const Fetcher = async () => {
 	const user = await getUser();

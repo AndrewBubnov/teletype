@@ -1,0 +1,14 @@
+.chatListSelectModeStub {
+    height: 2rem;
+
+    @media (width < 1024px) {
+        margin-top: 1rem;
+    }
+}
+
+.selectModeHeaderWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}

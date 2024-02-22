@@ -1,0 +1,22 @@
+.chatHeaderLink {
+    text-decoration: none;
+    user-select: none;
+    color: lightgray;
+}
+
+.centerHorizontalWrapper {
+    display: flex;
+    align-items: center;
+}
+
+.backIcon {
+    color: #fff;
+    font-size: 2rem;
+    margin-right: 0.5rem;
+}
+
+.userPhotoImage {
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    object-fit: cover;
+}

@@ -1,39 +1,40 @@
 'use client';
-import { useEffect } from 'react';
-import { useStore } from '@/store';
+import { useCallback, useEffect } from 'react';
+import { useMessageStore, useCommonStore, useStatusStore, useIsWideModeStore } from '@/store';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
-import { createRooms } from '@/app/chat/utils/createRooms';
-import { initUserChats } from '@/utils/initUserChats';
-import { sendJoin } from '@/utils/sendJoin';
-import { clearActiveUsers, updateActiveUsers } from '@/utils/updateActiveUsers';
-import { addClientMessage, clearAddClientMessage } from '@/utils/addClientMessage';
-import { clearUpdateClientMessage, updateClientMessage } from '@/utils/updateClientMessage';
-import { clearUpdateChatList, updateChatList } from '@/utils/updateChatList';
-import { clearUpdateVisitorStatus, updateVisitorStatus } from '@/utils/updateVisitorStatus';
+import { createRooms } from '@/app/chat-list/utils/createRooms';
+import { initUserChats } from '@/webSocketActions/initUserChats';
+import { sendJoin } from '@/webSocketActions/sendJoin';
+import { clearActiveUsers, updateActiveUsers } from '@/webSocketActions/updateActiveUsers';
+import { addClientMessage, clearAddClientMessage } from '@/webSocketActions/addClientMessage';
+import { clearUpdateClientMessage, updateClientMessage } from '@/webSocketActions/updateClientMessage';
+import { clearUpdateChatList, updateChatList } from '@/webSocketActions/updateChatList';
+import { clearUpdateVisitorStatus, updateVisitorStatus } from '@/webSocketActions/updateVisitorStatus';
+import { clearUpdateConnectionError, updateConnectionError } from '@/webSocketActions/updateConnectionError';
+import { SERVER_CONNECTION_FAILED } from '@/app/constants';
 import { SubscriberProps } from '@/types';
 
 export const Subscriber = ({ userChats, userEmails, userId, messageMap }: SubscriberProps) => {
-	const {
-		setActiveUsers,
-		setMessageMap,
-		addMessageToMessageMap,
-		updateMessageInMessageMap,
-		setChatList,
-		setUserEmails,
-		chatList,
-		setChatVisitorStatus,
-		setUserId,
-	} = useStore(state => ({
-		setActiveUsers: state.setActiveUsers,
-		chatList: state.chatList,
+	const { setMessageMap, addMessageToMessageMap, updateMessageInMessageMap } = useMessageStore(state => ({
 		setMessageMap: state.setMessageMap,
-		setChatList: state.setChatList,
-		setUserEmails: state.setUserEmails,
-		setChatVisitorStatus: state.setChatVisitorStatus,
 		addMessageToMessageMap: state.addMessageToMessageMap,
 		updateMessageInMessageMap: state.updateMessageInMessageMap,
-		setUserId: state.setUserId,
 	}));
+
+	const { setChatList, setUserEmails, chatList, setUserId, setToast } = useCommonStore(state => ({
+		chatList: state.chatList,
+		setChatList: state.setChatList,
+		setUserEmails: state.setUserEmails,
+		setUserId: state.setUserId,
+		setToast: state.setErrorToastText,
+	}));
+
+	const { setActiveUsers, setChatVisitorStatus } = useStatusStore(state => ({
+		setActiveUsers: state.setActiveUsers,
+		setChatVisitorStatus: state.setChatVisitorStatus,
+	}));
+
+	const setIsWideMode = useIsWideModeStore(state => state.setIsWideMode);
 
 	useEffect(() => {
 		initUserChats(userChats);
@@ -58,6 +59,18 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap }: Subscr
 		setUserId(userId);
 	}, [setUserId, userId]);
 
+	useEffect(() => {
+		const handler = () => {
+			const isWideMode = window.matchMedia('(min-width: 1024px)').matches;
+			setIsWideMode(isWideMode);
+		};
+		handler();
+		window.addEventListener('resize', handler);
+		return () => window.removeEventListener('resize', handler);
+	}, [setIsWideMode]);
+
+	const setErrorToast = useCallback(() => setToast(SERVER_CONNECTION_FAILED), [setToast]);
+
 	useSubscribe(setActiveUsers, updateActiveUsers, clearActiveUsers);
 
 	useSubscribe(addMessageToMessageMap, addClientMessage, clearAddClientMessage);
@@ -67,6 +80,8 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap }: Subscr
 	useSubscribe(setChatList, updateChatList, clearUpdateChatList);
 
 	useSubscribe(setChatVisitorStatus, updateVisitorStatus, clearUpdateVisitorStatus);
+
+	useSubscribe(setErrorToast, updateConnectionError, clearUpdateConnectionError);
 
 	return null;
 };
