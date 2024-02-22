@@ -130,11 +130,11 @@ export interface ContextMenuProps {
 	menuTop: number;
 	isAuthor: boolean;
 }
-export interface MessageProps {
+export interface EmojiMessageProps {
 	isAuthoredByUser: boolean;
 	message: Message;
 	isSelectMode: boolean;
-	width?: number;
+	xOffset: string;
 }
 
 export interface ScrollToBottomButtonProps {

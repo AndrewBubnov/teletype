@@ -72,7 +72,7 @@
 }
 
 .messageItem_isMoved {
-    transform: translateX(var(--xOffset));
+    transform: translateX(var(--x-offset));
 }
 
 .innerMessageItem {

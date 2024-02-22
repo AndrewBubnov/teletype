@@ -38,7 +38,7 @@ export const ContextMenu = ({
 					[styles.menuCardIsInActive]: !isActive,
 				})}
 				ref={ref}
-				style={{ '--yOffset': `${menuTop}px` } as CSSProperties}
+				style={{ '--y-offset': `${menuTop}px` } as CSSProperties}
 			>
 				{!isAuthor ? (
 					<div className={styles.reactionsWrapper}>

@@ -1,10 +1,10 @@
-import { Fragment } from 'react';
+import { CSSProperties, Fragment } from 'react';
 import { MessageBottom } from '@/app/chat-list/[chatId]/components/MessageBottom/MessageBottom';
 import { StyledElement } from '@/app/chat-list/[chatId]/components/StyledElement/StyledElement';
-import { MessageProps } from '@/types';
+import { EmojiMessageProps } from '@/types';
 import styles from './EmojiMessage.module.css';
 
-export const EmojiMessage = ({ isAuthoredByUser, message, isSelectMode }: MessageProps) => {
+export const EmojiMessage = ({ isAuthoredByUser, message, isSelectMode, xOffset }: EmojiMessageProps) => {
 	if (!message.text) return null;
 
 	return (
@@ -18,6 +18,7 @@ export const EmojiMessage = ({ isAuthoredByUser, message, isSelectMode }: Messag
 				isAuthoredByUser,
 				isMoved: isAuthoredByUser && isSelectMode,
 			}}
+			style={{ '--x-offset': xOffset } as CSSProperties}
 		>
 			<div className={styles.emojiDisplayWrapper}>
 				{message.text

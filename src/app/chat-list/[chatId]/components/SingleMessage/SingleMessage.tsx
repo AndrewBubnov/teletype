@@ -91,6 +91,8 @@ export const SingleMessage = ({
 		return null;
 	}, [firstUnreadId, message.id]);
 
+	const xOffset = `calc(-${containerRef.current?.clientWidth}px + 100%)`;
+
 	if (message.type === MessageType.COMMON) {
 		return (
 			<label className={styles.styledLabel} htmlFor={message.id} {...pressHandler}>
@@ -101,11 +103,7 @@ export const SingleMessage = ({
 						element="div"
 						className="messageItem"
 						styles={styles}
-						style={
-							{
-								'--xOffset': `calc(-${containerRef.current?.clientWidth}px + 100%)`,
-							} as CSSProperties
-						}
+						style={{ '--x-offset': xOffset } as CSSProperties}
 						attributes={{
 							singlePadding: !repliedMessage,
 							isAuthoredByUser,
@@ -140,7 +138,12 @@ export const SingleMessage = ({
 			{isFirstDateDateMessagePrefix}
 			{isFirstUnreadPrefix}
 			<div className={styles.messageWrapper} ref={containerRef} id={message.id}>
-				<EmojiMessage isAuthoredByUser={isAuthoredByUser} message={message} isSelectMode={isSelectMode} />
+				<EmojiMessage
+					isAuthoredByUser={isAuthoredByUser}
+					message={message}
+					isSelectMode={isSelectMode}
+					xOffset={xOffset}
+				/>
 				<Fade isShown={isSelectMode}>
 					<StyledCheckbox id={message.id} checked={isSelected} />
 				</Fade>

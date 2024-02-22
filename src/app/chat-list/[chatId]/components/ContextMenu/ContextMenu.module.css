@@ -27,7 +27,7 @@
 }
 
 .menuCardIsActive {
-    transform: translateY(var(--yOffset));
+    transform: translateY(var(--y-offset));
     opacity: 1;
 }
 
