@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { updateMessageIsRead } from '@/prismaActions/updateMessageIsRead';
 import { addReaction } from '@/prismaActions/addReaction';
 import { sendEditMessage } from '@/webSocketActions/sendEditMessage';
+import { playAddMessageSound } from '@/webSocketActions/playSound';
 import { MIN_LEFT_SIDE_WIDTH } from '@/constants';
 import {
 	ActiveChatStore,
@@ -21,19 +22,19 @@ export const useMessageStore = create<MessageStore>(set => ({
 	messageMap: {},
 	setMessageMap: (updated: MessageMap) => set({ messageMap: updated }),
 	addMessageToMessageMap: (message: Message) => {
-        playAddMessageSound(message, getState().userId);
-        set(state => {
-            if (!message.chatId) return { messageMap: state.messageMap };
-            if (state.messageMap[message.chatId])
-                return {
-                    messageMap: {
-                        ...state.messageMap,
-                        [message.chatId]: [...state.messageMap[message.chatId], message],
-                    },
-                };
-            return { messageMap: { ...state.messageMap, [message.chatId]: [message] } };
-        })
-    },
+		playAddMessageSound(message.authorId);
+		set(state => {
+			if (!message.chatId) return { messageMap: state.messageMap };
+			if (state.messageMap[message.chatId])
+				return {
+					messageMap: {
+						...state.messageMap,
+						[message.chatId]: [...state.messageMap[message.chatId], message],
+					},
+				};
+			return { messageMap: { ...state.messageMap, [message.chatId]: [message] } };
+		});
+	},
 	updateMessageInMessageMap: ({ updateData, type, roomId: chatId }) =>
 		set(state => {
 			if (type === UpdateMessageType.DELETE) {
