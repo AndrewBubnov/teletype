@@ -7,7 +7,7 @@
 }
 
 .inWideMode {
-    max-width: calc(75% - 1rem - 1px);
+    max-width: calc(var(--right-width) - 1rem - 1px);
     height: calc(100svh - 5rem);
 }
 

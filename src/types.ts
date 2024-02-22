@@ -11,6 +11,7 @@ import {
 	SetStateAction,
 	SyntheticEvent,
 } from 'react';
+import { useLeftSideWidthStore } from '@/store';
 
 export type MessageMap = Record<string, Message[]>;
 
@@ -203,6 +204,11 @@ export interface ActiveChatStore {
 export interface IsWideModeStore {
 	isWideMode: boolean;
 	setIsWideMode(arg: boolean): void;
+}
+
+export interface LeftSideWidthStore {
+	leftSideWidth: number;
+	setLeftSideWidth(arg: number): void;
 }
 
 export type Subscription<T> = (fn: (arg: T) => void) => void;

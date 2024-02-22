@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useMemo, useState } from 'react';
+import { CSSProperties, useCallback, useMemo, useState } from 'react';
 import { clsx } from 'clsx';
 import { useChat } from '@/app/chat-list/[chatId]/hooks/useChat';
 import { useSelect } from '@/app/shared/hooks/useSelect';
@@ -40,6 +40,7 @@ export const Chat = ({ chat }: ChatProps) => {
 		firstUnreadId,
 		userId,
 		isWideMode,
+		leftSideWidth,
 	} = useChat(chat);
 
 	const shownMessageList = useMemo(
@@ -155,6 +156,7 @@ export const Chat = ({ chat }: ChatProps) => {
 				[styles.inWideMode]: isWideMode,
 				[styles.notInWideMode]: !isWideMode,
 			})}
+			style={{ '--right-width': `${100 - leftSideWidth}%` } as CSSProperties}
 		>
 			<BackButton interlocutorName={interlocutorName} interlocutorImageUrl={interlocutorImageUrl} />
 			<div className={styles.chatHeaderContainer}>

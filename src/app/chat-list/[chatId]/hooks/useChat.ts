@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react';
-import { useCommonStore, useIsWideModeStore, useMessageStore } from '@/store';
+import { useCommonStore, useIsWideModeStore, useLeftSideWidthStore, useMessageStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { sendChangeVisitorStatus } from '@/webSocketActions/sendChangeVisitorStatus';
 import { CHAT_LIST } from '@/constants';
@@ -16,6 +16,7 @@ export const useChat = (chat: UserChat) => {
 		chatList: state.chatList,
 	}));
 	const isWideMode = useIsWideModeStore(state => state.isWideMode);
+	const leftSideWidth = useLeftSideWidthStore(state => state.leftSideWidth);
 
 	const { push } = useRouter();
 
@@ -90,5 +91,6 @@ export const useChat = (chat: UserChat) => {
 		firstUnreadId: firstUnreadRef.current || null,
 		userId,
 		isWideMode,
+		leftSideWidth,
 	};
 };

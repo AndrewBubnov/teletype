@@ -1,5 +1,5 @@
 .inWideMode {
-    width: 25%;
+    width: var(--left-width);
     margin-top: 2.25rem;
 }
 

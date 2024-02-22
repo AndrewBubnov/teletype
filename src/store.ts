@@ -2,11 +2,13 @@ import { create } from 'zustand';
 import { updateMessageIsRead } from '@/prismaActions/updateMessageIsRead';
 import { addReaction } from '@/prismaActions/addReaction';
 import { sendEditMessage } from '@/webSocketActions/sendEditMessage';
+import { MIN_LEFT_SIDE_WIDTH } from '@/constants';
 import {
 	ActiveChatStore,
 	ChatVisitorStatus,
 	CommonStore,
 	IsWideModeStore,
+	LeftSideWidthStore,
 	Message,
 	MessageMap,
 	MessageStore,
@@ -128,4 +130,9 @@ export const useActiveChatStore = create<ActiveChatStore>(set => ({
 export const useIsWideModeStore = create<IsWideModeStore>(set => ({
 	isWideMode: false,
 	setIsWideMode: (isWideMode: boolean) => set({ isWideMode }),
+}));
+
+export const useLeftSideWidthStore = create<LeftSideWidthStore>(set => ({
+	leftSideWidth: MIN_LEFT_SIDE_WIDTH,
+	setLeftSideWidth: (leftSideWidth: number) => set({ leftSideWidth }),
 }));
