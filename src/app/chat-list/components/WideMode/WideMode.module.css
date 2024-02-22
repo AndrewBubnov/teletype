@@ -13,8 +13,8 @@
 
 .handle {
     position: absolute;
-    width: 0.7rem;
-    height: 0.7rem;
+    width: 0.8rem;
+    height: 0.8rem;
     border: 1px solid lightgray;
     background-color: #1a1a1a;
     border-radius: 50%;

@@ -1,5 +1,5 @@
 'use client';
-import { CSSProperties, useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { clsx } from 'clsx';
 import { useChat } from '@/app/chat-list/[chatId]/hooks/useChat';
 import { useSelect } from '@/app/shared/hooks/useSelect';
@@ -16,6 +16,7 @@ import { UnreadMessagesButton } from '@/app/chat-list/[chatId]/components/Unread
 import { deleteOrHideMessages } from '@/prismaActions/deleteOrHideMessages';
 import { useDeleteDialog } from '@/app/chat-list/[chatId]/hooks/useDeleteDialog';
 import { ConfirmDialog } from '@/app/chat-list/[chatId]/components/ConfirmDialog/ConfirmDialog';
+import { RightSideResizable } from '@/app/chat-list/[chatId]/components/RightSideResizable/RightSideResizable';
 import { getUpdateData } from '@/app/chat-list/[chatId]/utils/getUpdateData';
 import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
 import { deleteSingleChat } from '@/prismaActions/deleteSingleChat';
@@ -39,8 +40,6 @@ export const Chat = ({ chat }: ChatProps) => {
 		updateIsRead,
 		firstUnreadId,
 		userId,
-		isWideMode,
-		leftSideWidth,
 	} = useChat(chat);
 
 	const shownMessageList = useMemo(
@@ -151,13 +150,7 @@ export const Chat = ({ chat }: ChatProps) => {
 	if (!userId) return <FullScreenLoader />;
 
 	return (
-		<div
-			className={clsx(styles.chatContainer, {
-				[styles.inWideMode]: isWideMode,
-				[styles.notInWideMode]: !isWideMode,
-			})}
-			style={{ '--right-width': `${100 - leftSideWidth}%` } as CSSProperties}
-		>
+		<RightSideResizable>
 			<BackButton interlocutorName={interlocutorName} interlocutorImageUrl={interlocutorImageUrl} />
 			<div className={styles.chatHeaderContainer}>
 				<ChatHeader
@@ -233,6 +226,6 @@ export const Chat = ({ chat }: ChatProps) => {
 				onConfirm={onDeleteMessage}
 				interlocutorName={interlocutorName}
 			/>
-		</div>
+		</RightSideResizable>
 	);
 };

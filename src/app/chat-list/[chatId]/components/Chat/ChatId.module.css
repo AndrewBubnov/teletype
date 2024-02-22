@@ -1,20 +1,3 @@
-.chatContainer {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding: 1rem;
-}
-
-.inWideMode {
-    max-width: calc(var(--right-width) - 1rem - 1px);
-    height: calc(100svh - 5rem);
-}
-
-.notInWideMode {
-    height: 100svh;
-}
-
 .chatHeaderContainer {
     display: flex;
     justify-content: space-between;

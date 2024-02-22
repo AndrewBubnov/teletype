@@ -1,12 +1,3 @@
-.inWideMode {
-    width: var(--left-width);
-    margin-top: 2.25rem;
-}
-
-.inNarrowMode {
-    width: 100%;
-}
-
 .chatListSelectModeStub {
     height: 2rem;
 

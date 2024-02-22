@@ -16,7 +16,6 @@ export const useChat = (chat: UserChat) => {
 		chatList: state.chatList,
 	}));
 	const isWideMode = useIsWideModeStore(state => state.isWideMode);
-	const leftSideWidth = useLeftSideWidthStore(state => state.leftSideWidth);
 
 	const { push } = useRouter();
 
@@ -90,7 +89,5 @@ export const useChat = (chat: UserChat) => {
 		updateIsRead,
 		firstUnreadId: firstUnreadRef.current || null,
 		userId,
-		isWideMode,
-		leftSideWidth,
 	};
 };

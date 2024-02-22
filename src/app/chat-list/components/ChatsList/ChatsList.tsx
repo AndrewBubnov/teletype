@@ -1,13 +1,6 @@
 'use client';
-import { CSSProperties, useEffect, useMemo } from 'react';
-import { clsx } from 'clsx';
-import {
-	useActiveChatStore,
-	useCommonStore,
-	useIsWideModeStore,
-	useLeftSideWidthStore,
-	useMessageStore,
-} from '@/store';
+import { useEffect, useMemo } from 'react';
+import { useActiveChatStore, useCommonStore, useIsWideModeStore, useMessageStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
 import { deleteChats } from '@/prismaActions/deleteChats';
@@ -18,6 +11,7 @@ import { SelectModeHeader } from '@/app/shared/components/SelectModeHeader';
 import { sortChatsByLatestMessage } from '@/app/chat-list/utils/sortChatsByLatestMessage';
 import { CHAT_LIST } from '@/constants';
 import styles from './ChatsList.module.css';
+import { LeftSideResizable } from '@/app/chat-list/components/LeftSideResizable/LeftSideResizable';
 
 export const ChatsList = () => {
 	const { chatList, userId } = useCommonStore(state => ({
@@ -32,7 +26,6 @@ export const ChatsList = () => {
 
 	const messageMap = useMessageStore(state => state.messageMap);
 	const isWideMode = useIsWideModeStore(state => state.isWideMode);
-	const leftSideWidth = useLeftSideWidthStore(state => state.leftSideWidth);
 
 	const { selectedIds, isAllSelected, toggleAllSelected, addSelection, startSelection, dropSelectMode } =
 		useSelect(chatList);
@@ -66,10 +59,7 @@ export const ChatsList = () => {
 	const isSelectMode = !!selectedIds.length;
 
 	return (
-		<div
-			className={clsx({ [styles.inWideMode]: isWideMode, [styles.inNarrowMode]: !isWideMode })}
-			style={{ '--left-width': `${leftSideWidth}%` } as CSSProperties}
-		>
+		<LeftSideResizable>
 			<div className={styles.chatListSelectModeStub}>
 				<Fade isShown={isSelectMode} className={styles.selectModeHeaderWrapper}>
 					<SelectModeHeader
@@ -97,6 +87,6 @@ export const ChatsList = () => {
 					/>
 				);
 			})}
-		</div>
+		</LeftSideResizable>
 	);
 };
