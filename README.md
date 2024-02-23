@@ -1,6 +1,12 @@
 # Teletype - chat application
 
-Teletype is a real-time chat application built with Next.js 14, Prisma ORM, Atlas MongoDB, Websockets using socket.io, and Clerk JS.
+Teletype is a full-stack application that provides real-time chat functionality. It boasts a responsive design, catering to various devices and screen sizes and built with Next.js 14, Prisma ORM, Atlas MongoDB, Websockets using socket.io, and Clerk JS.
+
+Teletype offers a responsive design that ensures a seamless experience across different devices.
+
+In desktop mode, Teletype functions as a single-page application. The user interface comprises a chat list on the left and the active (selected) chat on the right. These sections are resizable via a draggable circular handle on the dividing line between them.
+
+For mobile devices, Teletype utilizes routing, allowing smooth transitions between the chat list and active chat pages.
 
 Explore the live demo, an auto-deploy from the master branch: [Teletype](https://teletype-sandy.vercel.app/)
 
