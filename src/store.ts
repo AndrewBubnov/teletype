@@ -21,12 +21,15 @@ export const useLastMessageStore = create<LastMessageStore>(set => ({
 	addMessageToMessageMap: (message: Message) =>
 		set(state => {
 			if (!message.chatId) return { messageMap: state.messageMap };
+			const { userId } = useCommonStore.getState();
+			const isAuthoredByUser = message.authorId === userId;
 			return {
 				messageMap: {
 					...state.messageMap,
 					[message.chatId]: {
 						lastMessage: message,
-						unreadNumber: (state.messageMap[message.chatId]?.unreadNumber || 0) + 1,
+						unreadNumber:
+							(state.messageMap[message.chatId]?.unreadNumber || 0) + (isAuthoredByUser ? 0 : 1),
 					},
 				},
 			};

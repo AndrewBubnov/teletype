@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useCommonStore, useIsWideModeStore } from '@/store';
+import { useCommonStore, useIsWideModeStore, useLastMessageStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { sendChangeVisitorStatus } from '@/webSocketActions/sendChangeVisitorStatus';
 import { addReaction } from '@/prismaActions/addReaction';
@@ -12,11 +12,14 @@ import { clearUpdateClientMessage, updateClientMessage } from '@/webSocketAction
 import { CHAT_LIST } from '@/constants';
 
 export const useChat = (chat: UserChat) => {
+	const { members, chatId } = chat;
+
 	const { userId, chatList } = useCommonStore(state => ({
 		userId: state.userId,
 		chatList: state.chatList,
 	}));
 	const isWideMode = useIsWideModeStore(state => state.isWideMode);
+	const unreadNumber = useLastMessageStore(state => state.messageMap[chatId]?.unreadNumber);
 
 	const [messageListRaw, setMessageListRaw] = useState<Message[]>(chat.messages);
 
@@ -29,7 +32,6 @@ export const useChat = (chat: UserChat) => {
 
 	const firstUnreadRef = useRef<string>('');
 
-	const { members, chatId } = chat;
 	const author = members.find(user => user.userId === userId);
 	const interlocutor = members.find(user => user.userId !== userId);
 	const interlocutorId = interlocutor?.userId || '';
@@ -142,11 +144,6 @@ export const useChat = (chat: UserChat) => {
 			};
 		});
 	}, [messageListRaw, userId]);
-
-	const unreadNumber = useMemo(() => {
-		if (!userId) return 0;
-		return messageList.filter(el => !el.isRead && el.authorId !== userId).length;
-	}, [userId, messageList]);
 
 	return {
 		messageList,
