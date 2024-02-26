@@ -11,9 +11,8 @@ import {
 	SetStateAction,
 	SyntheticEvent,
 } from 'react';
-import { useLeftSideWidthStore } from '@/store';
 
-export type MessageMap = Record<string, Message[]>;
+export type MessageMap = Record<string, { lastMessage: Message; unreadNumber: number }>;
 
 export enum MessageType {
 	COMMON = 'COMMON',
@@ -47,6 +46,7 @@ export type Chat = {
 
 export interface UserChat extends Chat {
 	members: User[];
+	messages: Message[];
 }
 
 export type User = {
@@ -170,13 +170,11 @@ export type UpdateMessage = {
 	roomId: string;
 };
 
-export interface MessageStore {
+export interface LastMessageStore {
 	messageMap: MessageMap;
 	setMessageMap(arg: MessageMap): void;
 	addMessageToMessageMap(arg: Message): void;
-	updateMessageInMessageMap(args: UpdateMessage): void;
-	updateIsRead(message: Message): Promise<void>;
-	addReaction(message: Message, reaction: string, authorImageUrl: string | null | undefined): Promise<void>;
+	updateMessage(arg: UpdateMessage): void;
 }
 export interface StatusStore {
 	activeUsers: string[];
@@ -256,7 +254,7 @@ export interface SubscriberProps {
 	userChats: UserChat[];
 	userEmails: string[];
 	userId: string;
-	messageMap: Record<string, Message[]>;
+	messageMap: MessageMap;
 }
 
 export interface CreateMessage {

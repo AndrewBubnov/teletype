@@ -1,4 +1,4 @@
-import { GetUpdateData, Message, UpdateData } from '@/types';
+import { GetUpdateData, UpdateData } from '@/types';
 
 export const getUpdateData = ({ selectedIds, informAll, updated }: GetUpdateData): UpdateData =>
 	selectedIds.reduce(

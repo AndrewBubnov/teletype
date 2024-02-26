@@ -14,7 +14,7 @@ export async function createChat(userAId: string, userBId: string): Promise<User
 
 	if (existingChat) {
 		const connectedUsers = (await Promise.all(existingChat.memberIds.map(id => getUserByUserId(id)))) as User[];
-		return { ...existingChat, members: connectedUsers };
+		return { ...existingChat, members: connectedUsers, messages: [] };
 	}
 
 	const chat = await prisma.chat.create({
@@ -28,5 +28,5 @@ export async function createChat(userAId: string, userBId: string): Promise<User
 	await addChatIdToUserChatIdsList(userAId, chatId);
 	await addChatIdToUserChatIdsList(userBId, chatId);
 
-	return { ...chat, members: connectedUsers };
+	return { ...chat, members: connectedUsers, messages: [] };
 }

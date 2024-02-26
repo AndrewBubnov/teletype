@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useEffect } from 'react';
-import { useMessageStore, useCommonStore, useStatusStore, useIsWideModeStore } from '@/store';
+import { useLastMessageStore, useCommonStore, useStatusStore, useIsWideModeStore } from '@/store';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
 import { createRooms } from '@/app/chat-list/utils/createRooms';
 import { initUserChats } from '@/webSocketActions/initUserChats';
@@ -15,10 +15,10 @@ import { SERVER_CONNECTION_FAILED } from '@/app/constants';
 import { SubscriberProps } from '@/types';
 
 export const Subscriber = ({ userChats, userEmails, userId, messageMap }: SubscriberProps) => {
-	const { setMessageMap, addMessageToMessageMap, updateMessageInMessageMap } = useMessageStore(state => ({
+	const { setMessageMap, addMessageToMessageMap, updateMessage } = useLastMessageStore(state => ({
 		setMessageMap: state.setMessageMap,
 		addMessageToMessageMap: state.addMessageToMessageMap,
-		updateMessageInMessageMap: state.updateMessageInMessageMap,
+		updateMessage: state.updateMessage,
 	}));
 
 	const { setChatList, setUserEmails, chatList, setUserId, setToast } = useCommonStore(state => ({
@@ -75,7 +75,7 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap }: Subscr
 
 	useSubscribe(addMessageToMessageMap, addClientMessage, clearAddClientMessage);
 
-	useSubscribe(updateMessageInMessageMap, updateClientMessage, clearUpdateClientMessage);
+	useSubscribe(updateMessage, updateClientMessage, clearUpdateClientMessage);
 
 	useSubscribe(setChatList, updateChatList, clearUpdateChatList);
 

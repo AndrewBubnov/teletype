@@ -1,7 +1,4 @@
 import { create } from 'zustand';
-import { updateMessageIsRead } from '@/prismaActions/updateMessageIsRead';
-import { addReaction } from '@/prismaActions/addReaction';
-import { sendEditMessage } from '@/webSocketActions/sendEditMessage';
 import { MIN_LEFT_SIDE_WIDTH } from '@/constants';
 import {
 	ActiveChatStore,
@@ -11,95 +8,35 @@ import {
 	LeftSideWidthStore,
 	Message,
 	MessageMap,
-	MessageStore,
+	LastMessageStore,
 	StatusStore,
-	UpdateMessageType,
 	UserChat,
 } from '@/types';
+import { getLastChatMessage } from '@/prismaActions/getLastChatMessage';
+import { getUnreadNumber } from '@/prismaActions/getUnreadNumber';
 
-export const useMessageStore = create<MessageStore>(set => ({
+export const useLastMessageStore = create<LastMessageStore>(set => ({
 	messageMap: {},
 	setMessageMap: (updated: MessageMap) => set({ messageMap: updated }),
 	addMessageToMessageMap: (message: Message) =>
 		set(state => {
 			if (!message.chatId) return { messageMap: state.messageMap };
-			if (state.messageMap[message.chatId])
-				return {
-					messageMap: {
-						...state.messageMap,
-						[message.chatId]: [...state.messageMap[message.chatId], message],
-					},
-				};
-			return { messageMap: { ...state.messageMap, [message.chatId]: [message] } };
-		}),
-	updateMessageInMessageMap: ({ updateData, type, roomId: chatId }) =>
-		set(state => {
-			if (type === UpdateMessageType.DELETE) {
-				const deletedIds = Object.keys(updateData);
-				return {
-					messageMap: {
-						...state.messageMap,
-						[chatId]: state.messageMap[chatId].filter(el => !deletedIds.includes(el.id)),
-					},
-				};
-			}
 			return {
 				messageMap: {
 					...state.messageMap,
-					[chatId]: state.messageMap[chatId].map(el => {
-						if (updateData[el.id]) return updateData[el.id]!;
-						return el;
-					}),
+					[message.chatId]: {
+						lastMessage: message,
+						unreadNumber: (state.messageMap[message.chatId]?.unreadNumber || 0) + 1,
+					},
 				},
 			};
 		}),
-	updateIsRead: async (message: Message) => {
-		const { id, chatId } = message;
-		const updated = await updateMessageIsRead(id);
-		if (updated) {
-			sendEditMessage({
-				updateData: { [id]: updated },
-				type: UpdateMessageType.EDIT,
-				roomId: chatId,
-			});
-		}
-		return set(state => {
-			const predicate = (el: Message): boolean => el.id === id;
-			const message = state.messageMap[chatId].find(predicate);
-			if (message && !message?.isRead) {
-				return {
-					messageMap: {
-						...state.messageMap,
-						[chatId]: state.messageMap[chatId].map(el => (predicate(el) ? { ...el, isRead: true } : el)),
-					},
-				};
-			}
-			return state;
-		});
-	},
-	addReaction: async (message: Message, reaction: string, authorImageUrl: string | null | undefined) => {
-		const { id: messageId, chatId } = message;
-		const updated = await addReaction({ messageId, reaction, authorImageUrl });
-		if (updated) {
-			sendEditMessage({
-				updateData: { [messageId]: updated },
-				type: UpdateMessageType.EDIT,
-				roomId: chatId,
-			});
-		}
+	updateMessage: async ({ roomId: chatId }) => {
+		const [lastMessage, unreadNumber] = await Promise.all([getLastChatMessage(chatId), getUnreadNumber(chatId)]);
 		set(state => ({
 			messageMap: {
 				...state.messageMap,
-				[chatId]: state.messageMap[chatId].map(message => {
-					if (message.id === messageId) {
-						return {
-							...message,
-							reaction,
-							reactionAuthorImageUrl: reaction ? authorImageUrl : undefined,
-						};
-					}
-					return message;
-				}),
+				[chatId]: { lastMessage, unreadNumber },
 			},
 		}));
 	},

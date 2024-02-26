@@ -1,17 +1,17 @@
 'use client';
 import { useEffect, useMemo } from 'react';
-import { useActiveChatStore, useCommonStore, useIsWideModeStore, useMessageStore } from '@/store';
+import { useActiveChatStore, useCommonStore, useIsWideModeStore, useLastMessageStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
 import { deleteChats } from '@/prismaActions/deleteChats';
 import { useSelect } from '@/app/shared/hooks/useSelect';
 import { ChatListItem } from '@/app/chat-list/components/ChatListItem/ChatListItem';
 import { Fade } from '@/app/shared/components/Fade';
+import { LeftSideResizable } from '@/app/chat-list/components/LeftSideResizable/LeftSideResizable';
 import { SelectModeHeader } from '@/app/shared/components/SelectModeHeader';
 import { sortChatsByLatestMessage } from '@/app/chat-list/utils/sortChatsByLatestMessage';
 import { CHAT_LIST } from '@/constants';
 import styles from './ChatsList.module.css';
-import { LeftSideResizable } from '@/app/chat-list/components/LeftSideResizable/LeftSideResizable';
 
 export const ChatsList = () => {
 	const { chatList, userId } = useCommonStore(state => ({
@@ -24,7 +24,7 @@ export const ChatsList = () => {
 		setActiveChat: state.setActiveChat,
 	}));
 
-	const messageMap = useMessageStore(state => state.messageMap);
+	const messageMap = useLastMessageStore(state => state.messageMap);
 	const isWideMode = useIsWideModeStore(state => state.isWideMode);
 
 	const { selectedIds, isAllSelected, toggleAllSelected, addSelection, startSelection, dropSelectMode } =
@@ -43,7 +43,7 @@ export const ChatsList = () => {
 			addSelection(id);
 			return;
 		}
-		if (!isWideMode) push(`${CHAT_LIST}/${chatId}`, { shallow: true });
+		if (!isWideMode) push(`${CHAT_LIST}/${chatId}?t=${Date.now()}`, { shallow: true });
 		if (isWideMode) setActiveChat(chatList.find(chat => chat.id === id) || null);
 	};
 

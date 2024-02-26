@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useCommonStore, useIsWideModeStore, useMessageStore, useStatusStore } from '@/store';
+import { useIsWideModeStore, useLastMessageStore, useStatusStore } from '@/store';
 import { useLongPress } from '@/app/chat-list/[chatId]/hooks/useLongPress';
 import { clsx } from 'clsx';
 import Image from 'next/image';
@@ -17,14 +17,13 @@ export const ChatListItem = ({
 	isChecked,
 	isActiveChat,
 }: ChatListItemProps) => {
-	const userId = useCommonStore(state => state.userId);
 	const activeUsers = useStatusStore(state => state.activeUsers);
-	const messageMap = useMessageStore(state => state.messageMap);
+	const messageMap = useLastMessageStore(state => state.messageMap);
 	const isWideMode = useIsWideModeStore(state => state.isWideMode);
 
 	const messageList = messageMap[chatId] || [];
-	const unreadNumber = messageList.filter(el => !el.isRead && el.authorId !== userId).length;
-	const lastMessage = messageList.at(-1) || null;
+	const unreadNumber = messageList.unreadNumber || 0;
+	const lastMessage = messageList.lastMessage || null;
 
 	const pressHandler = useLongPress({ onLongPress, onPress });
 
