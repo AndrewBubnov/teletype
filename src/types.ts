@@ -195,6 +195,7 @@ export interface CommonStore {
 }
 
 export interface ActiveChatStore {
+	isActiveChatLoading: boolean;
 	activeChat: UserChat | null;
 	setActiveChat(arg: UserChat | null): void;
 }

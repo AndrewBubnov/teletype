@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useCommonStore, useIsWideModeStore, useLastMessageStore } from '@/store';
+import { useActiveChatStore, useCommonStore, useIsWideModeStore, useLastMessageStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { sendChangeVisitorStatus } from '@/webSocketActions/sendChangeVisitorStatus';
 import { addReaction } from '@/prismaActions/addReaction';
@@ -20,6 +20,7 @@ export const useChat = (chat: UserChat) => {
 	}));
 	const isWideMode = useIsWideModeStore(state => state.isWideMode);
 	const unreadNumber = useLastMessageStore(state => state.messageMap[chatId]?.unreadNumber);
+	const isActiveChatLoading = useActiveChatStore(state => state.isActiveChatLoading);
 
 	const [messageListRaw, setMessageListRaw] = useState<Message[]>(chat.messages);
 
@@ -43,6 +44,7 @@ export const useChat = (chat: UserChat) => {
 
 	useEffect(() => {
 		setMessageListRaw(chat.messages);
+		firstUnreadRef.current = '';
 	}, [chat]);
 
 	useEffect(() => {
@@ -162,6 +164,7 @@ export const useChat = (chat: UserChat) => {
 		unreadNumber,
 		updateIsRead,
 		firstUnreadId: firstUnreadRef.current || null,
+		isActiveChatLoading,
 		userId,
 	};
 };

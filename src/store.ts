@@ -64,10 +64,12 @@ export const useCommonStore = create<CommonStore>(set => ({
 }));
 
 export const useActiveChatStore = create<ActiveChatStore>(set => ({
+	isActiveChatLoading: false,
 	activeChat: null,
 	setActiveChat: async (newActiveChat: UserChat) => {
+		set({ isActiveChatLoading: true });
 		const chat = await getChatByChatId(newActiveChat.chatId);
-		set({ activeChat: chat });
+		set({ activeChat: chat, isActiveChatLoading: false });
 	},
 }));
 
