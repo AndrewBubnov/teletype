@@ -14,6 +14,7 @@ import {
 } from '@/types';
 import { getLastChatMessage } from '@/prismaActions/getLastChatMessage';
 import { getUnreadNumber } from '@/prismaActions/getUnreadNumber';
+import { getChatByChatId } from '@/prismaActions/getChatByChatId';
 
 export const useLastMessageStore = create<LastMessageStore>(set => ({
 	messageMap: {},
@@ -64,7 +65,10 @@ export const useCommonStore = create<CommonStore>(set => ({
 
 export const useActiveChatStore = create<ActiveChatStore>(set => ({
 	activeChat: null,
-	setActiveChat: (activeChat: UserChat) => set({ activeChat }),
+	setActiveChat: async (newActiveChat: UserChat) => {
+		const chat = await getChatByChatId(newActiveChat.chatId);
+		set({ activeChat: chat });
+	},
 }));
 
 export const useIsWideModeStore = create<IsWideModeStore>(set => ({
