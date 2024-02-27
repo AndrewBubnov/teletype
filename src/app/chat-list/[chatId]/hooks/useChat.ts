@@ -42,6 +42,10 @@ export const useChat = (chat: UserChat) => {
 	const interlocutorImageUrl = interlocutor?.imageUrl;
 
 	useEffect(() => {
+		setMessageListRaw(chat.messages);
+	}, [chat]);
+
+	useEffect(() => {
 		if (isWideMode) push(CHAT_LIST);
 	}, [isWideMode, push]);
 
