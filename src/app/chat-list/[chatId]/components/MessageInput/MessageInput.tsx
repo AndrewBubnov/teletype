@@ -50,8 +50,8 @@ export const MessageInput = ({
 	useSendTyping(interlocutorId, messageText);
 
 	useEffect(() => {
-		setMessageText('');
-	}, [chatId]);
+		setMessageText(draftMap[chatId] || '');
+	}, [chatId, draftMap]);
 
 	useEffect(() => {
 		if (!editedMessage) return;
