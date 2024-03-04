@@ -50,6 +50,10 @@ export const MessageInput = ({
 	useSendTyping(interlocutorId, messageText);
 
 	useEffect(() => {
+		setMessageText('');
+	}, [chatId]);
+
+	useEffect(() => {
 		if (!editedMessage) return;
 		setMessageImageUrl(editedMessage.imageUrl || '');
 		setMessageText(editedMessage.text || '');
