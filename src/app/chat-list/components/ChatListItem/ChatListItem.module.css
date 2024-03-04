@@ -122,6 +122,10 @@
     overflow: hidden;
 }
 
+.draft {
+    color: red;
+}
+
 .chatUnreadMessages {
     width: 1.5rem;
     height: 1.5rem;

@@ -36,7 +36,12 @@ export const ChatListItem = ({
 
 	const renderedMessage = useMemo(() => {
 		if (!unreadNumber && draft) {
-			return <div className={styles.chatListItemMessageText}>{draft}</div>;
+			return (
+				<div className={styles.chatListItemMessageText}>
+					<span className={styles.draft}>Draft: </span>
+					{draft}
+				</div>
+			);
 		}
 		return lastMessage ? (
 			<div className={styles.userWrapper}>

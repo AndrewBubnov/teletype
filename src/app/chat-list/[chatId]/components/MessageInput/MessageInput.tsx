@@ -1,6 +1,8 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useCommonStore, useDraftMessageStore } from '@/store';
 import { useSendTyping } from '@/app/chat-list/[chatId]/hooks/useSendTyping';
+import { useFileUpload } from '@/app/shared/hooks/useFileUpload';
+import { useLatest } from '@/app/chat-list/[chatId]/hooks/useLatest';
 import { RepliedMessageBox } from '@/app/chat-list/[chatId]/components/RepliedMessageBox/RepliedMessageBox';
 import { sendMessageToServer } from '@/webSocketActions/sendMessageToServer';
 import { ImagePreviewModal } from '@/app/chat-list/[chatId]/components/ImagePreviewModal/ImagePreviewModal';
@@ -8,14 +10,12 @@ import { TextAreaEndDecorator } from '@/app/chat-list/[chatId]/components/TextAr
 import { TextAreaStartDecorator } from '@/app/chat-list/[chatId]/components/TextAreaStartDecorator/TextAreaStartDecorator';
 import { sendEditMessage } from '@/webSocketActions/sendEditMessage';
 import { CameraMode } from '@/app/chat-list/[chatId]/components/CameraMode/CameraMode';
-import { useFileUpload } from '@/app/shared/hooks/useFileUpload';
 import { DIALOG_MARGINS } from '@/app/chat-list/[chatId]/constants';
 import { createMessage } from '@/prismaActions/createMessage';
 import { updateMessage } from '@/prismaActions/updateMessage';
 import { TextArea } from '@/app/chat-list/[chatId]/components/TextArea/TextArea';
 import { Message, MessageInputProps, MessageType, UpdateMessageType } from '@/types';
 import styles from './MessageInput.module.css';
-import { useLatest } from '@/app/chat-list/[chatId]/hooks/useLatest';
 
 export const MessageInput = ({
 	chatId,
@@ -27,6 +27,7 @@ export const MessageInput = ({
 	interlocutorId,
 }: MessageInputProps) => {
 	const userId = useCommonStore(state => state.userId);
+
 	const { addDraft, removeDraft, draftMap } = useDraftMessageStore(state => ({
 		addDraft: state.addDraft,
 		removeDraft: state.removeDraft,
@@ -67,23 +68,27 @@ export const MessageInput = ({
 		[addDraft, chatId, messageTextRef, removeDraft]
 	);
 
-	const textChangeHandler = (evt: ChangeEvent<HTMLTextAreaElement>) => {
-		const { value } = evt.target;
-		setMessageText(value);
-		if (emojis) setEmojis(value);
-		if (editedMessage?.type === MessageType.EMOJI) setEmojis(value);
-	};
+	const textChangeHandler = useCallback(
+		(evt: ChangeEvent<HTMLTextAreaElement>) => {
+			const { value } = evt.target;
+			setMessageText(value);
+			if (!value) removeDraft(chatId);
+			if (emojis) setEmojis(value);
+			if (editedMessage?.type === MessageType.EMOJI) setEmojis(value);
+		},
+		[chatId, editedMessage?.type, emojis, removeDraft]
+	);
 
-	const resetState = () => {
+	const resetState = useCallback(() => {
 		setMessageText('');
 		setMessageImageUrl('');
 		setEmojis('');
 		setRepliedMessage(null);
 		setEditedMessage(null);
 		removeDraft(chatId);
-	};
+	}, [chatId, removeDraft, setEditedMessage, setMessageImageUrl, setRepliedMessage]);
 
-	const submitHandler = async () => {
+	const submitHandler = useCallback(async () => {
 		if (!messageText && !messageImageUrl) return;
 		const type = messageText && emojis && messageText === emojis ? MessageType.EMOJI : MessageType.COMMON;
 
@@ -116,23 +121,32 @@ export const MessageInput = ({
 			if (message) sendMessageToServer(message, chatId);
 		}
 		resetState();
-	};
+	}, [
+		authorName,
+		chatId,
+		editedMessage,
+		emojis,
+		messageImageUrl,
+		messageText,
+		repliedMessage?.id,
+		resetState,
+		userId,
+	]);
 
 	const emojiHandler = (reaction: string) => () => {
 		const nextEmoji = String.fromCodePoint(parseInt(reaction, 16));
 		setMessageText(prevState => `${prevState} ${nextEmoji}`);
 		setEmojis(prevState => `${prevState} ${nextEmoji}`);
 	};
-	const dropReplyHandler = () => setRepliedMessage(null);
 
-	const openPreviewModalHandler = () => {
+	const dropReplyHandler = useCallback(() => setRepliedMessage(null), [setRepliedMessage]);
+
+	const openPreviewModalHandler = useCallback(() => {
 		if (!messageImageUrl) return;
 		setIsImagePreviewModalOpen(true);
-	};
+	}, [messageImageUrl]);
 
-	const closePhotoModalHandler = (_?: {}, reason?: string) => {
-		if (reason !== 'backdropClick') setIsCameraOn(false);
-	};
+	const closePhotoModalHandler = useCallback(() => setIsCameraOn(false), []);
 
 	if (isCameraOn) {
 		return <CameraMode isOpen={isCameraOn} onClose={closePhotoModalHandler} onTakePhoto={setMessageImageUrl} />;
