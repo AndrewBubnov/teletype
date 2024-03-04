@@ -11,6 +11,7 @@ import {
 	LastMessageStore,
 	StatusStore,
 	UserChat,
+	DraftMessageStore,
 } from '@/types';
 import { getLastChatMessage } from '@/prismaActions/getLastChatMessage';
 import { getUnreadNumber } from '@/prismaActions/getUnreadNumber';
@@ -45,6 +46,24 @@ export const useLastMessageStore = create<LastMessageStore>(set => ({
 		}));
 	},
 }));
+
+export const useDraftMessageStore = create<DraftMessageStore>(set => ({
+	draftMap: {},
+	addDraft: (draft: string, chatId: string) =>
+		set(state => ({
+			draftMap: {
+				...state.draftMap,
+				[chatId]: draft,
+			},
+		})),
+	removeDraft: (chatId: string) =>
+		set(state => {
+			const updated = { ...state.draftMap };
+			delete updated[chatId];
+			return { draftMap: updated };
+		}),
+}));
+
 export const useStatusStore = create<StatusStore>(set => ({
 	activeUsers: [],
 	chatVisitorStatus: {},

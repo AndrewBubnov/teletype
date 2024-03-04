@@ -176,6 +176,12 @@ export interface LastMessageStore {
 	addMessageToMessageMap(arg: Message): void;
 	updateMessage(arg: UpdateMessage): void;
 }
+
+export interface DraftMessageStore {
+	draftMap: Record<string, string>;
+	addDraft(draft: string, chatId: string): void;
+	removeDraft(chatId: string): void;
+}
 export interface StatusStore {
 	activeUsers: string[];
 	chatVisitorStatus: ChatVisitorStatus;

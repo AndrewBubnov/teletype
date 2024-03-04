@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useCommonStore } from '@/store';
+import { useCommonStore, useDraftMessageStore } from '@/store';
 import { useSendTyping } from '@/app/chat-list/[chatId]/hooks/useSendTyping';
 import { RepliedMessageBox } from '@/app/chat-list/[chatId]/components/RepliedMessageBox/RepliedMessageBox';
 import { sendMessageToServer } from '@/webSocketActions/sendMessageToServer';
@@ -15,6 +15,7 @@ import { updateMessage } from '@/prismaActions/updateMessage';
 import { TextArea } from '@/app/chat-list/[chatId]/components/TextArea/TextArea';
 import { Message, MessageInputProps, MessageType, UpdateMessageType } from '@/types';
 import styles from './MessageInput.module.css';
+import { useLatest } from '@/app/chat-list/[chatId]/hooks/useLatest';
 
 export const MessageInput = ({
 	chatId,
@@ -26,11 +27,18 @@ export const MessageInput = ({
 	interlocutorId,
 }: MessageInputProps) => {
 	const userId = useCommonStore(state => state.userId);
+	const { addDraft, removeDraft, draftMap } = useDraftMessageStore(state => ({
+		addDraft: state.addDraft,
+		removeDraft: state.removeDraft,
+		draftMap: state.draftMap,
+	}));
 
-	const [messageText, setMessageText] = useState<string>('');
+	const [messageText, setMessageText] = useState<string>(draftMap[chatId] || '');
 	const [emojis, setEmojis] = useState<string>('');
 	const [isImagePreviewModalOpen, setIsImagePreviewModalOpen] = useState<boolean>(false);
 	const [isCameraOn, setIsCameraOn] = useState<boolean>(false);
+
+	const messageTextRef = useLatest(messageText);
 
 	const {
 		imageUrl: messageImageUrl,
@@ -48,6 +56,13 @@ export const MessageInput = ({
 		if (editedMessage.type === MessageType.EMOJI) setEmojis(editedMessage.text || '');
 	}, [setMessageImageUrl, editedMessage]);
 
+	useEffect(
+		() => () => {
+			if (messageTextRef.current) addDraft(messageTextRef.current, chatId);
+		},
+		[addDraft, chatId, messageTextRef, removeDraft]
+	);
+
 	const textChangeHandler = (evt: ChangeEvent<HTMLTextAreaElement>) => {
 		const { value } = evt.target;
 		setMessageText(value);
@@ -61,6 +76,7 @@ export const MessageInput = ({
 		setEmojis('');
 		setRepliedMessage(null);
 		setEditedMessage(null);
+		removeDraft(chatId);
 	};
 
 	const submitHandler = async () => {
