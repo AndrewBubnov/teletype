@@ -22,9 +22,9 @@ export const ChatListItem = ({
 	const isWideMode = useIsWideModeStore(state => state.isWideMode);
 	const draftMap = useDraftMessageStore(state => state.draftMap);
 
-	const messageList = messageMap[chatId] || [];
-	const unreadNumber = messageList.unreadNumber || 0;
-	const lastMessage = messageList.lastMessage || null;
+	const chatUnreadParams = messageMap[chatId] || [];
+	const unreadNumber = chatUnreadParams.unreadNumber || 0;
+	const lastMessage = chatUnreadParams.lastMessage || null;
 	const draft = draftMap[chatId] || null;
 
 	const pressHandler = useLongPress({ onLongPress, onPress });
