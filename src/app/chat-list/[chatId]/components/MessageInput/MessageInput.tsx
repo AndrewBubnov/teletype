@@ -48,6 +48,11 @@ export const MessageInput = ({
 		if (editedMessage.type === MessageType.EMOJI) setEmojis(editedMessage.text || '');
 	}, [setMessageImageUrl, editedMessage]);
 
+	useEffect(() => {
+		setMessageText('');
+		dropMessageImageUrl();
+	}, [chatId, dropMessageImageUrl]);
+
 	const textChangeHandler = (evt: ChangeEvent<HTMLTextAreaElement>) => {
 		const { value } = evt.target;
 		setMessageText(value);
