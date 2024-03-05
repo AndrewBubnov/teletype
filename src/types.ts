@@ -203,7 +203,7 @@ export interface CommonStore {
 export interface ActiveChatStore {
 	isActiveChatLoading: boolean;
 	activeChat: UserChat | null;
-	setActiveChat(arg: UserChat | null): void;
+	setActiveChat(arg: string): void;
 }
 
 export interface IsWideModeStore {
