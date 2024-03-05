@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useActiveChatStore, useCommonStore, useIsWideModeStore, useLastMessageStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { sendChangeVisitorStatus } from '@/webSocketActions/sendChangeVisitorStatus';
@@ -45,13 +45,13 @@ export const useChat = (chat: UserChat) => {
 	const authorImageUrl = author?.imageUrl;
 	const interlocutorImageUrl = interlocutor?.imageUrl;
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		setMessageListRaw(chat.messages);
 		firstUnreadRef.current = '';
 	}, [chat]);
 
 	useEffect(() => {
-		if (isWideMode) push(CHAT_LIST);
+		if (isWideMode) push(`${CHAT_LIST}?t=${Date.now()}`);
 	}, [isWideMode, push]);
 
 	useEffect(() => {

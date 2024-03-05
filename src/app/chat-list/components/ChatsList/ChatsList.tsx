@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useActiveChatStore, useCommonStore, useIsWideModeStore, useLastMessageStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
@@ -27,6 +27,8 @@ export const ChatsList = () => {
 	const messageMap = useLastMessageStore(state => state.messageMap);
 	const isWideMode = useIsWideModeStore(state => state.isWideMode);
 
+	const [activeChatId, setActiveChatId] = useState<string>('');
+
 	const { selectedIds, isAllSelected, toggleAllSelected, addSelection, startSelection, dropSelectMode } =
 		useSelect(chatList);
 
@@ -35,8 +37,12 @@ export const ChatsList = () => {
 	const sortedChatList = useMemo(() => sortChatsByLatestMessage(chatList, messageMap), [chatList, messageMap]);
 
 	useEffect(() => {
-		if (!activeChat && isWideMode) setActiveChat(sortedChatList[0] || null);
-	}, [activeChat, isWideMode, setActiveChat, sortedChatList]);
+		if (!activeChat && isWideMode) setActiveChatId(sortedChatList[0]?.chatId);
+	}, [activeChat, isWideMode, sortedChatList]);
+
+	useEffect(() => {
+		setActiveChat(activeChatId);
+	}, [activeChatId, setActiveChat]);
 
 	const chatPressHandler = (id: string, chatId: string) => () => {
 		if (selectedIds.length) {
@@ -44,7 +50,7 @@ export const ChatsList = () => {
 			return;
 		}
 		if (!isWideMode) push(`${CHAT_LIST}/${chatId}?t=${Date.now()}`, { shallow: true });
-		if (isWideMode) setActiveChat(chatList.find(chat => chat.id === id) || null);
+		if (isWideMode) setActiveChatId(chatId);
 	};
 
 	const chatLongPressHandler = (id: string) => () => startSelection(id);
