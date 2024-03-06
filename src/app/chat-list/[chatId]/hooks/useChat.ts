@@ -69,6 +69,7 @@ export const useChat = (chat: UserChat) => {
 	}, [chatId, userId]);
 
 	const updateIsRead = async (message: Message) => {
+		if (message.isRead) return;
 		const { id, chatId } = message;
 		const updated = await updateMessageIsRead(id);
 		if (!updated) return;

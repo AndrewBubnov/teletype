@@ -1,6 +1,4 @@
 import { create } from 'zustand';
-import { getLastChatMessage } from '@/prismaActions/getLastChatMessage';
-import { getUnreadNumber } from '@/prismaActions/getUnreadNumber';
 import { getChatByChatId } from '@/prismaActions/getChatByChatId';
 import { MIN_LEFT_SIDE_WIDTH } from '@/constants';
 import {
@@ -14,9 +12,10 @@ import {
 	LastMessageStore,
 	StatusStore,
 	UserChat,
+	UpdateMessage,
 } from '@/types';
 
-export const useLastMessageStore = create<LastMessageStore>(set => ({
+export const useLastMessageStore = create<LastMessageStore>((set, getState) => ({
 	messageMap: {},
 	setMessageMap: (updated: MessageMap) => set({ messageMap: updated }),
 	addMessageToMessageMap: (message: Message) =>
@@ -35,14 +34,21 @@ export const useLastMessageStore = create<LastMessageStore>(set => ({
 				},
 			};
 		}),
-	updateMessage: async ({ roomId: chatId }) => {
-		const [lastMessage, unreadNumber] = await Promise.all([getLastChatMessage(chatId), getUnreadNumber(chatId)]);
-		set(state => ({
-			messageMap: {
-				...state.messageMap,
-				[chatId]: { lastMessage, unreadNumber },
-			},
-		}));
+	updateMessage: async ({ updateData, roomId: chatId }: UpdateMessage) => {
+		const [message] = Object.values(updateData);
+		const lastMessage = getState().messageMap[chatId].lastMessage;
+		set(state => {
+			const previousUnreadNumber = getState().messageMap[chatId].unreadNumber;
+			const { userId } = useCommonStore.getState();
+			const isRead = message?.authorId !== userId && message?.isRead;
+			const unreadNumber = Math.max(previousUnreadNumber - (isRead ? 1 : 0), 0);
+			return {
+				messageMap: {
+					...state.messageMap,
+					[chatId]: { lastMessage, unreadNumber },
+				},
+			};
+		});
 	},
 }));
 export const useStatusStore = create<StatusStore>(set => ({
