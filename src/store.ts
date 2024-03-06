@@ -1,4 +1,7 @@
 import { create } from 'zustand';
+import { getLastChatMessage } from '@/prismaActions/getLastChatMessage';
+import { getUnreadNumber } from '@/prismaActions/getUnreadNumber';
+import { getChatByChatId } from '@/prismaActions/getChatByChatId';
 import { MIN_LEFT_SIDE_WIDTH } from '@/constants';
 import {
 	ActiveChatStore,
@@ -12,9 +15,6 @@ import {
 	StatusStore,
 	UserChat,
 } from '@/types';
-import { getLastChatMessage } from '@/prismaActions/getLastChatMessage';
-import { getUnreadNumber } from '@/prismaActions/getUnreadNumber';
-import { getChatByChatId } from '@/prismaActions/getChatByChatId';
 
 export const useLastMessageStore = create<LastMessageStore>(set => ({
 	messageMap: {},
