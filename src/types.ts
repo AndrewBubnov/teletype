@@ -12,7 +12,7 @@ import {
 	SyntheticEvent,
 } from 'react';
 
-export type UnreadMessageMap = Record<string, { lastMessage: Message; ids: string[] }>;
+export type UnreadMessageMap = Record<string, { lastMessage: Message | null; unreadMessages: Message[] }>;
 
 export enum MessageType {
 	COMMON = 'COMMON',
@@ -156,8 +156,6 @@ export interface ImageMessageProps {
 	message: Message;
 	isEnlarged: boolean;
 }
-
-export type UpdateData = Record<string, Message | null>;
 
 export enum UpdateMessageType {
 	EDIT = 'edit',
@@ -343,12 +341,6 @@ export interface ChatHeaderProps {
 	toggleAllSelected(): void;
 }
 
-export interface GetUpdateData {
-	selectedIds: string[];
-	informAll: boolean;
-	updated: Message[];
-}
-
 export interface StyledElementClone {
 	className: string;
 	style: CSSProperties;
@@ -369,3 +361,7 @@ export interface FadeProviderProps extends FadeContextProps {
 }
 
 export type AspectRatioAndWidth = { width: number; aspectRatio: number };
+
+export interface UpdateUnreadInStore extends UpdateMessage {
+	state: UnreadMessagesStore;
+}

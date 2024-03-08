@@ -8,63 +8,25 @@ import {
 	IsWideModeStore,
 	LeftSideWidthStore,
 	Message,
+	StatusStore,
 	UnreadMessageMap,
 	UnreadMessagesStore,
-	StatusStore,
-	UserChat,
 	UpdateMessage,
+	UserChat,
 } from '@/types';
+import { updateUnreadMessagesInStore } from '@/utils/updateUnreadMessagesInStore';
+import { addMessageInStore } from '@/utils/addMessageInStore';
+import { updateIsReadInState } from '@/utils/updateIsReadInState';
 
-export const useUnreadMessagesStore = create<UnreadMessagesStore>((set, getState) => ({
+export const useUnreadMessagesStore = create<UnreadMessagesStore>(set => ({
 	messageMap: {},
 	setMessageMap: (updated: UnreadMessageMap) => set({ messageMap: updated }),
-	addMessageToMessageMap: (message: Message) =>
-		set(state => {
-			if (!message.chatId) return { messageMap: state.messageMap };
-			const { userId } = useCommonStore.getState();
-			const isAuthoredByUser = message.authorId === userId;
-			const ids = state.messageMap[message.chatId]?.ids || [];
-			return {
-				messageMap: {
-					...state.messageMap,
-					[message.chatId]: {
-						lastMessage: message,
-						ids: [...ids, ...(isAuthoredByUser ? [] : [message.id])],
-					},
-				},
-			};
-		}),
-	updateUnreadMessages: ({ updateData, roomId: chatId }: UpdateMessage) => {},
-	updateIsReadUnreadMessages: (message: Message) =>
-		set(state => {
-			const { ids, lastMessage } = state.messageMap[message.chatId];
-			return {
-				messageMap: {
-					...state.messageMap,
-					[message.chatId]: {
-						lastMessage,
-						ids: ids.filter(el => el !== message.id),
-					},
-				},
-			};
-		}),
-	// updateMessage: async ({ updateData, roomId: chatId }: UpdateMessage) => {
-	// 	const [message] = Object.values(updateData);
-	// 	const lastMessage = getState().messageMap[chatId].lastMessage;
-	// 	set(state => {
-	// 		const previousUnreadNumber = getState().messageMap[chatId].unreadNumber;
-	// 		const { userId } = useCommonStore.getState();
-	// 		const isRead = message?.authorId !== userId && message?.isRead;
-	// 		const unreadNumber = Math.max(previousUnreadNumber - (isRead ? 1 : 0), 0);
-	// 		return {
-	// 			messageMap: {
-	// 				...state.messageMap,
-	// 				[chatId]: { lastMessage, unreadNumber },
-	// 			},
-	// 		};
-	// 	});
-	// },
+	addMessageToMessageMap: (message: Message) => set(state => addMessageInStore(state, message)),
+	updateUnreadMessages: ({ updateData, roomId, type }: UpdateMessage) =>
+		set(state => updateUnreadMessagesInStore({ state, roomId, updateData, type })),
+	updateIsReadUnreadMessages: (message: Message) => set(state => updateIsReadInState(state, message)),
 }));
+
 export const useStatusStore = create<StatusStore>(set => ({
 	activeUsers: [],
 	chatVisitorStatus: {},

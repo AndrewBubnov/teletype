@@ -91,7 +91,7 @@ export const Chat = ({ chat }: ChatProps) => {
 		async (informAll: boolean) => {
 			setMenuActiveId('');
 			const type = informAll ? UpdateMessageType.DELETE : UpdateMessageType.EDIT;
-			const hideToId = type === UpdateMessageType.EDIT ? userId : null;
+			const hideToId = informAll ? null : userId;
 			const updated = await deleteOrHideMessages(selectedIds, type, hideToId);
 			sendEditMessage({ updateData: updated, type, roomId: chatId });
 			dropSelectMode();

@@ -22,7 +22,7 @@ export const ChatListItem = ({
 	const isWideMode = useIsWideModeStore(state => state.isWideMode);
 
 	const messageList = messageMap[chatId] || [];
-	const unreadNumber = (messageList.ids || []).length;
+	const unreadNumber = (messageList.unreadMessages || []).length;
 	const lastMessage = messageList.lastMessage || null;
 
 	const pressHandler = useLongPress({ onLongPress, onPress });
