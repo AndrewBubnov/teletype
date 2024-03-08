@@ -1,6 +1,6 @@
-import { MessageMap, UserChat } from '@/types';
+import { UnreadMessageMap, UserChat } from '@/types';
 
-export const sortChatsByLatestMessage = (chatList: UserChat[], messageMap: MessageMap) =>
+export const sortChatsByLatestMessage = (chatList: UserChat[], messageMap: UnreadMessageMap) =>
 	chatList.sort((chatA, chatB) => {
 		const messageListA = messageMap[chatA.chatId] || [];
 		const messageListB = messageMap[chatB.chatId] || [];

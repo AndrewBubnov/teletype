@@ -8,48 +8,62 @@ import {
 	IsWideModeStore,
 	LeftSideWidthStore,
 	Message,
-	MessageMap,
-	LastMessageStore,
+	UnreadMessageMap,
+	UnreadMessagesStore,
 	StatusStore,
 	UserChat,
 	UpdateMessage,
 } from '@/types';
 
-export const useLastMessageStore = create<LastMessageStore>((set, getState) => ({
+export const useUnreadMessagesStore = create<UnreadMessagesStore>((set, getState) => ({
 	messageMap: {},
-	setMessageMap: (updated: MessageMap) => set({ messageMap: updated }),
+	setMessageMap: (updated: UnreadMessageMap) => set({ messageMap: updated }),
 	addMessageToMessageMap: (message: Message) =>
 		set(state => {
 			if (!message.chatId) return { messageMap: state.messageMap };
 			const { userId } = useCommonStore.getState();
 			const isAuthoredByUser = message.authorId === userId;
+			const ids = state.messageMap[message.chatId]?.ids || [];
 			return {
 				messageMap: {
 					...state.messageMap,
 					[message.chatId]: {
 						lastMessage: message,
-						unreadNumber:
-							(state.messageMap[message.chatId]?.unreadNumber || 0) + (isAuthoredByUser ? 0 : 1),
+						ids: [...ids, ...(isAuthoredByUser ? [] : [message.id])],
 					},
 				},
 			};
 		}),
-	updateMessage: async ({ updateData, roomId: chatId }: UpdateMessage) => {
-		const [message] = Object.values(updateData);
-		const lastMessage = getState().messageMap[chatId].lastMessage;
+	updateUnreadMessages: ({ updateData, roomId: chatId }: UpdateMessage) => {},
+	updateIsReadUnreadMessages: (message: Message) =>
 		set(state => {
-			const previousUnreadNumber = getState().messageMap[chatId].unreadNumber;
-			const { userId } = useCommonStore.getState();
-			const isRead = message?.authorId !== userId && message?.isRead;
-			const unreadNumber = Math.max(previousUnreadNumber - (isRead ? 1 : 0), 0);
+			const { ids, lastMessage } = state.messageMap[message.chatId];
 			return {
 				messageMap: {
 					...state.messageMap,
-					[chatId]: { lastMessage, unreadNumber },
+					[message.chatId]: {
+						lastMessage,
+						ids: ids.filter(el => el !== message.id),
+					},
 				},
 			};
-		});
-	},
+		}),
+	// updateMessage: async ({ updateData, roomId: chatId }: UpdateMessage) => {
+	// 	const [message] = Object.values(updateData);
+	// 	const lastMessage = getState().messageMap[chatId].lastMessage;
+	// 	set(state => {
+	// 		const previousUnreadNumber = getState().messageMap[chatId].unreadNumber;
+	// 		const { userId } = useCommonStore.getState();
+	// 		const isRead = message?.authorId !== userId && message?.isRead;
+	// 		const unreadNumber = Math.max(previousUnreadNumber - (isRead ? 1 : 0), 0);
+	// 		return {
+	// 			messageMap: {
+	// 				...state.messageMap,
+	// 				[chatId]: { lastMessage, unreadNumber },
+	// 			},
+	// 		};
+	// 	});
+	// },
 }));
 export const useStatusStore = create<StatusStore>(set => ({
 	activeUsers: [],

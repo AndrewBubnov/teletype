@@ -12,7 +12,7 @@ import {
 	SyntheticEvent,
 } from 'react';
 
-export type MessageMap = Record<string, { lastMessage: Message; unreadNumber: number }>;
+export type UnreadMessageMap = Record<string, { lastMessage: Message; ids: string[] }>;
 
 export enum MessageType {
 	COMMON = 'COMMON',
@@ -170,11 +170,12 @@ export type UpdateMessage = {
 	roomId: string;
 };
 
-export interface LastMessageStore {
-	messageMap: MessageMap;
-	setMessageMap(arg: MessageMap): void;
+export interface UnreadMessagesStore {
+	messageMap: UnreadMessageMap;
+	setMessageMap(arg: UnreadMessageMap): void;
 	addMessageToMessageMap(arg: Message): void;
-	updateMessage(arg: UpdateMessage): void;
+	updateUnreadMessages(arg: UpdateMessage): void;
+	updateIsReadUnreadMessages(arg: Message): void;
 }
 export interface StatusStore {
 	activeUsers: string[];
@@ -255,7 +256,7 @@ export interface SubscriberProps {
 	userChats: UserChat[];
 	userEmails: string[];
 	userId: string;
-	messageMap: MessageMap;
+	messageMap: UnreadMessageMap;
 }
 
 export interface CreateMessage {

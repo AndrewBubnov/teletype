@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { useActiveChatStore, useCommonStore, useIsWideModeStore, useLastMessageStore } from '@/store';
+import { useActiveChatStore, useCommonStore, useIsWideModeStore, useUnreadMessagesStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { sendChangeVisitorStatus } from '@/webSocketActions/sendChangeVisitorStatus';
 import { addReaction } from '@/prismaActions/addReaction';
@@ -19,7 +19,10 @@ export const useChat = (chat: UserChat) => {
 		chatList: state.chatList,
 	}));
 	const isWideMode = useIsWideModeStore(state => state.isWideMode);
-	const unreadNumber = useLastMessageStore(state => state.messageMap[chatId]?.unreadNumber);
+	const { unreadIds, updateIsReadUnreadMessages } = useUnreadMessagesStore(state => ({
+		unreadIds: state.messageMap[chatId]?.ids || [],
+		updateIsReadUnreadMessages: state.updateIsReadUnreadMessages,
+	}));
 	const isActiveChatLoading = useActiveChatStore(state => state.isActiveChatLoading);
 
 	const [messageListRaw, setMessageListRaw] = useState<Message[]>(chat.messages);
@@ -73,6 +76,7 @@ export const useChat = (chat: UserChat) => {
 		const { id, chatId } = message;
 		const updated = await updateMessageIsRead(id);
 		if (!updated) return;
+		updateIsReadUnreadMessages(message);
 		sendEditMessage({
 			updateData: { [id]: updated },
 			type: UpdateMessageType.EDIT,
@@ -88,20 +92,19 @@ export const useChat = (chat: UserChat) => {
 		});
 	};
 
-	const updateMessage = useCallback(
-		({ updateData, type }: UpdateMessage) =>
-			setMessageListRaw(prevState => {
-				if (type === UpdateMessageType.DELETE) {
-					const deletedIds = Object.keys(updateData);
-					return prevState.filter(el => !deletedIds.includes(el.id));
-				}
-				return prevState.map(el => {
-					if (updateData[el.id]) return updateData[el.id]!;
-					return el;
-				});
-			}),
-		[]
-	);
+	const updateMessage = useCallback(({ updateData, type }: UpdateMessage) => {
+		console.log(updateData);
+		setMessageListRaw(prevState => {
+			if (type === UpdateMessageType.DELETE) {
+				const deletedIds = Object.keys(updateData);
+				return prevState.filter(el => !deletedIds.includes(el.id));
+			}
+			return prevState.map(el => {
+				if (updateData[el.id]) return updateData[el.id]!;
+				return el;
+			});
+		});
+	}, []);
 
 	const addReactionToMessage = async (
 		message: Message,
@@ -165,7 +168,7 @@ export const useChat = (chat: UserChat) => {
 		authorId,
 		interlocutorId,
 		authorName,
-		unreadNumber,
+		unreadNumber: unreadIds.length,
 		updateIsRead,
 		firstUnreadId: firstUnreadRef.current || null,
 		isActiveChatLoading,

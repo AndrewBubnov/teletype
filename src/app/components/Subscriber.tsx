@@ -1,13 +1,12 @@
 'use client';
 import { useCallback, useEffect } from 'react';
-import { useLastMessageStore, useCommonStore, useStatusStore, useIsWideModeStore } from '@/store';
+import { useUnreadMessagesStore, useCommonStore, useStatusStore, useIsWideModeStore } from '@/store';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
 import { createRooms } from '@/app/chat-list/utils/createRooms';
 import { initUserChats } from '@/webSocketActions/initUserChats';
 import { sendJoin } from '@/webSocketActions/sendJoin';
 import { clearActiveUsers, updateActiveUsers } from '@/webSocketActions/updateActiveUsers';
 import { addClientMessage, clearAddClientMessage } from '@/webSocketActions/addClientMessage';
-import { clearUpdateClientMessage, updateClientMessage } from '@/webSocketActions/updateClientMessage';
 import { clearUpdateChatList, updateChatList } from '@/webSocketActions/updateChatList';
 import { clearUpdateVisitorStatus, updateVisitorStatus } from '@/webSocketActions/updateVisitorStatus';
 import { clearUpdateConnectionError, updateConnectionError } from '@/webSocketActions/updateConnectionError';
@@ -15,10 +14,9 @@ import { SERVER_CONNECTION_FAILED } from '@/app/constants';
 import { SubscriberProps } from '@/types';
 
 export const Subscriber = ({ userChats, userEmails, userId, messageMap }: SubscriberProps) => {
-	const { setMessageMap, addMessageToMessageMap, updateMessage } = useLastMessageStore(state => ({
+	const { setMessageMap, addMessageToMessageMap } = useUnreadMessagesStore(state => ({
 		setMessageMap: state.setMessageMap,
 		addMessageToMessageMap: state.addMessageToMessageMap,
-		updateMessage: state.updateMessage,
 	}));
 
 	const { setChatList, setUserEmails, chatList, setUserId, setToast } = useCommonStore(state => ({
@@ -75,7 +73,7 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap }: Subscr
 
 	useSubscribe(addMessageToMessageMap, addClientMessage, clearAddClientMessage);
 
-	useSubscribe(updateMessage, updateClientMessage, clearUpdateClientMessage);
+	// useSubscribe(updateMessage, updateClientMessage, clearUpdateClientMessage);
 
 	useSubscribe(setChatList, updateChatList, clearUpdateChatList);
 
