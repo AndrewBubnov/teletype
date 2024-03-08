@@ -12,7 +12,7 @@ import {
 	SyntheticEvent,
 } from 'react';
 
-export type MessageMap = Record<string, { lastMessage: Message; unreadNumber: number }>;
+export type UnreadMessageMap = Record<string, { lastMessage: Message | null; unreadMessages: Message[] }>;
 
 export enum MessageType {
 	COMMON = 'COMMON',
@@ -157,24 +157,23 @@ export interface ImageMessageProps {
 	isEnlarged: boolean;
 }
 
-export type UpdateData = Record<string, Message | null>;
-
 export enum UpdateMessageType {
 	EDIT = 'edit',
 	DELETE = 'delete',
 }
 
 export type UpdateMessage = {
-	updateData: Record<string, Message | null>;
+	updateData: Array<Message>;
 	type: UpdateMessageType;
 	roomId: string;
 };
 
-export interface LastMessageStore {
-	messageMap: MessageMap;
-	setMessageMap(arg: MessageMap): void;
+export interface UnreadMessagesStore {
+	messageMap: UnreadMessageMap;
+	setMessageMap(arg: UnreadMessageMap): void;
 	addMessageToMessageMap(arg: Message): void;
-	updateMessage(arg: UpdateMessage): void;
+	updateUnreadMessages(arg: UpdateMessage): void;
+	updateIsReadUnreadMessages(arg: Message): void;
 }
 
 export interface DraftMessageStore {
@@ -261,7 +260,7 @@ export interface SubscriberProps {
 	userChats: UserChat[];
 	userEmails: string[];
 	userId: string;
-	messageMap: MessageMap;
+	messageMap: UnreadMessageMap;
 }
 
 export interface CreateMessage {
@@ -348,12 +347,6 @@ export interface ChatHeaderProps {
 	toggleAllSelected(): void;
 }
 
-export interface GetUpdateData {
-	selectedIds: string[];
-	informAll: boolean;
-	updated: Message[];
-}
-
 export interface StyledElementClone {
 	className: string;
 	style: CSSProperties;
@@ -374,3 +367,7 @@ export interface FadeProviderProps extends FadeContextProps {
 }
 
 export type AspectRatioAndWidth = { width: number; aspectRatio: number };
+
+export interface UpdateUnreadInStore extends UpdateMessage {
+	state: UnreadMessagesStore;
+}

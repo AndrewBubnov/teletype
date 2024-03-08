@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { getChatByChatId } from '@/prismaActions/getChatByChatId';
 import { MIN_LEFT_SIDE_WIDTH } from '@/constants';
 import {
 	ActiveChatStore,
@@ -7,45 +8,26 @@ import {
 	IsWideModeStore,
 	LeftSideWidthStore,
 	Message,
-	MessageMap,
-	LastMessageStore,
 	StatusStore,
+	UnreadMessageMap,
+	UnreadMessagesStore,
+	UpdateMessage,
 	UserChat,
 	DraftMessageStore,
 } from '@/types';
-import { getLastChatMessage } from '@/prismaActions/getLastChatMessage';
-import { getUnreadNumber } from '@/prismaActions/getUnreadNumber';
-import { getChatByChatId } from '@/prismaActions/getChatByChatId';
+import { updateUnreadMessagesInStore } from '@/utils/updateUnreadMessagesInStore';
+import { addMessageInStore } from '@/utils/addMessageInStore';
+import { updateIsReadInState } from '@/utils/updateIsReadInState';
 
-export const useLastMessageStore = create<LastMessageStore>(set => ({
+export const useUnreadMessagesStore = create<UnreadMessagesStore>(set => ({
 	messageMap: {},
-	setMessageMap: (updated: MessageMap) => set({ messageMap: updated }),
-	addMessageToMessageMap: (message: Message) =>
-		set(state => {
-			if (!message.chatId) return { messageMap: state.messageMap };
-			const { userId } = useCommonStore.getState();
-			const isAuthoredByUser = message.authorId === userId;
-			return {
-				messageMap: {
-					...state.messageMap,
-					[message.chatId]: {
-						lastMessage: message,
-						unreadNumber:
-							(state.messageMap[message.chatId]?.unreadNumber || 0) + (isAuthoredByUser ? 0 : 1),
-					},
-				},
-			};
-		}),
-	updateMessage: async ({ roomId: chatId }) => {
-		const [lastMessage, unreadNumber] = await Promise.all([getLastChatMessage(chatId), getUnreadNumber(chatId)]);
-		set(state => ({
-			messageMap: {
-				...state.messageMap,
-				[chatId]: { lastMessage, unreadNumber },
-			},
-		}));
-	},
+	setMessageMap: (updated: UnreadMessageMap) => set({ messageMap: updated }),
+	addMessageToMessageMap: (message: Message) => set(state => addMessageInStore(state, message)),
+	updateUnreadMessages: ({ updateData, roomId, type }: UpdateMessage) =>
+		set(state => updateUnreadMessagesInStore({ state, roomId, updateData, type })),
+	updateIsReadUnreadMessages: (message: Message) => set(state => updateIsReadInState(state, message)),
 }));
+
 
 export const useDraftMessageStore = create<DraftMessageStore>(set => ({
 	draftMap: {},

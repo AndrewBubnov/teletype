@@ -1,5 +1,5 @@
 'use server';
-import { Message, MessageMap, UserChat } from '@/types';
+import { Message, UnreadMessageMap, UserChat } from '@/types';
 import { prisma } from '@/db';
 import { auth } from '@clerk/nextjs';
 
@@ -12,9 +12,9 @@ export async function createLastMessageMap(chats: UserChat[]) {
 	return chats.reduce((acc, chat, index) => {
 		if (messagesArray[index].length) {
 			const currentChat = messagesArray[index];
-			const unreadNumber = currentChat.filter(el => !el.isRead && !el.isHidden && el.authorId !== userId).length;
-			acc[chat.chatId] = { lastMessage: currentChat.at(-1)!, unreadNumber };
+			const ids = currentChat.filter(el => !el.isRead && !el.isHidden && el.authorId !== userId).map(el => el.id);
+			acc[chat.chatId] = { lastMessage: currentChat.at(-1)!, ids };
 		}
 		return acc;
-	}, {} as MessageMap);
+	}, {} as UnreadMessageMap);
 }

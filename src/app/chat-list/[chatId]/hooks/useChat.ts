@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { useActiveChatStore, useCommonStore, useIsWideModeStore, useLastMessageStore } from '@/store';
+import { useActiveChatStore, useCommonStore, useIsWideModeStore, useUnreadMessagesStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { sendChangeVisitorStatus } from '@/webSocketActions/sendChangeVisitorStatus';
 import { addReaction } from '@/prismaActions/addReaction';
@@ -19,7 +19,11 @@ export const useChat = (chat: UserChat) => {
 		chatList: state.chatList,
 	}));
 	const isWideMode = useIsWideModeStore(state => state.isWideMode);
-	const unreadNumber = useLastMessageStore(state => state.messageMap[chatId]?.unreadNumber);
+	const { unreadMessages, updateIsReadUnreadMessages, updateUnreadMessages } = useUnreadMessagesStore(state => ({
+		unreadMessages: state.messageMap[chatId]?.unreadMessages || [],
+		updateIsReadUnreadMessages: state.updateIsReadUnreadMessages,
+		updateUnreadMessages: state.updateUnreadMessages,
+	}));
 	const isActiveChatLoading = useActiveChatStore(state => state.isActiveChatLoading);
 
 	const [messageListRaw, setMessageListRaw] = useState<Message[]>(chat.messages);
@@ -69,11 +73,13 @@ export const useChat = (chat: UserChat) => {
 	}, [chatId, userId]);
 
 	const updateIsRead = async (message: Message) => {
+		if (message.isRead) return;
 		const { id, chatId } = message;
 		const updated = await updateMessageIsRead(id);
 		if (!updated) return;
+		updateIsReadUnreadMessages(message);
 		sendEditMessage({
-			updateData: { [id]: updated },
+			updateData: [updated],
 			type: UpdateMessageType.EDIT,
 			roomId: chatId,
 		});
@@ -88,18 +94,21 @@ export const useChat = (chat: UserChat) => {
 	};
 
 	const updateMessage = useCallback(
-		({ updateData, type }: UpdateMessage) =>
+		({ updateData, type, roomId }: UpdateMessage) => {
 			setMessageListRaw(prevState => {
+				const mappedUpdated = updateData.map(el => el.id);
 				if (type === UpdateMessageType.DELETE) {
-					const deletedIds = Object.keys(updateData);
-					return prevState.filter(el => !deletedIds.includes(el.id));
+					return prevState.filter(el => !mappedUpdated.includes(el.id));
 				}
 				return prevState.map(el => {
-					if (updateData[el.id]) return updateData[el.id]!;
+					const [updated] = updateData;
+					if (el.id === updated.id) return updated;
 					return el;
 				});
-			}),
-		[]
+			});
+			updateUnreadMessages({ updateData, type, roomId });
+		},
+		[updateUnreadMessages]
 	);
 
 	const addReactionToMessage = async (
@@ -111,7 +120,7 @@ export const useChat = (chat: UserChat) => {
 		const updated = await addReaction({ messageId, reaction, authorImageUrl });
 		if (!updated) return;
 		sendEditMessage({
-			updateData: { [messageId]: updated },
+			updateData: [updated],
 			type: UpdateMessageType.EDIT,
 			roomId: chatId,
 		});
@@ -164,7 +173,7 @@ export const useChat = (chat: UserChat) => {
 		authorId,
 		interlocutorId,
 		authorName,
-		unreadNumber,
+		unreadNumber: unreadMessages.length,
 		updateIsRead,
 		firstUnreadId: firstUnreadRef.current || null,
 		isActiveChatLoading,

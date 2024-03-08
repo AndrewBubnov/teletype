@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
-import { useActiveChatStore, useCommonStore, useIsWideModeStore, useLastMessageStore } from '@/store';
+import { useActiveChatStore, useCommonStore, useIsWideModeStore, useUnreadMessagesStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
 import { deleteChats } from '@/prismaActions/deleteChats';
@@ -24,7 +24,7 @@ export const ChatsList = () => {
 		setActiveChat: state.setActiveChat,
 	}));
 
-	const messageMap = useLastMessageStore(state => state.messageMap);
+	const messageMap = useUnreadMessagesStore(state => state.messageMap);
 	const isWideMode = useIsWideModeStore(state => state.isWideMode);
 
 	const [activeChatId, setActiveChatId] = useState<string>('');
