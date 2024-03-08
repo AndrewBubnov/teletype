@@ -260,7 +260,7 @@ export interface SubscriberProps {
 	userChats: UserChat[];
 	userEmails: string[];
 	userId: string;
-	messageMap: UnreadMessageMap;
+	unreadMessageMap: UnreadMessageMap;
 }
 
 export interface CreateMessage {

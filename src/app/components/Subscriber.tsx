@@ -13,7 +13,7 @@ import { clearUpdateConnectionError, updateConnectionError } from '@/webSocketAc
 import { SERVER_CONNECTION_FAILED } from '@/app/constants';
 import { SubscriberProps } from '@/types';
 
-export const Subscriber = ({ userChats, userEmails, userId, messageMap }: SubscriberProps) => {
+export const Subscriber = ({ userChats, userEmails, userId, unreadMessageMap }: SubscriberProps) => {
 	const { setMessageMap, addMessageToMessageMap } = useUnreadMessagesStore(state => ({
 		setMessageMap: state.setMessageMap,
 		addMessageToMessageMap: state.addMessageToMessageMap,
@@ -45,8 +45,8 @@ export const Subscriber = ({ userChats, userEmails, userId, messageMap }: Subscr
 	useEffect(() => createRooms(chatList, userId), [chatList, userId]);
 
 	useEffect(() => {
-		setMessageMap(messageMap);
-	}, [setMessageMap, messageMap]);
+		setMessageMap(unreadMessageMap);
+	}, [setMessageMap, unreadMessageMap]);
 
 	useEffect(() => {
 		setUserEmails(userEmails);
