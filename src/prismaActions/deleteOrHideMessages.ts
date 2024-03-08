@@ -7,6 +7,7 @@ export const deleteOrHideMessages = async (
 	type: UpdateMessageType,
 	hideToId: string | null
 ): Promise<Message[]> => {
+	const messages = (await prisma.message.findMany({ where: { id: { in: messageIds } } })) as Message[];
 	if (type === UpdateMessageType.DELETE) {
 		await prisma.message.deleteMany({ where: { id: { in: messageIds } } });
 	} else if (hideToId) {
@@ -15,5 +16,5 @@ export const deleteOrHideMessages = async (
 			data: { isHidden: hideToId },
 		});
 	}
-	return prisma.message.findMany({ where: { id: { in: messageIds } } }) as Promise<Message[]>;
+	return messages;
 };

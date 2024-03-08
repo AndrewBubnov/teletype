@@ -17,12 +17,11 @@ import { deleteOrHideMessages } from '@/prismaActions/deleteOrHideMessages';
 import { useDeleteDialog } from '@/app/chat-list/[chatId]/hooks/useDeleteDialog';
 import { ConfirmDialog } from '@/app/chat-list/[chatId]/components/ConfirmDialog/ConfirmDialog';
 import { RightSideResizable } from '@/app/chat-list/[chatId]/components/RightSideResizable/RightSideResizable';
-import { getUpdateData } from '@/app/chat-list/[chatId]/utils/getUpdateData';
 import { sendDeleteUserChats } from '@/webSocketActions/sendDeleteUserChats';
 import { deleteSingleChat } from '@/prismaActions/deleteSingleChat';
 import { ChatMenuButton } from '@/app/chat-list/[chatId]/components/ChatMenuButton/ChatMenuButton';
 import { downloadImage } from '@/app/chat-list/[chatId]/utils/downloadImage';
-import { ChatProps, Message, UpdateData, UpdateMessageType } from '@/types';
+import { ChatProps, Message, UpdateMessageType } from '@/types';
 import styles from './ChatId.module.css';
 
 export const Chat = ({ chat }: ChatProps) => {
@@ -43,10 +42,7 @@ export const Chat = ({ chat }: ChatProps) => {
 		userId,
 	} = useChat(chat);
 
-	const shownMessageList = useMemo(
-		() => messageList.filter(el => !el.isHidden?.includes(userId)),
-		[messageList, userId]
-	);
+	const shownMessageList = useMemo(() => messageList.filter(el => el.isHidden !== userId), [messageList, userId]);
 
 	const [repliedMessage, setRepliedMessage] = useState<Message | null>(null);
 	const [editedMessage, setEditedMessage] = useState<Message | null>(null);
@@ -97,8 +93,7 @@ export const Chat = ({ chat }: ChatProps) => {
 			const type = informAll ? UpdateMessageType.DELETE : UpdateMessageType.EDIT;
 			const hideToId = type === UpdateMessageType.EDIT ? userId : null;
 			const updated = await deleteOrHideMessages(selectedIds, type, hideToId);
-			const updateData = getUpdateData({ updated, informAll, selectedIds });
-			sendEditMessage({ updateData, type, roomId: chatId });
+			sendEditMessage({ updateData: updated, type, roomId: chatId });
 			dropSelectMode();
 		},
 		[chatId, dropSelectMode, selectedIds, userId]
@@ -107,15 +102,8 @@ export const Chat = ({ chat }: ChatProps) => {
 	const onClearChatHistory = useCallback(async () => {
 		const messageIds = messageList.map(el => el.id);
 		await deleteOrHideMessages(messageIds, UpdateMessageType.DELETE, null);
-		const updateData = messageIds.reduce(
-			(acc, cur) => ({
-				...acc,
-				[cur]: null,
-			}),
-			{} as UpdateData
-		);
 		sendEditMessage({
-			updateData,
+			updateData: messageList,
 			type: UpdateMessageType.DELETE,
 			roomId: chatId,
 		});
@@ -215,7 +203,6 @@ export const Chat = ({ chat }: ChatProps) => {
 					) : null}
 				</div>
 			)}
-
 			<MessageInput
 				chatId={chatId}
 				authorName={authorName}

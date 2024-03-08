@@ -78,7 +78,7 @@ export const useChat = (chat: UserChat) => {
 		if (!updated) return;
 		updateIsReadUnreadMessages(message);
 		sendEditMessage({
-			updateData: { [id]: updated },
+			updateData: [updated],
 			type: UpdateMessageType.EDIT,
 			roomId: chatId,
 		});
@@ -95,12 +95,13 @@ export const useChat = (chat: UserChat) => {
 	const updateMessage = useCallback(({ updateData, type }: UpdateMessage) => {
 		console.log(updateData);
 		setMessageListRaw(prevState => {
+			const mappedUpdated = updateData.map(el => el.id);
 			if (type === UpdateMessageType.DELETE) {
-				const deletedIds = Object.keys(updateData);
-				return prevState.filter(el => !deletedIds.includes(el.id));
+				return prevState.filter(el => !mappedUpdated.includes(el.id));
 			}
 			return prevState.map(el => {
-				if (updateData[el.id]) return updateData[el.id]!;
+				const [updated] = updateData;
+				if (el.id === updated.id) return updated;
 				return el;
 			});
 		});
@@ -115,7 +116,7 @@ export const useChat = (chat: UserChat) => {
 		const updated = await addReaction({ messageId, reaction, authorImageUrl });
 		if (!updated) return;
 		sendEditMessage({
-			updateData: { [messageId]: updated },
+			updateData: [updated],
 			type: UpdateMessageType.EDIT,
 			roomId: chatId,
 		});

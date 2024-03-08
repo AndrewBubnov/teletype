@@ -165,7 +165,7 @@ export enum UpdateMessageType {
 }
 
 export type UpdateMessage = {
-	updateData: Record<string, Message | null>;
+	updateData: Array<Message>;
 	type: UpdateMessageType;
 	roomId: string;
 };

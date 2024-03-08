@@ -88,7 +88,7 @@ export const MessageInput = ({
 			};
 			const saved = (await updateMessage(editedMessage.id, updated)) as Message;
 			sendEditMessage({
-				updateData: { [editedMessage.id]: saved },
+				updateData: [saved],
 				type: UpdateMessageType.EDIT,
 				roomId: chatId,
 			});
