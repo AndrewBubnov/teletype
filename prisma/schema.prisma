@@ -20,7 +20,7 @@ model Message {
   type                   MessageType
   chatId                 String
   isRead                 Boolean     @default(false)
-  isHidden               String?
+  isHidden               String      @default("")
   replyToId              String?
   text                   String?
   imageUrl               String?

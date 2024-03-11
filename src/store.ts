@@ -24,8 +24,7 @@ export const useUnreadMessagesStore = create<UnreadMessagesStore>(set => ({
 	setMessageMap: (updated: UnreadMessageMap) => set({ messageMap: updated }),
 	addMessageToMessageMap: (message: Message) => set(state => addMessageInStore(state, message)),
 	updateUnreadMessages: async ({ roomId }: UpdateMessage) => {
-		const unreadNumber = await getUnreadNumber(roomId);
-		const lastMessage = await getLastChatMessage(roomId);
+		const [unreadNumber, lastMessage] = await Promise.all([getUnreadNumber(roomId), getLastChatMessage(roomId)]);
 		set(state => ({
 			messageMap: {
 				...state.messageMap,

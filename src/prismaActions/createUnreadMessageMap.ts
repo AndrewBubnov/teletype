@@ -11,8 +11,8 @@ export async function createUnreadMessageMap(chats: UserChat[]) {
 
 	return chats.reduce((acc, chat, index) => {
 		if (messagesArray[index].length) {
-			const currentChat = messagesArray[index] || [];
-			const unreadNumber = currentChat.filter(el => !el.isRead && !el.isHidden && el.authorId !== userId).length;
+			const currentChat = messagesArray[index].filter(el => el.isHidden !== userId) || [];
+			const unreadNumber = currentChat.filter(el => !el.isRead && el.authorId !== userId).length;
 			acc[chat.chatId] = { lastMessage: currentChat.at(-1) || null, unreadNumber };
 		}
 		return acc;

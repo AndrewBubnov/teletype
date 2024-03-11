@@ -94,6 +94,7 @@ export const useChat = (chat: UserChat) => {
 			if (type === UpdateMessageType.DELETE) {
 				return prevState.filter(el => !mappedUpdated.includes(el.id));
 			}
+			if (!updateData.length) return prevState;
 			return prevState.map(el => {
 				const [updated] = updateData;
 				if (el.id === updated.id) return updated;
