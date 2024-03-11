@@ -16,7 +16,6 @@ import {
 	DraftMessageStore,
 } from '@/types';
 import { addMessageInStore } from '@/utils/addMessageInStore';
-import { updateIsReadInState } from '@/utils/updateIsReadInState';
 import { getUnreadNumber } from '@/prismaActions/getUnreadNumber';
 import { getLastChatMessage } from '@/prismaActions/getLastChatMessage';
 
@@ -37,7 +36,6 @@ export const useUnreadMessagesStore = create<UnreadMessagesStore>(set => ({
 			},
 		}));
 	},
-	updateIsReadUnreadMessages: (message: Message) => set(state => updateIsReadInState(state, message.chatId)),
 }));
 
 export const useDraftMessageStore = create<DraftMessageStore>(set => ({

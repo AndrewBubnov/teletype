@@ -19,11 +19,7 @@ export const useChat = (chat: UserChat) => {
 		chatList: state.chatList,
 	}));
 	const isWideMode = useIsWideModeStore(state => state.isWideMode);
-	const { unreadNumber, updateIsReadUnreadMessages } = useUnreadMessagesStore(state => ({
-		unreadNumber: state.messageMap[chatId]?.unreadNumber,
-		updateIsReadUnreadMessages: state.updateIsReadUnreadMessages,
-	}));
-
+	const unreadNumber = useUnreadMessagesStore(state => state.messageMap[chatId]?.unreadNumber) || 0;
 	const isActiveChatLoading = useActiveChatStore(state => state.isActiveChatLoading);
 
 	const [messageListRaw, setMessageListRaw] = useState<Message[]>(chat.messages);
@@ -72,12 +68,11 @@ export const useChat = (chat: UserChat) => {
 		};
 	}, [chatId, userId]);
 
-	const updateIsRead = async (message: Message) => {
+	const updateIsRead = useCallback(async (message: Message) => {
 		if (message.isRead) return;
 		const { id, chatId } = message;
 		const updated = await updateMessageIsRead(id);
 		if (!updated) return;
-		updateIsReadUnreadMessages(message);
 		sendEditMessage({
 			updateData: [updated],
 			type: UpdateMessageType.EDIT,
@@ -91,7 +86,7 @@ export const useChat = (chat: UserChat) => {
 			}
 			return prevState;
 		});
-	};
+	}, []);
 
 	const updateMessage = useCallback(({ updateData, type }: UpdateMessage) => {
 		setMessageListRaw(prevState => {

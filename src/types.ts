@@ -173,7 +173,6 @@ export interface UnreadMessagesStore {
 	setMessageMap(arg: UnreadMessageMap): void;
 	addMessageToMessageMap(arg: Message): void;
 	updateUnreadMessages(arg: UpdateMessage): void;
-	updateIsReadUnreadMessages(arg: Message): void;
 }
 
 export interface DraftMessageStore {

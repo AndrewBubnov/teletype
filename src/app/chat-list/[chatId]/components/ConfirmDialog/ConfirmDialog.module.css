@@ -1,5 +1,5 @@
 .confirmDialog {
-    width: 30%;
+    min-width: 30%;
     padding: 1rem;
     background-color: lightgoldenrodyellow;
     color: #1a1a1a;
