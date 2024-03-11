@@ -1,13 +1,13 @@
-import { Message, UnreadMessagesStore } from '@/types';
+import { UnreadMessagesStore } from '@/types';
 
-export const updateIsReadInState = (state: UnreadMessagesStore, message: Message) => {
-	const { unreadMessages = [], lastMessage } = state.messageMap[message.chatId];
+export const updateIsReadInState = (state: UnreadMessagesStore, chatId: string) => {
+	const { unreadNumber = 0, lastMessage } = state.messageMap[chatId];
 	return {
 		messageMap: {
 			...state.messageMap,
-			[message.chatId]: {
+			[chatId]: {
 				lastMessage,
-				unreadMessages: unreadMessages.filter(el => el.id !== message.id),
+				unreadNumber: unreadNumber - 1,
 			},
 		},
 	};

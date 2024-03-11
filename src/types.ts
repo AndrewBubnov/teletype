@@ -12,7 +12,7 @@ import {
 	SyntheticEvent,
 } from 'react';
 
-export type UnreadMessageMap = Record<string, { lastMessage: Message | null; unreadMessages: Message[] }>;
+export type UnreadMessageMap = Record<string, { lastMessage: Message | null; unreadNumber: number }>;
 
 export enum MessageType {
 	COMMON = 'COMMON',

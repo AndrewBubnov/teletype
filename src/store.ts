@@ -15,19 +15,30 @@ import {
 	UserChat,
 	DraftMessageStore,
 } from '@/types';
-import { updateUnreadMessagesInStore } from '@/utils/updateUnreadMessagesInStore';
 import { addMessageInStore } from '@/utils/addMessageInStore';
 import { updateIsReadInState } from '@/utils/updateIsReadInState';
+import { getUnreadNumber } from '@/prismaActions/getUnreadNumber';
+import { getLastChatMessage } from '@/prismaActions/getLastChatMessage';
 
 export const useUnreadMessagesStore = create<UnreadMessagesStore>(set => ({
 	messageMap: {},
 	setMessageMap: (updated: UnreadMessageMap) => set({ messageMap: updated }),
 	addMessageToMessageMap: (message: Message) => set(state => addMessageInStore(state, message)),
-	updateUnreadMessages: ({ updateData, roomId, type }: UpdateMessage) =>
-		set(state => updateUnreadMessagesInStore({ state, roomId, updateData, type })),
-	updateIsReadUnreadMessages: (message: Message) => set(state => updateIsReadInState(state, message)),
+	updateUnreadMessages: async ({ roomId }: UpdateMessage) => {
+		const unreadNumber = await getUnreadNumber(roomId);
+		const lastMessage = await getLastChatMessage(roomId);
+		set(state => ({
+			messageMap: {
+				...state.messageMap,
+				[roomId]: {
+					unreadNumber,
+					lastMessage,
+				},
+			},
+		}));
+	},
+	updateIsReadUnreadMessages: (message: Message) => set(state => updateIsReadInState(state, message.chatId)),
 }));
-
 
 export const useDraftMessageStore = create<DraftMessageStore>(set => ({
 	draftMap: {},

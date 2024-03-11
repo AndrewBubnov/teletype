@@ -22,7 +22,7 @@ export const ChatListItem = ({
 	const isWideMode = useIsWideModeStore(state => state.isWideMode);
 	const draftMap = useDraftMessageStore(state => state.draftMap);
 
-	const { lastMessage = null, unreadMessages = [] } = messageMap[chatId] || {};
+	const { lastMessage = null, unreadNumber = 0 } = messageMap[chatId] || {};
 	const draft = draftMap[chatId] || null;
 
 	const pressHandler = useLongPress({ onLongPress, onPress });
@@ -33,7 +33,7 @@ export const ChatListItem = ({
 	);
 
 	const renderedMessage = useMemo(() => {
-		if (!unreadMessages.length && draft) {
+		if (!unreadNumber && draft) {
 			return (
 				<div className={styles.chatListItemMessageText}>
 					<span className={styles.draft}>Draft: </span>
@@ -60,12 +60,10 @@ export const ChatListItem = ({
 					) : null}
 					<div className={styles.chatListItemMessageText}>{lastMessage.text}</div>
 				</div>
-				{unreadMessages.length && !isSelectMode ? (
-					<div className={styles.chatUnreadMessages}>{unreadMessages.length}</div>
-				) : null}
+				{unreadNumber && !isSelectMode ? <div className={styles.chatUnreadMessages}>{unreadNumber}</div> : null}
 			</div>
 		) : null;
-	}, [draft, isSelectMode, isWideMode, lastMessage, unreadMessages.length]);
+	}, [draft, isSelectMode, isWideMode, lastMessage, unreadNumber]);
 
 	return (
 		<div className={styles.chatListItemWrapper}>

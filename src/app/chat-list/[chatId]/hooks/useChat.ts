@@ -19,11 +19,11 @@ export const useChat = (chat: UserChat) => {
 		chatList: state.chatList,
 	}));
 	const isWideMode = useIsWideModeStore(state => state.isWideMode);
-	const { unreadMessages, updateIsReadUnreadMessages, updateUnreadMessages } = useUnreadMessagesStore(state => ({
-		unreadMessages: state.messageMap[chatId]?.unreadMessages || [],
+	const { unreadNumber, updateIsReadUnreadMessages } = useUnreadMessagesStore(state => ({
+		unreadNumber: state.messageMap[chatId]?.unreadNumber,
 		updateIsReadUnreadMessages: state.updateIsReadUnreadMessages,
-		updateUnreadMessages: state.updateUnreadMessages,
 	}));
+
 	const isActiveChatLoading = useActiveChatStore(state => state.isActiveChatLoading);
 
 	const [messageListRaw, setMessageListRaw] = useState<Message[]>(chat.messages);
@@ -93,23 +93,19 @@ export const useChat = (chat: UserChat) => {
 		});
 	};
 
-	const updateMessage = useCallback(
-		({ updateData, type, roomId }: UpdateMessage) => {
-			setMessageListRaw(prevState => {
-				const mappedUpdated = updateData.map(el => el.id);
-				if (type === UpdateMessageType.DELETE) {
-					return prevState.filter(el => !mappedUpdated.includes(el.id));
-				}
-				return prevState.map(el => {
-					const [updated] = updateData;
-					if (el.id === updated.id) return updated;
-					return el;
-				});
+	const updateMessage = useCallback(({ updateData, type }: UpdateMessage) => {
+		setMessageListRaw(prevState => {
+			const mappedUpdated = updateData.map(el => el.id);
+			if (type === UpdateMessageType.DELETE) {
+				return prevState.filter(el => !mappedUpdated.includes(el.id));
+			}
+			return prevState.map(el => {
+				const [updated] = updateData;
+				if (el.id === updated.id) return updated;
+				return el;
 			});
-			updateUnreadMessages({ updateData, type, roomId });
-		},
-		[updateUnreadMessages]
-	);
+		});
+	}, []);
 
 	const addReactionToMessage = async (
 		message: Message,
@@ -173,7 +169,7 @@ export const useChat = (chat: UserChat) => {
 		authorId,
 		interlocutorId,
 		authorName,
-		unreadNumber: unreadMessages.length,
+		unreadNumber,
 		updateIsRead,
 		firstUnreadId: firstUnreadRef.current || null,
 		isActiveChatLoading,

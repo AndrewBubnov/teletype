@@ -12,11 +12,13 @@ import { clearUpdateVisitorStatus, updateVisitorStatus } from '@/webSocketAction
 import { clearUpdateConnectionError, updateConnectionError } from '@/webSocketActions/updateConnectionError';
 import { SERVER_CONNECTION_FAILED } from '@/app/constants';
 import { SubscriberProps } from '@/types';
+import { clearUpdateClientMessage, updateClientMessage } from '@/webSocketActions/updateClientMessage';
 
 export const Subscriber = ({ userChats, userEmails, userId, unreadMessageMap }: SubscriberProps) => {
-	const { setMessageMap, addMessageToMessageMap } = useUnreadMessagesStore(state => ({
+	const { setMessageMap, addMessageToMessageMap, updateUnreadMessages } = useUnreadMessagesStore(state => ({
 		setMessageMap: state.setMessageMap,
 		addMessageToMessageMap: state.addMessageToMessageMap,
+		updateUnreadMessages: state.updateUnreadMessages,
 	}));
 
 	const { setChatList, setUserEmails, chatList, setUserId, setToast } = useCommonStore(state => ({
@@ -73,7 +75,7 @@ export const Subscriber = ({ userChats, userEmails, userId, unreadMessageMap }: 
 
 	useSubscribe(addMessageToMessageMap, addClientMessage, clearAddClientMessage);
 
-	// useSubscribe(updateMessage, updateClientMessage, clearUpdateClientMessage);
+	useSubscribe(updateUnreadMessages, updateClientMessage, clearUpdateClientMessage);
 
 	useSubscribe(setChatList, updateChatList, clearUpdateChatList);
 
