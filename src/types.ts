@@ -173,6 +173,7 @@ export interface UnreadMessagesStore {
 	setMessageMap(arg: UnreadMessageMap): void;
 	addMessageToMessageMap(arg: Message): void;
 	updateUnreadMessages(arg: UpdateMessage): void;
+	updateIsReadInStore(arg: UpdateIsRead): void;
 }
 
 export interface DraftMessageStore {
@@ -367,6 +368,11 @@ export interface FadeProviderProps extends FadeContextProps {
 
 export type AspectRatioAndWidth = { width: number; aspectRatio: number };
 
-export interface UpdateUnreadInStore extends UpdateMessage {
-	state: UnreadMessagesStore;
+export interface UpdateIsRead {
+	roomId: string;
+	messageId: string;
+}
+export interface FlippedProps {
+	children: ReactNode;
+	className?: string;
 }

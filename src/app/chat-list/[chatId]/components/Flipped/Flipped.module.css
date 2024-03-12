@@ -1,0 +1,26 @@
+
+.rotatedFirstHalf {
+    animation: rotate-first-animation 0.1s ease-in-out forwards;
+}
+
+@keyframes rotate-first-animation {
+    to {transform: perspective(200px) rotateX(90deg)}
+}
+
+.rotatedSecondHalf {
+    animation: rotate-second-animation 0.1s ease-in-out forwards;
+}
+
+@keyframes rotate-second-animation {
+    from {transform: perspective(200px) rotateX(90deg)}
+    to {transform: perspective(200px) rotateX(180deg)}
+}
+
+.rotatedSecondHalf > div {
+    animation: rotate-number-forwards 0.1s ease-in-out forwards;
+}
+
+@keyframes rotate-number-forwards {
+    from {transform: rotateX(0);}
+    to {transform: rotateX(-180deg);}
+}

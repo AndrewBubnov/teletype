@@ -3,13 +3,15 @@ import { useActiveChatStore, useCommonStore, useIsWideModeStore, useUnreadMessag
 import { useRouter } from 'next/navigation';
 import { sendChangeVisitorStatus } from '@/webSocketActions/sendChangeVisitorStatus';
 import { addReaction } from '@/prismaActions/addReaction';
-import { Message, UpdateMessage, UpdateMessageType, UserChat, VisitorStatus } from '@/types';
+import { Message, UpdateIsRead, UpdateMessage, UpdateMessageType, UserChat, VisitorStatus } from '@/types';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
 import { addClientMessage, clearAddClientMessage } from '@/webSocketActions/addClientMessage';
 import { updateMessageIsRead } from '@/prismaActions/updateMessageIsRead';
 import { sendEditMessage } from '@/webSocketActions/sendEditMessage';
 import { clearUpdateClientMessage, updateClientMessage } from '@/webSocketActions/updateClientMessage';
 import { CHAT_LIST } from '@/constants';
+import { sendUpdateIsRead } from '@/webSocketActions/sendUpdateIsRead';
+import { clearUpdateIsReadListener, updateIsReadListener } from '@/webSocketActions/updateIsReadListener';
 
 export const useChat = (chat: UserChat) => {
 	const { members, chatId } = chat;
@@ -69,23 +71,10 @@ export const useChat = (chat: UserChat) => {
 	}, [chatId, userId]);
 
 	const updateIsRead = useCallback(async (message: Message) => {
-		if (message.isRead) return;
 		const { id, chatId } = message;
-		const updated = await updateMessageIsRead(id);
-		if (!updated) return;
-		sendEditMessage({
-			updateData: [updated],
-			type: UpdateMessageType.EDIT,
-			roomId: chatId,
-		});
-		setMessageListRaw(prevState => {
-			const predicate = (el: Message): boolean => el.id === id;
-			const message = prevState.find(predicate);
-			if (message && !message?.isRead) {
-				return prevState.map(el => (predicate(el) ? { ...el, isRead: true } : el));
-			}
-			return prevState;
-		});
+		sendUpdateIsRead({ roomId: chatId, messageId: message.id });
+		setMessageListRaw(prevState => prevState.map(el => (el.id === message.id ? { ...el, isRead: true } : el)));
+		await updateMessageIsRead(id);
 	}, []);
 
 	const updateMessage = useCallback(({ updateData, type }: UpdateMessage) => {
@@ -130,9 +119,26 @@ export const useChat = (chat: UserChat) => {
 		);
 	};
 
+	const isReadListener = useCallback(
+		({ messageId }: UpdateIsRead) =>
+			setMessageListRaw(prevState =>
+				prevState.map(el => {
+					if (el.id === messageId)
+						return {
+							...el,
+							isRead: true,
+						};
+					return el;
+				})
+			),
+		[]
+	);
+
 	useSubscribe(addMessageToList, addClientMessage, clearAddClientMessage);
 
 	useSubscribe(updateMessage, updateClientMessage, clearUpdateClientMessage);
+
+	useSubscribe(isReadListener, updateIsReadListener, clearUpdateIsReadListener);
 
 	const messageList: Message[] = useMemo(() => {
 		return messageListRaw.map((message, index) => {

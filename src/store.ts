@@ -14,6 +14,7 @@ import {
 	UpdateMessage,
 	UserChat,
 	DraftMessageStore,
+	UpdateIsRead,
 } from '@/types';
 import { addMessageInStore } from '@/utils/addMessageInStore';
 import { getUnreadNumber } from '@/prismaActions/getUnreadNumber';
@@ -35,6 +36,16 @@ export const useUnreadMessagesStore = create<UnreadMessagesStore>(set => ({
 			},
 		}));
 	},
+	updateIsReadInStore: ({ roomId, messageId }: UpdateIsRead) =>
+		set(state => ({
+			messageMap: {
+				...state.messageMap,
+				[roomId]: {
+					lastMessage: state.messageMap[roomId].lastMessage,
+					unreadNumber: Math.max(state.messageMap[roomId].unreadNumber - 1, 0),
+				},
+			},
+		})),
 }));
 
 export const useDraftMessageStore = create<DraftMessageStore>(set => ({

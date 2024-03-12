@@ -13,13 +13,17 @@ import { clearUpdateConnectionError, updateConnectionError } from '@/webSocketAc
 import { SERVER_CONNECTION_FAILED } from '@/app/constants';
 import { SubscriberProps } from '@/types';
 import { clearUpdateClientMessage, updateClientMessage } from '@/webSocketActions/updateClientMessage';
+import { clearUpdateIsReadListener, updateIsReadListener } from '@/webSocketActions/updateIsReadListener';
 
 export const Subscriber = ({ userChats, userEmails, userId, unreadMessageMap }: SubscriberProps) => {
-	const { setMessageMap, addMessageToMessageMap, updateUnreadMessages } = useUnreadMessagesStore(state => ({
-		setMessageMap: state.setMessageMap,
-		addMessageToMessageMap: state.addMessageToMessageMap,
-		updateUnreadMessages: state.updateUnreadMessages,
-	}));
+	const { setMessageMap, addMessageToMessageMap, updateUnreadMessages, updateIsReadInStore } = useUnreadMessagesStore(
+		state => ({
+			setMessageMap: state.setMessageMap,
+			addMessageToMessageMap: state.addMessageToMessageMap,
+			updateUnreadMessages: state.updateUnreadMessages,
+			updateIsReadInStore: state.updateIsReadInStore,
+		})
+	);
 
 	const { setChatList, setUserEmails, chatList, setUserId, setToast } = useCommonStore(state => ({
 		chatList: state.chatList,
@@ -80,6 +84,8 @@ export const Subscriber = ({ userChats, userEmails, userId, unreadMessageMap }: 
 	useSubscribe(setChatList, updateChatList, clearUpdateChatList);
 
 	useSubscribe(setChatVisitorStatus, updateVisitorStatus, clearUpdateVisitorStatus);
+
+	useSubscribe(updateIsReadInStore, updateIsReadListener, clearUpdateIsReadListener);
 
 	useSubscribe(setErrorToast, updateConnectionError, clearUpdateConnectionError);
 

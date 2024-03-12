@@ -33,8 +33,11 @@ export const SingleMessage = ({
 
 		const observer = new IntersectionObserver(
 			([entry]) => {
-				if (entry.isIntersecting) observer.disconnect();
-				if (entry.isIntersecting && updateIsRead) updateIsRead(message);
+				if (!updateIsRead) return;
+				if (entry.isIntersecting) {
+					updateIsRead(message);
+					observer.disconnect();
+				}
 			},
 			{ rootMargin: '0px', threshold: 0.5 }
 		);
