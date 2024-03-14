@@ -49,7 +49,7 @@ export const ChatsList = () => {
 			addSelection(id);
 			return;
 		}
-		if (!isWideMode) push(`${CHAT_LIST}/${chatId}?t=${Date.now()}`, { shallow: true });
+		if (!isWideMode) push(`${CHAT_LIST}/${chatId}`, { shallow: true });
 		if (isWideMode) setActiveChatId(chatId);
 	};
 

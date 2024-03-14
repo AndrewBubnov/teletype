@@ -57,7 +57,7 @@ export const useChat = (chat: UserChat) => {
 	}, [chatId, isWideMode]);
 
 	useEffect(() => {
-		if (isWideMode) push(`${CHAT_LIST}?t=${Date.now()}`);
+		if (isWideMode) push(CHAT_LIST);
 	}, [isWideMode, push]);
 
 	useEffect(() => {
