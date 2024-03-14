@@ -3,15 +3,18 @@ import { useActiveChatStore, useCommonStore, useIsWideModeStore, useUnreadMessag
 import { useRouter } from 'next/navigation';
 import { sendChangeVisitorStatus } from '@/webSocketActions/sendChangeVisitorStatus';
 import { addReaction } from '@/prismaActions/addReaction';
-import { Message, UpdateIsRead, UpdateMessage, UpdateMessageType, UserChat, VisitorStatus } from '@/types';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
 import { addClientMessage, clearAddClientMessage } from '@/webSocketActions/addClientMessage';
 import { updateMessageIsRead } from '@/prismaActions/updateMessageIsRead';
 import { sendEditMessage } from '@/webSocketActions/sendEditMessage';
 import { clearUpdateClientMessage, updateClientMessage } from '@/webSocketActions/updateClientMessage';
-import { CHAT_LIST } from '@/constants';
 import { sendUpdateIsRead } from '@/webSocketActions/sendUpdateIsRead';
 import { clearUpdateIsReadListener, updateIsReadListener } from '@/webSocketActions/updateIsReadListener';
+import { isReadSetter } from '@/app/chat-list/[chatId]/utils/isReadSetter';
+import { addReactionSetter } from '@/app/chat-list/[chatId]/utils/addReactionSetter';
+import { updateMessageSetter } from '@/app/chat-list/[chatId]/utils/updateMessageSetter';
+import { CHAT_LIST } from '@/constants';
+import { Message, UpdateIsRead, UpdateMessage, UpdateMessageType, UserChat, VisitorStatus } from '@/types';
 
 export const useChat = (chat: UserChat) => {
 	const { members, chatId } = chat;
@@ -81,20 +84,10 @@ export const useChat = (chat: UserChat) => {
 		await updateMessageIsRead(id);
 	}, []);
 
-	const updateMessage = useCallback(({ updateData, type }: UpdateMessage) => {
-		setMessageListRaw(prevState => {
-			const mappedUpdated = updateData.map(el => el.id);
-			if (type === UpdateMessageType.DELETE) {
-				return prevState.filter(el => !mappedUpdated.includes(el.id));
-			}
-			if (!updateData.length) return prevState;
-			return prevState.map(el => {
-				const [updated] = updateData;
-				if (el.id === updated.id) return updated;
-				return el;
-			});
-		});
-	}, []);
+	const updateMessage = useCallback(
+		({ updateData, type }: UpdateMessage) => setMessageListRaw(updateMessageSetter(updateData, type)),
+		[]
+	);
 
 	const addReactionToMessage = async (
 		message: Message,
@@ -104,39 +97,11 @@ export const useChat = (chat: UserChat) => {
 		const { id: messageId, chatId } = message;
 		const updated = await addReaction({ messageId, reaction, authorImageUrl });
 		if (!updated) return;
-		sendEditMessage({
-			updateData: [updated],
-			type: UpdateMessageType.EDIT,
-			roomId: chatId,
-		});
-		setMessageListRaw(prevState =>
-			prevState.map(message => {
-				if (message.id === messageId) {
-					return {
-						...message,
-						reaction,
-						reactionAuthorImageUrl: reaction ? authorImageUrl : undefined,
-					};
-				}
-				return message;
-			})
-		);
+		sendEditMessage({ updateData: [updated], type: UpdateMessageType.EDIT, roomId: chatId });
+		setMessageListRaw(addReactionSetter(messageId, reaction, authorImageUrl));
 	};
 
-	const isReadListener = useCallback(
-		({ messageId }: UpdateIsRead) =>
-			setMessageListRaw(prevState =>
-				prevState.map(el => {
-					if (el.id === messageId)
-						return {
-							...el,
-							isRead: true,
-						};
-					return el;
-				})
-			),
-		[]
-	);
+	const isReadListener = useCallback(({ messageId }: UpdateIsRead) => setMessageListRaw(isReadSetter(messageId)), []);
 
 	useSubscribe(addMessageToList, addClientMessage, clearAddClientMessage);
 
@@ -146,14 +111,14 @@ export const useChat = (chat: UserChat) => {
 
 	const messageList: Message[] = useMemo(() => {
 		return messageListRaw.map((message, index) => {
+			const { createdAt, authorId, isRead } = message;
 			const isFirstDateMessage =
 				!index ||
-				(index &&
-					new Date(message.createdAt).getDate() !== new Date(messageListRaw[index - 1].createdAt).getDate());
+				(index && new Date(createdAt).getDate() !== new Date(messageListRaw[index - 1].createdAt).getDate());
 			if (
 				!firstUnreadRef.current &&
-				message.authorId !== userId &&
-				!message.isRead &&
+				authorId !== userId &&
+				!isRead &&
 				(messageListRaw[index - 1]?.isRead || true)
 			) {
 				firstUnreadRef.current = message.id;
