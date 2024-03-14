@@ -19,13 +19,13 @@ export const getInterlocutorState = ({
 	if (status === VisitorStatus.OUT)
 		return {
 			status,
-			text: 'Online, not in the chat-list',
+			text: 'Online, not in the chat',
 			data: date,
 			color: 'palegoldenrod',
 		};
 	return {
 		status,
-		text: 'Online, in the chat-list',
+		text: 'Online, in the chat',
 		data: null,
 		color: 'limegreen',
 	};
