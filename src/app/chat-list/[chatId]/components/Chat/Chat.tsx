@@ -4,7 +4,6 @@ import { clsx } from 'clsx';
 import { useChat } from '@/app/chat-list/[chatId]/hooks/useChat';
 import { useSelect } from '@/app/shared/hooks/useSelect';
 import { useMenuTransition } from '@/app/chat-list/[chatId]/hooks/useMenuTransition';
-import { useScrolledTo } from '@/app/chat-list/[chatId]/hooks/useScrolledTo';
 import { FullScreenLoader } from '@/app/shared/components/FullScreenLoader';
 import { BackButton } from '@/app/chat-list/[chatId]/components/BackButton/BackButton';
 import { ChatHeader } from '@/app/chat-list/[chatId]/components/ChatHeader/ChatHeader';
@@ -54,8 +53,6 @@ export const Chat = ({ chat }: ChatProps) => {
 		useSelect(shownMessageList);
 
 	const { dialogOpen, deleteMessageHandler, closeDialogHandler } = useDeleteDialog();
-
-	const scrolledTo = useScrolledTo(unreadNumber);
 
 	const isSelectMode = !!selectedIds.length;
 
@@ -176,7 +173,7 @@ export const Chat = ({ chat }: ChatProps) => {
 									isSelectMode={isSelectMode}
 									repliedMessage={repliedMessage}
 									isSelected={selectedIds.includes(message.id)}
-									isScrolledTo={isAuthoredByUser && index === length - 1 - scrolledTo}
+									isScrolledTo={firstUnreadId ? firstUnreadId === message.id : index === length - 1}
 									onContextMenuToggle={contextMenuToggleHandler(message.id)}
 									updateIsRead={message.authorId !== userId ? updateIsRead : null}
 									isAuthoredByUser={isAuthoredByUser}

@@ -49,8 +49,12 @@ export const useChat = (chat: UserChat) => {
 
 	useLayoutEffect(() => {
 		setMessageListRaw(chat.messages);
+	}, [chat.messages]);
+
+	useLayoutEffect(() => {
+		if (!isWideMode) return;
 		firstUnreadRef.current = '';
-	}, [chat]);
+	}, [chatId, isWideMode]);
 
 	useEffect(() => {
 		if (isWideMode) push(`${CHAT_LIST}?t=${Date.now()}`);
