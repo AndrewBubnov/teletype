@@ -1,9 +1,11 @@
 .repliedMessageContainer {
+    position: absolute;
+    top: -3.6rem;
     display: flex;
     flex-direction: column;
+    width: 100%;
     height: 3.5rem;
     color: #1a1a1a;
-    margin-bottom: 3px;
     transition: opacity .5s;
 }
 
