@@ -18,12 +18,3 @@
 .chatWrapper::-webkit-scrollbar-track {
     display: none;
 }
-
-
-.withReplied {
-    max-height: 63svh;
-
-    @media (width > 1024px) {
-        max-height: 56svh;
-    }
-}

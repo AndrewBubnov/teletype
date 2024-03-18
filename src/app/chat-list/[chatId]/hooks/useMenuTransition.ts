@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 
 export const useMenuTransition = () => {
 	const [menuTop, setMenuTop] = useState<number>(0);
-	const messageParams = useRef<DOMRect | null>(null);
 
+	const messageParams = useRef<DOMRect | null>(null);
 	const initMenuParams = useRef<DOMRect | null>(null);
 
 	useEffect(() => {

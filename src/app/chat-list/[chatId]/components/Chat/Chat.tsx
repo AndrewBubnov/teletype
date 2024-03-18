@@ -1,6 +1,5 @@
 'use client';
 import { useCallback, useMemo, useState } from 'react';
-import { clsx } from 'clsx';
 import { useChat } from '@/app/chat-list/[chatId]/hooks/useChat';
 import { useSelect } from '@/app/shared/hooks/useSelect';
 import { useMenuTransition } from '@/app/chat-list/[chatId]/hooks/useMenuTransition';
@@ -164,7 +163,7 @@ export const Chat = ({ chat }: ChatProps) => {
 					<ChatMenuButton onDeleteChat={onDeleteChat} onClearChatHistory={onClearChatHistory} />
 				)}
 			</div>
-			<div className={clsx(styles.chatWrapper, { [styles.withReplied]: !!repliedMessage })}>
+			<div className={styles.chatWrapper}>
 				{shownMessageList.map((message, index, { length }) => {
 					const repliedMessage = message.replyToId
 						? messageList.find(el => el.id === message.replyToId)
