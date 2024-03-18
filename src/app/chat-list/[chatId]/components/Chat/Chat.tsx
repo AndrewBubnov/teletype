@@ -63,6 +63,7 @@ export const Chat = ({ chat }: ChatProps) => {
 			addSelection(id);
 			return;
 		}
+		if (editedMessage || repliedMessage) return;
 		messageParams.current = params;
 		setMenuActiveId(type === 'open' ? id : '');
 	};
