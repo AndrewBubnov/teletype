@@ -153,29 +153,33 @@ export const Chat = ({ chat }: ChatProps) => {
 					<ChatMenuButton onDeleteChat={onDeleteChat} onClearChatHistory={onClearChatHistory} />
 				)}
 			</div>
-			<div className={styles.chatWrapper}>
-				{shownMessageList.map((message, index, { length }) => {
-					const repliedMessage = message.replyToId
-						? messageList.find(el => el.id === message.replyToId)
-						: null;
-					const isAuthoredByUser = message.authorId === userId;
-					return (
-						<SingleMessage
-							key={message.id}
-							message={message}
-							isSelectMode={isSelectMode}
-							repliedMessage={repliedMessage}
-							isSelected={selectedIds.includes(message.id)}
-							isScrolledTo={firstUnreadId ? firstUnreadId === message.id : index === length - 1}
-							onContextMenuToggle={contextMenuToggleHandler(message.id)}
-							updateIsRead={message.authorId !== userId ? updateIsRead : null}
-							isAuthoredByUser={isAuthoredByUser}
-							firstUnreadId={firstUnreadId}
-							onSelectModeStart={onSelectModeStart(message.id)}
-						/>
-					);
-				})}
-			</div>
+			{isActiveChatLoading ? (
+				<FullScreenLoader />
+			) : (
+				<div className={styles.chatWrapper}>
+					{shownMessageList.map((message, index, { length }) => {
+						const repliedMessage = message.replyToId
+							? messageList.find(el => el.id === message.replyToId)
+							: null;
+						const isAuthoredByUser = message.authorId === userId;
+						return (
+							<SingleMessage
+								key={message.id}
+								message={message}
+								isSelectMode={isSelectMode}
+								repliedMessage={repliedMessage}
+								isSelected={selectedIds.includes(message.id)}
+								isScrolledTo={firstUnreadId ? firstUnreadId === message.id : index === length - 1}
+								onContextMenuToggle={contextMenuToggleHandler(message.id)}
+								updateIsRead={message.authorId !== userId ? updateIsRead : null}
+								isAuthoredByUser={isAuthoredByUser}
+								firstUnreadId={firstUnreadId}
+								onSelectModeStart={onSelectModeStart(message.id)}
+							/>
+						);
+					})}
+				</div>
+			)}
 			{!!activeMessage && (
 				<ContextMenu
 					menuTop={menuTop}
