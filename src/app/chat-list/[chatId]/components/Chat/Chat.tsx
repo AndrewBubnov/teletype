@@ -1,6 +1,5 @@
 'use client';
 import { useCallback, useMemo, useState } from 'react';
-import { clsx } from 'clsx';
 import { useChat } from '@/app/chat-list/[chatId]/hooks/useChat';
 import { useSelect } from '@/app/shared/hooks/useSelect';
 import { useMenuTransition } from '@/app/chat-list/[chatId]/hooks/useMenuTransition';
@@ -47,7 +46,7 @@ export const Chat = ({ chat }: ChatProps) => {
 	const [editedMessage, setEditedMessage] = useState<Message | null>(null);
 	const [menuActiveId, setMenuActiveId] = useState<string>('');
 
-	const { menuTop, setMessageParams, containerRef, initMenuParams } = useMenuTransition(menuActiveId, userId);
+	const { menuTop, messageParams, initMenuParams } = useMenuTransition();
 
 	const { selectedIds, isAllSelected, toggleAllSelected, addSelection, startSelection, dropSelectMode } =
 		useSelect(shownMessageList);
@@ -56,12 +55,13 @@ export const Chat = ({ chat }: ChatProps) => {
 
 	const isSelectMode = !!selectedIds.length;
 
-	const contextMenuToggleHandler = (id: string) => (type: 'open' | 'close', messageParams: DOMRect) => {
+	const contextMenuToggleHandler = (id: string) => (type: 'open' | 'close', params: DOMRect) => {
 		if (isSelectMode) {
 			addSelection(id);
 			return;
 		}
-		setMessageParams(messageParams);
+		if (editedMessage || repliedMessage) return;
+		messageParams.current = params;
 		setMenuActiveId(type === 'open' ? id : '');
 	};
 
@@ -153,53 +153,42 @@ export const Chat = ({ chat }: ChatProps) => {
 					<ChatMenuButton onDeleteChat={onDeleteChat} onClearChatHistory={onClearChatHistory} />
 				)}
 			</div>
-			{isActiveChatLoading ? (
-				<FullScreenLoader />
-			) : (
-				<div className={styles.coverWrapper}>
-					<div
-						className={clsx(styles.chatWrapper, { [styles.withReplied]: !!repliedMessage })}
-						ref={containerRef}
-					>
-						{shownMessageList.map((message, index, { length }) => {
-							const repliedMessage = message.replyToId
-								? messageList.find(el => el.id === message.replyToId)
-								: null;
-							const isAuthoredByUser = message.authorId === userId;
-							return (
-								<SingleMessage
-									key={message.id}
-									message={message}
-									isSelectMode={isSelectMode}
-									repliedMessage={repliedMessage}
-									isSelected={selectedIds.includes(message.id)}
-									isScrolledTo={firstUnreadId ? firstUnreadId === message.id : index === length - 1}
-									onContextMenuToggle={contextMenuToggleHandler(message.id)}
-									updateIsRead={message.authorId !== userId ? updateIsRead : null}
-									isAuthoredByUser={isAuthoredByUser}
-									firstUnreadId={firstUnreadId}
-									onSelectModeStart={onSelectModeStart(message.id)}
-								/>
-							);
-						})}
-					</div>
-					{!!activeMessage && (
-						<ContextMenu
-							menuTop={menuTop}
-							onEditMessage={onEditMessage}
-							onCloseMenu={closeMenuHandler}
-							initMenuParams={initMenuParams}
-							onReplyMessage={onReplyMessage}
-							onAddReaction={addReactionHandler}
-							isAuthor={activeMessage.authorId === authorId}
-							onDownLoadImage={activeMessage.imageUrl ? onDownLoadImage : null}
+			<div className={styles.chatWrapper}>
+				{shownMessageList.map((message, index, { length }) => {
+					const repliedMessage = message.replyToId
+						? messageList.find(el => el.id === message.replyToId)
+						: null;
+					const isAuthoredByUser = message.authorId === userId;
+					return (
+						<SingleMessage
+							key={message.id}
+							message={message}
+							isSelectMode={isSelectMode}
+							repliedMessage={repliedMessage}
+							isSelected={selectedIds.includes(message.id)}
+							isScrolledTo={firstUnreadId ? firstUnreadId === message.id : index === length - 1}
+							onContextMenuToggle={contextMenuToggleHandler(message.id)}
+							updateIsRead={message.authorId !== userId ? updateIsRead : null}
+							isAuthoredByUser={isAuthoredByUser}
+							firstUnreadId={firstUnreadId}
+							onSelectModeStart={onSelectModeStart(message.id)}
 						/>
-					)}
-					{unreadNumber ? (
-						<UnreadMessagesButton unreadNumber={unreadNumber} onPress={scrollToLastHandler} />
-					) : null}
-				</div>
+					);
+				})}
+			</div>
+			{!!activeMessage && (
+				<ContextMenu
+					menuTop={menuTop}
+					onEditMessage={onEditMessage}
+					onCloseMenu={closeMenuHandler}
+					initMenuParams={initMenuParams}
+					onReplyMessage={onReplyMessage}
+					onAddReaction={addReactionHandler}
+					isAuthor={activeMessage.authorId === authorId}
+					onDownLoadImage={activeMessage.imageUrl ? onDownLoadImage : null}
+				/>
 			)}
+			{unreadNumber ? <UnreadMessagesButton unreadNumber={unreadNumber} onPress={scrollToLastHandler} /> : null}
 			<MessageInput
 				chatId={chatId}
 				authorName={authorName}
