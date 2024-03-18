@@ -50,7 +50,7 @@ export const Chat = ({ chat }: ChatProps) => {
 	const [editedMessage, setEditedMessage] = useState<Message | null>(null);
 	const [menuActiveId, setMenuActiveId] = useState<string>('');
 
-	const { menuTop, setMessageParams, initMenuParams } = useMenuTransition(menuActiveId);
+	const { menuTop, messageParams, initMenuParams } = useMenuTransition();
 
 	const { selectedIds, isAllSelected, toggleAllSelected, addSelection, startSelection, dropSelectMode } =
 		useSelect(shownMessageList);
@@ -59,12 +59,12 @@ export const Chat = ({ chat }: ChatProps) => {
 
 	const isSelectMode = !!selectedIds.length;
 
-	const contextMenuToggleHandler = (id: string) => (type: 'open' | 'close', messageParams: DOMRect) => {
+	const contextMenuToggleHandler = (id: string) => (type: 'open' | 'close', params: DOMRect) => {
 		if (isSelectMode) {
 			addSelection(id);
 			return;
 		}
-		setMessageParams(messageParams);
+		messageParams.current = params;
 		setMenuActiveId(type === 'open' ? id : '');
 	};
 
