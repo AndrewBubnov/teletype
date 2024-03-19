@@ -1,11 +1,10 @@
-import styles from '@/app/shared/shared.module.css';
 import { clsx } from 'clsx';
+import { useFadeContext } from '@/app/shared/hooks/useFadeContext';
 import { StyledCheckboxProps } from '@/types';
-import { useContext } from 'react';
-import { FadeContext } from '@/app/shared/components/Fade';
+import styles from '@/app/shared/shared.module.css';
 
 export const StyledCheckbox = ({ id, checked, label, onChange, className = '' }: StyledCheckboxProps) => {
-	const { onTransitionEnd } = useContext(FadeContext);
+	const { onTransitionEnd } = useFadeContext();
 	return (
 		<label className={styles.checkboxWrapper} htmlFor={id} onTransitionEnd={onTransitionEnd}>
 			<input

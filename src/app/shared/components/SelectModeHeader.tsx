@@ -1,8 +1,7 @@
-import { useContext } from 'react';
 import { clsx } from 'clsx';
+import { useFadeContext } from '@/app/shared/hooks/useFadeContext';
 import { IoCloseOutline as CloseIcon } from 'react-icons/io5';
 import { StyledCheckbox } from '@/app/shared/components/StyledCheckbox';
-import { FadeContext } from '@/app/shared/components/Fade';
 import { AiOutlineDelete as DeleteIcon } from 'react-icons/ai';
 import { SelectModeHeaderProps } from '@/types';
 import styles from '../shared.module.css';
@@ -16,7 +15,7 @@ export const SelectModeHeader = ({
 	className = '',
 	withPadding,
 }: SelectModeHeaderProps) => {
-	const { onTransitionEnd } = useContext(FadeContext);
+	const { onTransitionEnd } = useFadeContext();
 	return (
 		<div
 			className={clsx(styles.selectedCountWrapper, className, { [styles.withPadding]: withPadding })}
