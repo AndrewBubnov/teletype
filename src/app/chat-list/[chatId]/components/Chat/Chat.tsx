@@ -46,7 +46,7 @@ export const Chat = ({ chat }: ChatProps) => {
 	const [editedMessage, setEditedMessage] = useState<Message | null>(null);
 	const [menuActiveId, setMenuActiveId] = useState<string>('');
 
-	const { menuTop, messageParams, initMenuParams } = useMenuTransition();
+	const { menuTop, setMessageParams, initMenuParams, wrapperRef } = useMenuTransition();
 
 	const { selectedIds, isAllSelected, toggleAllSelected, addSelection, startSelection, dropSelectMode } =
 		useSelect(shownMessageList);
@@ -61,7 +61,7 @@ export const Chat = ({ chat }: ChatProps) => {
 			return;
 		}
 		if (editedMessage || repliedMessage) return;
-		messageParams.current = params;
+		setMessageParams(params);
 		setMenuActiveId(type === 'open' ? id : '');
 	};
 
@@ -136,7 +136,7 @@ export const Chat = ({ chat }: ChatProps) => {
 	if (!userId) return <FullScreenLoader />;
 
 	return (
-		<RightSideResizable>
+		<RightSideResizable ref={wrapperRef}>
 			<BackButton interlocutorName={interlocutorName} interlocutorImageUrl={interlocutorImageUrl} />
 			<div className={styles.chatHeaderContainer}>
 				<ChatHeader
