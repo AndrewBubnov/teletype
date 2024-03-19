@@ -8,10 +8,10 @@ import {
 	PropsWithChildren,
 	ReactElement,
 	ReactNode,
+	RefObject,
 	SetStateAction,
 	SyntheticEvent,
 } from 'react';
-import { useLeftSideWidthStore } from '@/store';
 
 export type MessageMap = Record<string, Message[]>;
 
@@ -123,11 +123,11 @@ export interface UseLongPress {
 export interface ContextMenuProps {
 	onAddReaction(arg: string): void;
 	onCloseMenu(): void;
-	initMenuParams: MutableRefObject<DOMRect | null>;
+	messageParams: MutableRefObject<DOMRect | null>;
+	containerRef: RefObject<HTMLDivElement>;
 	onReplyMessage(): void;
 	onEditMessage(): void;
 	onDownLoadImage: null | (() => void);
-	menuTop: number;
 	isAuthor: boolean;
 }
 export interface EmojiMessageProps {

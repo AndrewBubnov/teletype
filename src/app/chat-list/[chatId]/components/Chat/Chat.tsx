@@ -1,8 +1,7 @@
 'use client';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useChat } from '@/app/chat-list/[chatId]/hooks/useChat';
 import { useSelect } from '@/app/shared/hooks/useSelect';
-import { useMenuTransition } from '@/app/chat-list/[chatId]/hooks/useMenuTransition';
 import { FullScreenLoader } from '@/app/shared/components/FullScreenLoader';
 import { BackButton } from '@/app/chat-list/[chatId]/components/BackButton/BackButton';
 import { ChatHeader } from '@/app/chat-list/[chatId]/components/ChatHeader/ChatHeader';
@@ -49,7 +48,8 @@ export const Chat = ({ chat }: ChatProps) => {
 	const [editedMessage, setEditedMessage] = useState<Message | null>(null);
 	const [menuActiveId, setMenuActiveId] = useState<string>('');
 
-	const { menuTop, setMessageParams, initMenuParams, wrapperRef } = useMenuTransition();
+	const containerRef = useRef<HTMLDivElement>(null);
+	const messageParams = useRef<DOMRect | null>(null);
 
 	const { selectedIds, isAllSelected, toggleAllSelected, addSelection, startSelection, dropSelectMode } =
 		useSelect(shownMessageList);
@@ -64,7 +64,7 @@ export const Chat = ({ chat }: ChatProps) => {
 			return;
 		}
 		if (editedMessage || repliedMessage) return;
-		setMessageParams(params);
+		messageParams.current = params;
 		setMenuActiveId(type === 'open' ? id : '');
 	};
 
@@ -147,7 +147,7 @@ export const Chat = ({ chat }: ChatProps) => {
 	if (!userId) return <FullScreenLoader />;
 
 	return (
-		<RightSideResizable ref={wrapperRef}>
+		<RightSideResizable ref={containerRef}>
 			<BackButton interlocutorName={interlocutorName} interlocutorImageUrl={interlocutorImageUrl} />
 			<div className={styles.chatHeaderContainer}>
 				<ChatHeader
@@ -189,14 +189,14 @@ export const Chat = ({ chat }: ChatProps) => {
 			</div>
 			{!!activeMessage && (
 				<ContextMenu
-					menuTop={menuTop}
 					onEditMessage={onEditMessage}
 					onCloseMenu={closeMenuHandler}
-					initMenuParams={initMenuParams}
 					onReplyMessage={onReplyMessage}
 					onAddReaction={addReactionHandler}
 					isAuthor={activeMessage.authorId === authorId}
 					onDownLoadImage={activeMessage.imageUrl ? onDownLoadImage : null}
+					messageParams={messageParams}
+					containerRef={containerRef}
 				/>
 			)}
 			{unreadNumber ? <UnreadMessagesButton unreadNumber={unreadNumber} onPress={scrollToLastHandler} /> : null}
