@@ -38,6 +38,7 @@ export const MessageInput = ({
 	const [emojis, setEmojis] = useState<string>('');
 	const [isImagePreviewModalOpen, setIsImagePreviewModalOpen] = useState<boolean>(false);
 	const [isCameraOn, setIsCameraOn] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const messageTextRef = useLatest(messageText);
 
@@ -86,10 +87,12 @@ export const MessageInput = ({
 		setRepliedMessage(null);
 		setEditedMessage(null);
 		removeDraft(chatId);
+		setIsLoading(false);
 	}, [chatId, removeDraft, setEditedMessage, setMessageImageUrl, setRepliedMessage]);
 
 	const submitHandler = useCallback(async () => {
 		if (!messageText && !messageImageUrl) return;
+		setIsLoading(true);
 		const type = messageText && emojis && messageText === emojis ? MessageType.EMOJI : MessageType.COMMON;
 
 		if (editedMessage) {
@@ -178,6 +181,8 @@ export const MessageInput = ({
 						onSelectFile={selectFileHandler}
 						onCameraStart={() => setIsCameraOn(true)}
 						onSubmit={submitHandler}
+						isLoading={isLoading}
+						disabled={isLoading || !(messageText || messageImageUrl || editedMessage || repliedMessage)}
 					/>
 				}
 			/>

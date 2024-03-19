@@ -231,6 +231,8 @@ export interface TextAreaEndDecoratorProps {
 	onDropImageUrl(): void;
 	onCameraStart(): void;
 	onSubmit(): Promise<void>;
+	isLoading: boolean;
+	disabled: boolean;
 }
 
 export interface ToastProps {

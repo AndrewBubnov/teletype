@@ -14,6 +14,8 @@ export const TextAreaEndDecorator = ({
 	onSelectFile,
 	onSubmit,
 	onCameraStart,
+	isLoading,
+	disabled,
 }: TextAreaEndDecoratorProps) => (
 	<div className={styles.endDecorator}>
 		<div className={styles.previewWrapper} onClick={openPreviewModal}>
@@ -32,8 +34,8 @@ export const TextAreaEndDecorator = ({
 				<button className={clsx(styles.iconButton, styles.additionalIcon)} onClick={onCameraStart}>
 					<CameraIcon />
 				</button>
-				<button className={styles.sendButton} type="submit" onClick={onSubmit}>
-					<SendIcon />
+				<button className={styles.sendButton} type="submit" onClick={onSubmit} disabled={disabled}>
+					{isLoading ? <div className={styles.miniLoader} /> : <SendIcon />}
 				</button>
 			</div>
 		</div>
