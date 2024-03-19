@@ -1,13 +1,8 @@
-import { cloneElement, createContext, useCallback, useEffect, useMemo, useState } from 'react';
+import { cloneElement, useCallback, useEffect, useMemo, useState } from 'react';
+import { FadeProvider } from '@/app/shared/providers/FadeProvider';
 import { clsx } from 'clsx';
-import { FadeContextProps, FadeProps, FadeProviderProps } from '@/types';
+import { FadeProps } from '@/types';
 import styles from '../shared.module.css';
-
-export const FadeContext = createContext<FadeContextProps>({} as FadeContextProps);
-
-const FadeProvider = ({ children, onTransitionEnd }: FadeProviderProps) => (
-	<FadeContext.Provider value={{ onTransitionEnd }}>{children}</FadeContext.Provider>
-);
 
 export const Fade = ({ children, isShown, className = '' }: FadeProps) => {
 	const [isRendered, setIsRendered] = useState<boolean>(isShown);
