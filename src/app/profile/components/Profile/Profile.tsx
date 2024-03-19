@@ -29,6 +29,17 @@ export const Profile = ({ user }: { user: User }) => {
 
 	const ref = useRef<HTMLLabelElement>(null);
 
+	const dropHandler = () => {
+		dropUploadingHandler();
+		setCrop({ x: 0, y: 0 });
+		setZoom(1);
+		setRotation(0);
+		setCroppedAreaPixels({} as Area);
+		setZoomSliderValue(PROFILE_SLIDER_MIDDLE);
+		setRotationSliderValue(PROFILE_SLIDER_MIDDLE);
+		setUsername(user.username || user.email);
+	};
+
 	useEffect(() => {
 		setZoom(getZoomFromSliderData(zoomSliderValue));
 	}, [zoomSliderValue]);
@@ -80,7 +91,7 @@ export const Profile = ({ user }: { user: User }) => {
 					<button className={styles.button} onClick={uploadHandler}>
 						Upload
 					</button>
-					<button className={styles.button} onClick={dropUploadingHandler}>
+					<button className={styles.button} onClick={dropHandler}>
 						Reset
 					</button>
 					<button className={styles.button} onClick={deleteImageHandler}>
