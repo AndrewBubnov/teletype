@@ -89,17 +89,16 @@ export const useChat = (chat: UserChat) => {
 		[]
 	);
 
-	const addReactionToMessage = async (
-		message: Message,
-		reaction: string,
-		authorImageUrl: string | null | undefined
-	) => {
-		const { id: messageId, chatId } = message;
-		const updated = await addReaction({ messageId, reaction, authorImageUrl });
-		if (!updated) return;
-		sendEditMessage({ updateData: [updated], type: UpdateMessageType.EDIT, roomId: chatId });
-		setMessageListRaw(addReactionSetter(messageId, reaction, authorImageUrl));
-	};
+	const addReactionToMessage = useCallback(
+		async (message: Message, reaction: string, authorImageUrl: string | null | undefined) => {
+			const { id: messageId, chatId } = message;
+			const updated = await addReaction({ messageId, reaction, authorImageUrl });
+			if (!updated) return;
+			sendEditMessage({ updateData: [updated], type: UpdateMessageType.EDIT, roomId: chatId });
+			setMessageListRaw(addReactionSetter(messageId, reaction, authorImageUrl));
+		},
+		[]
+	);
 
 	const isReadListener = useCallback(({ messageId }: UpdateIsRead) => setMessageListRaw(isReadSetter(messageId)), []);
 
