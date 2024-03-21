@@ -80,7 +80,6 @@ export const useChat = (chat: UserChat) => {
 	const updateIsRead = useCallback(async (message: Message) => {
 		const { id, chatId } = message;
 		sendUpdateIsRead({ roomId: chatId, messageId: message.id });
-		setMessageListRaw(prevState => prevState.map(el => (el.id === message.id ? { ...el, isRead: true } : el)));
 		await updateMessageIsRead(id);
 	}, []);
 
