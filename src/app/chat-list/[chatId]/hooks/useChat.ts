@@ -141,7 +141,7 @@ export const useChat = (chat: UserChat) => {
 		authorName,
 		unreadNumber,
 		updateIsRead,
-		firstUnreadId: firstUnreadRef.current || null,
+		firstUnreadId: firstUnreadRef.current,
 		isActiveChatLoading,
 		userId,
 	};
