@@ -28,14 +28,6 @@ export const useChat = (chat: UserChat) => {
 
 	const [messageListRaw, setMessageListRaw] = useState<Message[]>(chat.messages);
 
-	const addMessageToList = useCallback(
-		(message: Message) => {
-			if (message.chatId !== chatId) return;
-			setMessageListRaw(prevState => [...prevState, message]);
-		},
-		[chatId]
-	);
-
 	const { push } = useRouter();
 
 	const firstUnreadRef = useRef<string>('');
@@ -75,6 +67,14 @@ export const useChat = (chat: UserChat) => {
 			sendChangeVisitorStatus({ status: VisitorStatus.OUT, ...rest });
 		};
 	}, [chatId, userId]);
+
+	const addMessageToList = useCallback(
+		(message: Message) => {
+			if (message.chatId !== chatId) return;
+			setMessageListRaw(prevState => [...prevState, message]);
+		},
+		[chatId]
+	);
 
 	const updateIsRead = useCallback(async (message: Message) => {
 		const { id, chatId } = message;
