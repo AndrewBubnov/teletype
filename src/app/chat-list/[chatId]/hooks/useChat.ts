@@ -11,7 +11,6 @@ import { clearUpdateClientMessage, updateClientMessage } from '@/webSocketAction
 import { sendUpdateIsRead } from '@/webSocketActions/sendUpdateIsRead';
 import { clearUpdateIsReadListener, updateIsReadListener } from '@/webSocketActions/updateIsReadListener';
 import { isReadSetter } from '@/app/chat-list/[chatId]/utils/isReadSetter';
-import { addReactionSetter } from '@/app/chat-list/[chatId]/utils/addReactionSetter';
 import { updateMessageSetter } from '@/app/chat-list/[chatId]/utils/updateMessageSetter';
 import { CHAT_LIST } from '@/constants';
 import { Message, UpdateIsRead, UpdateMessage, UpdateMessageType, UserChat, VisitorStatus } from '@/types';
@@ -94,7 +93,6 @@ export const useChat = (chat: UserChat) => {
 			const updated = await addReaction({ messageId, reaction, authorImageUrl });
 			if (!updated) return;
 			sendEditMessage({ updateData: [updated], type: UpdateMessageType.EDIT, roomId: chatId });
-			setMessageListRaw(addReactionSetter(messageId, reaction, authorImageUrl));
 		},
 		[]
 	);
