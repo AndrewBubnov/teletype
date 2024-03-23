@@ -56,9 +56,10 @@ export const ChatsList = () => {
 	const chatLongPressHandler = (id: string) => () => startSelection(id);
 
 	const deleteChatsHandler = async () => {
-		sendDeleteUserChats(selectedIds);
-		dropSelectMode();
 		const chatIds = chatList.filter(({ id }) => selectedIds.includes(id)).map(({ chatId }) => chatId);
+		sendDeleteUserChats(selectedIds, chatIds);
+		dropSelectMode();
+
 		await deleteChats(selectedIds, chatIds);
 	};
 

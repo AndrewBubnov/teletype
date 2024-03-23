@@ -55,7 +55,6 @@ export const useChat = (chat: UserChat) => {
 	}, [isWideMode, push]);
 
 	useEffect(() => {
-		if (!chatList.length) return;
 		if (!chatList.map(chat => chat.chatId).includes(chatId)) push(CHAT_LIST);
 	}, [chatId, chatList, push]);
 
