@@ -1,7 +1,7 @@
 'use client';
 
 import { DragEvent } from 'react';
-import { useActiveChatStore, useIsWideModeStore, useLeftSideWidthStore } from '@/store';
+import { useActiveChatStore, useCommonStore, useIsWideModeStore, useLeftSideWidthStore } from '@/store';
 import dynamic from 'next/dynamic';
 import { FullScreenLoader } from '@/app/shared/components/FullScreenLoader';
 import { DIVIDER_MARGIN, MAX_LEFT_SIDE_WIDTH, MIN_LEFT_SIDE_WIDTH } from '@/constants';
@@ -14,10 +14,11 @@ const DynamicChat = dynamic(() => import('@/app/chat-list/[chatId]/components/Ch
 
 export const WideMode = () => {
 	const activeChat = useActiveChatStore(state => state.activeChat);
+	const chatList = useCommonStore(state => state.chatList);
 	const isWideMode = useIsWideModeStore(state => state.isWideMode);
 	const setLeftSideWidth = useLeftSideWidthStore(state => state.setLeftSideWidth);
 
-	if (!activeChat || !isWideMode) return null;
+	if (!activeChat || !isWideMode || !chatList.length) return null;
 
 	const mouseMoveHandler = (evt: DragEvent<HTMLDivElement>) => {
 		if (!evt.clientX) return;
