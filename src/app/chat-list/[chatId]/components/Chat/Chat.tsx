@@ -108,7 +108,7 @@ export const Chat = ({ chat }: ChatProps) => {
 
 	const onDeleteChat = useCallback(async () => {
 		await deleteSingleChat(chatId);
-		sendDeleteUserChats([chat.id]);
+		sendDeleteUserChats([chat.id], [chatId]);
 		sendEditMessage({
 			updateData: messageList,
 			type: UpdateMessageType.DELETE,
