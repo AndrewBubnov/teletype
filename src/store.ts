@@ -36,7 +36,7 @@ export const useUnreadMessagesStore = create<UnreadMessagesStore>(set => ({
 			},
 		}));
 	},
-	updateIsReadInStore: ({ roomId, messageId }: UpdateIsRead) =>
+	updateIsReadInStore: ({ roomId }: UpdateIsRead) =>
 		set(state => ({
 			messageMap: {
 				...state.messageMap,
@@ -87,6 +87,7 @@ export const useActiveChatStore = create<ActiveChatStore>(set => ({
 	isActiveChatLoading: false,
 	activeChat: null,
 	setActiveChat: async chatId => {
+		if (!chatId) return;
 		set({ isActiveChatLoading: true });
 		const chat = await getChatByChatId(chatId);
 		set({ activeChat: chat, isActiveChatLoading: false });

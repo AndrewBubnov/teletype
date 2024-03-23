@@ -109,7 +109,12 @@ export const Chat = ({ chat }: ChatProps) => {
 	const onDeleteChat = useCallback(async () => {
 		await deleteSingleChat(chatId);
 		sendDeleteUserChats([chat.id]);
-	}, [chat.id, chatId]);
+		sendEditMessage({
+			updateData: messageList,
+			type: UpdateMessageType.DELETE,
+			roomId: chatId,
+		});
+	}, [chat.id, chatId, messageList]);
 
 	const onReplyMessage = useCallback(() => {
 		if (activeMessage) setRepliedMessage(activeMessage);
