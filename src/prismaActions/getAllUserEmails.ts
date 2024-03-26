@@ -9,14 +9,12 @@ export const getAllUserEmails = async () => {
 
 	if (!user) return [];
 
-	const myEmail = user?.emailAddresses[0].emailAddress || '';
 	const users = await prisma.user.findMany();
 	const currentChatUser = await prisma.user.findUnique({ where: { userId: user.id } });
 	const chats = await getUserChats(currentChatUser?.chatIds || []);
-	const existingChatMemberIds = chats.map(el => el.memberIds).flat();
-	const existingChatEmails = await getEmailsByIds(existingChatMemberIds);
+	const excludedEmails = chats.map(el => el.members.map(item => item.email)).flat();
 
-	const uniqueUserEmails = Array.from(new Set((users || []).map(el => el.email)));
+	const uniqueUserEmails = users.map(el => el.email);
 
-	return uniqueUserEmails.filter(el => el !== myEmail && !existingChatEmails.includes(el));
+	return uniqueUserEmails.filter(el => !excludedEmails.includes(el));
 };
