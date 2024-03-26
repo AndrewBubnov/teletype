@@ -1,7 +1,9 @@
 'use client';
 import { useCallback, useEffect } from 'react';
 import { useUnreadMessagesStore, useCommonStore, useStatusStore, useIsWideModeStore } from '@/store';
+import { useMessageStore, useCommonStore, useStatusStore, useIsWideModeStore, useActiveChatStore } from '@/store';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
+import { useFirstLoad } from '@/app/hooks/useFirstLoad';
 import { createRooms } from '@/app/chat-list/utils/createRooms';
 import { initUserChats } from '@/webSocketActions/initUserChats';
 import { sendJoin } from '@/webSocketActions/sendJoin';
@@ -10,6 +12,7 @@ import { addClientMessage, clearAddClientMessage } from '@/webSocketActions/addC
 import { clearUpdateChatList, updateChatList } from '@/webSocketActions/updateChatList';
 import { clearUpdateVisitorStatus, updateVisitorStatus } from '@/webSocketActions/updateVisitorStatus';
 import { clearUpdateConnectionError, updateConnectionError } from '@/webSocketActions/updateConnectionError';
+import { getAllUserEmails } from '@/prismaActions/getAllUserEmails';
 import { SERVER_CONNECTION_FAILED } from '@/app/constants';
 import { SubscriberProps } from '@/types';
 import { clearUpdateClientMessage, updateClientMessage } from '@/webSocketActions/updateClientMessage';
@@ -38,15 +41,21 @@ export const Subscriber = ({ userChats, userEmails, userId, unreadMessageMap }: 
 		setChatVisitorStatus: state.setChatVisitorStatus,
 	}));
 
+	const setActiveChat = useActiveChatStore(state => state.setActiveChat);
+
 	const setIsWideMode = useIsWideModeStore(state => state.setIsWideMode);
 
-	useEffect(() => {
-		initUserChats(userChats);
-	}, [userChats]);
+	useFirstLoad(initUserChats, userChats);
 
-	useEffect(() => {
-		sendJoin(userId);
-	}, [userId]);
+	useFirstLoad(setUserEmails, userEmails);
+
+	useFirstLoad(setChatList, userChats);
+
+	useFirstLoad(setMessageMap, messageMap);
+
+	useFirstLoad(setUserId, userId);
+
+	useFirstLoad(sendJoin, userId);
 
 	useEffect(() => createRooms(chatList, userId), [chatList, userId]);
 
@@ -75,13 +84,23 @@ export const Subscriber = ({ userChats, userEmails, userId, unreadMessageMap }: 
 
 	const setErrorToast = useCallback(() => setToast(SERVER_CONNECTION_FAILED), [setToast]);
 
+	const chatListChangeHandler = useCallback(
+		async (updated: UserChat[]) => {
+			setActiveChat(null);
+			setChatList(updated);
+			const userEmails = await getAllUserEmails();
+			setUserEmails(userEmails);
+		},
+		[setActiveChat, setChatList, setUserEmails]
+	);
+
 	useSubscribe(setActiveUsers, updateActiveUsers, clearActiveUsers);
 
 	useSubscribe(addMessageToMessageMap, addClientMessage, clearAddClientMessage);
 
 	useSubscribe(updateUnreadMessages, updateClientMessage, clearUpdateClientMessage);
 
-	useSubscribe(setChatList, updateChatList, clearUpdateChatList);
+	useSubscribe(chatListChangeHandler, updateChatList, clearUpdateChatList);
 
 	useSubscribe(setChatVisitorStatus, updateVisitorStatus, clearUpdateVisitorStatus);
 
