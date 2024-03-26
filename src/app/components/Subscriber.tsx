@@ -1,7 +1,12 @@
 'use client';
 import { useCallback, useEffect } from 'react';
-import { useUnreadMessagesStore, useCommonStore, useStatusStore, useIsWideModeStore } from '@/store';
-import { useMessageStore, useCommonStore, useStatusStore, useIsWideModeStore, useActiveChatStore } from '@/store';
+import {
+	useUnreadMessagesStore,
+	useCommonStore,
+	useStatusStore,
+	useIsWideModeStore,
+	useActiveChatStore,
+} from '@/store';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
 import { useFirstLoad } from '@/app/hooks/useFirstLoad';
 import { createRooms } from '@/app/chat-list/utils/createRooms';
@@ -13,10 +18,10 @@ import { clearUpdateChatList, updateChatList } from '@/webSocketActions/updateCh
 import { clearUpdateVisitorStatus, updateVisitorStatus } from '@/webSocketActions/updateVisitorStatus';
 import { clearUpdateConnectionError, updateConnectionError } from '@/webSocketActions/updateConnectionError';
 import { getAllUserEmails } from '@/prismaActions/getAllUserEmails';
-import { SERVER_CONNECTION_FAILED } from '@/app/constants';
-import { SubscriberProps } from '@/types';
 import { clearUpdateClientMessage, updateClientMessage } from '@/webSocketActions/updateClientMessage';
 import { clearUpdateIsReadListener, updateIsReadListener } from '@/webSocketActions/updateIsReadListener';
+import { SERVER_CONNECTION_FAILED } from '@/app/constants';
+import { SubscriberProps, UserChat } from '@/types';
 
 export const Subscriber = ({ userChats, userEmails, userId, unreadMessageMap }: SubscriberProps) => {
 	const { setMessageMap, addMessageToMessageMap, updateUnreadMessages, updateIsReadInStore } = useUnreadMessagesStore(
@@ -51,7 +56,7 @@ export const Subscriber = ({ userChats, userEmails, userId, unreadMessageMap }: 
 
 	useFirstLoad(setChatList, userChats);
 
-	useFirstLoad(setMessageMap, messageMap);
+	useFirstLoad(setMessageMap, unreadMessageMap);
 
 	useFirstLoad(setUserId, userId);
 
@@ -86,7 +91,7 @@ export const Subscriber = ({ userChats, userEmails, userId, unreadMessageMap }: 
 
 	const chatListChangeHandler = useCallback(
 		async (updated: UserChat[]) => {
-			setActiveChat(null);
+			setActiveChat(updated[0]?.id || '');
 			setChatList(updated);
 			const userEmails = await getAllUserEmails();
 			setUserEmails(userEmails);
